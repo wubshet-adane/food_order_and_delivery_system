@@ -11,7 +11,7 @@
         <div class="recommendation-card">
             <div class="image">
                 <img src="image1.jpg" alt="Image 1">
-            </div>
+            </div> 
             <div class="content">
                 <h3>Food Name</h3> 
                 <p>Price: <strong> ETB 20</strong></p>
