@@ -1,0 +1,99 @@
+
+
+/* Main Section */
+.recommendation {
+    background-color: #c27603;
+    padding: 20px;
+    border-radius: 10px;
+    width: fit-content;
+    margin:auto;
+    max-width: 90%;
+}
+
+/* Container with horizontal layout for h2 and slider */
+.top-rec {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-rec h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.slider {
+    display: flex;
+    align-items: center;
+}
+
+.arrow-button {
+    font-size: 30px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.arrow-button:hover {
+    background-color: #45a049;
+}
+
+/* Recommendation Cards Layout */
+.recommendation-cards {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+}
+
+/* Individual Recommendation Card */
+.recommendation-card {
+    display: flex;
+    flex-direction: row;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 15px;
+    margin-right: 20px;
+    transition: transform 0.3s ease;
+}
+
+.recommendation-card:hover {
+    transform: scale(1.05);
+}
+
+/* Image Styling */
+.recommendation-card .image {
+    flex: 1;
+    max-width: 100px;
+    margin-right: 15px;
+}
+
+.recommendation-card .image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Content Styling */
+.recommendation-card .content {
+    flex: 2;
+}
+
+.recommendation-card .content h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.recommendation-card .content p {
+    font-size: 16px;
+    color: #333;
+}
+
+.recommendation-card .content p strong {
+    font-weight: bold;
+    color: #4CAF50;
+}
