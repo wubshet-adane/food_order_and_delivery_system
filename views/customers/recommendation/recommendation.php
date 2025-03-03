@@ -10,7 +10,7 @@
     <div class="recommendation-cards">
         <div class="recommendation-card">
             <div class="image">
-                <img src="image1.jpg" alt="Image 1">
+                <img src="image1.jpg" alt="Imag 1">
             </div> 
             <div class="content">
                 <h3>Food Name</h3> 
@@ -19,7 +19,7 @@
         </div>
         <div class="recommendation-card">
             <div class="image">
-                <img src="image1.jpg" alt="Image 1">
+                <img src="image1.jpg" alt="Imag 1">
             </div>
             <div class="content">
                 <h3>Food Name</h3>
@@ -28,7 +28,7 @@
         </div>
         <div class="recommendation-card">
             <div class="image">
-                <img src="image1.jpg" alt="Image 1">
+                <img src="image1.jpg" alt="Imag 1">
             </div>
             <div class="content">
                 <h3>Food Name</h3>
