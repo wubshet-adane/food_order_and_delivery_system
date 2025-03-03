@@ -10,8 +10,8 @@
     <div class="recommendation-cards">
         <div class="recommendation-card">
             <div class="image">
-                <img src="image1.jpg" alt="Imag 1">
-            </div> 
+                <img src="../../../uploads/menu_images/promo.jpg" alt="Imag 1">
+            </div>
             <div class="content">
                 <h3>Food Name</h3> 
                 <p>Price: <strong> ETB 20</strong></p>
@@ -19,7 +19,7 @@
         </div>
         <div class="recommendation-card">
             <div class="image">
-                <img src="image1.jpg" alt="Imag 1">
+                <img src="../../../uploads/menu_images/promo.jpg" alt="Imag 1">
             </div>
             <div class="content">
                 <h3>Food Name</h3>
