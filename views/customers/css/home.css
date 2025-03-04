@@ -36,13 +36,23 @@ body {
 }
 
 .search-sort {
-    padding: 20px 0;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content:right;
+    float: right;
+    padding: 10px 10px;
+}
+
+.labal{
+    font-size: 20px;
+    align-items: center;
     text-align: center;
 }
 
 .search-sort input, .search-sort select {
-    padding: 8px;
-    margin-right: 10px;
+    padding: 5px;
+    margin-right: 5px;
 }
 
 .search-sort button {

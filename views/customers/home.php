@@ -36,7 +36,8 @@ $restaurants = $result->fetch_all(MYSQLI_ASSOC);
 
     <!-- Search & Sort -->
     <section class="search-sort container">
-        <form method="GET">
+        <form method="GET" class="search-form"></form>
+            <label for="search" class="label">Search Restaurants:</label>
             <input type="text" name="search" placeholder="Search restaurants..." value="<?php echo htmlspecialchars($search); ?>">
             <select name="sort">
                 <option value="name" <?php if ($sort === 'name') echo 'selected'; ?>>Sort by Name</option>
