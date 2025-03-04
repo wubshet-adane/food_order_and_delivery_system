@@ -81,7 +81,7 @@
     include "header/topnav.php";
     include "recommendation.php";
     ?>
-
+    <!--search and sort section-->
     <section class="search-sort container">
         <form id="searchForm" method="GET" class="search-form">
             <label for="search" class="label">Search Restaurants:</label>
