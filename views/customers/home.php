@@ -128,6 +128,25 @@
                                 <a href="restaurant_details.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn">Read Details</a>
                             </div>
                         </div>
+
+                        <?php
+                        //check if restaurant is open or closed:
+                            if ($restaurant){
+                                echo "<div class='restaurant-status'>";
+                                if ($restaurants['status'] == 'open'){
+                        ?>
+                                <div class="restaurant-open">
+                                    <p>open</p>
+                                </div>
+                        <?php
+                                }
+                                else{
+                                    echo "<div class='restaurant-closed'> <p>closed</p> </div>";
+                                }
+                                echo "</div>";
+                            }
+                        ?>
+
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
