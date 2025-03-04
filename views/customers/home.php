@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../config/database.php';
 $search = $_GET['search'] ?? '';
 $sort = $_GET['sort'] ?? 'name';
 
-$sql = "SELECT * FROM restaurants WHERE name LIKE ? ORDER BY $sort ASC LIMIT 7";
+$sql = "SELECT * FROM restaurants WHERE name LIKE ? ORDER BY $sort ASC";
 $stmt = $conn->prepare($sql);
 $searchQuery = "%" . $search . "%";
 $stmt->bind_param("s", $searchQuery);
@@ -29,19 +29,8 @@ $restaurants = $result->fetch_all(MYSQLI_ASSOC);
 </head>
 <body>
 
-    <!-- Top Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <h1>FoodieExpress</h1>
-            <ul>
-                <li>Welcome, <?php echo htmlspecialchars($_SESSION['user']['name'] ?? 'Guest'); ?></li>
-                <li><a href="../../public/index.php">Dashboard</a></li>
-                <li><a href="../auth/logout.php">Logout</a></li>
-            </ul>
-        </div>
-    </nav>
-
    <?php
+        include "header/topnav.php";
         include "recommendation/recommendation.php";
    ?>
 
