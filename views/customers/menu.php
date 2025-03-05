@@ -88,7 +88,7 @@
             <?php
                 if ($menu_items) {
             ?>
-            <form class="form_item" action="order.php" method="POST">
+            <form class="form_item" action="cart.php" method="POST">
                 <input type="hidden" name="restaurant_id" value="<?php echo $restaurant['restaurant_id']; ?>">
                 
                 <ul class="menu-items menu_grid">
