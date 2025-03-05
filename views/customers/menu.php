@@ -49,9 +49,16 @@
     <html>
     <head>
         <title>Menu - <?php echo htmlspecialchars($restaurant['name']); ?></title>
+<!--font ausome-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="css/home.css">
+        <link rel="stylesheet" href="css/menu.css">
+        <link rel="stylesheet" href="../footer.css">
     </head>
     <body>
+
+    
+    <button id="darkModeToggle">🌙 Dark Mode</button>
 
 
         <!--search and sort section-->
@@ -67,7 +74,6 @@
                         <option value="priceASC" <?php if ($sort === 'priceASC') echo 'selected'; ?>>Price: Low to High</option>
                         <option value="priceDESC" <?php if ($sort === 'priceDESC') echo 'selected'; ?>>Price: High to Low</option>
                     </select>
-
                     <button type="submit">Find</button>
                 </form>
             </section>
@@ -78,38 +84,50 @@
         <p>Phone: <?php echo htmlspecialchars($restaurant['phone']); ?></p>
 
         <h2>Menu</h2>
-        <?php
-            if ($menu_items) {
-        ?>
-        <form action="order.php" method="POST">
-            <input type="hidden" name="restaurant_id" value="<?php echo $restaurant['restaurant_id']; ?>">
-            
-            <ul>
-                <?php foreach ($menu_items as $item): ?>
-                    <li>
-                        <h3><?php echo htmlspecialchars($item['name']); ?></h3>
-                        <p><?php echo htmlspecialchars($item['description']); ?></p>
-                        <p>Price: $<?php echo number_format($item['price'], 2); ?></p>
-                        <input type="number" name="quantity[<?php echo $item['menu_id']; ?>]" min="1" value="1" style="width: 50px;">
-                        <input type="hidden" name="menu_id[]" value="<?php echo $item['menu_id']; ?>">
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-            <button type="submit">Place Order</button>
-        </form>
-        <?php
-            } else {
-                echo "<p>No menu items found. Please try again.</p>";
-            }
-        ?>
+        <div class="menu_container">
+            <?php
+                if ($menu_items) {
+            ?>
+            <form class="form_item" action="order.php" method="POST">
+                <input type="hidden" name="restaurant_id" value="<?php echo $restaurant['restaurant_id']; ?>">
+                
+                <ul class="menu-items menu_grid">
+                    <?php foreach ($menu_items as $item): ?>
+                        <li class="menu-item">
+                            <div onclick="location.href='menu_item_detail.php?menu_id=<?php echo $item['menu_id']; ?>';" class="food_image">
+                               <img src="../../uploads/menu_images/<?php echo $item['image']; ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
+                            </div>
+                            <div class="food_name">
+                                <h3><?php echo htmlspecialchars($item['name']); ?></h3>
+                            </div>
+                            <p><?php echo htmlspecialchars($item['catagory']); ?></p>
+                            <p>Price: $<?php echo number_format($item['price'], 2); ?></p>
+                            <input type="number" name="quantity[<?php echo $item['menu_id']; ?>]" min="1" value="1" style="width: 50px;">
+                            <input type="hidden" name="menu_id[]" value="<?php echo $item['menu_id']; ?>">
+                            <button class="add_to_cart"  type="submit" title="place order"> Add to cart <span style="font-size: 20px; color: white;">🛒</span></button>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+                
+            </form>
+            <?php
+                } else {
+                    echo "<p>No menu items found. Please try again.</p>";
+                }
+            ?>
+        </div>
         <br>
 
-        <a href="home.php">Back to Restaurant List</a>
+        <a class="back_to_res" href="home.php">Back to Restaurant List</a>
 
         <?php
             $stmt->close();
             $conn->close();
-            include "footer/footer.php";
+            include "../footer.php";
          ?>
+
+            <script src="javaScript/light_and_dark_mode.js"></script>
+            <script src="../scroll_up.js"></script>
+
     </body>
     </html>

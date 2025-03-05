@@ -55,8 +55,25 @@
                             <a href="restaurant_details.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn">Read Details</a>
                         </div>
                     </div>
+                    <?php
+                    //check if restaurant is open or closed:
+                        if ($restaurant){
+                            echo "<div class='restaurant-status'>";
+                            if ($restaurant['status'] == 'open'){
+                    ?>
+                            <div class="restaurant-open" id="restaurant-open">
+                                <p>open</p>
+                            </div>
+                    <?php
+                            }
+                            else{
+                                echo "<div class='restaurant-closed' id='restaurant-closed'> <p>closed</p> </div>";
+                            }
+                            echo "</div>";
+                        }
+                    ?>
                 </div>
-                <?php
+            <?php
             }
         } else {
             echo "<p>No restaurants found. Please try again.</p>";
@@ -128,25 +145,23 @@
                                 <a href="restaurant_details.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn">Read Details</a>
                             </div>
                         </div>
-
                         <?php
                         //check if restaurant is open or closed:
                             if ($restaurant){
                                 echo "<div class='restaurant-status'>";
-                                if ($restaurants['status'] == 'open'){
+                                if ($restaurant['status'] == 'open'){
                         ?>
-                                <div class="restaurant-open">
+                                <div class="restaurant-open" id="restaurant-open">
                                     <p>open</p>
                                 </div>
                         <?php
                                 }
                                 else{
-                                    echo "<div class='restaurant-closed'> <p>closed</p> </div>";
+                                    echo "<div class='restaurant-closed' id='restaurant-closed'> <p>closed</p> </div>";
                                 }
                                 echo "</div>";
                             }
                         ?>
-
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>

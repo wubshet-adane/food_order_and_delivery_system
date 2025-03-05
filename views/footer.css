@@ -1,0 +1,87 @@
+.site-footer {
+    margin-top: 50px;
+    padding: 30px 20px;
+    background-color: #333;
+    color: #f1f1f1;
+    text-align: center;
+    border-radius: 12px 12px 0 0;
+    position: relative;
+}
+
+.footer-content p {
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.footer-content nav {
+    margin-top: 10px;
+}
+
+.footer-content a {
+    color: #f1f1f1;
+    margin: 0 12px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.footer-content a:hover {
+    color: #007BFF;
+}
+
+/* Social Media Icons */
+.social-media {
+    margin: 15px 0;
+}
+
+.social-media a {
+    font-size: 24px;
+    margin: 0 10px;
+    display: inline-block;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.social-media a:hover {
+    color: #007BFF;
+    transform: scale(1.2);
+}
+
+/* Scroll to Top Button */
+#scrollToTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 15px;
+    font-size: 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#scrollToTopBtn:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+}
+
+/* Dark Mode */
+body.dark-mode .site-footer {
+    background-color: #222;
+    color: #ddd;
+}
+
+body.dark-mode .footer-content a:hover {
+    color: #66B2FF;
+}
+
+body.dark-mode #scrollToTopBtn {
+    background-color: #444;
+}
+
+body.dark-mode #scrollToTopBtn:hover {
+    background-color: #666;
+}

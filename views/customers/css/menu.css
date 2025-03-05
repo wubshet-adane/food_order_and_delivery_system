@@ -1,0 +1,190 @@
+*{
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #f7f7f7;
+    --text-color: #333;
+    --card-bg: #fff;
+    --card-hover: #e9ecef;
+    --button-bg: #007BFF;
+    --button-hover: #0056b3;
+    --link-bg: #6c757d;
+    --link-hover: #5a6268;
+}
+
+body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --card-hover: #292929;
+    --button-bg: #4e9af1;
+    --button-hover: #007BFF;
+    --link-bg: #495057;
+    --link-hover: #343a40;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+h1, h2 {
+    text-align: center;
+    color: var(--text-color);
+}
+
+p {
+    margin: 5px 0;
+}
+.menu_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
+.form_item {
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+.menu-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.menu-item {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    line-height: .4;
+}
+
+.menu-item:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    background: var(--card-hover);
+}
+
+.food_image {
+    width: 100%;
+    height: fit-content;    
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.food_image:hover {
+    border: 1px solid #ff990056;
+}
+
+.food_name {
+    position: relative;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    color:inherit;
+    text-align: center;
+}
+
+.food_name h3 {
+    width: 80%;
+    padding: 10px;
+    background-color: var(--card-bg);
+    position: absolute;
+    border-radius:16px 16px 0 0;
+    top: -50px;
+    left: 50%;
+    transform: translate(-50%, 14px);
+    font-size: 20px;
+    font-family: Oswald, sans-serif;
+    margin-bottom: 10px;
+    color: var(--button-bg);
+    transition: background-color 0.3s;
+}
+.menu-item:hover .food_name h3 {
+    background-color: var(--card-hover);
+}
+
+.menu-item p {
+    flex-grow: 1;
+    margin-bottom: 15px;
+}
+
+.menu-item input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+.add_to_cart {
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #ff9900;
+    color: #fff;
+    padding: 5px 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    letter-spacing: 1px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.add_to_cart:hover {
+    background-color: #8e5602;
+    transform: translateY(2px);
+}
+
+.back_to_res {
+    display: inline-block;
+    margin-top: 20px;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: var(--link-bg);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.back_to_res:hover {
+    background-color: var(--link-hover);
+}
+
+/* Dark Mode Toggle Button */
+#darkModeToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+#darkModeToggle:hover {
+    background: var(--button-hover);
+}
