@@ -2,10 +2,13 @@
     session_start();
     require_once __DIR__ . '/../../config/database.php';
 
-    /*if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'customer') {
-        header("Location: /views/auth/login.php");
+
+    //check if user is logged in or not
+
+    if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email']) || $_SESSION['loggedIn'] !== true){
+        header("Location: ../auth/customer_login.php");
         exit();
-    }*/
+    }
     // redirect with restaurant id data from the first page 
     $restaurant_id = $_GET['restaurant_id'] ?? null;
 
