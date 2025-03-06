@@ -1,30 +1,19 @@
 <?php
 session_start();
+require '../../config/database.php'; // your DB connection
 
-// Dummy cart items for testing (Replace with database data)
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [
-        ['id' => 1, 'name' => 'Pizza', 'price' => 12, 'quantity' => 1],
-        ['id' => 2, 'name' => 'Burger', 'price' => 8, 'quantity' => 1]
-    ];
-}
+//$user_id = $_SESSION['user_id']; // assuming logged-in user
 
-// Handle cart actions
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['update'])) {
-        foreach ($_POST['quantity'] as $id => $qty) {
-            $_SESSION['cart'][$id]['quantity'] = max(1, intval($qty));
-        }
-    }
-    if (isset($_POST['remove'])) {
-        $id = $_POST['remove'];
-        unset($_SESSION['cart'][$id]);
-    }
-    header("Location: cart.php");
-    exit();
-}
+$menu_id = $_GET['menu_id'] ?? null;
+$quantity = $_GET['quantity'] ?? 1;
 
-$total = 0;
+// Fetch cart items from DB
+$sql = "SELECT * FROM menu WHERE menu_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $menu_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$item = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -33,64 +22,45 @@ $total = 0;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-        h1 { text-align: center; }
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { padding: 12px; text-align: center; border-bottom: 1px solid #ddd; }
-        th { background: #333; color: white; }
-        .cart-container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); }
-        .total { text-align: right; font-size: 18px; margin-top: 20px; }
-        .btn { padding: 10px; border: none; cursor: pointer; border-radius: 5px; font-size: 14px; }
-        .btn-update { background: #007bff; color: white; }
-        .btn-remove { background: #dc3545; color: white; }
-        .btn-checkout { background: #28a745; color: white; display: block; width: 100%; margin-top: 20px; padding: 10px; text-align: center; }
-        .btn:hover { opacity: 0.8; }
-        input[type="number"] { width: 50px; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="css/cart.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
 <div class="cart-container">
     <h1>Your Shopping Cart</h1>
 
-    <form method="POST" action="cart.php">
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Price ($)</th>
-                    <th>Quantity</th>
-                    <th>Subtotal ($)</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($_SESSION['cart'] as $id => $item): 
-                    $subtotal = $item['price'] * $item['quantity'];
-                    $total += $subtotal;
-                ?>
-                <tr>
-                    <td><?= htmlspecialchars($item['name']) ?></td>
-                    <td><?= number_format($item['price'], 2) ?></td>
-                    <td>
-                        <input type="number" name="quantity[<?= $id ?>]" value="<?= $item['quantity'] ?>" min="1">
-                    </td>
-                    <td><?= number_format($subtotal, 2) ?></td>
-                    <td>
-                        <button type="submit" name="remove" value="<?= $id ?>" class="btn btn-remove">Remove</button>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price (ETB)</th>
+                <th>Quantity</th>
+                <th>Subtotal (ETB)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="cart-body">
+            <?php
+                $subtotal = $item['price'] * $quantity;
+            ?>
+            <tr data-id="<?= $item['menu_id'] ?>">
+                <td><?= htmlspecialchars($item['name']) ?></td>
+                <td><?= number_format($item['price'], 2) ?></td>
+                <td>
+                    <input type="number" class="quantity" value="<?= $quantity ?>" min="1">
+                </td>
+                <td class="subtotal"><?= number_format($subtotal, 2) ?></td>
+                <td>
+                    <button class="btn-remove">Remove</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-        <div class="total">
-            <strong>Total: $<?= number_format($total, 2) ?></strong>
-        </div>
-
-        <button type="submit" name="update" class="btn btn-update">Update Cart</button>
-    </form>
+    <div class="total">
+        <strong>Total: <span id="total"><?= number_format($subtotal, 2) ?></span> ETB</strong>
+    </div>
 
     <a href="checkout.php" class="btn btn-checkout">Proceed to Checkout</a>
 </div>

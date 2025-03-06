@@ -1,0 +1,65 @@
+    /* Basic Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    /* Top Bar Styling */
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #222;
+        padding: 10px 30px;
+        color: white;
+    }
+
+    /* Logo */
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    /* Center Links */
+    .nav-links {
+        display: flex;
+        gap: 20px;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .nav-links a:hover {
+        color: #f39c12;
+    }
+
+    /* Right-side Auth Links */
+    .auth-links {
+        display: flex;
+        gap: 15px;
+    }
+
+    .auth-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .auth-links a:hover {
+        color: #e74c3c;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none; /* You can replace with hamburger menu if needed */
+        }
+    }

@@ -53,6 +53,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="css/home.css">
         <link rel="stylesheet" href="css/menu.css">
+        <link rel="stylesheet" href="css/topbar.css">
         <link rel="stylesheet" href="../footer.css">
     </head>
     <body>
@@ -60,7 +61,29 @@
     
     <button id="darkModeToggle">🌙 Dark Mode</button>
 
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="index.php" style="color: white; text-decoration: none;">🍴 FoodOrder</a>
+            </div>
 
+            <!-- Center Navigation Links -->
+            <div class="nav-links">
+                <a href="index.php">Home</a>
+                <a href="about.php">About</a>
+                <a href="contact.php">Contact</a>
+                <a href="cart.php">Cart 🛒</a>
+                <a href="menu.php">Menu</a>
+            </div>
+
+            <!-- Authentication Links -->
+            <div class="auth-links">
+                <a href="login.php">Login</a>
+                <a href="register.php">Register</a>
+                <a href="logout.php">Logout</a>
+            </div>
+        </div>
         <!--search and sort section-->
         <section class="search-sort container">
                 <form id="searchForm" method="GET" class="search-form">
@@ -88,9 +111,7 @@
             <?php
                 if ($menu_items) {
             ?>
-            <form class="form_item" action="cart.php" method="POST">
-                <input type="hidden" name="restaurant_id" value="<?php echo $restaurant['restaurant_id']; ?>">
-                
+            <div class="form_item">
                 <ul class="menu-items menu_grid">
                     <?php foreach ($menu_items as $item): ?>
                         <li class="menu-item">
@@ -102,14 +123,42 @@
                             </div>
                             <p><?php echo htmlspecialchars($item['catagory']); ?></p>
                             <p>Price: $<?php echo number_format($item['price'], 2); ?></p>
-                            <input type="number" name="quantity[<?php echo $item['menu_id']; ?>]" min="1" value="1" style="width: 50px;">
-                            <input type="hidden" name="menu_id[]" value="<?php echo $item['menu_id']; ?>">
-                            <button class="add_to_cart"  type="submit" title="place order"> Add to cart <span style="font-size: 20px; color: white;">🛒</span></button>
+                            <input type="number"  name="quantity[<?php echo $item['menu_id']; ?>]" id="quantity_<?php echo $item['menu_id']; ?>" min="1" value="1" style="width: 50px;">
+                            <button type="button"  data-menu-id="<?php echo $item['menu_id']; ?>" class="add_to_cart" title="Add item to Cart"> Add to cart <span style="font-size: 20px; color: white;">🛒</span></button>
                         </li>
                     <?php endforeach; ?>
-                </ul>
+                    
+<script>
+    // Wait until the page is fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        var buttons = document.querySelectorAll('.add_to_cart');
+
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var menuId = this.getAttribute('data-menu-id');
+                var quantityInput = document.getElementById('quantity_' + menuId);
                 
-            </form>
+                if (!quantityInput) {
+                    alert("Quantity input not found!");
+                    return;
+                }
+
+                var quantity = quantityInput.value;
+
+                if (quantity < 1) {
+                    alert("Please enter a valid quantity.");
+                    return;
+                }
+
+                // Redirect to cart.php with parameters
+                window.location.href = "cart.php?menu_id=" + menuId + "&quantity=" + quantity;
+            });
+        });
+    });
+</script>
+                </ul>
+            </div>
+
             <?php
                 } else {
                     echo "<p>No menu items found. Please try again.</p>";
