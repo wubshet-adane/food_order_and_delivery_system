@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="login-container">
+        <a href="javascript:history.back()" class="close">&times;</a>
         <h2>Customers Login</h2>
         
         <?php if (isset($_GET['error'])): ?>

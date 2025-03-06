@@ -14,6 +14,7 @@ body {
 }
 
 .login-container {
+    position:relative;
     background: #fff;
     padding: 30px 40px;
     border-radius: 10px;
@@ -22,6 +23,33 @@ body {
     max-width: 400px;
     text-align: center;
 }
+
+a.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff4d4d;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+a.close:hover {
+    background-color: #e60000;
+    color: #fff;
+    transform: scale(1.1);
+}
+
 
 h2 {
     margin-bottom: 20px;
