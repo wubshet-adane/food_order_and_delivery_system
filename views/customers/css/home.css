@@ -109,8 +109,8 @@ body {
 
 .restaurant-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
     background-color: white;
     padding: 20px;
     text-align: center;
@@ -166,6 +166,7 @@ body {
     width: 100%;
     height: 200px;
     border-radius: 10px 10px 0 0;
+    border-bottom: 2px solid #ff9900;
 }
 
 .restaurant-image img {
@@ -335,7 +336,7 @@ body {
 
 .box {
     background: white;
-    padding: 2px 30px;
+    padding: 2px 30px 6px 30px;
     text-align: center;
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
