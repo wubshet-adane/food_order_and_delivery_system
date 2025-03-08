@@ -1,13 +1,13 @@
 <?php
 session_start();
 require_once __DIR__ . '/../../config/database.php';
-
+/*
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'restaurant') {
     header("Location: /views/auth/login.php");
     exit();
-}
+}*/
 
-$restaurant_id = $_SESSION['user']['restaurant_id'];
+$restaurant_id = 1;
 
 $stmt = $conn->prepare("SELECT * FROM orders WHERE restaurant_id = ? ORDER BY order_date DESC");
 $stmt->bind_param("i", $restaurant_id);

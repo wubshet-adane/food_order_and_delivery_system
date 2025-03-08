@@ -127,7 +127,7 @@
                     <div class="restaurant-card">
                         <div class="restaurant-image">
                             <img src="../restaurant/restaurantAsset/<?php echo $restaurant['image']; ?>" alt="<?php echo $restaurant['name']; ?>">
-                            <h3 class="res-name"><?php echo htmlspecialchars($restaurant['name']); ?> hotel:</h3>
+                            <h3 class="res-name"><?php echo htmlspecialchars($restaurant['name']); ?>:</h3>
                         </div>
                         <div class="restaurant-details">
                             <p><strong>Location:</strong> <?php echo htmlspecialchars($restaurant['location']); ?></p>

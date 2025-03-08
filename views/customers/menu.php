@@ -5,7 +5,7 @@
 
     //check if user is logged in or not
 
-    if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email']) || $_SESSION['loggedIn'] !== true){
+    if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email']) || !isset($_SESSION['loggedIn'])){
         header("Location: ../auth/customer_login.php");
         exit();
     }
@@ -52,7 +52,7 @@
     <html>
     <head>
         <title>Menu - <?php echo htmlspecialchars($restaurant['name']); ?></title>
-<!--font ausome-->
+        <!--font ausome-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="css/home.css">
         <link rel="stylesheet" href="css/menu.css">

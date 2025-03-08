@@ -39,32 +39,12 @@ body {
     width: 100%;
 }
 
-a.close {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    text-decoration: none;
-    font-size: 28px;
-    font-weight: bold;
-    color: #fff;
-    background-color: #ff4d4d;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+.responce_message_error p{
+    color: red;
+    padding: 5px;
+    border: 1px solid red;
+    border-radius: 5px;
 }
-
-a.close:hover {
-    background-color: #e60000;
-    color: #fff;
-    transform: scale(1.1);
-}
-
 
 h2 {
     margin-top: 1rem;

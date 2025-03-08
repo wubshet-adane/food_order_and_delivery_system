@@ -13,9 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['user_email'] = $user['email'];
         $_SESSION['loggedIn'] = true;
-        header("Location: ../views/customers/menu.php");
+        header("Location: ../views/customers/menu.php?message=successfuly logged in");
     } else {
-        header("Location: ../views/auth/customer_login.php?error=1");
+        header("Location: ../views/auth/customer_login.php?message=incorrect email or password!");
     }
 }
 
