@@ -1,3 +1,7 @@
+<?php 
+require_once '../config/database.php';
+
+
 class Order {
     public static function getOrdersByRestaurant($restaurant_id) {
         global $conn;
@@ -16,3 +20,4 @@ class Order {
         return $stmt->execute();
     }
 }
+?>
