@@ -170,6 +170,40 @@
         </div>
     </section>
 
+    <div class="">
+        <div>
+        </div>
+        
+    </div>
+
+    <!--become a member-->
+    <div class="become_partner">
+        <div class="container">
+            <div class="box customer">
+                <h2>Become a <span>Customer</span></h2>
+                <p>Order your favorite meals with ease and convenience.</p>
+                <div class="partner_redirect_link_box">
+                    <a href="menu.php"> Customer</a>
+                </div>
+            </div>
+            <div class="box restaurant">
+                <h2>Become a <span>Merchant</span></h2>
+                <p>Grow your business by reaching more customers.</p>
+                <div class="partner_redirect_link_box">
+                    <a href="../restaurant/dashboard.php">Merchant</a>
+                </div>
+            </div>
+            <div class="box delivery">
+                <h2>Become a <span>Delivery Person</span></h2>
+                <p>Earn money by delivering food to hungry customers.</p>
+                <div class="partner_redirect_link_box">
+                    <a href="../delivery/home.php">Delivery</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
     <footer class="footer">
         <p>&copy; <?php echo date('Y'); ?> FoodieExpress. All rights reserved.</p>
     </footer>

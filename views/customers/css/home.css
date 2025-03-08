@@ -239,6 +239,123 @@ body {
     transform: translateY(2px);
 }
 
+/* become a member box*/
+
+.become_partner{
+    padding: 2rem 0;
+}
+
+.become_partner .container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 10px;
+    max-width: 100%;
+}
+
+.become_partner .container .box h2 span{
+    font-family: "Roboto", sans-serif;
+    color: #ff6600;
+    text-shadow: 5px 2px 5px rgb(255, 255, 255);
+
+}
+
+.become_partner .container .box p{
+    color : #000000;
+    font-family: Oswald;
+    width: 50%;
+    text-align: left;
+}
+
+.become_partner .container .restaurant p{
+    color: white;
+}
+
+.become_partner .container .box{
+    font-family: Oswald;
+}
+
+.become_partner .container .box .partner_redirect_link_box{
+    border-radius: 50px;
+    padding: 5px;
+    margin: auto;
+    width: fit-content;
+    text-align: center;
+    box-shadow: 0 0 10px #68cf01,
+    0 0 25px #bc7101,
+    0 0 50px #c87800,
+    0 0 100px #b16b00,
+    0 0 200px #ff9900;
+}
+
+.become_partner .container .box .partner_redirect_link_box a {
+    text-transform: capitalize;
+    font-family: "Roboto", sans-serif;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0 10px;
+}
+
+.become_partner .container .box .partner_redirect_link_box:hover {
+    color: #ff9900;
+    background-color: #ffff;
+    border: 1px solid #ff9900;
+    
+}
+
+.become_partner .container .box .partner_redirect_link_box:hover a{
+    color: #ff9900;
+}
+
+.box {
+    background: white;
+    padding: 2px 30px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.box h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.box p {
+    color: #555;
+}
+
+.customer {
+    background-image: url('../../../public/images/customer.jpg');
+    border-top: 5px solid #007bff;
+}
+.customer .partner_redirect_link_box{
+    background-color: #007bff;
+}
+
+.restaurant {
+    background-image: url('../../../public/images/restaurant.jpg');
+    border-top: 5px solid #126933;
+}
+
+.restaurant .partner_redirect_link_box{
+    background-color: #126933;
+}
+
+.delivery {
+    background-image: url('../../../public/images/delivery.jpg');
+    border-top: 5px solid #ff6600;
+}
+
+.delivery .partner_redirect_link_box{
+    background-color: #ff6600;
+}
+
 .footer {
     background-color: #222;
     color: #fff;
