@@ -115,10 +115,12 @@
     </section>
 
     <section class="restaurants container">
-        <div>
-            <h2>Top Restaurants Near You</h2>  
-            <h4>the easiest way to found everything what you want to eat quickly!</h4> 
+        <div class="restaurants_quote">
+            <h1>Top Restaurants Near You</h1>  
+            <p>the easiest way to found everything <br> what you want to eat quickly!</p> 
         </div>
+        <hr>
+
         <div id="restaurantResults" class="restaurant-grid">
             <?php if ($restaurants): ?>
                 <?php foreach ($restaurants as $restaurant): ?>
@@ -180,6 +182,12 @@
     </div>
 
     <!--become a member-->
+    <div class="restaurants_quote">
+        <h1>Are you ready to enjoy our service?</h1>  
+        <p>The easiest way to find everything <br> you crave in just a few clicks!</p> 
+    </div>
+    <hr>
+
     <div class="become_partner">
         <div class="container">
             <div class="box customer">

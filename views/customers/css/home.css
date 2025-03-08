@@ -4,7 +4,7 @@
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
     background-color: #f9f9f9;
 }
 
@@ -13,6 +13,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
 }
+
 
 .navbar {
     background-color: #222;
@@ -74,6 +75,32 @@ body {
 
 .search-sort button:hover {
     background-color: #222;
+}
+
+
+.restaurants_quote{
+    margin: auto;
+    text-align:center;
+    text-transform: capitalize;
+}
+
+.restaurants_quote h1{
+    font-size: 48px;
+    font-family: Oswald;
+    margin-bottom: 0;
+}
+
+.restaurants_quote p{
+    margin-top: 0;
+    font-size: 20px;
+    font-family: cursive;
+    font-weight: 600;
+    color: #ff9800;
+}
+
+.restaurants_quote + hr{
+    border: 2px solid #ff9800;
+    width: 200px;
 }
 
 .restaurants {
