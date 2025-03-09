@@ -1,15 +1,5 @@
 <?php
-$host = 'localhost';
-$db = 'food_ordering_system';
-$user = 'root';
-$pass = '';
-
-$conn = new mysqli($host, $user, $pass, $db);
-
-if ($conn->connect_error) {
-    die("Database connection failed: " . $conn->connect_error);
-}
-
+require_once('C:/wamp64/www/food_ordering_system/config/database.php');
 
 
 class Menu {
@@ -17,7 +7,7 @@ class Menu {
         global $conn;
         
         // Run the query
-        $sql = "SELECT * FROM menu ORDER BY name aSC";
+        $sql = "SELECT * FROM menu ORDER BY name ASC";
         $result = $conn->query($sql);
     
         // Check if the query was successful
@@ -35,7 +25,7 @@ class Menu {
         global $conn;
         $sql = "INSERT INTO menu (name, description, price, image) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssds", $name, $description, $price, $image);
+        $stmt->bind_param("ssfs", $name, $description, $price, $image);
         return $stmt->execute();
     }
 
@@ -44,7 +34,7 @@ class Menu {
         global $conn;
         $sql = "UPDATE menu SET name = ?, description = ?, price = ?, image = ? WHERE menu_id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssdsi", $name, $description, $price, $image, $id);
+        $stmt->bind_param("ssfsi", $name, $description, $price, $image, $id);
         return $stmt->execute();
     }
 

@@ -1,19 +1,62 @@
 /* General Styles */
 body {
-    margin: 0;
+    box-sizing: border-box;
+    margin: auto;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
+    display: block;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/*header section*/
+.header_section{
+    position: relative;
+    width: 100%;
+    background-color:#234613;
+    margin-top: 0;
+    padding: 10px  ;
+}
+
+/*responce message section*/
+.responce_message{
+    width: fit-content;
+    background-color:#ff9900;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    padding: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.5s ease-in-out;
+}
+
+.responce_message p{
+    margin: 10px 20px;
+}
+
+/*sidebarAndMainContent_sedction*/
+.sidebarAndMainContent_section{
+    box-sizing:border-box;
     display: flex;
+    max-width: 100%;
+    height: fit-content;
 }
 
 /* Sidebar Styles */
 .sidebar {
-    width: 250px;
-    background: #ff6600;
+    box-sizing:border-box;
+    width: 25%;
+    background: #c95101;
     color: white;
-    height: 100vh;
+    min-height: 100%;
     padding: 20px;
-    position: fixed;
+    box-shadow: 2px 0 0 0 black;
+    overflow-x: scroll;
+}
+
+.sidbar_content{
+    position: sticky;
+    top: 0;
 }
 
 .sidebar h2 {
@@ -21,34 +64,46 @@ body {
     margin-bottom: 20px;
 }
 
-.sidebar ul {
+.sidebar_ul {
     list-style: none;
     padding: 0;
 }
 
-.sidebar ul li {
-    padding: 10px;
+.sidebar_ul li {
+    padding: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.sidebar ul li a {
+.sidebar_ul li:hover{
+    background-color: #fff;
+    color: #c95101;
+}
+
+.sidebar_ul li a {
     color: white;
     text-decoration: none;
     display: block;
-    font-size: 16px;
+    font-size: 20px;
+    margin: 0;
+    padding: 10px;
 }
 
-.sidebar ul li a:hover {
-    background: rgba(255, 255, 255, 0.2);
+.sidebar_ul li a:hover {
+    background: rgba(201, 201, 201, 0.2);
     padding-left: 10px;
     transition: 0.3s;
+    color: #c95101;
+    transform: translateX(12px);
+    overflow: hidden;
 }
 
 /* Main Content */
 .main-content {
-    margin-left: 260px;
-    padding: 20px;
-    width: 100%;
+    margin-left: 10px;
+    padding: 10px;
+    max-width: 75%;
+    height: 100%;
+    overflow-x: scroll;
 }
 
 /* Header */
@@ -103,3 +158,12 @@ header {
     font-size: 24px;
     cursor: pointer;
 }
+/*footer section*/
+.footer_section{
+    background-color: black;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+
