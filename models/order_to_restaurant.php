@@ -1,6 +1,5 @@
 <?php 
-require_once '../config/database.php';
-
+require_once('C:/wamp64/www/food_ordering_system/config/database.php');
 
 class Order {
     public static function getOrdersByRestaurant($restaurant_id) {

@@ -1,51 +1,42 @@
-<?php
-session_start();
-require_once __DIR__ . '/../../config/database.php';
-/*
-if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'restaurant') {
-    header("Location: /views/auth/login.php");
-    exit();
-}*/
+<?php 
+require_once '../../config/database.php';
+include '../../models/order_to_restaurant.php';
 
-$restaurant_id = 1;
-
-$stmt = $conn->prepare("SELECT * FROM orders WHERE restaurant_id = ? ORDER BY order_date DESC");
-$stmt->bind_param("i", $restaurant_id);
-$stmt->execute();
-$orders = $stmt->get_result();
+$restaurant_id = $_SESSION['restaurant_id'];
+$orders = Order::getOrdersByRestaurant($restaurant_id);
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Manage Orders</title>
-</head>
-<body>
-    <h1>Incoming Orders</h1>
-    <table border="1">
+
+<h2>Order Management</h2>
+<table>
+    <thead>
         <tr>
             <th>Order ID</th>
+            <th>Customer</th>
             <th>Total Price</th>
             <th>Status</th>
-            <th>Update Status</th>
+            <th>Update</th>
         </tr>
-        <?php while($order = $orders->fetch_assoc()): ?>
+    </thead>
+    <tbody>
+        <?php foreach ($orders as $order) : ?>
         <tr>
-            <td><?= $order['order_id'] ?></td>
-            <td><?= $order['total_price'] ?></td>
+            <td><?= $order['id'] ?></td>
+            <td><?= $order['customer_id'] ?></td>
+            <td>$<?= number_format($order['total_price'], 2) ?></td>
             <td><?= $order['status'] ?></td>
             <td>
-                <form action="/controllers/UpdateOrderStatusController.php" method="POST">
-                    <input type="hidden" name="order_id" value="<?= $order['order_id'] ?>">
+                <form action="../app/controllers/OrderController.php" method="POST">
+                    <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
                     <select name="status">
-                        <option value="Accepted">Accepted</option>
-                        <option value="Preparing">Preparing</option>
-                        <option value="Out for Delivery">Out for Delivery</option>
+                        <option value="Pending" <?= $order['status'] == 'Pending' ? 'selected' : '' ?>>Pending</option>
+                        <option value="In Progress" <?= $order['status'] == 'In Progress' ? 'selected' : '' ?>>In Progress</option>
+                        <option value="Completed" <?= $order['status'] == 'Completed' ? 'selected' : '' ?>>Completed</option>
+                        <option value="Cancelled" <?= $order['status'] == 'Cancelled' ? 'selected' : '' ?>>Cancelled</option>
                     </select>
-                    <button type="submit">Update</button>
+                    <button type="submit" name="update_order_status">Update</button>
                 </form>
             </td>
         </tr>
-        <?php endwhile; ?>
-    </table>
-</body>
-</html>
+        <?php endforeach; ?>
+    </tbody>
+</table>
