@@ -36,14 +36,35 @@ $menuItems = Menu::getAllItems();
         <div class="sidebar">
             <div class="sidbar_content">
                  <h2>🍽️ My Restaurant</h2>
-                <ul class="sidebar_ul">
+                 <ul class="sidebar_ul">
                     <li><a href="dashboard.php">🏠 Dashboard</a></li>
+                    
+                    <!-- Restaurant Management -->
+                    <li><a href="manage_restaurants.php">🏪 Manage Restaurants</a></li>
                     <li><a href="menu.php" class="active">📋 Manage Menu</a></li>
                     <li><a href="orders.php">🛒 Orders</a></li>
-                    <li><a href="ratings.php">⭐ Ratings</a></li>
+                    <li><a href="ratings.php">⭐ Ratings & Reviews</a></li>
+
+                    <!-- Financial Section -->
+                    <li class="dropdown">
+                        <a href="monetary.php">💰 Monetary ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="transactions.php">💳 Transactions</a></li>
+                            <li><a href="earnings.php">📈 Earnings</a></li>
+                            <li><a href="payouts.php">💵 Payouts</a></li>
+                            <li><a href="financial_reports.php">📊 Financial Reports</a></li>
+                            <hr>
+                        </ul>
+                    </li>
+
+                    <!-- Analytics & Reports -->
+                    <li><a href="reports.php">📊 Reports & Analytics</a></li>
+
+                    <!-- Settings & Logout -->
                     <li><a href="settings.php">⚙️ Settings</a></li>
                     <li><a href="#">🚪 Logout</a></li>
                 </ul>
+
             </div>
         </div>
 
@@ -52,18 +73,6 @@ $menuItems = Menu::getAllItems();
             <header>
                 <h1>Manage Menu</h1>
             </header>
-
-            <!--add new menu section-->
-            <section>
-                <h2>Add New Menu Item</h2>
-                <form action="../../controllers/restaurant_menu_controller.php" method="POST">
-                    <input type="text" name="name" placeholder="Dish Name" required>
-                    <textarea name="description" placeholder="Description"></textarea>
-                    <input type="number" name="price" placeholder="Price" step="0.01" required>
-                    <input type="text" name="image" placeholder="Image URL (for now)">
-                    <button type="submit" name="add_menu">Add Item</button>
-                </form>
-            </section>
 
             <!--display menu section-->
             <section>
