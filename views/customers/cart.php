@@ -30,39 +30,56 @@ $item = $result->fetch_assoc();
 <div class="cart-container">
     <h1>Your Shopping Cart</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price (ETB)</th>
-                <th>Quantity</th>
-                <th>Subtotal (ETB)</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="cart-body">
-            <?php
-                $subtotal = $item['price'] * $quantity;
-            ?>
-            <tr data-id="<?= $item['menu_id'] ?>">
-                <td><?= htmlspecialchars($item['name']) ?></td>
-                <td><?= number_format($item['price'], 2) ?></td>
-                <td>
-                    <input type="number" class="quantity" value="<?= $quantity ?>" min="1">
-                </td>
-                <td class="subtotal"><?= number_format($subtotal, 2) ?></td>
-                <td>
-                    <button class="btn-remove">Remove</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="total">
-        <strong>Total: <span id="total"><?= number_format($subtotal, 2) ?></span> ETB</strong>
+    <div class="table_box">
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price (ETB)</th>
+                    <th>Quantity</th>
+                    <th>Subtotal (ETB)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="cart-body">
+                <?php
+                    $subtotal = $item['price'] * $quantity;
+                ?>
+                <tr data-id="<?= $item['menu_id'] ?>">
+                    <td><img src="../../uploads/menu_images/<?= $item['image'] ?>" alt="men image"></td>
+                    <td><?= htmlspecialchars($item['name']) ?></td>
+                    <td><?= number_format($item['price'], 2) ?></td>
+                    <td>
+                        <input type="number" class="quantity" value="<?= $quantity ?>" min="1">
+                    </td>
+                    <td class="subtotal"><?= number_format($subtotal, 2) ?></td>
+                    <td>
+                        <button class="btn-remove">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <a href="checkout.php" class="btn btn-checkout">Proceed to Checkout</a>
+    <!--checkout section -->
+    <section class="checkout_section_box">
+        <div class="left_side_checkout_section">
+        
+        </div>
+        <div class="right_side_checkout_section">
+
+            <div class="detail_section">
+                <h2>Order Summary</h2>
+                <p>Discount: <span>--ETB</span> </p>
+                <p>Delivery Fee: <span>---ETB</span> </p>
+                <p>Subtotal: <span>---ETB</span> </p>
+                <p>Shipping: <span>na</span> </p>
+                <p>Grand Total: <span id="total"><?= number_format($subtotal, 2) ?>ETB</span> </p>
+            </div>
+            <a href="checkout.php" class="btn btn-checkout">Proceed to Checkout</a>
+        </div>
+    </section>
 </div>
 
 </body>

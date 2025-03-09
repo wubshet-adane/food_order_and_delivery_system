@@ -43,7 +43,7 @@ $menuItems = Menu::getAllItems();
                     <li><a href="ratings.php">⭐ Ratings</a></li>
                     <li><a href="settings.php">⚙️ Settings</a></li>
                     <li><a href="#">🚪 Logout</a></li>
-                </ul>`
+                </ul>
             </div>
         </div>
 

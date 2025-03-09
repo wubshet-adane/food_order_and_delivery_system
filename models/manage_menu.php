@@ -25,7 +25,7 @@ class Menu {
         global $conn;
         $sql = "INSERT INTO menu (name, description, price, image) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssfs", $name, $description, $price, $image);
+        $stmt->bind_param("ssds", $name, $description, $price, $image);
         return $stmt->execute();
     }
 
@@ -34,7 +34,7 @@ class Menu {
         global $conn;
         $sql = "UPDATE menu SET name = ?, description = ?, price = ?, image = ? WHERE menu_id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssfsi", $name, $description, $price, $image, $id);
+        $stmt->bind_param("ssdsi", $name, $description, $price, $image, $id);
         return $stmt->execute();
     }
 
