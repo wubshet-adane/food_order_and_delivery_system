@@ -26,10 +26,9 @@ $menuItems = Menu::getAllItems();
             <div class="sidbar_content">
                  <h2>🍽️ My Restaurant</h2>
                  <ul class="sidebar_ul">
-                    <li><a href="dashboard.php">🏠 Dashboard</a></li>
                     
                     <!-- Restaurant Management -->
-                    <li><a href="?page=manage_restaurants">🏪 Manage Restaurants</a></li>
+                    <li><a href="?page=manage_restaurants">🏠 Manage Restaurants</a></li>
                     <li><a href="?page=manage_menu" class="active">📋 Manage Menu</a></li>
                     <li><a href="?page=orders">🛒 Orders</a></li>
                     <li><a href="?page=rating_and_review">⭐ Ratings & Reviews</a></li>
