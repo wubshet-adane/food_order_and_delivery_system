@@ -13,6 +13,7 @@ $menuItems = Menu::getAllItems();
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/display_restaurant.css">
     <link rel="stylesheet" href="css/manage_restaurant.css">
+    <link rel="stylesheet" href="css/manage_menu.css">
 </head>
 <body>
     <!--header section-->
@@ -28,7 +29,7 @@ $menuItems = Menu::getAllItems();
                  <ul class="sidebar_ul">
                     
                     <!-- Restaurant Management -->
-                    <li><a href="?page=manage_restaurants">🏠 Manage Restaurants</a></li>
+                    <li><a href="?page=display_restaurants">🏠 Manage Restaurants</a></li>
                     <li><a href="?page=manage_menu" class="active">📋 Manage Menu</a></li>
                     <li><a href="?page=orders">🛒 Orders</a></li>
                     <li><a href="?page=rating_and_review">⭐ Ratings & Reviews</a></li>
@@ -66,7 +67,7 @@ $menuItems = Menu::getAllItems();
                 case 'manage_menu':
                     include 'manage_menu.php';
                     break;
-                case'manage_restaurants':
+                case'display_restaurants':
                     include 'display_restaurants.php';
                     break;
                 case 'reports_and_analytics':
@@ -100,7 +101,7 @@ $menuItems = Menu::getAllItems();
                     include 'logout.php';
                     break;
                 default:
-                    echo "<p class='text-center'>Page not found!</p>";
+                    include 'display_restaurants.php';
             }
             ?>
         </div>

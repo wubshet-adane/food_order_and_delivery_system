@@ -24,11 +24,10 @@ $restaurants = $restaurantModel->getAllRestaurants();
                         <div class="logo">
                             <img src="restaurantAsset/<?=$restaurant['image']?>" alt="logo">
                         </div>
-                        <p>Name:<?= htmlspecialchars($restaurant['name']) ?></p>
-                        <!--<p>📍Google map location link:  <?= htmlspecialchars($restaurant['MAP_address']) ?></p>-->
-                        <p>🏠 <?= htmlspecialchars($restaurant['location']) ?></p>
+                        <p>Name: <?= htmlspecialchars($restaurant['name']) ?></p>
+                        <p>Adress: <?= htmlspecialchars($restaurant['location']) ?></p>
                     </div>
-                    <a href="restaurant_details.php?id=<?= $restaurant['restaurant_id'] ?>" class="view-details-btn">View Details</a>
+                    <a href="manage_restaurants.php?id=<?= $restaurant['restaurant_id'] ?>" class="view-details-btn">View Details</a>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
