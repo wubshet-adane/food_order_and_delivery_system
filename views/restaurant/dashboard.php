@@ -10,25 +10,14 @@ $menuItems = Menu::getAllItems();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Menu</title>
     <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/display_restaurant.css">
+    <link rel="stylesheet" href="css/manage_restaurant.css">
 </head>
 <body>
     <!--header section-->
-    <section class="header_section">
-        <div class="responce_message" id="responce_message">
-            <?php 
-            if (isset($_GET['error'])){
-                $message = $_GET['error'];
-            ?>
-                <p style="color:red;"><?php echo $message;?>.</p>
-            <?php }
-            if (isset($_GET['success'])) {
-                $message = $_GET['success'];
-            ?>
-                <p style="color:green;"><?php echo $message;?>.</p>
-            <?php }?>
-        </div>
-        wubshet and esrael
-    </section>
+    <?php include_once 'header.php'; ?>
+
 
     <!--sidebar And MainContent section-->
     <section class="sidebarAndMainContent_section">
@@ -40,29 +29,28 @@ $menuItems = Menu::getAllItems();
                     <li><a href="dashboard.php">🏠 Dashboard</a></li>
                     
                     <!-- Restaurant Management -->
-                    <li><a href="manage_restaurants.php">🏪 Manage Restaurants</a></li>
-                    <li><a href="menu.php" class="active">📋 Manage Menu</a></li>
-                    <li><a href="orders.php">🛒 Orders</a></li>
-                    <li><a href="ratings.php">⭐ Ratings & Reviews</a></li>
+                    <li><a href="?page=manage_restaurants">🏪 Manage Restaurants</a></li>
+                    <li><a href="?page=manage_menu" class="active">📋 Manage Menu</a></li>
+                    <li><a href="?page=orders">🛒 Orders</a></li>
+                    <li><a href="?page=rating_and_review">⭐ Ratings & Reviews</a></li>
 
                     <!-- Financial Section -->
                     <li class="dropdown">
-                        <a href="monetary.php">💰 Monetary ▾</a>
+                        <a href="?page=monetary">💰 Monetary ▾</a>
                         <ul class="dropdown-menu">
-                            <li><a href="transactions.php">💳 Transactions</a></li>
-                            <li><a href="earnings.php">📈 Earnings</a></li>
-                            <li><a href="payouts.php">💵 Payouts</a></li>
-                            <li><a href="financial_reports.php">📊 Financial Reports</a></li>
-                            <hr>
+                            <li><a href="?page=transactions">💳 Transactions</a></li>
+                            <li><a href="?page=earnings">📈 Earnings</a></li>
+                            <li><a href="?page=payouts">💵 Payouts</a></li>
+                            <li><a href="?page=financial_reports">📊 Financial Reports</a></li>
                         </ul>
                     </li>
 
                     <!-- Analytics & Reports -->
-                    <li><a href="reports.php">📊 Reports & Analytics</a></li>
+                    <li><a href="?page=reports_and_analytics">📊 Reports & Analytics</a></li>
 
                     <!-- Settings & Logout -->
-                    <li><a href="settings.php">⚙️ Settings</a></li>
-                    <li><a href="#">🚪 Logout</a></li>
+                    <li><a href="?page=settings">⚙️ Settings</a></li>
+                    <li><a href="?page=logout">🚪 Logout</a></li>
                 </ul>
 
             </div>
@@ -70,59 +58,52 @@ $menuItems = Menu::getAllItems();
 
         <!--main-content section-->
         <div class="main-content">
-            <header>
-                <h1>Manage Menu</h1>
-            </header>
+           
+            <?php
+            $page = isset($_GET['page']) ? $_GET['page'] : 'manage_menu';
 
-            <!--display menu section-->
-            <section>
-                <h2>Existing Menu Items</h2>
-                <table>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Actions</th>
-                    </tr>
-                    <?php foreach ($menuItems as $item): ?>
-                    <tr>
-                        <td><?= $item['menu_id']; ?></td>
-                        <td><?= $item['name']; ?></td>
-                        <td><?= $item['description']; ?></td>
-                        <td>$<?= number_format($item['price'], 2); ?></td>
-                        <td>
-                            <form action="../../controllers/restaurant_menu_controller.php" method="POST">
-                                <input type="hidden" name="id" value="<?= $item['menu_id']; ?>">
-                                <button type="submit" name="delete_menu">❌ Delete</button>
-                            </form>
-                        </td>
-                        <td>
-                            <button class="edit-btn" data-id="<?= $item['menu_id']; ?>" data-name="<?= $item['name']; ?>" 
-                                data-description="<?= $item['description']; ?>" data-price="<?= $item['price']; ?>" 
-                                data-image="<?= $item['image']; ?>"> ✏️ Edit </button>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </table>
-            </section>
-
-            <!--edit menu modal section-->
-            <section id="edit-modal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Edit Menu Item</h2>
-                    <form action="../../controllers/restaurant_menu_controller.php" method="POST">
-                        <input type="hidden" name="id" id="edit-id">
-                        <input type="text" name="name" id="edit-name" placeholder="Dish Name" required>
-                        <textarea name="description" id="edit-description" placeholder="Description"></textarea>
-                        <input type="number" name="price" id="edit-price" placeholder="Price" step="0.01" required>
-                        <input type="text" name="image" id="edit-image" placeholder="Image URL">
-                        <button type="submit" name="edit_menu">Save Changes</button>
-                    </form>
-                </div>
-            </section>
-
+            // Include the content for the respective page
+            switch ($page) {
+                case 'manage_menu':
+                    include 'manage_menu.php';
+                    break;
+                case'manage_restaurants':
+                    include 'display_restaurants.php';
+                    break;
+                case 'reports_and_analytics':
+                    include 'reports_and_rnalytics.php';
+                    break;
+                case 'transactions':
+                    include 'transactions.php';
+                    break;
+                case 'settings':
+                    include 'settings.php';
+                    break;
+                case 'earnings':
+                    include 'earnings.php';
+                    break;
+                case 'payouts':
+                    include 'payouts.php';
+                    break;
+                case 'financial_reports':
+                    include 'financial_reports.php';
+                    break;
+                case 'rating_and_review':
+                    include 'rating_and_review.php';
+                    break;
+                case 'orders':
+                    include 'orders.php';
+                    break;
+                case 'add_menu':
+                    include 'add_menu.php.php';
+                    break;
+                case 'logout':
+                    include 'logout.php';
+                    break;
+                default:
+                    echo "<p class='text-center'>Page not found!</p>";
+            }
+            ?>
         </div>
     </section>
 
@@ -138,6 +119,5 @@ $menuItems = Menu::getAllItems();
         //script for closing responce messages automaticaly
         closeResponseById("responce_message"); // Auto-hide after 5 seconds
     </script>
-
 </body>
 </html>

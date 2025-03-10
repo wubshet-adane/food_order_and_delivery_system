@@ -9,34 +9,6 @@ body {
     overflow-x: hidden;
 }
 
-/*header section*/
-.header_section{
-    position: relative;
-    width: 100%;
-    background-color:#234613;
-    margin-top: 0;
-    padding: 10px  ;
-}
-
-/*responce message section*/
-.responce_message{
-    width: fit-content;
-    position: absolute;
-    border:2px solid #006aff;
-    border-radius: 5px;
-    outline: 4px solid rgb(186, 114, 32);
-    top: 100%;
-    right: 0;
-    padding: 0;
-    transform: translateX(-50px);
-    transition: opacity 0.5s ease-in-out;
-}
-
-.responce_message p{
-    font-weight: 600;
-    margin: 10px 20px;
-}
-
 /*sidebarAndMainContent_sedction*/
 .sidebarAndMainContent_section{
     box-sizing:border-box;
@@ -47,18 +19,17 @@ body {
 
 /* Sidebar Styles */
 .sidebar {
+    position: sticky;
     box-sizing:border-box;
     width: 25%;
     background: #c95101;
     color: white;
-    min-height: 100%;
     padding: 20px;
     box-shadow: 2px 0 0 0 black;
     overflow-x: scroll;
 }
 
 .sidbar_content{
-    position: sticky;
     top: 0;
 }
 
@@ -100,12 +71,12 @@ li ul{
     overflow: hidden;
 }
 
-
 /* Hide dropdown menu by default */
 .dropdown-menu {
     display: none;
+    border-left: 4px solid white;
     border-radius: 8px;
-    padding: 10px 0;
+    padding: 0;
     list-style: none;
     z-index: 1000;
     transform: translateX(20px);
@@ -113,19 +84,10 @@ li ul{
 
 }
 
-.dropdown-menu hr{
-    margin: auto;
-    height: 3px;
-    color: white;
-    background-color: white;
-}
-
 /* Show dropdown menu when hovering over parent */
 .dropdown:hover .dropdown-menu {
     display:block;
 }
-
-
 
 /* Main Content */
 .main-content {
@@ -134,34 +96,6 @@ li ul{
     max-width: 75%;
     height: 100%;
     overflow-x: scroll;
-}
-
-/* Header */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background: #fff;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Dashboard Widgets */
-.dashboard-widgets {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.widget {
-    background: #ff6600;
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 22%;
-    text-align: center;
-    font-size: 18px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Modal Styling */
