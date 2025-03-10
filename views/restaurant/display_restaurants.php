@@ -24,7 +24,8 @@ $restaurants = $restaurantModel->getAllRestaurants();
                         <div class="logo">
                             <img src="restaurantAsset/<?=$restaurant['image']?>" alt="logo">
                         </div>
-                        <h3>📍Google map location link:  <?= htmlspecialchars($restaurant['MAP_address']) ?></h3>
+                        <p>Name:<?= htmlspecialchars($restaurant['name']) ?></p>
+                        <!--<p>📍Google map location link:  <?= htmlspecialchars($restaurant['MAP_address']) ?></p>-->
                         <p>🏠 <?= htmlspecialchars($restaurant['location']) ?></p>
                     </div>
                     <a href="restaurant_details.php?id=<?= $restaurant['restaurant_id'] ?>" class="view-details-btn">View Details</a>

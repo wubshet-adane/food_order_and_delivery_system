@@ -16,46 +16,56 @@
     margin-bottom: 20px;
 }
 
-/* Grid Layout */
+/* Flexbox Layout for horizontal cards */
 .restaurant-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;  /* Allow items to wrap to the next line */
+    gap: 20px;        /* Space between the cards */
+    justify-content: center;  /* Align items to the start */
 }
 
-/* Restaurant Card */
+/* Style for each restaurant card */
 .restaurant-card {
-    background: #f8f9fa;
-    max-width: 300px;
+    flex: 1 1 200px;  /* Allow each card to grow, shrink, and have a base width of 200px */
+    max-width: 250px; /* Limit the max width of each card */
+    background-color: #f8f8f8;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #ddd;
+    text-align: center;
+    box-sizing: border-box;
 }
 
+
 .restaurant-card:hover {
-    transform: scale(1.03);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Restaurant Info */
-.restaurant-info h3 {
-    margin-bottom: 10px;
-    color: #007bff;
-}
 
 .restaurant-info p {
-    margin-bottom: 15px;
+    margin: 1px;
     color: #555;
+    text-align: left;
+}
+
+.logo{
+    max-width: 100%;
+    margin: 4px;
+}
+
+.logo img{
+    width: 100%;
+    height: 100px;
 }
 
 /* View Details Button */
 .view-details-btn {
+    box-sizing: border-box;
     display: inline-block;
     text-align: center;
-    width: 100%;
-    padding: 10px 15px;
-    background-color: #007bff;
+    max-width: 100%;
+    padding: 5px 15px;
+    background-color: #ff9900;
     color: #fff;
     border-radius: 5px;
     text-decoration: none;
@@ -64,5 +74,7 @@
 }
 
 .view-details-btn:hover {
-    background-color: #0056b3;
+    background-color: #ffffff;
+    color:#ff9900;
+    border: 2px solid #ff9900;
 }
