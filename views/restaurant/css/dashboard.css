@@ -7,6 +7,7 @@ body {
     display: block;
     width: 100%;
     overflow-x: hidden;
+    position: relative;
 }
 
 /*sidebarAndMainContent_sedction*/
@@ -14,7 +15,7 @@ body {
     box-sizing:border-box;
     display: flex;
     max-width: 100%;
-    height: fit-content;
+    height: 100%;
 }
 
 /* Sidebar Styles */
@@ -22,7 +23,7 @@ body {
     position: sticky;
     box-sizing:border-box;
     width: 25%;
-    background: #c95101;
+    background: #ab6701;
     color: white;
     padding: 20px;
     box-shadow: 2px 0 0 0 black;
@@ -97,65 +98,80 @@ li ul{
     height: 100%;
     overflow-x: scroll;
 }
-
 /* Modal Styling */
 .modal {
     display: none; /* Hidden by default */
-    position: relative;
-    z-index: 1000;
-    width: fit-content;
-    background: rgba(0, 0, 0, 0); /* Dark overlay */
+    position: fixed; /* Use fixed to make it stay in place while scrolling */
+    top: 50%; /* Position it 50% from the top */
+    left: 50%; /* Position it 50% from the left */
+    transform: translate(-50%, -50%); /* Offset it by 50% of its width and height to center it */
+    z-index: 1000; /* Ensure the modal is on top */
+    height: 100vh; /* Full viewport height for the overlay */
+    width: 100%; /* Adjust width to fit content */
+    background: #9f6001af; /* Dark overlay */
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: center; /* Center modal content vertically */
+    justify-content: center; /* Center modal content horizontally */
     transition: opacity 0.3s ease-in-out;
 }
+
 
 /* Modal Content */
 .modal-content {
     background: #fff;
-    width: 90%;
-    max-width: 450px;
+    width: 100%;
+    max-width: 600px;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 8px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    animation: fadeIn 0.3s ease-in-out;
+    text-align: left;
+    position: relative;
 }
 
-/* Close Button */
-.close {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    font-size: 20px;
-    cursor: pointer;
+/* Input Groups */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-size: 16px;
+    font-weight: 600;
     color: #333;
-    transition: color 0.3s ease-in-out;
 }
 
-.close:hover {
-    color: red;
-}
-
-/* Input Fields */
-.modal-content input, .modal-content textarea {
+.edit-input {
     width: 100%;
     padding: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
     transition: border-color 0.3s ease-in-out;
 }
 
-.modal-content input:focus, .modal-content textarea:focus {
+.edit-input:focus {
     border-color: #007bff;
     outline: none;
 }
 
-/* Submit Button */
-.modal-content button {
+/* Horizontal Layout for fields */
+.input-group-horizontal {
+    display: flex;
+    gap: 20px; /* Space between fields */
+    margin-bottom: 15px;
+}
+
+.input-group-horizontal .input-group {
+    flex: 1; /* Makes each input take equal space */
+}
+
+.input-group-horizontal .input-group input,
+.input-group-horizontal .input-group select {
+    width: 100%; /* Makes sure inputs span the entire space */
+}
+
+/* Save Button */
+.save-btn {
     width: 100%;
     padding: 12px;
     background: #007bff;
@@ -164,13 +180,60 @@ li ul{
     border-radius: 5px;
     font-size: 18px;
     cursor: pointer;
-    margin-top: 15px;
     transition: background 0.3s ease-in-out;
 }
 
-.modal-content button:hover {
+.save-btn:hover {
     background: #0056b3;
 }
+
+/* Modal Close Button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.close:hover {
+    color: #e74c3c;
+}
+
+/* Modal Title */
+.modal-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 90%;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 500px) {
+    .modal-content {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .input-group-horizontal {
+        flex-direction: column; /* Stack fields vertically on small screens */
+        gap: 10px;
+    }
+
+    .input-group-horizontal .input-group {
+        flex: none;
+        width: 100%;
+    }
+}
+
 
 /* Modal Fade-in Animation */
 @keyframes fadeIn {

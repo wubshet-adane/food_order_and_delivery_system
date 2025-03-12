@@ -35,7 +35,8 @@
 }
 
 .table-header {
-    background-color: #007bff;
+    border: none;
+    background-color: #ab6701;
 }
 
 /* Style for Even Rows in Menu Table */
@@ -50,6 +51,7 @@
 
 
 .table-cell {
+    border: none;
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;

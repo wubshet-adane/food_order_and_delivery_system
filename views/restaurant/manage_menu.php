@@ -39,16 +39,73 @@
 
 <!-- Edit Menu Modal Section -->
 <section id="edit-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="close-modal">&times;</span>
-        <h2 class="modal-title">Edit Menu Item</h2>
-        <form action="../../controllers/restaurant_menu_controller.php" method="POST" class="edit-form">
-            <input type="hidden" name="id" id="edit-id" class="edit-input">
+<div class="modal-content">
+    <span class="close" id="close-modal">&times;</span>
+    <h2 class="modal-title">Edit Menu Item</h2>
+    <form action="../../controllers/restaurant_menu_controller.php" method="POST" class="edit-form">
+        <input type="hidden" name="id" id="edit-id" class="edit-input">
+
+        <div class="input-group">
+            <label for="edit-name">Dish Name</label>
             <input type="text" name="name" id="edit-name" placeholder="Dish Name" required class="edit-input">
+        </div>
+
+        <div class="input-group">
+            <label for="edit-description">Description</label>
             <textarea name="description" id="edit-description" placeholder="Description" class="edit-input"></textarea>
-            <input type="number" name="price" id="edit-price" placeholder="Price" step="0.01" required class="edit-input">
+        </div>
+
+        <!-- Horizontal Fields: Price and Category -->
+        <div class="input-group-horizontal">
+            <div class="input-group">
+                <label for="edit-price">Price</label>
+                <input type="number" name="price" id="edit-price" placeholder="Price" step="0.01" required class="edit-input">
+            </div>
+
+            <div class="input-group">
+                <label for="edit-category">Category</label>
+                <select name="category" id="edit-category" class="edit-input">
+                    <option value="appetizer">Appetizer</option>
+                    <option value="main">Main Course</option>
+                    <option value="dessert">Dessert</option>
+                    <option value="beverages">Beverages</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Horizontal Fields: Dietary Options and Preparation Time -->
+        <div class="input-group-horizontal">
+            <div class="input-group">
+                <label for="edit-dietary-options">Dietary Options</label>
+                <input type="text" name="dietary_options" id="edit-dietary-options" placeholder="e.g., Vegan, Gluten-Free" class="edit-input">
+            </div>
+
+            <div class="input-group">
+                <label for="edit-preparation-time">Preparation Time (in minutes)</label>
+                <input type="number" name="preparation_time" id="edit-preparation-time" placeholder="Preparation Time" class="edit-input">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="edit-ingredients">Ingredients</label>
+            <textarea name="ingredients" id="edit-ingredients" placeholder="Ingredients (separate with commas)" class="edit-input"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label for="edit-image">Image URL</label>
             <input type="text" name="image" id="edit-image" placeholder="Image URL" class="edit-input">
-            <button type="submit" name="edit_menu" class="save-btn">Save Changes</button>
-        </form>
-    </div>
+        </div>
+
+        <div class="input-group">
+            <label for="edit-availability">Available</label>
+            <select name="availability" id="edit-availability" class="edit-input">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+
+        <button type="submit" name="edit_menu" class="save-btn">Save Changes</button>
+    </form>
+</div>
+
 </section>
