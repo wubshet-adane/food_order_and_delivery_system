@@ -2,8 +2,21 @@
 require_once '../../models/manage_restaurant.php';
 require_once '../../config/database.php';
 
+session_start(); // Ensure the session is started
+
+// Check if user is logged in and has the correct user type
+if (!isset($_SESSION['userId']) || $_SESSION['userType'] !== "restaurant" || 
+    !isset($_SESSION['loggedIn']) || !isset($_SESSION['email']) || !isset($_SESSION['password'])) {
+    
+    header("Location: restaurant_login.php?message=Please enter correct credentials!"); 
+    exit; // Stop execution after redirection
+}
+
+$_SESSION['userId'] = 1999945;
+$ownerId = $_SESSION['userId'];
+
 $restaurantModel = new Restaurant($conn);
-$restaurants = $restaurantModel->getAllRestaurants($userId);
+$restaurants = $restaurantModel->getAllRestaurants($ownerId);
 ?>
 
 <section class="restaurant-management">

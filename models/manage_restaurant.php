@@ -4,16 +4,36 @@ require_once('C:/wamp64/www/food_ordering_system/config/database.php');
 class Restaurant {
     private $conn;
 
-    public function __construct($db) {
-        $this->conn = $db;
+    public function __construct($conn) {
+        $this->conn = $conn;
     }
 
     // Fetch all restaurants
-    public function getAllRestaurants() {
-        $sql = "SELECT * FROM restaurants ";
-        $result = $this->conn->query($sql);
-        return $result->fetch_all(MYSQLI_ASSOC);
+    public function getAllRestaurants($ownerId) {
+        $sql = "SELECT * FROM restaurants WHERE owner_id = ?";
+        $stmt = $this->conn->prepare($sql);
+    
+        // Check if `prepare()` failed
+        if (!$stmt) {
+            die("SQL Prepare Error: " . $this->conn->error);
+        }
+    
+        $stmt->bind_param("i", $ownerId);
+        $stmt->execute();
+    
+        // Get the result set
+        $queryResult = $stmt->get_result();
+    
+        // Fetch data correctly
+        $restaurants = [];
+        while ($row = $queryResult->fetch_assoc()) {
+            $restaurants[] = $row;
+        }
+    
+        return $restaurants; // Always return an array
     }
+    
+    
 
     // Add a new restaurant
     public function addRestaurant($name, $location, $contact) {
