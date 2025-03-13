@@ -6,12 +6,11 @@
 
 
 /* General Page Styling */
-body {
-    background-image: url('../../../public/images/loginBackground.jpg');
+body { 
+    background: linear-gradient(rgba(241, 197, 0, 0.5), rgba(92, 17, 0, 0.5)), 
+    url('../images/loginBackground.jpg') no-repeat center center fixed;
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
@@ -40,6 +39,7 @@ body {
 }
 
 .responce_message_error p{
+    background-color: rgb(255, 234, 0);
     color: red;
     padding: 5px;
     border: 1px solid red;
@@ -146,9 +146,9 @@ button:hover {
 /* right Side (Image) */
 .login-image {
     box-sizing:border-box;
-    border-radius:20px;
+    border-radius:0 0 20px 0;
     flex: 1;
-    background: url('../../../public/images/login.jpg') no-repeat center center;
+    background: url('../images/login.jpg') no-repeat center center;
     background-size: cover;
 }
 /* Responsive Design */

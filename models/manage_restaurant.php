@@ -33,6 +33,25 @@ class Restaurant {
         return $restaurants; // Always return an array
     }
     
+    //to get specific restaurant
+    public function getOneRestaurant($ownerId, $resId) {
+        $sql = "SELECT * FROM restaurants WHERE owner_id = ? AND restaurant_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        // Check if `prepare()` failed
+        if (!$stmt) {
+            die("SQL Prepare Error: " . $this->conn->error);
+        }
+        $stmt->bind_param("ii", $ownerId,$resId);
+        $stmt->execute();
+        // Get the result set
+        $queryResult = $stmt->get_result();
+        // Fetch data correctly
+        $restaurants = [];
+        while ($row = $queryResult->fetch_assoc()) {
+            $restaurants[] = $row;
+        }
+        return $restaurants; // Always return an array
+    }
     
 
     // Add a new restaurant

@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customers Login</title>
+    <title>Restaurants Login</title>
     <link rel="stylesheet" href="../../public/css/login.css">
 </head>
-<body>
+<body style="background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(9, 17, 0, 0.1)), url('../../public/images/restaurant_login_bg.jpg');">
     <div class="full-container">
         <div class="login-container">
-            <h2>Customers Login</h2>
+            <h2> Login as Restaurants Owner</h2>
             <hr>
             <!--form and image setion container-->
             <div class="login-content">
@@ -24,7 +24,7 @@
                         </div>
                     <?php endif?>
                     <!--form section-->
-                    <form class="form-login" action="../../controllers/customer_login_controller.php?action=login" method="POST">
+                    <form class="form-login" action="../../controllers/restaurant_login_controller.php?action=login" method="POST">
                         <div class="input-group">
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" placeholder="Enter your email" required>
@@ -43,7 +43,7 @@
                     </form>
                 </div>
                 <!--right side image section-->
-                <div class="login-image">
+                <div class="login-image" style="background-image: url('../../public/images/restaurant.jpg');">
 
                 </div>
             </div>

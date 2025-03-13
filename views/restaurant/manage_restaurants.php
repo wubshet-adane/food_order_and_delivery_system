@@ -5,60 +5,63 @@ require_once '../../config/database.php';
 session_start(); // Ensure the session is started
 
 // Check if user is logged in and has the correct user type
-if (!isset($_SESSION['userId']) || $_SESSION['userType'] !== "restaurant" || 
-    !isset($_SESSION['loggedIn']) || !isset($_SESSION['email']) || !isset($_SESSION['password'])) {
-    
-    header("Location: restaurant_login.php?message=Please enter correct credentials!"); 
+if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !isset($_SESSION['loggedIn']) || !isset($_SESSION['user_email']) || !isset($_SESSION['password'])) {
+    header("Location: ../auth/restaurant_login.php?message=Please enter correct credentials!");
     exit; // Stop execution after redirection
 }
 
-$_SESSION['userId'] = 1999945;
-$ownerId = $_SESSION['userId'];
+$ownerId = $_SESSION['user_id'];
+$resId = $_GET['id'];
 
 $restaurantModel = new Restaurant($conn);
-$restaurants = $restaurantModel->getAllRestaurants($ownerId);
+$restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
 ?>
 
-<section class="restaurant-management">
-    <h2>🏢 Manage Your Restaurants</h2>
-    
-    <button id="addRestaurantBtn">➕ Add New Restaurant</button>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Restaurant Name</th>
-                <th>Physical Location</th>
-                <th>Google map Location</th>
-                <th>Description</th>
-                <th>Working Hours</th>
-                <th>Tiktok</th>
-                <th>Telegram</th>
-                <th>Instagram</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Restaurants</title>
+    <link rel="stylesheet" href="css/manage_restaurant.css">
+</head>
+<body>
+    <section class="restaurant-management">
+        <h2>🏢 Manage Your Restaurants</h2>
+        <button id="addRestaurantBtn">➕ Add New Restaurant</button>
+        
+        <div class="restaurant-list">
             <?php foreach ($restaurants as $restaurant) : ?>
-                <tr>
-                    <td><?= $restaurant['restaurant_id'] ?></td>
-                    <td><?= $restaurant['name'] ?></td>
-                    <td><?= $restaurant['location'] ?></td>
-                    <td><?= $restaurant['MAP_location'] ?></td>
-                    <td><?= $restaurant['description'] ?></td>
-                    <td><?= $restaurant['opening_and_closing_hour'] ?></td>
-                    <td><?= $restaurant['tiktokAccount'] ?></td>
-                    <td><?= $restaurant['telegramAccount'] ?></td>
-                    <td><?= $restaurant['instagramAaccount'] ?></td>
-                    <td><span class="status <?= strtolower($restaurant['status']) ?>"><?= $restaurant['status'] ?></span></td>
-                    <td>
-                        <button class="edit-btn" data-id="<?= $restaurant['restaurant_id'] ?>">✏️ Edit</button>
-                        <button class="delete-btn" data-id="<?= $restaurant['restaurant_id'] ?>">🗑️ Delete</button>
-                    </td>
-                </tr>
+                <div class="restaurant-card">
+                    <h3><?= htmlspecialchars($restaurant['name']) ?></h3>
+                    <p><strong>📍 Location:</strong> <?= htmlspecialchars($restaurant['location']) ?></p>
+                    <p><strong>📝 Description:</strong> <?= htmlspecialchars($restaurant['description']) ?></p>
+                    <p><strong>⏰ Working Hours:</strong> <?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?></p>
+                    
+                    <div class="map-container">
+                        <iframe width="100%" height="250" style="border:0;" title="Restaurant Location" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+                            src="https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=<?= urlencode($restaurant['MAP_location']) ?>">
+                        </iframe>
+                    </div>
+                    
+                    <p><strong>🔗 Socials:</strong>
+                        <a href="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>" target="_blank">TikTok</a> |
+                        <a href="<?= htmlspecialchars($restaurant['telegramAccount']) ?>" target="_blank">Telegram</a> |
+                        <a href="<?= htmlspecialchars($restaurant['instagramAaccount']) ?>" target="_blank">Instagram</a>
+                    </p>
+                    
+                    <p>
+                        <strong>Status:</strong> <span class="status <?= strtolower($restaurant['status']) ?>"><?= htmlspecialchars($restaurant['status']) ?></span>
+                    </p>
+                    
+                    <button class="edit-btn" data-id="<?= $restaurant['restaurant_id'] ?>">✏️ Edit</button>
+                    <button class="delete-btn" data-id="<?= $restaurant['restaurant_id'] ?>">🗑️ Delete</button>
+                </div>
             <?php endforeach; ?>
-        </tbody>
-    </table>
-</section>
+        </div>
+    </section>
+    
+</body>
+</html>

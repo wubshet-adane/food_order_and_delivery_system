@@ -1,28 +1,32 @@
 .restaurant-management {
     padding: 20px;
 }
-
-.res_table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+.restaurant-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
-
-.res_table_header, .res_table_td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
+.restaurant-card {
+    width: 350px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
 }
-
-.res_table_header {
-    background-color: #4CAF50;
+.map-container {
+    margin: 10px 0;
+}
+.edit-btn, .delete-btn {
+    padding: 8px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+}
+.edit-btn {
+    background-color: #007bff;
     color: white;
 }
-
-.status.open {
-    color: green;
-}
-
-.status.closed {
-    color: red;
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
 }

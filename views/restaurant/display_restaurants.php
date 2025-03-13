@@ -10,13 +10,13 @@ require_once '../../models/manage_restaurant.php';
 require_once '../../config/database.php';
 
 // Check if user is logged in and has the correct user type
-if (!isset($_SESSION['userId']) || $_SESSION['userType'] !== "restaurant" || !isset($_SESSION['loggedIn']) || !isset($_SESSION['email']) || !isset($_SESSION['password'])) {
+if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !isset($_SESSION['loggedIn']) || !isset($_SESSION['user_email']) || !isset($_SESSION['password'])) {
     
-    header("Location: restaurant_login.php?message=Please enter correct credentials!"); 
+    header("Location: ../auth/restaurant_login.php?message=Please enter correct credentials!");
     exit; // Stop execution after redirection
 }
 
-$ownerId = $_SESSION['userId'];
+$ownerId = $_SESSION['user_id'];
 
 $restaurantModel = new Restaurant($conn);
 $restaurants = $restaurantModel->getAllRestaurants($ownerId);

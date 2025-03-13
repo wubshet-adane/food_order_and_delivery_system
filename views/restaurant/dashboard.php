@@ -60,7 +60,7 @@ $menuItems = Menu::getAllItems();
         <div class="main-content">
            
             <?php
-            $page = isset($_GET['page']) ? $_GET['page'] : 'manage_restaurants';
+            $page = isset($_GET['page']) ? $_GET['page'] : 'display_restaurants';
 
             // Include the content for the respective page
             switch ($page) {
