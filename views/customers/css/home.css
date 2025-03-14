@@ -98,11 +98,6 @@ body {
     color: #ff9800;
 }
 
-.restaurants_quote + hr{
-    border: 2px solid #ff9800;
-    width: 200px;
-}
-
 .restaurants {
     padding: 40px 0;
 }
@@ -121,7 +116,7 @@ body {
     margin: 1rem 0;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.7);
-    background: linear-gradient( to bottom, #70673b, #d2cdc3);
+    background: linear-gradient( to bottom, #ffffff, #e4e2df);
     transition: all 0.3s ease;
     overflow: hidden;
     max-width: 400px;
@@ -166,7 +161,6 @@ body {
     width: 100%;
     height: 200px;
     border-radius: 10px 10px 0 0;
-    border-bottom: 2px solid #ff9900;
 }
 
 .restaurant-image img {
@@ -256,7 +250,7 @@ body {
     display: inline-block;
     margin-bottom: 3px;
     text-align: center;
-    padding: 12px 10px;
+    padding: 5px 5px;
     background-color: #ff9900;
     color: white;
     text-decoration: none;

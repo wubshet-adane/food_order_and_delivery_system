@@ -132,22 +132,22 @@
                         <div class="restaurant-details">
                             <p><strong>Location:</strong> <?php echo htmlspecialchars($restaurant['location']); ?></p>
                             <p><strong>Phone:</strong> <?php echo htmlspecialchars($restaurant['phone']); ?></p>
-                        <!--add rating-->
+                            <hr>
+                            <!--add rating-->
                             <div class="restaurant-rating">
-                                <h3>Rating</h3>
                                 <div class="star-rating">
                                     <i class="fa-solid fa-star" data-value="1"></i>
                                     <i class="fa-solid fa-star" data-value="2"></i>
                                     <i class="fa-solid fa-star" data-value="3"></i>
                                     <i class="fa-solid fa-star" data-value="4"></i>
                                     <i class="fa-solid fa-star" data-value="5"></i>
-                                    <div class="rating-value"><?php echo $restaurant['rating']; ?>/5</div>
+                                    <div class="rating-value"><?php echo $restaurant['rating']; ?>/5</div> <span> Rated</span>
                                 </div>
                             </div>
 
                             <div class="redirect">
-                                <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn">View Menu</a> 
-                                <a href="restaurant_details.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn">Read Details</a>
+                                <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Display menu from this restaurant">View Menu</a> 
+                                <a href="restaurant_details.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Details about restaurant"><i class="fa fa-external-link" aria-hidden="true"></i></a>
                             </div>
                         </div>
                         <?php

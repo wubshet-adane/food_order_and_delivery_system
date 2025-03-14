@@ -42,7 +42,7 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                     
                     <div class="map-container">
                         <iframe width="100%" height="250" style="border:0;" title="Restaurant Location" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
-                            src="https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=<?= urlencode($restaurant['MAP_location']) ?>">
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBjlgNQQFbENtCwtN_livp3RAhzHq4pTuE<?= urlencode($restaurant['MAP_location']) ?>">
                         </iframe>
                     </div>
                     
