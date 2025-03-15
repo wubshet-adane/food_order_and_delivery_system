@@ -34,13 +34,17 @@ body{
 .res_info{
     display: block;
     font-size: 28px;
-    letter-spacing: 2px;
     font-family: "oswald";
     text-transform: capitalize;
     border-bottom: 3px solid #ff9900;
     width: fit-content;
     margin: auto;
     text-align: center;
+}
+
+.description{
+    color: #888;
+    line-height: 1.5rem;
 }
 .map-container {
     margin: 10px 0;

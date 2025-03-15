@@ -49,7 +49,7 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
 
                     <h3><?= htmlspecialchars($restaurant['name']) ?></h3>
                     <p><strong class="res_info"> Physical Location (Maybe City or WellKnown Place):</strong> <?= htmlspecialchars($restaurant['location']) ?></p>
-                    <p><strong class="res_info"> Detail Description about <?= htmlspecialchars($restaurant['name']) ?>:</strong> <?= htmlspecialchars($restaurant['description']) ?></p>
+                    <p><strong class="res_info"> Detail Description about <?= htmlspecialchars($restaurant['name']) ?>:</strong> <span class="description"><?= htmlspecialchars($restaurant['description']) ?></span></p>
                     <p><strong class="res_info"> Working Hours:</strong> <?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?>
                     </p>
 
