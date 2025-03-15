@@ -51,8 +51,8 @@
                         </div>
                         
                         <div class="redirect">
-                            <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn">View Menu</a> 
-                            <a href="restaurant_details.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn">Read Details</a>
+                            <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Display menu from this restaurant">View Menu</a> 
+                            <a href="restaurant_details_for_customers.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Details about restaurant"><i class="fa fa-external-link" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <?php
@@ -147,7 +147,7 @@
 
                             <div class="redirect">
                                 <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Display menu from this restaurant">View Menu</a> 
-                                <a href="restaurant_details.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Details about restaurant"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+                                <a href="restaurant_details_for_customers.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Details about restaurant"><i class="fa fa-external-link" aria-hidden="true"></i></a>
                             </div>
                         </div>
                         <?php
