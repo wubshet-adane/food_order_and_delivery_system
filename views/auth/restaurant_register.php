@@ -23,8 +23,11 @@
                     <?php endif?>
                     <!--form section-->
                         <form class="form-login" action="../../controllers/restaurant_register_controller.php?action=register" method="POST" enctype="multipart/form-data">
-                            <h3>Owner Information</h3>
-                            <input type="text" name="owner_name" placeholder="Full Name" required>
+                            <div class="input-group">
+                            <label for="email">First Name</label>
+                                <input type="text" name="owner_name" placeholder="Full Name" required>
+                                <input type="text" name="owner_name" placeholder="Full Name" required>
+                            </div>
                             <input type="email" name="owner_email" placeholder="Email" required>
                             <input type="text" name="owner_phone" placeholder="Phone Number" required>
                             <input type="password" name="password" placeholder="Password" required>
