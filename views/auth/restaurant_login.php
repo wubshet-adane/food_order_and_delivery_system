@@ -38,7 +38,7 @@
 
                         <button type="submit">Login</button>
                         <p class="register-link">
-                            Don't have an account? <a href="customer_register.html">Register here</a>
+                            Don't have an account? <a href="restaurant_register.php">Register here</a>
                         </p>
                     </form>
                 </div>

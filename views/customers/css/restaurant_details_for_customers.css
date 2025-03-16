@@ -26,10 +26,10 @@ body{
 }
 .res_name {
     position: absolute;
-    top: 80%;
+    top: 83%;
     left: 50%;
     transform: translate(-50%, 10%);
-    font-size: 40px;
+    font-size: 32px;
     background-color: #b17315;
     color: white;
     border-radius: 10px;
@@ -38,7 +38,7 @@ body{
 }
 .res_name h1{
     margin: 10px 2px;
-    font-family: cursive, sans-serif;
+    font-family: "Oswald", sans-serif;
 }
 
 .restaurant-card {
