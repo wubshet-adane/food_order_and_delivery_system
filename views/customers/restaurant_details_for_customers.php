@@ -14,6 +14,11 @@ $resId = $_GET['restaurant_id'];
 
 $restaurantModel = new Restaurant($conn);
 $restaurants = $restaurantModel->getOneRestaurant($resId);
+
+
+    $apiKey = "AIzaSyAiwVbMDuB2I6fSDJSNhym8mTmE3kc4VLM"; // Your Google API Key
+    $location = isset($restaurant['MAP_location']) ? urlencode($restaurant['MAP_location']) : urlencode('Ethiopia');
+    $mapUrl = "https://www.google.com/maps/embed/v1/place?key={$apiKey}&q={$location}";
 ?>
 
 
@@ -24,9 +29,10 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Restaurants</title>
+    <title>Restaurant detail</title>
     <link rel="stylesheet" href="css/restaurant_details_for_customers.css">
-</head>
+    <link rel="icon" href="../../public/images/logo.jpg'">
+    </head>
 
 <body>
     <section class="restaurant-management">
@@ -41,7 +47,7 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
                     <div>
 
                     </div>
-                    <div>
+                    <div class="res_name">
                         <h1><?= htmlspecialchars($restaurant['name']) ?></h1>
                     </div>
                 </div>
@@ -56,8 +62,7 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
                     <div class="map-container">
                         <p><strong class="res_info">reliable location located on google map:</strong></p>
                         <iframe width="100%" height="250" style="border:0;" title="Restaurant Location" loading="lazy"
-                            allowfullscreen referrerpolicy="no-referrer-when-downgrade"
-                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBjlgNQQFbENtCwtN_livp3RAhzHq4pTuE<?= urlencode($restaurant['MAP_location']) ?>">
+                            allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="<?= $mapUrl ?>">
                         </iframe>
                     </div>
 

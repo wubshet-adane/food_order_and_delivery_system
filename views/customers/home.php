@@ -119,7 +119,6 @@
             <h1>Top Restaurants Near You</h1>  
             <p>the easiest way to found everything <br> what you want to eat quickly!</p> 
         </div>
-        <hr>
 
         <div id="restaurantResults" class="restaurant-grid">
             <?php if ($restaurants): ?>
@@ -186,7 +185,6 @@
         <h1>Are you ready to enjoy our service?</h1>  
         <p>The easiest way to find everything <br> you crave in just a few clicks!</p> 
     </div>
-    <hr>
 
     <div class="become_partner">
         <div class="container">
