@@ -37,6 +37,7 @@ body{
     padding: 0 10px;
 }
 .res_name h1{
+    text-transform: capitalize;
     margin: 10px 2px;
     font-family: "Oswald", sans-serif;
 }

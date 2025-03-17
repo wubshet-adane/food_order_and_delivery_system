@@ -3,14 +3,40 @@
 <head>
     <title>Register</title>
     <link rel="stylesheet" href="../../public/css/login.css">
+    <style>
+        .group{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .input-group{
+            width: 45%;
+        }
+
+        input:type[checkbox]{
+            width: 100px;
+        }
+        .submit-group{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        @media (max-width: 768px) {
+            .input-group{
+                min-width: 90%;
+            }
+        }
+    </style>
 </head>
-<body style="background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(9, 17, 0, 0.1)), url('../../public/images/restaurant_login_bg.jpg');">
+<body style="background: linear-gradient(rgba(50, 50, 50, 0.9), rgba(50, 57, 40, .7)), url('../../public/images/restaurant_login_bg.jpg');">
 <div class="full-container">
         <div class="login-container">
             <h2> create merchant account</h2>
             <hr>
             <!--form and image setion container-->
-            <div class="login-content">
+            <div class="register-content">
             <!--left side form section-->
                 <div class="form-section">
                     <?php if (isset($_GET['message'])):?>
@@ -22,43 +48,56 @@
                         </div>
                     <?php endif?>
                     <!--form section-->
-                        <form class="form-login" action="../../controllers/restaurant_register_controller.php?action=register" method="POST" enctype="multipart/form-data">
+                    <form class="form-login" action="../../controllers/restaurant_register_controller.php?action=register" method="POST" enctype="multipart/form-data">
+                        <div class="group">
                             <div class="input-group">
-                            <label for="email">First Name</label>
-                                <input type="text" name="owner_name" placeholder="Full Name" required>
-                                <input type="text" name="owner_name" placeholder="Full Name" required>
+                                <label for="Fname">First Name</label>
+                                <input type="text" id="Fname" name="Fname" placeholder="First Name" required>
                             </div>
-                            <input type="email" name="owner_email" placeholder="Email" required>
-                            <input type="text" name="owner_phone" placeholder="Phone Number" required>
-                            <input type="password" name="password" placeholder="Password" required>
-                            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
-                        <!--
-                            <h3>Restaurant Details</h3>
-                            <input type="text" name="restaurant_name" placeholder="Restaurant Name" required>
-                            <input type="email" name="restaurant_email" placeholder="Restaurant Email" required>
-                            <input type="text" name="restaurant_phone" placeholder="Restaurant Phone" required>
-                            <textarea name="restaurant_address" placeholder="Address" required></textarea>
-                            <input type="text" name="map_location" placeholder="Google Map Location">
-                        
-                            <h3>Legal & Payment</h3>
-                            <input type="text" name="business_license" placeholder="Business License Number" required>
-                            <input type="text" name="tax_id" placeholder="Tax ID" required>
-                            <input type="text" name="bank_name" placeholder="Bank Name" required>
-                            <input type="number" name="bank_account" placeholder="Bank Account Number" required>
-                        -->
-                            <h3>Upload Files</h3>
-                            <input type="file" name="restaurant_logo" required>
-                            
-                            <input type="checkbox" name="terms" required> I agree to the Terms & Conditions
-                            
-                            <button type="submit">Register</button>
-
-                        </form>
+                            <div class="input-group">
+                                <label for="Lname">Last Name</label>
+                                <input type="text" id="Lname" name="Lname" placeholder="Last Name" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" placeholder="yahoo@gmail.com" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="text" id="phone" name="phone" placeholder="0912345678" required>
+                            </div>
                         </div>
-                <!--right side image section-->
+                        <div class="group">
+                            <div class="input-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" placeholder="********" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="confirm_password">Confirm Password</label>
+                                <input type="password" id="confirm_password" name="confirm_password" placeholder="********" required>
+                                <span class="form-check-input">Show password</span><input type="checkbox" id="showPassword" style="border:1px solid blue;"> 
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="profile_image">Upload Profile Picture</label>
+                            <input type="file"  name="profile_image">
+                        </div>
+                        <div class="input-group">
+                            <p><input type="checkbox" name="terms" required><span class="form-check-input">I agree to the Terms & Conditions</span></p>
+                        </div>
+                        <div class="submit-group">
+                            <button type="submit">Register</button>
+                            <p class="register-link">
+                                Have an account? <a href="restaurant_login.php">Login</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+                <!--right side image section
                 <div class="login-image" style="background-image: url('../../public/images/restaurant.jpg');">
 
                 </div>
+                    -->
             </div>
         </div>
     </div>
