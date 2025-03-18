@@ -22,6 +22,12 @@
             justify-content: center;
             flex-direction: column;
         }
+        .checkbox{
+            display: inline-block;
+            width: 100%;
+            flex-direction: row;
+            color: #99f;
+        }
 
         @media (max-width: 768px) {
             .input-group{
@@ -75,7 +81,7 @@
                             <div class="input-group">
                                 <label for="confirm_password">Confirm Password</label>
                                 <input type="password" id="confirm_password" name="confirm_password" placeholder="********" required>
-                                <span class="form-check-input">Show password</span><input type="checkbox" id="showPassword" style="border:1px solid blue;"> 
+                                <p class="checkbox"><input type="checkbox" id="showPassword" style="border:1px solid blue;"> Show password</p>
                             </div>
                         </div>
                         <div class="input-group">
@@ -83,7 +89,7 @@
                             <input type="file"  name="profile_image">
                         </div>
                         <div class="input-group">
-                            <p><input type="checkbox" name="terms" required><span class="form-check-input">I agree to the Terms & Conditions</span></p>
+                            <p class="checkbox register-link"><input type="checkbox" name="terms" required>I agree to the <a href="#">Terms</a> & <a href="">Conditions</a></p>
                         </div>
                         <div class="submit-group">
                             <button type="submit">Register</button>

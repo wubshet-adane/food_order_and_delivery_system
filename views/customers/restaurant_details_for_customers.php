@@ -15,13 +15,12 @@ $resId = $_GET['restaurant_id'];
 $restaurantModel = new Restaurant($conn);
 $restaurants = $restaurantModel->getOneRestaurant($resId);
 
-
+/*
     $apiKey = "AIzaSyAiwVbMDuB2I6fSDJSNhym8mTmE3kc4VLM"; // Your Google API Key
     $location = isset($restaurant['MAP_location']) ? urlencode($restaurant['MAP_location']) : urlencode('Ethiopia');
     $mapUrl = "https://www.google.com/maps/embed/v1/place?key={$apiKey}&q={$location}";
+    */
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +31,28 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
     <title>Restaurant detail</title>
     <link rel="stylesheet" href="css/restaurant_details_for_customers.css">
     <link rel="icon" href="../../public/images/logo.jpg'">
+     <!--font ausome for star rating-->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="module" src="javaScript/map.js"></script>
+
+    <style>
+        #map{
+            display: flex;
+            height: 400px;
+            width: 90%;
+            margin: auto;
+            border-radius: 5px;
+        }
+        @media screen and (max-width: 900px) {
+            #map {
+                height: 300px;
+                width: 100%;
+            }
+        }
+
+    </style>
     </head>
+
 
 <body>
     <section class="restaurant-management">
@@ -52,26 +72,31 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
                     </div>
                 </div>
                 <div class="restaurant-card">
+                    
+                    <input type="text" id="location" value="<?= $restaurant['location']?>">
+                    <input type="text" id="latitude" value="<?= $restaurant['latitude']?>">
+                    <input type="text" id="longtude" value="<?= $restaurant['longitude']?>">
+                    
+                    <div class="map-container box">
+                        <div><strong class="res_info"> Physical Location City or WellKnown Place </strong>
+                            <i class="fa fa-map-marker"></i> <?= htmlspecialchars($restaurant['location'])?>
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                   
 
-                    <h3><?= htmlspecialchars($restaurant['name']) ?></h3>
-                    <p><strong class="res_info"> Physical Location (Maybe City or WellKnown Place):</strong> <?= htmlspecialchars($restaurant['location']) ?></p>
-                    <p><strong class="res_info"> Detail Description about <?= htmlspecialchars($restaurant['name']) ?>:</strong> <span class="description"><?= htmlspecialchars($restaurant['description']) ?></span></p>
-                    <p><strong class="res_info"> Working Hours:</strong> <?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?>
+                    <p class="box"><strong class="res_info"> Detail Description about <?= htmlspecialchars($restaurant['name']) ?>:</strong> <span class="description"><?= htmlspecialchars($restaurant['description']) ?></span></p>
+                    <p class="box"><strong class="res_info"> Working Hours:</strong> <?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?>
                     </p>
 
-                    <div class="map-container">
-                        <p><strong class="res_info">reliable location located on google map:</strong></p>
-                        <iframe width="100%" height="250" style="border:0;" title="Restaurant Location" loading="lazy"
-                            allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="<?= $mapUrl ?>">
-                        </iframe>
-                    </div>
 
-                    <p><strong class="res_info"> contact us at different platforms like:</strong></p>
-                        <a href="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>" target="_blank">TikTok</a> |
-                        <a href="<?= htmlspecialchars($restaurant['telegramAccount']) ?>" target="_blank">Telegram</a> |
-                        <a href="<?= htmlspecialchars($restaurant['instagramAaccount']) ?>" target="_blank">Instagram</a>
-
-                    <p>
+                    <p class="box social_media"><strong class="res_info"> Get in touch with the following:</strong>
+                        <a href="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a> 
+                        <a href="<?= htmlspecialchars($restaurant['telegramAccount']) ?>" target="_blank"><i class="fa-brands fa-telegram"></i> Telegram</a> 
+                        <a href="<?= htmlspecialchars($restaurant['instagramAaccount']) ?>" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a>
+                        <a href="tel:<?= htmlspecialchars($restaurant['phone']) ?>"><i class="fa-solid fa-phone"></i> <?= htmlspecialchars($restaurant['phone'])?></a>
+                    </p>
+                    <p class="box">
                         <strong class="res_info">Status:</strong> <span
                             class="status <?= strtolower($restaurant['status']) ?>"><?= htmlspecialchars($restaurant['status']) ?></span>
                     </p>
@@ -80,7 +105,9 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
             <?php endforeach; ?>
         </div>
     </section>
-
+    <!--map script-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=places&v=weekly" defer>
+    </script>
 </body>
 
 </html>
