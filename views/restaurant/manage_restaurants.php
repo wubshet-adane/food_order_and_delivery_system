@@ -21,47 +21,100 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Restaurants</title>
-    <link rel="stylesheet" href="css/manage_restaurant.css">
-</head>
+    <title>Restaurant detail</title>
+    <link rel="stylesheet" href="css/restaurant_details_for_customers.css">
+    <link rel="icon" href="../../public/images/logo.jpg'">
+     <!--font ausome for star rating-->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="module" src="javaScript/map.js"></script>
+
+    <style>
+
+    </style>
+    </head>
+
+
 <body>
     <section class="restaurant-management">
-        <h2>🏢 Manage Your Restaurants</h2>
-        <button id="addRestaurantBtn">➕ Add New Restaurant</button>
-        
+
         <div class="restaurant-list">
-            <?php foreach ($restaurants as $restaurant) : ?>
-                <div class="restaurant-card">
-                    <h3><?= htmlspecialchars($restaurant['name']) ?></h3>
-                    <p><strong>📍 Location:</strong> <?= htmlspecialchars($restaurant['location']) ?></p>
-                    <p><strong>📝 Description:</strong> <?= htmlspecialchars($restaurant['description']) ?></p>
-                    <p><strong>⏰ Working Hours:</strong> <?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?></p>
-                    
-                    <div class="map-container">
-                        <iframe width="100%" height="250" style="border:0;" title="Restaurant Location" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
-                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBjlgNQQFbENtCwtN_livp3RAhzHq4pTuE<?= urlencode($restaurant['MAP_location']) ?>">
-                        </iframe>
+            <?php foreach ($restaurants as $restaurant): ?>
+                <div>
+                    <div>
                     </div>
                     
-                    <p><strong>🔗 Socials:</strong>
-                        <a href="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>" target="_blank">TikTok</a> |
-                        <a href="<?= htmlspecialchars($restaurant['telegramAccount']) ?>" target="_blank">Telegram</a> |
-                        <a href="<?= htmlspecialchars($restaurant['instagramAaccount']) ?>" target="_blank">Instagram</a>
-                    </p>
+                    <div class="res_name">
+                        <h1><?= htmlspecialchars($restaurant['name']) ?></h1>
+                    </div>
+
+                    <div class="image">
+                        <strong> restaurant Card Image:</strong> 
+                        <img src = "restaurantAsset/<?= htmlspecialchars($restaurant['image']);?>" alt="imge">
+                    </div>
+
+                    <div class="banner">
+                        <strong> restaurant Banner Image:</strong>
+                        <img src = "restaurantAsset/<?= htmlspecialchars($restaurant['banner']);?>" alt="banner">
+                    </div>
+
+                    <div class="license">
+                        <strong> restaurant legal license Image:</strong>
+                        <img src = "restaurantAsset/<?= htmlspecialchars($restaurant['license']);?>" alt="license">
+                    </div>
+
+                    <div class="location">
+                        <input type="text" id="location" value="<?= $restaurant['location']?>">
+                    </div>
+
+                    <div class="latitude">
+                        <input type="text" id="latitude" value="<?= $restaurant['latitude']?>">
+                    </div>
+
+                    <div class="longitude">
+                        <input type="text" id="longtude" value="<?= $restaurant['longitude']?>">
+                    </div>
+
+                    <div class="map-container">
+                        <div>
+                            <strong> Location:</strong> 
+                            <i class="fa fa-map-marker"></i> <?= htmlspecialchars($restaurant['location'])?>
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                   
+                    <div class="description">
+                        <strong> Detail Description:</strong> <span class="description"><?= htmlspecialchars($restaurant['description']) ?></span>
+                    </div>
+
+                    <div class="time">
+                        <strong> Working time:</strong> <?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?>
+                    </div>
+                
+                    <div class="social_media"><strong> Get in touch with the following:</strong>
+                        <a href="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>" target="_blank"><i class="fa-brands fa-tiktok"></i> <?= htmlspecialchars($restaurant['tiktokAccount']) ?></a> 
+                        <a href="<?= htmlspecialchars($restaurant['website']) ?>" target="_blank"><i class="fa-brands fa-"></i> <?= htmlspecialchars($restaurant['website']) ?></a> 
+                        <a href="<?= htmlspecialchars($restaurant['telegramAccount']) ?>" target="_blank"><i class="fa-brands fa-telegram"></i> <?= htmlspecialchars($restaurant['telegramAccount']) ?></a> 
+                        <a href="<?= htmlspecialchars($restaurant['instagramAccount']) ?>" target="_blank"><i class="fa-brands fa-instagram"></i> <?= htmlspecialchars($restaurant['instagramAccount']) ?></a>
+                        <a href="tel:<?= htmlspecialchars($restaurant['phone']) ?>"><i class="fa-solid fa-phone"></i> <?= htmlspecialchars($restaurant['phone'])?></a>
+                    </div>
+                    <div class="status">
+                        <strong>Status:</strong>
+                        <span class="status <?= strtolower($restaurant['status']) ?>"><?= htmlspecialchars($restaurant['status']) ?></span>
+                    </div>
                     
-                    <p>
-                        <strong>Status:</strong> <span class="status <?= strtolower($restaurant['status']) ?>"><?= htmlspecialchars($restaurant['status']) ?></span>
-                    </p>
-                    
-                    <button class="edit-btn" data-id="<?= $restaurant['restaurant_id'] ?>">✏️ Edit</button>
-                    <button class="delete-btn" data-id="<?= $restaurant['restaurant_id'] ?>">🗑️ Delete</button>
+                </div>
+
                 </div>
             <?php endforeach; ?>
         </div>
     </section>
-    
+    <!--map script-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=places&v=weekly" defer>
+    </script>
 </body>
+
 </html>

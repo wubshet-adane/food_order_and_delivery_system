@@ -33,8 +33,8 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                         <div class="logo">
                             <img src="restaurantAsset/<?=$restaurant['image']?>" alt="logo">
                         </div>
-                        <p>Name: <?= htmlspecialchars($restaurant['name']) ?></p>
-                        <p>Adress: <?= htmlspecialchars($restaurant['location']) ?></p>
+                        <p><strong>Name:</strong> <?= htmlspecialchars($restaurant['name']) ?></p>
+                        <p><strong>Adress:</strong> <?= htmlspecialchars($restaurant['location']) ?></p>
                     </div>
                     <a href="manage_restaurants.php?id=<?= $restaurant['restaurant_id'] ?>" class="view-details-btn">View Details</a>
                 </div>

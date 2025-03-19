@@ -1,3 +1,7 @@
+body{
+    font-family: 'Roboto', sans-serif;
+}
+
 /* Container Styling */
 .restaurant-container {
     max-width: 1000px;
@@ -29,18 +33,16 @@
     flex: 1 1 200px;  /* Allow each card to grow, shrink, and have a base width of 200px */
     max-width: 250px; /* Limit the max width of each card */
     background-color: #f8f8f8;
-    padding: 20px;
+    padding: 10px;
     border-radius: 8px;
     border: 1px solid #ddd;
     text-align: center;
     box-sizing: border-box;
 }
 
-
 .restaurant-card:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
-
 
 .restaurant-info p {
     margin: 1px;
@@ -51,7 +53,7 @@
 
 .logo{
     max-width: 100%;
-    margin: 4px;
+    margin: 2px;
 }
 
 .logo img{
@@ -59,23 +61,27 @@
     height: 100px;
 }
 
+
+
 /* View Details Button */
 .view-details-btn {
     box-sizing: border-box;
     display: inline-block;
     text-align: center;
     max-width: 100%;
-    padding: 5px 15px;
-    background-color: #ff9900;
-    color: #fff;
+    padding: 3px 15px;
+    background-color: #c1c1c13d;
+    color: #3b0875e2;
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
     transition: background 0.3s ease;
+    font-size: small;
+    margin-top: 4px;
+    margin-bottom: 0;
 }
 
 .view-details-btn:hover {
     background-color: #ffffff;
     color:#ff9900;
-    border: 2px solid #ff9900;
 }
