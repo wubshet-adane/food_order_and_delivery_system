@@ -36,19 +36,6 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
     <script type="module" src="javaScript/map.js"></script>
 
     <style>
-        #map{
-            display: flex;
-            height: 400px;
-            width: 90%;
-            margin: auto;
-            border-radius: 5px;
-        }
-        @media screen and (max-width: 900px) {
-            #map {
-                height: 300px;
-                width: 100%;
-            }
-        }
 
     </style>
     </head>
@@ -73,9 +60,9 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
                 </div>
                 <div class="restaurant-card">
                     
-                    <input type="text" id="location" value="<?= $restaurant['location']?>">
-                    <input type="text" id="latitude" value="<?= $restaurant['latitude']?>">
-                    <input type="text" id="longtude" value="<?= $restaurant['longitude']?>">
+                    <input type="hidden" id="location" value="<?= $restaurant['location']?>">
+                    <input type="hidden" id="latitude" value="<?= $restaurant['latitude']?>">
+                    <input type="hidden" id="longtude" value="<?= $restaurant['longitude']?>">
                     
                     <div class="map-container box">
                         <div><strong class="res_info"> Physical Location City or WellKnown Place </strong>
@@ -93,7 +80,7 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
                     <p class="box social_media"><strong class="res_info"> Get in touch with the following:</strong>
                         <a href="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a> 
                         <a href="<?= htmlspecialchars($restaurant['telegramAccount']) ?>" target="_blank"><i class="fa-brands fa-telegram"></i> Telegram</a> 
-                        <a href="<?= htmlspecialchars($restaurant['instagramAaccount']) ?>" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a>
+                        <a href="<?= htmlspecialchars($restaurant['instagramAccount']) ?>" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a>
                         <a href="tel:<?= htmlspecialchars($restaurant['phone']) ?>"><i class="fa-solid fa-phone"></i> <?= htmlspecialchars($restaurant['phone'])?></a>
                     </p>
                     <p class="box">

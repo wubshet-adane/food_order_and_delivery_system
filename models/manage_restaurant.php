@@ -1,6 +1,5 @@
 <?php
-require_once('C:/wamp64/www/food_ordering_system/config/database.php');
-
+require_once __DIR__ . '/../config/database.php';
 class Restaurant {
     private $conn;
 
