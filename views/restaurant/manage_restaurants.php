@@ -26,11 +26,11 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant detail</title>
-    <link rel="stylesheet" href="css/restaurant_details_for_customers.css">
+    <link rel="stylesheet" href="css/manage_restaurant.css">
     <link rel="icon" href="../../public/images/logo.jpg'">
      <!--font ausome for star rating-->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script type="module" src="javaScript/map.js"></script>
+    <script type="module" src="../customers/javaScript/map.js"></script>
 
     <style>
 
@@ -42,10 +42,19 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
     <section class="restaurant-management">
 
         <div class="restaurant-list">
+            <div class="searchingAndSortingFunctionality">
+                <div>
+                    <button class="boBack" onclick="location.href='restaurant_list.php'"> Back </button>
+                </div>
+                <div class="addMenu">
+                    <button class="boAdd" onclick="location.href='add menu.php?id=<?php echo $resId ?>'">Add menu</button>
+                </div>
+            </div>
+            <div>
+                <h2>Restaurant Detail</h2>
+            </div>
             <?php foreach ($restaurants as $restaurant): ?>
                 <div>
-                    <div>
-                    </div>
                     
                     <div class="res_name">
                         <h1><?= htmlspecialchars($restaurant['name']) ?></h1>
@@ -66,15 +75,13 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                         <img src = "restaurantAsset/<?= htmlspecialchars($restaurant['license']);?>" alt="license">
                     </div>
 
-                    <div class="location">
-                        <input type="text" id="location" value="<?= $restaurant['location']?>">
-                    </div>
-
                     <div class="latitude">
+                        <strong>Latitude</strong>
                         <input type="text" id="latitude" value="<?= $restaurant['latitude']?>">
                     </div>
 
                     <div class="longitude">
+                        <strong>Longitude</strong>
                         <input type="text" id="longtude" value="<?= $restaurant['longitude']?>">
                     </div>
 
@@ -94,16 +101,53 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                         <strong> Working time:</strong> <?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?>
                     </div>
                 
-                    <div class="social_media"><strong> Get in touch with the following:</strong>
-                        <a href="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>" target="_blank"><i class="fa-brands fa-tiktok"></i> <?= htmlspecialchars($restaurant['tiktokAccount']) ?></a> 
-                        <a href="<?= htmlspecialchars($restaurant['website']) ?>" target="_blank"><i class="fa-brands fa-"></i> <?= htmlspecialchars($restaurant['website']) ?></a> 
-                        <a href="<?= htmlspecialchars($restaurant['telegramAccount']) ?>" target="_blank"><i class="fa-brands fa-telegram"></i> <?= htmlspecialchars($restaurant['telegramAccount']) ?></a> 
-                        <a href="<?= htmlspecialchars($restaurant['instagramAccount']) ?>" target="_blank"><i class="fa-brands fa-instagram"></i> <?= htmlspecialchars($restaurant['instagramAccount']) ?></a>
-                        <a href="tel:<?= htmlspecialchars($restaurant['phone']) ?>"><i class="fa-solid fa-phone"></i> <?= htmlspecialchars($restaurant['phone'])?></a>
+                    <div class="tiktokAccount">
+                        <strong> Tiktok link:</strong>
+                        <input type="text" value="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>">
+                    </div>
+
+                    <div class="website">
+                        <strong> Website link:</strong>
+                        <input type="text" value="<?= htmlspecialchars($restaurant['website']) ?>"> 
+                    </div>
+
+                    <div class="telegramAccount">
+                        <strong> Telegram link:</strong>
+                        <input type="text" value="<?= htmlspecialchars($restaurant['telegramAccount']) ?>"> 
+                    </div>
+
+                    <div class="instagramAccount">
+                        <strong> Instagram link:</strong>
+                        <input type="text" value="<?= htmlspecialchars($restaurant['instagramAccount']) ?>">
+                    </div>
+
+                    <div class="facebook">
+                        <strong> facebook account:</strong>
+                        <input type="text" value="<?= htmlspecialchars($restaurant['facebook']) ?>">
+                    </div>
+
+                    <div class="phone">
+                        <strong> phone number:</strong>
+                        <input type="text" value="<?= htmlspecialchars($restaurant['phone']) ?>">
                     </div>
                     <div class="status">
                         <strong>Status:</strong>
-                        <span class="status <?= strtolower($restaurant['status']) ?>"><?= htmlspecialchars($restaurant['status']) ?></span>
+                        <p class="status <?= strtolower($restaurant['status']) ?>"><?= htmlspecialchars($restaurant['status']) ?></p>
+                    </div>
+
+                    <div class="rating">
+                        <strong>Rating:</strong>
+                        <p><?= htmlspecialchars($restaurant['rating']) ?></p>
+                    </div>
+
+                    <div class="created_at">
+                        <strong>registered time:</strong>
+                        <p ><?= htmlspecialchars($restaurant['created_at']) ?></p>
+                    </div>
+
+                    <div class="updated_at">
+                        <strong>latest update time:</strong>
+                        <p ><?= htmlspecialchars($restaurant['updated_at']) ?></p>
                     </div>
                     
                 </div>
