@@ -82,11 +82,10 @@ class RestaurantController {
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_GET['restaurant_id'] != '') {
             $restaurantId = $_GET['restaurant_id']; // Get restaurant ID
             $ownerId = $_SESSION['user_id']; // Corrected session variable for owner ID
-            echo $restaurantId;
             // Handle file uploads (optional, only if a new file is uploaded)
-            $imagePath = isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK ? $this->uploadFile('image') : $_POST['existing_image'];
-            $bannerPath = isset($_FILES['banner']) && $_FILES['banner']['error'] === UPLOAD_ERR_OK ? $this->uploadFile('banner') : $_POST['existing_banner'];
-            $licensePath = isset($_FILES['license']) && $_FILES['license']['error'] === UPLOAD_ERR_OK ? $this->uploadFile('license') : $_POST['existing_license'];
+            $imagePath = isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK ? $this->uploadFile('image') : $_POST['image'];
+            $bannerPath = isset($_FILES['banner']) && $_FILES['banner']['error'] === UPLOAD_ERR_OK ? $this->uploadFile('banner') : $_POST['banner'];
+            $licensePath = isset($_FILES['license']) && $_FILES['license']['error'] === UPLOAD_ERR_OK ? $this->uploadFile('license') : $_POST['license'];
 
             // Prepare the data to be updated
             $data = [
