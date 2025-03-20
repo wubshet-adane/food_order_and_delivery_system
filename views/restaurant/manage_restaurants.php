@@ -26,138 +26,167 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant detail</title>
-    <link rel="stylesheet" href="css/manage_restaurant.css">
-    <link rel="icon" href="../../public/images/logo.jpg'">
-     <!--font ausome for star rating-->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../public/images/logo_icon.jpg" type="image/jpg">
+    <!--font ausome for star rating-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!--local style css files-->
+    <link rel="stylesheet" href="../../views/restaurant/css/manage_restaurants.css">
     <script type="module" src="../customers/javaScript/map.js"></script>
 
     <style>
+       
 
     </style>
-    </head>
-
+</head>
 
 <body>
     <section class="restaurant-management">
+        <form action="../../controllers/restaurant_register_form_controller.php?action=update_restaurant&restaurant_id=<?= $resId ?>" method="POST" autocomplete="on" enctype="multipart/form-data">
+            <div class="restaurant-list">
+                <div class="top_buttons">
+                    <div>
+                        <a class="boBack" onclick="history.back()"> Back </a>
+                    </div>
+                    <div class="addMenu">
+                        <a class="boAdd" onclick="location.href='add menu.php?id=<?php echo $resId ?>'">Add menu</a>
+                    </div>
+                    <div class="addMenu">
+                        <a class="boEdit" id="boEdit" name="boEdit">Edit Restaurant</a>
+                    </div>
+                </div>
 
-        <div class="restaurant-list">
-            <div class="searchingAndSortingFunctionality">
                 <div>
-                    <button class="boBack" onclick="location.href='restaurant_list.php'"> Back </button>
+                    <h2>Restaurant Detail</h2>
                 </div>
-                <div class="addMenu">
-                    <button class="boAdd" onclick="location.href='add menu.php?id=<?php echo $resId ?>'">Add menu</button>
-                </div>
-            </div>
-            <div>
-                <h2>Restaurant Detail</h2>
-            </div>
-            <?php foreach ($restaurants as $restaurant): ?>
+
+                <?php foreach ($restaurants as $restaurant): ?>
                 <div>
-                    
                     <div class="res_name">
-                        <h1><?= htmlspecialchars($restaurant['name']) ?></h1>
+                        <span><h1><?= htmlspecialchars($restaurant['name']) ?></h1></span>
+                        <h1><input type="text" id="name" name="name" value="<?= htmlspecialchars($restaurant['name']) ?>"></h1>
                     </div>
 
                     <div class="image">
                         <strong> restaurant Card Image:</strong> 
-                        <img src = "restaurantAsset/<?= htmlspecialchars($restaurant['image']);?>" alt="imge">
+                        <span><img src = "restaurantAsset/<?= htmlspecialchars($restaurant['image']);?>" alt="imge"></span>
+                        <input type="image" id="image" name="image" accept="image/*">
                     </div>
 
                     <div class="banner">
                         <strong> restaurant Banner Image:</strong>
-                        <img src = "restaurantAsset/<?= htmlspecialchars($restaurant['banner']);?>" alt="banner">
+                        <span><img src = "restaurantAsset/<?= htmlspecialchars($restaurant['banner']);?>" alt="banner"></span>
+                        <input type="file" id="banner" name="banner" accept="image/*">
                     </div>
 
                     <div class="license">
                         <strong> restaurant legal license Image:</strong>
-                        <img src = "restaurantAsset/<?= htmlspecialchars($restaurant['license']);?>" alt="license">
+                        <span><img src = "restaurantAsset/<?= htmlspecialchars($restaurant['license']);?>" alt="license"></span>
+                        <input type="file" id="license" name="license" accept="image/*">
                     </div>
 
                     <div class="latitude">
                         <strong>Latitude</strong>
-                        <input type="text" id="latitude" value="<?= $restaurant['latitude']?>">
+                        <span><?= $restaurant['latitude']?></span>
+                        <input type="text" id="latitude" name="latitude" value="<?= $restaurant['latitude']?>">
                     </div>
 
                     <div class="longitude">
                         <strong>Longitude</strong>
-                        <input type="text" id="longtude" value="<?= $restaurant['longitude']?>">
+                        <span><?= $restaurant['longitude']?></span>
+                        <input type="text" id="longtude" name="longitude" value="<?= $restaurant['longitude']?>">
                     </div>
 
                     <div class="map-container">
                         <div>
                             <strong> Location:</strong> 
-                            <i class="fa fa-map-marker"></i> <?= htmlspecialchars($restaurant['location'])?>
-                            <div id="map"></div>
+                            <span><i class="fa fa-map-marker"></i> <?= htmlspecialchars($restaurant['location'])?></span>
+                            <input type="text" id="location" name="location" value="<?= htmlspecialchars($restaurant['location'])?>">                            
+                            <span><div id="map"></div></span>
                         </div>
                     </div>
-                   
+                
                     <div class="description">
-                        <strong> Detail Description:</strong> <span class="description"><?= htmlspecialchars($restaurant['description']) ?></span>
+                        <strong> Detail Description:</strong>
+                        <span class="description"><?= htmlspecialchars($restaurant['description']) ?></span>
+                        <textarea id="description" name="description" rows="4" cols="50"><?= htmlspecialchars($restaurant['description']) ?></textarea>
                     </div>
 
                     <div class="time">
-                        <strong> Working time:</strong> <?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?>
+                        <strong> Working time:</strong> 
+                        <span><?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?></span>
+                        <textarea name="opening_and_closing_hour" id="opening_and_closing_hour" rows="3" cols="50"><?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?></textarea>
                     </div>
                 
                     <div class="tiktokAccount">
                         <strong> Tiktok link:</strong>
-                        <input type="text" value="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>">
+                        <span><?= htmlspecialchars($restaurant['tiktokAccount']) ?></span>
+                        <input type="text" id="tiktokAccount" name="tiktokAccount" value="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>">
                     </div>
 
                     <div class="website">
                         <strong> Website link:</strong>
-                        <input type="text" value="<?= htmlspecialchars($restaurant['website']) ?>"> 
+                        <span><?= htmlspecialchars($restaurant['website']) ?></span>
+                        <input type="text" id="website" name="website" value="<?= htmlspecialchars($restaurant['website']) ?>"> 
                     </div>
 
                     <div class="telegramAccount">
                         <strong> Telegram link:</strong>
-                        <input type="text" value="<?= htmlspecialchars($restaurant['telegramAccount']) ?>"> 
+                        <span><?= htmlspecialchars($restaurant['telegramAccount']) ?></span>
+                        <input type="text" id="telegramAccount" name="telegramAccount" value="<?= htmlspecialchars($restaurant['telegramAccount']) ?>"> 
                     </div>
 
                     <div class="instagramAccount">
                         <strong> Instagram link:</strong>
-                        <input type="text" value="<?= htmlspecialchars($restaurant['instagramAccount']) ?>">
+                        <span><?= htmlspecialchars($restaurant['instagramAccount']) ?></span>
+                        <input type="text" id="instagramAccount" name="instagramAccount" value="<?= htmlspecialchars($restaurant['instagramAccount']) ?>">
                     </div>
 
                     <div class="facebook">
                         <strong> facebook account:</strong>
-                        <input type="text" value="<?= htmlspecialchars($restaurant['facebook']) ?>">
+                        <span><?= htmlspecialchars($restaurant['facebook']) ?></span>
+                        <input type="text" id="facebook" name="facebook" value="<?= htmlspecialchars($restaurant['facebook']) ?>">
                     </div>
 
                     <div class="phone">
                         <strong> phone number:</strong>
-                        <input type="text" value="<?= htmlspecialchars($restaurant['phone']) ?>">
+                        <input type="text" id="phone" name="phone" value="<?= htmlspecialchars($restaurant['phone']) ?>">
                     </div>
+
                     <div class="status">
                         <strong>Status:</strong>
-                        <p class="status <?= strtolower($restaurant['status']) ?>"><?= htmlspecialchars($restaurant['status']) ?></p>
+                        <span class="status <?= strtolower($restaurant['status']) ?>"><?= htmlspecialchars($restaurant['status']) ?></span>
+                        <select name="status" id="status">
+                            <option value="open" <?= htmlspecialchars($restaurant['status']) == 'open' ? 'selected' : '' ?>>Open</option>
+                            <option value="closed" <?= htmlspecialchars($restaurant['status']) == 'closed' ? 'selected' : '' ?>>Closed</option>
+                        </select>
                     </div>
 
                     <div class="rating">
                         <strong>Rating:</strong>
-                        <p><?= htmlspecialchars($restaurant['rating']) ?></p>
+                        <span><?= htmlspecialchars($restaurant['rating']) ?></span>
                     </div>
 
                     <div class="created_at">
                         <strong>registered time:</strong>
-                        <p ><?= htmlspecialchars($restaurant['created_at']) ?></p>
+                        <span><?= htmlspecialchars($restaurant['created_at']) ?></span>
                     </div>
 
                     <div class="updated_at">
                         <strong>latest update time:</strong>
-                        <p ><?= htmlspecialchars($restaurant['updated_at']) ?></p>
+                        <span><?= htmlspecialchars($restaurant['updated_at']) ?></span>
                     </div>
-                    
+                    <!--update button-->
+                    <button class="boUpdate" id="boUpdate" name="boUpdate">Update</button>
                 </div>
+                <?php endforeach; ?>
 
-                </div>
-            <?php endforeach; ?>
-        </div>
+            </div>
+        </form>
     </section>
+    <!--edit restaurant script-->
+    <script src="javaScript/edit_restaurant.js" defer loading="async"></script>
     <!--map script-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=places&v=weekly" defer>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=places&v=weekly" defer loading="async">
     </script>
 </body>
 

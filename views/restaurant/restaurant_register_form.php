@@ -29,7 +29,7 @@
         <h2>Register Your Restaurant</h2>
         <button id="darkModeToggle">🌙 Toggle Dark Mode</button>
 
-        <form action="../../controllers/restaurant_register_form_controller.php" method="POST" enctype="multipart/form-data">
+        <form action="../../controllers/restaurant_register_form_controller.php?action=register" method="POST" enctype="multipart/form-data">
             <!-- Basic Details -->
             <fieldset>
                 <legend>Basic Information</legend>
