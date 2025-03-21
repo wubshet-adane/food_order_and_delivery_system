@@ -69,7 +69,7 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                     <div class="image">
                         <strong> restaurant Card Image:</strong> 
                         <span><img src = "restaurantAsset/<?= htmlspecialchars($restaurant['image']);?>" alt="imge"></span>
-                        <input type="image" id="image" name="image" accept="image/*">
+                        <input type="file" id="image" name="image" accept="image/*">
                     </div>
 
                     <div class="banner">
@@ -149,6 +149,7 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
 
                     <div class="phone">
                         <strong> phone number:</strong>
+                        <span><?= htmlspecialchars($restaurant['phone']) ?></span>
                         <input type="text" id="phone" name="phone" value="<?= htmlspecialchars($restaurant['phone']) ?>">
                     </div>
 

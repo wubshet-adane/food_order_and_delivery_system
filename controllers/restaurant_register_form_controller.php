@@ -83,14 +83,14 @@ class RestaurantController {
             $restaurantId = $_GET['restaurant_id']; // Get restaurant ID
             $ownerId = $_SESSION['user_id']; // Corrected session variable for owner ID
             // Handle file uploads (optional, only if a new file is uploaded)
-            $imagePath = isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK ? $this->uploadFile('image') : $_FILES['image'];
-            $bannerPath = isset($_FILES['banner']) && $_FILES['banner']['error'] === UPLOAD_ERR_OK ? $this->uploadFile('banner') : $_FILES['banner'];
-            $licensePath = isset($_FILES['license']) && $_FILES['license']['error'] === UPLOAD_ERR_OK ? $this->uploadFile('license') : $_FILES['license'];
+            $imagePath = $this->uploadFile('image');
+            $bannerPath = $this->uploadFile('banner');
+            $licensePath = $this->uploadFile('license');
 
             // Prepare the data to be updated
             $data = [
-                'restaurant_id' => $restaurantId,
                 'owner_id' => $ownerId,
+                'restaurant_id' => $restaurantId,
                 'name' => $_POST['name'],
                 'image' => $imagePath,
                 'banner' => $bannerPath,
@@ -98,13 +98,13 @@ class RestaurantController {
                 'location' => $_POST['location'],
                 'latitude' => $_POST['latitude'],
                 'longitude' => $_POST['longitude'],
-                'phone' => $_POST['phone'],
-                'status' => $_POST['status'],
+                'website' => $_POST['website'],
                 'tiktok' => $_POST['tiktokAccount'],
                 'telegram' => $_POST['telegramAccount'],
                 'instagram' => $_POST['instagramAccount'],
                 'facebook' => $_POST['facebook'],
-                'website' => $_POST['website'],
+                'phone' => $_POST['phone'],
+                'status' => $_POST['status'],
                 'opening_and_closing_hour' => $_POST['opening_and_closing_hour'],
                 'description' => $_POST['description'],
             ];

@@ -129,8 +129,8 @@
                             <h3 class="res-name"><?php echo htmlspecialchars($restaurant['name']); ?>:</h3>
                         </div>
                         <div class="restaurant-details">
-                            <p><strong>Location:</strong> <?php echo htmlspecialchars($restaurant['location']); ?></p>
-                            <p><strong>Phone:</strong> <?php echo htmlspecialchars($restaurant['phone']); ?></p>
+                            <p><i class="fa fa-map-marker"></i> <?php echo htmlspecialchars($restaurant['location']); ?></p>
+                            <p><i class="fa-solid fa-phone"></i> <?php echo htmlspecialchars($restaurant['phone']); ?></p>
                             <hr>
                             <!--add rating-->
                             <div class="restaurant-rating">
@@ -140,7 +140,7 @@
                                     <i class="fa-solid fa-star" data-value="3"></i>
                                     <i class="fa-solid fa-star" data-value="4"></i>
                                     <i class="fa-solid fa-star" data-value="5"></i>
-                                    <div class="rating-value"><?php echo $restaurant['rating']; ?>/5</div> <span> Rated</span>
+                                    <div class="rating-value"><?php echo $restaurant['rating']; ?>/5</div>
                                 </div>
                             </div>
 
@@ -192,7 +192,7 @@
                 <h2>Become a <span>Customer</span></h2>
                 <p>Order your favorite meals with ease and convenience.</p>
                 <div class="partner_redirect_link_box">
-                    <a href="menu.php"> Customer</a>
+                    <a href="../auth/customer_register.php"> Customer</a>
                 </div>
             </div>
             <div class="box restaurant">
