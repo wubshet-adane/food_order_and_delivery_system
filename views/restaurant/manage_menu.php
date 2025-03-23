@@ -29,8 +29,7 @@
                     <button type="submit" name="delete_menu" class="delete-btn">❌ </button>
                 </form>
                 <button class="edit-btn" data-id="<?= $item['menu_id']; ?>" data-name="<?= $item['name']; ?>" 
-                        data-description="<?= $item['description']; ?>" data-price="<?= $item['price']; ?>" 
-                        data-image="<?= $item['image']; ?>"> ✏️ Edit </button>
+                        data-description="<?= $item['description']; ?>" data-price="<?= $item['price']; ?>" data-image="<?= $item['image']; ?>"> ✏️ Edit </button>
             </td>
         </tr>
         <?php endforeach; ?>
@@ -69,6 +68,7 @@
                     <option value="main">Main Course</option>
                     <option value="dessert">Dessert</option>
                     <option value="beverages">Beverages</option>
+                    <option value="other">Other</option>
                 </select>
             </div>
         </div>

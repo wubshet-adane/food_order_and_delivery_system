@@ -3,6 +3,9 @@ function edit() {
     const enable_editting = document.getElementById('boEdit');  // Get the edit image text
     const update_btn = document.getElementById('boUpdate');  // Get the update button
     const info = document.querySelectorAll('span'); //get restaurant data in span tag
+    const rating = document.querySelector('.rating'); //get restaurant data in span tag
+    const created_at = document.querySelector('.created_at'); //get restaurant data in span tag
+    const updated_at = document.querySelector('.updated_at'); //get restaurant data in span tag
 
 
     // Initial setup: disable input field, hide the update button, set button text to 'edit'
@@ -19,21 +22,27 @@ function edit() {
        input_tags.forEach(input_tag => {
             if (input_tag.style.display == 'none') {
                 input_tag.style.display = 'block';  //display elements
+                rating.style.display = 'none';
+                created_at.style.display = 'none';
+                updated_at.style.display = 'none';
                 info.forEach(element => {
                     element.style.display = 'none';
                 });
                 update_btn.style.display = 'block';// Show the update button after editing starts
                 enable_editting.textContent = 'Cancel';  // Change the edit button text to cancel
-                enable_editting.style.backgroundColor = '#19f';// change background color
+                enable_editting.style.backgroundColor = '#ccc';// change background color
                 enable_editting.style.color = 'red';  // Change the edit button color back to default
            }
             else {
                 input_tag.style.display = 'none';  // Hide the update button
+                rating.style.display = 'block';
+                created_at.style.display = 'block';
+                updated_at.style.display = 'block';
                 info.forEach(element => {
                     element.style.display = '';
                 });
                 update_btn.style.display = 'none';  // Hide the update button after updating
-                enable_editting.textContent = 'Edit Restaurant';  // Change the edit button text back to edit
+                enable_editting.textContent = 'Edit';  // Change the edit button text back to edit
                 enable_editting.style.backgroundColor = '#03a000';// change background color
                 enable_editting.style.color = '#fff';  // Change the edit button color back to default
             }

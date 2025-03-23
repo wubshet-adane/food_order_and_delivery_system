@@ -69,25 +69,39 @@
     color: #fff;
 }
 
+@keyframes example {
+    0% { right: 100; }
+    100% {right: 0; }
+  }
+  
+
 /*responce message section*/
 .responce_message{
-    width: fit-content;
     position: absolute;
-    border:2px solid #006aff;
-    border-radius: 5px;
-    outline: 4px solid rgb(186, 114, 32);
     top: 100%;
-    right: 0;
-    padding: 0;
     transform: translateX(-50px);
     transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out, transform 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    animation: example, 1s ease-in-out;
 }
 
 .responce_message p{
     font-weight: 600;
     margin: 10px 20px;
+    border-radius: 5px;
+    width: fit-content;
+
 }
 
+.responce_message .error{
+    outline: 4px solid rgb(255, 0, 0);
+    background-color: #ff0000;
+}
+
+.responce_message .success{
+    outline: 4px solid green;
+    background-color: rgb(red, green, blue);
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav_list {

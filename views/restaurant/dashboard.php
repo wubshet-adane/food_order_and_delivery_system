@@ -115,7 +115,6 @@ $menuItems = Menu::getAllItems();
     <!--edit menu modal script-->
     <script src="javaScript/edit_menu_modal.js"></script>
     <script src="javaScript/settimeout.js"></script>
-    <script src="../../public/js/delete_confirmation.js"></script>
     <script>
         //script for closing responce messages automaticaly
         closeResponseById("responce_message"); // Auto-hide after 5 seconds

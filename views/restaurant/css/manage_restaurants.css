@@ -35,11 +35,24 @@ body {
     gap: 1rem;
 }
 
-.boBack, .boAdd, .boEdit {
+.top_buttons span{
+    font-style: normal;
+    color: #fff;
+}
+
+.go_back{
+    float: left;
+}
+
+.fa-solid{
+    display: none;
+}
+
+.boBack, .boAdd, .boEdit, .boDelete {
     background-color: #ff6600;
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: 5px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
@@ -73,6 +86,15 @@ body {
 
 .boUpdate:hover{
     background-color: #0d9f0086;
+}
+
+.boDelete{
+    background-color : #ff0000;
+}
+
+.boDelete:hover{
+    background-color: #fff;
+    color: #ff0000;
 }
 
 h2 {

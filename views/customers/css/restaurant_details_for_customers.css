@@ -40,6 +40,7 @@ body{
     text-transform: capitalize;
     margin: 10px 2px;
     font-family: "Oswald", sans-serif;
+    padding-right: 1rem;
 }
 
 .restaurant-card {
@@ -57,6 +58,18 @@ body{
     color: #888;
 
 }
+
+.image {
+    width: 100%;
+    cursor: pointer;
+    margin: auto;
+}
+
+.image img{
+    margin: auto;
+    max-width: 80%;
+}
+
 .res_info{
     display: block;
     font-size: 28px;
@@ -70,8 +83,7 @@ body{
     color: #888;
     line-height: 1.5rem;
 }
-.social-media{
-}
+
 .social_media a{
     color: #b57600;
     text-decoration: none;
@@ -112,7 +124,12 @@ body{
 @media screen and(max-width:900px) {
   
     .res_name {
-        width: fit-content;
+        width: 80%;
+        top: 80%;
+    }
+    .image{
+        padding-top: 10px;
+        width: 100%;
     }
     .res_info{
         text-align: left;

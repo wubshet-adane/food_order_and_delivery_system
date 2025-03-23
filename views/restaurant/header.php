@@ -24,12 +24,12 @@
             if (isset($_GET['error'])){
                 $message = $_GET['error'];
             ?>
-                <p style="color:red;"><?php echo $message;?>.</p>
+                <p class="error" style="color:#fff;"><?php echo $message;?>.</p>
             <?php }
             if (isset($_GET['success'])) {
                 $message = $_GET['success'];
             ?>
-                <p style="color:green;"><?php echo $message;?>.</p>
+                <p class="success" style="color:#FFF;"><?php echo $message;?>.</p>
             <?php }?>
         </div>
 </header>

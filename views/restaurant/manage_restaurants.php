@@ -44,14 +44,17 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
         <form action="../../controllers/restaurant_register_form_controller.php?action=update_restaurant&restaurant_id=<?= $resId ?>" method="POST" autocomplete="on" enctype="multipart/form-data">
             <div class="restaurant-list">
                 <div class="top_buttons">
-                    <div>
-                        <a class="boBack" onclick="history.back()"> Back </a>
+                    <div class="go_back">
+                        <a class="boBack" onclick="history.back()" title="go Back">Back </a>
                     </div>
                     <div class="addMenu">
-                        <a class="boAdd" onclick="location.href='add menu.php?id=<?php echo $resId ?>'">Add menu</a>
+                        <a class="boAdd" onclick="location.href='add menu.php?id=<?php echo $resId ?>'" title="Add menu to this Restaurant">Add menu</a>
                     </div>
-                    <div class="addMenu">
-                        <a class="boEdit" id="boEdit" name="boEdit">Edit Restaurant</a>
+                    <div class="editRestaurant">
+                        <a class="boEdit" id="boEdit" name="boEdit" title="Edit Restaurant">Edit</a>
+                    </div>
+                    <div class="deleteRestaurant">
+                        <a class="boDelete" id="boDelete" name="boDelete" title="Delete this Restaurant">Delete</a>
                     </div>
                 </div>
 
@@ -79,7 +82,7 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                     </div>
 
                     <div class="license">
-                        <strong> restaurant legal license Image:</strong>
+                        <strong> Renewed legal business license image for this hotel:</strong>
                         <span><img src = "restaurantAsset/<?= htmlspecialchars($restaurant['license']);?>" alt="license"></span>
                         <input type="file" id="license" name="license" accept="image/*">
                     </div>
@@ -162,17 +165,17 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                         </select>
                     </div>
 
-                    <div class="rating">
+                    <div class="rating off">
                         <strong>Rating:</strong>
                         <span><?= htmlspecialchars($restaurant['rating']) ?></span>
                     </div>
 
-                    <div class="created_at">
+                    <div class="created_at off">
                         <strong>registered time:</strong>
                         <span><?= htmlspecialchars($restaurant['created_at']) ?></span>
                     </div>
 
-                    <div class="updated_at">
+                    <div class="updated_at off">
                         <strong>latest update time:</strong>
                         <span><?= htmlspecialchars($restaurant['updated_at']) ?></span>
                     </div>

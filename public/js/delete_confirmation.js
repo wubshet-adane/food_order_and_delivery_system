@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
 
             // Show the confirmation prompt
-            const confirmation = confirm("Are you sure you want to delete this menu item?");
+            const confirmation = confirm("Are you sure you want to delete?");
 
             // If the user confirms, submit the form
             if (confirmation) {
