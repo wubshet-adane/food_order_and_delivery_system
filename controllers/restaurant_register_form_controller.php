@@ -125,11 +125,13 @@ class RestaurantController {
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['restaurant_id'])) {
             $restaurantId = $_POST['restaurant_id']; // Get restaurant ID to delete
             $ownerId = $_SESSION['user_id']; // Corrected session variable for owner ID
-
+            echo $restaurantId;
+            echo $ownerId;
             $restaurantModel = new Restaurant($this->conn); // Create the model object
 
             // Delete the restaurant
             if ($restaurantModel->deleteRestaurant($restaurantId, $ownerId)) {
+                echo $restaurantId;
                 header("Location: ../views/restaurant/dashboard.php?success=Restaurant successfully deleted.");
             } else {
                 header("Location: ../views/restaurant/dashboard.php?error=An error occurred while deleting. Please try again later.");
