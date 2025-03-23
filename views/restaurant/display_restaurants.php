@@ -1,11 +1,6 @@
 <?php
 session_start();
-/*
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php"); // Redirect if not logged in
-    exit;
-}
-*/
+
 require_once '../../models/manage_restaurant.php';
 require_once '../../config/database.php';
 
