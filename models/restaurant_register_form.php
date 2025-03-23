@@ -131,6 +131,31 @@ class Restaurant {
             die("Error executing query: " . $stmt->error);
         }
     }
+    public function deleteRestaurant($restaurantId, $ownerId) {
+        // Use a DELETE query to delete the existing restaurant record
+        $query = "DELETE FROM restaurants WHERE restaurant_id = ? AND owner_id = ?";  // Specify which record to delete by restaurant_id
+    
+        // Prepare the statement
+        $stmt = $this->conn->prepare($query);
+    
+        // Check if the statement was prepared successfully
+        if ($stmt === false) {
+            // Show detailed error message if prepare fails
+            die("Error preparing query: " . $this->conn->error);
+        }
+    
+        // Bind the parameters to the prepared statement
+        // Notice that the last parameter is the restaurant_id which identifies the record to delete
+        $stmt->bind_param("ii", $restaurantId, $ownerId);
+    
+        // Execute the statement and check for errors
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            // Show detailed error message if execute fails
+            die("Error executing query: " . $stmt->error);
+        }
+    }
     
 }
 ?>

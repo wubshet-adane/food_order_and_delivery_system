@@ -54,7 +54,9 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                         <a class="boEdit" id="boEdit" name="boEdit" title="Edit Restaurant">Edit</a>
                     </div>
                     <div class="deleteRestaurant">
-                        <a class="boDelete" id="boDelete" name="boDelete" title="Delete this Restaurant">Delete</a>
+                        <a class="boDelete" id="boDelete" name="boDelete"  
+                        onclick="location.href='../../controllers/restaurant_register_form_controller.php?action=delete_restaurant&restaurant_id=<?= $resId ?>'" 
+                        title="Delete this Restaurant">Delete</a>
                     </div>
                 </div>
 

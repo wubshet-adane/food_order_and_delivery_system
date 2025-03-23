@@ -132,7 +132,7 @@ class RestaurantController {
             if ($restaurantModel->deleteRestaurant($restaurantId, $ownerId)) {
                 header("Location: ../views/restaurant/dashboard.php?success=Restaurant successfully deleted.");
             } else {
-                header("Location: ../views/restaurant/restaurant_list.php?error=An error occurred while deleting. Please try again later.");
+                header("Location: ../views/restaurant/dashboard.php?error=An error occurred while deleting. Please try again later.");
             }
             exit;
         }
@@ -147,7 +147,7 @@ switch ($action) {
     case 'update_restaurant':
         $restaurantController->update();
         break;
-    case 'delete':
+    case 'delete_restaurant':
         $restaurantController->delete();
         break;
     default:
