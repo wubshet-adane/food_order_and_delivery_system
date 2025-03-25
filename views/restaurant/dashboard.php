@@ -9,6 +9,8 @@ $menuItems = Menu::getAllItems();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Menu</title>
+    <!--font ausome for star rating-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/display_restaurant.css">
@@ -115,6 +117,7 @@ $menuItems = Menu::getAllItems();
     <!--edit menu modal script-->
     <script src="javaScript/edit_menu_modal.js"></script>
     <script src="javaScript/settimeout.js"></script>
+    <script src="javaScript/delete_confirmation"></script>
     <script>
         //script for closing responce messages automaticaly
         closeResponseById("responce_message"); // Auto-hide after 5 seconds

@@ -27,6 +27,12 @@ body {
     padding: 20px;
 }
 
+p{
+    font-family: "roboto",sans-serif;
+    font-style: italic;
+    color: #888;
+}
+
 .item-image img {
     width: 100%;
     max-width: 400px;
@@ -40,31 +46,33 @@ body {
 }
 .detail_info{
     font-family: "Oswald", sans-serif;
+    color: #333;
 }
 
 .description {
     font-size: 1.1rem;
     margin-bottom: 20px;
+    color: #888;
 }
 
 .price {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1rem;
     margin-bottom: 20px;
+    color: #055;
 }
 
-.item-actions button {
-    padding: 10px 20px;
+.item-actions .add-to-cart {
+    padding: 6px 20px;
     background-color: #ff9900;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-right: 10px;
+    margin-top: 4px;
     transition: background-color 0.3s ease;
 }
 
-.item-actions button:hover {
+.item-actions .add-to-cart:hover {
     background-color: #8e5602;
 }
 

@@ -30,6 +30,7 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant detail</title>
     <link rel="stylesheet" href="css/restaurant_details_for_customers.css">
+    <link rel="stylesheet" href="css/topbar.css">
     <link rel="icon" href="../../public/images/logo_icon.jpg" type="image/jpg">
      <!--font ausome for star rating-->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -68,7 +69,9 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
 
 
 <body>
-    <section class="restaurant-management">
+    
+       
+    </section>
 
         <div class="restaurant-list">
             <?php foreach ($restaurants as $restaurant): ?>
@@ -76,10 +79,32 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;">
-
-                    <div>
                     
+                    <!-- Top Bar -->
+                    <div class="top-bar">
+                        <!-- Logo -->
+                        <div class="logo">
+                            <a href="home.php" style="color: white; text-decoration: none;"><img src="../../public/images/logo.jpg" alt="G3 FoodOrder" sizes="" srcset=""></a>
+                        </div>
+
+                        <!-- Center Navigation Links -->
+                        <div class="nav-links">
+                            <a href="home.php">Home</a>
+                            <a href="about.php">About</a>
+                            <a href="contact.php">Contact</a>
+                            <a href="cart.php">Cart 🛒</a>
+                            <a href="menu.php">Menu</a>
+                        </div>
+
+                        <!-- Authentication Links -->
+                        <div class="auth-links">
+                            <button id="darkModeToggle">🌙 Dark Mode</button>
+                            <a href="login.php">Login</a>
+                            <a href="register.php">Register</a>
+                            <a href="logout.php">Logout</a>
+                        </div>
                     </div>
+
                     <div class="res_name">
                         <h1><?= htmlspecialchars($restaurant['name']) ?></h1>
                         <div class="status_div">
@@ -143,5 +168,4 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
     </script>
 
 </body>
-
 </html>

@@ -45,11 +45,22 @@ body {
 }
 
 .responce_message_error p{
-    background-color: rgb(255, 234, 0);
-    color: red;
-    padding: 5px;
-    border: 1px solid red;
+    background-color: rgb(255, 134, 120);
+    color: rgb(0, 0, 0);
+    padding: 10px;
     border-radius: 5px;
+    text-align: center;
+    animation: shake 3s;
+    animation-fill-mode: forwards;
+    margin: 0 auto;
+}
+
+@keyframes shake {
+    0% { transform: translateY(-30px); }
+    10% { transform: translateY(10px); }
+    15% { transform: translateY(-5px); }
+    17% { transform: translateY(0); }
+    100% { display: none; } /* Use 'none' instead of 'hidden' */
 }
 
 h2 {

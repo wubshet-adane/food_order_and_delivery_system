@@ -1,9 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customers Login</title>
+    <!--font ausome for star rating-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../public/css/login.css">
 </head>
 <body>
@@ -26,11 +29,11 @@
                     <!--form section-->
                     <form class="form-login" action="../../controllers/customer_login_controller.php?action=login" method="POST">
                         <div class="input-group">
-                            <label for="email">Email</label>
+                            <label for="email"><i class="fa-solid fa-invelope"> </i> Email</label>
                             <input type="email" id="email" name="email" placeholder="Enter your email" required>
                         </div>
                         <div class="input-group">
-                            <label for="password">Password</label>
+                            <label for="password"><i class="fa-solid fa-lock"> </i> Password</label>
                             <input type="password" id="password" name="password" placeholder="Enter your password" required>
                             <span class="form-check-input">Show password</span><input type="checkbox" id="showPassword" style="border:1px solid blue;"> 
 

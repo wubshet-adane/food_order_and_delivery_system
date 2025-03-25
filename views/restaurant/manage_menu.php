@@ -1,3 +1,9 @@
+
+<?php
+require_once __DIR__ . '/../../config/database.php';
+
+?>
+
 <header class="menu-header">
     <h1 class="menu-title">Manage Menu</h1>
 </header>
@@ -28,7 +34,7 @@
                     <input type="hidden" name="id" value="<?= $item['menu_id']; ?>">
                     <button type="submit" name="delete_menu" class="delete-btn">❌ </button>
                 </form>
-                <button class="edit-btn" data-id="<?= $item['menu_id']; ?>" data-name="<?= $item['name']; ?>" 
+                <button class="edit-btn" data-id="<?= $item['menu_id']; ?>" data-name="<?= $item['name']; ?>"
                         data-description="<?= $item['description']; ?>" data-price="<?= $item['price']; ?>" data-image="<?= $item['image']; ?>"> ✏️ Edit </button>
             </td>
         </tr>

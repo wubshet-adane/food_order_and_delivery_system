@@ -23,7 +23,7 @@ if (isset($_GET['menu_id'])) {
         $error_message = "Item not found.";
     }
 
-    //fetch information about restaurant where the menu item is located         
+    //fetch information about restaurant where the menu item is located
     $sql = "SELECT * FROM restaurants WHERE restaurant_id = ?";
     $cafe_stmt = $conn->prepare($sql);
     $cafe_stmt->bind_param("i", $item['restaurant_id']);
@@ -62,18 +62,21 @@ if (isset($_GET['menu_id'])) {
                 </div>
 
                 <div class="item-info">
-                    <h1><?php echo htmlspecialchars($item['name']); ?></h1>
-                    <p class="description"><?php echo htmlspecialchars($item['description']); ?></p>
-                    <p class="price">$<?php echo number_format($item['price'], 2); ?></p>
-                    
+                <button class="back-to-menu" onclick="window.history.back()">Back to Menu</button>
+
+                    <h2><?php echo htmlspecialchars($item['name']); ?></h2>
+                    <h4 class="description"><?php echo htmlspecialchars($item['description']); ?></h4><br>
+                    <h4>price for single item: 
+                        <span class="price"><?php echo number_format($item['price'], 2); ?> Birr.</span>
+                    </h4><br>
                     <div class="detail_info">
-                        <h3>Detail information about this food item:</h3>
-                        <h2>This food Prepared at <?php echo $cafe['name']; ?></h2>
+                        <h4>Detail information about this food item:</h4>
+                        <h4>This food Prepared at <?php echo $cafe['name']; ?></h4>
                         <p><?php echo htmlspecialchars($item['name']);?> included in the catagory of<?php echo htmlspecialchars($item['catagory']); ?></p>
                         <p><?php echo htmlspecialchars($item['description']);?></p>
-                        <h3>To make this type of meal we were contained the following type of ingrediants:</h3>
+                        <h4>To make this type of meal we were contained the following type of ingrediants:</h4>
                         <p><?php echo htmlspecialchars($item['content']);?></p>
-                        <h2>related informations</h2>
+                        <h4>related informations</h4>
                         <code>
                             <p>Location: <?php echo htmlspecialchars($cafe['location']); ?></p>
                             <p>Phone: <?php echo htmlspecialchars($cafe['phone']); ?></p>
@@ -81,8 +84,7 @@ if (isset($_GET['menu_id'])) {
                     </div>
 
                     <div class="item-actions">
-                        <button class="add-to-cart" onclick="addToCart(<?php echo $item['menu_id']; ?>)">Add to Cart</button>
-                        <button class="back-to-menu" onclick="window.history.back()">Back to Menu</button>
+                        <a href="" class="add-to-cart" id="add-to-cart">Add to Cart 🛒</a>
                     </div>
                 </div>
 

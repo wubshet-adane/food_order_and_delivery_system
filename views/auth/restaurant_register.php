@@ -4,6 +4,9 @@
     <title>Register</title>
     <link rel="stylesheet" href="../../public/css/login.css">
     <style>
+        h2{
+            color: #ff9900;
+        }
         .group{
             display: flex;
             flex-wrap: wrap;
@@ -36,9 +39,9 @@
         }
     </style>
 </head>
-<body style="background: linear-gradient(rgba(50, 50, 50, 0.9), rgba(50, 57, 40, .7)), url('../../public/images/restaurant_login_bg.jpg');">
+<body style="background: linear-gradient(rgba(50, 50, 50, 0.0), rgba(0, 0, 0, 1)), url('../../public/images/restaurant_login_bg.jpg');">
 <div class="full-container">
-        <div class="login-container">
+        <div class="login-container" style="background: linear-gradient(rgba(0, 0, 50, 0.7), rgba(0, 0, 0, 0))">
             <h2> create merchant account</h2>
             <hr>
             <!--form and image setion container-->

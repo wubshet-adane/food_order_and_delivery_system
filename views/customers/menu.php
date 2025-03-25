@@ -52,8 +52,8 @@
     <html>
     <head>
         <title>Menu - <?php echo htmlspecialchars($restaurant['name']); ?></title>
-        <!--font ausome-->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--font ausome for star rating-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="css/home.css">
         <link rel="stylesheet" href="css/menu.css">
         <link rel="stylesheet" href="css/topbar.css">
@@ -61,13 +61,17 @@
     </head>
     <body>
 
-    
-    <button id="darkModeToggle">🌙 Dark Mode</button>
-
+    <section class="header">
         <!-- Top Bar -->
         <?php
             include "topbar.php";
         ?>
+        <h1>Menu for <?php echo htmlspecialchars($restaurant['name']); ?></h1>
+        <p>Location: <?php echo htmlspecialchars($restaurant['location']); ?></p>
+        <p>Phone: <?php echo htmlspecialchars($restaurant['phone']); ?></p>
+        <h2>Menu</h2>
+    </section>
+
         <!--search and sort section-->
         <section class="search-sort container">
                 <form id="searchForm" method="GET" class="search-form">
@@ -85,12 +89,6 @@
                 </form>
             </section>
 
-
-        <h1>Menu for <?php echo htmlspecialchars($restaurant['name']); ?></h1>
-        <p>Location: <?php echo htmlspecialchars($restaurant['location']); ?></p>
-        <p>Phone: <?php echo htmlspecialchars($restaurant['phone']); ?></p>
-
-        <h2>Menu</h2>
         <div class="menu_container">
             <?php
                 if ($menu_items) {

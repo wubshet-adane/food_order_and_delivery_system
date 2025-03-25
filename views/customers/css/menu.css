@@ -70,7 +70,7 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    line-height: .4;
+    line-height: 1;
 }
 
 .menu-item:hover {
@@ -108,7 +108,7 @@ p {
     top: -50px;
     left: 50%;
     transform: translate(-50%, 14px);
-    font-size: 20px;
+    font-size: 15px;
     font-family: Oswald, sans-serif;
     text-transform: capitalize;
     margin-bottom: 10px;
@@ -170,23 +170,4 @@ p {
 
 .back_to_res:hover {
     background-color: var(--link-hover);
-}
-
-/* Dark Mode Toggle Button */
-#darkModeToggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: var(--button-bg);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
-}
-
-#darkModeToggle:hover {
-    background: var(--button-hover);
 }

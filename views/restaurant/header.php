@@ -1,7 +1,9 @@
 <header class="header_section">
     <div class="container">
         <div class="logo">
-            <h1>🌟 Wubshet & Esrael</h1>
+            <div>
+                <img src="../../public/images/logo.jpg" alt="logo">
+            </div>
         </div>
         <nav class="nav_menu">
             <ul class="nav_list">
@@ -9,7 +11,7 @@
                 <li><a href="#">About</a></li>
                 <li><a href="#">Services</a></li>
                 <li><a href="#">Portfolio</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </nav>
 

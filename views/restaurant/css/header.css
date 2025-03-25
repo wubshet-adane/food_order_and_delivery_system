@@ -3,7 +3,7 @@
     position: relative;
     background: linear-gradient(to right, #007bff, #6610f2);
     color: #fff;
-    padding: 15px 0;
+    padding: 6px 0;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -12,20 +12,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 0 20px;
 }
 
 /* Logo Styling */
-.logo h1 {
-    font-size: 24px;
-    font-weight: bold;
+.logo div {
+    width: fit-content;
 }
 
 /* Navigation Menu */
 .nav_menu {
-    flex-grow: 1;
 }
 
 .nav_list {
@@ -69,10 +67,13 @@
     color: #fff;
 }
 
-@keyframes example {
-    0% { right: 100; }
-    100% {right: 0; }
-  }
+@keyframes shake {
+    0% { transform: translateY(-30px); }
+    10% { transform: translateY(10px); }
+    15% { transform: translateY(-5px); }
+    17% { transform: translateY(0); }
+    100% { display: none; } /* Use 'none' instead of 'hidden' */
+}
   
 
 /*responce message section*/
@@ -82,7 +83,8 @@
     transform: translateX(-50px);
     transition: opacity 0.5s ease-in-out;
     transition: opacity 0.5s ease-in-out, transform 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53);
-    animation: example, 1s ease-in-out;
+    animation: shake 3s;
+    animation-fill-mode: forwards;
 }
 
 .responce_message p{
@@ -90,7 +92,8 @@
     margin: 10px 20px;
     border-radius: 5px;
     width: fit-content;
-
+    padding: 10px 20px;
+    color: #fff;
 }
 
 .responce_message .error{

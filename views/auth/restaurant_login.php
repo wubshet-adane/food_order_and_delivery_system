@@ -5,10 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurants Login</title>
     <link rel="stylesheet" href="../../public/css/login.css">
+    <!--font ausome for star rating-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        h2{
+            color: #ff9900;
+        }
+        .forget {
+            text-decoration: none;
+            color: #00FFF7FF; /* Bootstrap blue */
+            font-size: 14px;
+        }
+
+        .forget:hover {
+            text-decoration: underline;
+            color: #0056b3; /* Darker blue */
+        }
+
+        
+    </style>
 </head>
-<body style="background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(9, 17, 0, 0.1)), url('../../public/images/restaurant_login_bg.jpg');">
+<body style="background: linear-gradient(rgba(0, 0, 0, 1), rgba(9, 17, 0, 0.1)), url('../../public/images/restaurant_login_bg.jpg');">
     <div class="full-container">
-        <div class="login-container">
+        <div class="login-container" style="background: linear-gradient(rgba(0, 0, 0, 0), rgba(9, 17, 0, 0.9))">
             <h2> Login as Restaurants Owner</h2>
             <hr>
             <!--form and image setion container-->
@@ -26,17 +45,19 @@
                     <!--form section-->
                     <form class="form-login" action="../../controllers/restaurant_login_controller.php?action=login" method="POST">
                         <div class="input-group">
-                            <label for="email">Email</label>
+                            <label for="email"><i class="fa-solid fa-envelope"> </i> Email</label>
                             <input type="email" id="email" name="email" placeholder="Enter your email" required>
                         </div>
                         <div class="input-group">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                            <label for="password"><i class="fa-solid fa-lock"></i> Password</label>
+                            <input type="password" id="password" name="password" placeholder="********" required>
                             <span class="form-check-input">Show password</span><input type="checkbox" id="showPassword" style="border:1px solid blue;"> 
 
                         </div>
 
                         <button type="submit">Login</button>
+                        <a class="forget" href="forgot_password.php" aria-label="Click to reset your password">forgot password?</a>
+                        
                         <p class="register-link">
                             Don't have an account? <a href="restaurant_register.php">Register here</a>
                         </p>
@@ -51,4 +72,4 @@
     </div>
     <script src="../customers/javaScript/show_password"></script>
 </body>
-</html>
+</html> 
