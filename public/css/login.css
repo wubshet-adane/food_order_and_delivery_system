@@ -63,13 +63,6 @@ body {
     100% { display: none; } /* Use 'none' instead of 'hidden' */
 }
 
-h2 {
-    margin-top: 1rem;
-    margin-bottom: 20px;
-    color: #ffffff;
-    text-align: center;
-}
-
 .input-group {
     margin-bottom: 20px;
     text-align: left;
@@ -89,11 +82,27 @@ input {
     background-color: white;
 }
 
+
+h2{
+    color: #ff9900;
+}
+.forget {
+    text-decoration: none;
+    color: #00FFF7FF; /* Bootstrap blue */
+    font-size: 14px;
+}
+
+.forget:hover {
+    text-decoration: underline;
+    color: #0056b3; /* Darker blue */
+}
+
 input#showPassword{
     width: fit-content;
     margin: 0 0 0 1rem;
     padding: 0;
     text-align: left;
+    cursor: pointer;
 }
 
 button {

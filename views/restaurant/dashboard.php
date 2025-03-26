@@ -1,6 +1,20 @@
 <?php
-require_once '../../models/manage_menu.php';
-$menuItems = Menu::getAllItems();
+
+session_start();
+
+require_once '../../models/manage_restaurant.php';
+require_once '../../config/database.php';
+
+// Check if user is logged in and has the correct user type
+if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !isset($_SESSION['loggedIn']) || !isset($_SESSION['user_email']) || !isset($_SESSION['password'])) {
+    
+    header("Location: ../auth/restaurant_login.php?message=Please enter correct credentials!");
+    exit; // Stop execution after redirection
+}
+$ownerId = $_SESSION['user_id'];
+$restaurantModel = new Restaurant($conn);
+$restaurants = $restaurantModel->getAllRestaurants($ownerId);
+
 ?>
 
 <!DOCTYPE html>
@@ -8,7 +22,8 @@ $menuItems = Menu::getAllItems();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Menu</title>
+    <title>G3 FOOD ORDER</title>
+    <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
     <!--font ausome for star rating-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/dashboard.css">

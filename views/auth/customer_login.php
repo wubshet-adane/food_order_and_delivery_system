@@ -35,11 +35,13 @@
                         <div class="input-group">
                             <label for="password"><i class="fa-solid fa-lock"> </i> Password</label>
                             <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                            <span class="form-check-input">Show password</span><input type="checkbox" id="showPassword" style="border:1px solid blue;"> 
+                            <input type="checkbox" id="showPassword" style="border:1px solid blue;"> <span class="form-check-input">Show password</span>
 
                         </div>
 
                         <button type="submit">Login</button>
+                        <a class="forget" href="forgot_password.php" aria-label="Click to reset your password">forgot password?</a>
+
                         <p class="register-link">
                             Don't have an account? <a href="customer_register.html">Register here</a>
                         </p>

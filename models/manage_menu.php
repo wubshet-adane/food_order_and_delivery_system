@@ -2,20 +2,51 @@
 require_once __DIR__ . '/../config/database.php';
 
 class Menu {
-    public static function getAllItems() {
+    public static function getAllItems( $res_id) {
         global $conn;
+      
+        // Check if request method is GET
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $search = $_GET['search'] ?? '';
+            $sort = $_GET['sort'] ?? 'name ASC';
+    
+            // SQL query with placeholders
+            $sql = "SELECT * FROM menu WHERE restaurant_id = ? 
+                    AND (name LIKE ? OR description LIKE ? OR catagory LIKE ?) 
+                    ORDER BY $sort";
+    
+            $stmt = $conn->prepare($sql);
+    
+            if (!$stmt) {
+                die("SQL Prepare Error: " . $conn->error);
+            }
+    
+            // Add wildcard % for partial search
+            $search = "%$search%";
+    
+            $stmt->bind_param('isss', $res_id, $search, $search, $search);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            // Check for errors
+            if (!$result) {
+                die("Error executing query: " . $conn->error);
+            }
         
-        // Run the query
-        $sql = "SELECT * FROM menu ORDER BY name ASC";
-        $result = $conn->query($sql);
-    
-        // Check if the query was successful
-        if ($result === false) {
-            die("Error executing query: " . $conn->error); // Optional: Log error to file instead of die() in production
+        }else{
+            
+            // Run the query
+            $sql = "SELECT * FROM menu ORDER BY name ASC";
+            $result = $conn->query($sql);
+        
+            // Check if the query was successful
+            if ($result === false) {
+                die("Error executing query: " . $conn->error); // Optional: Log error to file instead of die() in production
+            }
         }
-    
-        // Return the result as an associative array
+            // Return the result as an associative array
         return $result->fetch_all(MYSQLI_ASSOC);
+        
     }
     
 

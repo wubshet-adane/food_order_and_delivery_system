@@ -1,9 +1,7 @@
 <header class="header_section">
     <div class="container">
         <div class="logo">
-            <div>
-                <img src="../../public/images/logo.jpg" alt="logo">
-            </div>
+            <a href="home.php" style="color: white; text-decoration: none;"><img src="../../public/images/logo.jpg" alt="G3 Food Order"></a>
         </div>
         <nav class="nav_menu">
             <ul class="nav_list">

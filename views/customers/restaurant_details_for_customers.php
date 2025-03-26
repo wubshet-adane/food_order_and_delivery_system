@@ -31,8 +31,8 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
     <title>Restaurant detail</title>
     <link rel="stylesheet" href="css/restaurant_details_for_customers.css">
     <link rel="stylesheet" href="css/topbar.css">
-    <link rel="icon" href="../../public/images/logo_icon.jpg" type="image/jpg">
-     <!--font ausome for star rating-->
+    <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
+    <!--font ausome for star rating-->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=language" />
     <script type="module" src="javaScript/map.js"></script>

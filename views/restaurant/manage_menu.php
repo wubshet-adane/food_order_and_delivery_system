@@ -1,46 +1,60 @@
 
 <?php
 require_once __DIR__ . '/../../config/database.php';
-
+require_once '../../models/manage_menu.php';
 ?>
 
 <header class="menu-header">
-    <h1 class="menu-title">Manage Menu</h1>
+    <h3 class="menu-title">Manage Menu here based on the restaurants you post menu</h3>
+    <div class="searching_and_sorting">
+        <div class="searching">
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
+                <input type="text" name="search" placeholder="Search Menu Items" class="search-input">
+                <button type="submit" name="search_menu" class="search-btn">Search</button>
+            </form>
+        </div>
+        <div class="sorting">
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
+                <select name="sort" class="sort-select">
+                    <option value="name ASC">Name A-Z</option>
+                    <option value="name DESC">Name Z-A</option>
+                    <option value="catagory ASC">Category A-Z</option>
+                    <option value="price ASC">Price ascending</option>
+                    <option value="price DESC">Price descending</option>
+                </select>
+                <button type="submit" name="sort_menu" class="sort-btn">Sort</button>
+            </form>
+        </div>
+    </div>
 </header>
 
-<!-- Display Menu Section -->
-<section class="menu-section">
-    <h2 class="section-title">Existing Menu Items</h2>
-    <table class="menu-table">
-        <tr class="table-header">
-            <th class="table-cell">Image</th>
-            <th class="table-cell">Name</th>
-            <th class="table-cell">Description</th>
-            <th class="table-cell">Price (ETB)</th>
-            <th class="table-cell">Actions</th>
-        </tr>
-        <?php foreach ($menuItems as $item): ?>
-        <tr class="menu-item-row">
-            <td class="table-cell image-column">
-                <div class="image-box">
-                    <img src="../../uploads/menu_images/<?= $item['image']; ?>" alt="img<?= $item['menu_id']; ?>" class="menu-item-img">
+<div class="restaurant_with_menu">
+    <div class="all_restaurant">
+
+    <?php if (count($restaurants) > 0): ?>
+        <?php foreach ($restaurants as $restaurant): 
+            //assign restaurant id
+            $res_Id = $restaurant['restaurant_id'];
+            $menuItems = Menu::getAllItems($res_Id);
+        ?>
+            <div class="each_restaurant">
+                <div class="restaurant-info">
+                    <div class="res_card_image">
+                        <img src="restaurantAsset/<?=$restaurant['image']?>" alt="card image">
+                    </div>
+                    <p><strong>Name:</strong> <?= htmlspecialchars($restaurant['name']) ?></p>
+                    <p><strong>Adress:</strong> <?= htmlspecialchars($restaurant['location']) ?></p>
                 </div>
-            </td>
-            <td class="table-cell"><?= $item['name']; ?></td>
-            <td class="table-cell"><?= $item['description']; ?></td>
-            <td class="table-cell"><?= number_format($item['price'], 2); ?></td>
-            <td class="table-cell">
-                <form action="../../controllers/restaurant_menu_controller.php" method="POST" class="delete-form">
-                    <input type="hidden" name="id" value="<?= $item['menu_id']; ?>">
-                    <button type="submit" name="delete_menu" class="delete-btn">❌ </button>
-                </form>
-                <button class="edit-btn" data-id="<?= $item['menu_id']; ?>" data-name="<?= $item['name']; ?>"
-                        data-description="<?= $item['description']; ?>" data-price="<?= $item['price']; ?>" data-image="<?= $item['image']; ?>"> ✏️ Edit </button>
-            </td>
-        </tr>
+                
+            </div>
         <?php endforeach; ?>
-    </table>
-</section>
+
+    <?php else: ?>
+    <p class="no-restaurant">No restaurants found.</p>
+    <?php endif; ?>
+
+    </div>
+</div>
 
 <!-- Edit Menu Modal Section -->
 <section id="edit-modal" class="modal">

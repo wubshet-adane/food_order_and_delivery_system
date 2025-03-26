@@ -8,20 +8,6 @@
     <!--font ausome for star rating-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        h2{
-            color: #ff9900;
-        }
-        .forget {
-            text-decoration: none;
-            color: #00FFF7FF; /* Bootstrap blue */
-            font-size: 14px;
-        }
-
-        .forget:hover {
-            text-decoration: underline;
-            color: #0056b3; /* Darker blue */
-        }
-
         
     </style>
 </head>
@@ -51,7 +37,7 @@
                         <div class="input-group">
                             <label for="password"><i class="fa-solid fa-lock"></i> Password</label>
                             <input type="password" id="password" name="password" placeholder="********" required>
-                            <span class="form-check-input">Show password</span><input type="checkbox" id="showPassword" style="border:1px solid blue;"> 
+                            <input type="checkbox" id="showPassword" style="border:1px solid blue;"> <span class="form-check-input">Show password</span> 
 
                         </div>
 
