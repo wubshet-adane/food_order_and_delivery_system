@@ -133,7 +133,7 @@ require_once '../../models/manage_menu.php';
         <div class="modal-content">
             <span class="close" id="close-modal">&times;</span>
             <h2 class="modal-title">Edit Menu Item</h2>
-            <form action="../../controllers/restaurant_menu_controller.php?action=editMenu&id=<?php echo $item['menu_id'];?>" method="POST" class="edit-form">
+            <form action="../../controllers/restaurant_menu_controller.php?action=editMenu&id=<?php echo $item['menu_id'];?>" method="POST" enctype="multipart/form-data" class="edit-form">
                 <input type="hidden" name="id" id="edit-id" class="edit-input">
 
                 <div class="input-group">
