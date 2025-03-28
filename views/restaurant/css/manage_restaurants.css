@@ -44,10 +44,6 @@ body {
     float: left;
 }
 
-.fa-solid{
-    display: none;
-}
-
 .boBack, .boAdd, .boEdit, .boDelete {
     background-color: #ff6600;
     border: none;
@@ -139,7 +135,7 @@ img {
     margin-top: 10px;
 }
 
-input, textarea, select{
+input.in, textarea.in, select.in{
     color:#00a0e4;
     display: none;
     width: 100%;

@@ -12,6 +12,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !i
 
 $ownerId = $_SESSION['user_id'];
 $resId = $_GET['id'];
+$resName = $_GET['name'];
 
 $restaurantModel = new Restaurant($conn);
 $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
@@ -31,6 +32,9 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!--local style css files-->
     <link rel="stylesheet" href="../../views/restaurant/css/manage_restaurants.css">
+    <!--sweet alert external library-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script type="module" src="../customers/javaScript/map.js"></script>
 
     <style>
@@ -48,15 +52,45 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                         <a class="boBack" onclick="history.back()" title="go Back">Back </a>
                     </div>
                     <div class="addMenu">
-                        <a class="boAdd" onclick="location.href='add menu.php?id=<?php echo $resId ?>'" title="Add menu to this Restaurant">Add menu</a>
+                        <a class="boAdd" onclick="location.href='add menu.php?resId=<?php echo $resId ?>'" title="Add menu to this Restaurant">Add menu</a>
                     </div>
                     <div class="editRestaurant">
                         <a class="boEdit" id="boEdit" name="boEdit" title="Edit Restaurant">Edit</a>
                     </div>
                     <div class="deleteRestaurant">
-                        <a class="boDelete" id="boDelete" name="boDelete"  
-                        onclick="location.href='../../controllers/restaurant_register_form_controller.php?action=delete_restaurant&restaurant_id=<?= $resId ?>'" 
-                        title="Delete this Restaurant">Delete</a>
+                        <a class="boDelete" id="boDelete" name="boDelete" href="javascript:void(0);" onclick="confirmDelete('<?= $resId?>', '<?= $resName?>');" title="Delete this Restaurant">Delete</a>
+                        <script>
+                            function confirmDelete(resId, resName) {
+                                Swal.fire({
+                                    title: 'Are you sure?',
+                                    html: `You want to delete <span style="color: red; font-weight: bold; font-family: Arial, sans-serif;">${resName}</span>?`,
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#d33',
+                                    cancelButtonColor: '#3085d6',
+                                    confirmButtonText: 'Yes, delete it!',
+                                    cancelButtonText: 'Cancel'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = `../../controllers/restaurant_register_form_controller.php?action=delete_restaurant&restaurant_id=${resId}`;
+                                        Swal.fire({
+                                            title: 'Deleted!',
+                                            text: `${resName} has been deleted.`,
+                                            icon: 'success',
+                                            confirmButtonText: 'OK'
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Cancelled',
+                                            text: 'Your restaurant is safe :)',
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
+                                    }
+                                });
+                            }
+                            </script>
+
                     </div>
                 </div>
 
@@ -68,44 +102,44 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                 <div>
                     <div class="res_name">
                         <span><h1><?= htmlspecialchars($restaurant['name']) ?></h1></span>
-                        <h1><input type="text" id="name" name="name" value="<?= htmlspecialchars($restaurant['name']) ?>"></h1>
+                        <h1><input class="in" type="text" id="name" name="name" value="<?= htmlspecialchars($restaurant['name']) ?>"></h1>
                     </div>
 
                     <div class="image">
                         <strong> restaurant Card Image:</strong> 
                         <span><img src = "restaurantAsset/<?= htmlspecialchars($restaurant['image']);?>" alt="imge"></span>
-                        <input type="file" id="image" name="image" accept="image/*">
+                        <input class="in" type="file" id="image" name="image" accept="image/*">
                     </div>
 
                     <div class="banner">
                         <strong> restaurant Banner Image:</strong>
                         <span><img src = "restaurantAsset/<?= htmlspecialchars($restaurant['banner']);?>" alt="banner"></span>
-                        <input type="file" id="banner" name="banner" accept="image/*">
+                        <input class="in" type="file" id="banner" name="banner" accept="image/*">
                     </div>
 
                     <div class="license">
                         <strong> Renewed legal business license image for this hotel:</strong>
                         <span><img src = "restaurantAsset/<?= htmlspecialchars($restaurant['license']);?>" alt="license"></span>
-                        <input type="file" id="license" name="license" accept="image/*">
+                        <input class="in" type="file" id="license" name="license" accept="image/*">
                     </div>
 
                     <div class="latitude">
                         <strong>Latitude</strong>
                         <span><?= $restaurant['latitude']?></span>
-                        <input type="text" id="latitude" name="latitude" value="<?= $restaurant['latitude']?>">
+                        <input class="in" type="text" id="latitude" name="latitude" value="<?= $restaurant['latitude']?>">
                     </div>
 
                     <div class="longitude">
                         <strong>Longitude</strong>
                         <span><?= $restaurant['longitude']?></span>
-                        <input type="text" id="longtude" name="longitude" value="<?= $restaurant['longitude']?>">
+                        <input class="in" type="text" id="longtude" name="longitude" value="<?= $restaurant['longitude']?>">
                     </div>
 
                     <div class="map-container">
                         <div>
                             <strong> Location:</strong> 
                             <span><i class="fa fa-map-marker"></i> <?= htmlspecialchars($restaurant['location'])?></span>
-                            <input type="text" id="location" name="location" value="<?= htmlspecialchars($restaurant['location'])?>">                            
+                            <input class="in" type="text" id="location" name="location" value="<?= htmlspecialchars($restaurant['location'])?>">                            
                             <span><div id="map"></div></span>
                         </div>
                     </div>
@@ -113,7 +147,7 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                     <div class="description">
                         <strong> Detail Description:</strong>
                         <span class="description"><?= htmlspecialchars($restaurant['description']) ?></span>
-                        <textarea id="description" name="description" rows="4" cols="50"><?= htmlspecialchars($restaurant['description']) ?></textarea>
+                        <textarea class="in" id="description" name="description" rows="4" cols="50"><?= htmlspecialchars($restaurant['description']) ?></textarea>
                     </div>
 
                     <div class="time">
@@ -125,43 +159,43 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                     <div class="tiktokAccount">
                         <strong> Tiktok link:</strong>
                         <span><?= htmlspecialchars($restaurant['tiktokAccount']) ?></span>
-                        <input type="text" id="tiktokAccount" name="tiktokAccount" value="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>">
+                        <input class="in" type="text" id="tiktokAccount" name="tiktokAccount" value="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>">
                     </div>
 
                     <div class="website">
                         <strong> Website link:</strong>
                         <span><?= htmlspecialchars($restaurant['website']) ?></span>
-                        <input type="text" id="website" name="website" value="<?= htmlspecialchars($restaurant['website']) ?>"> 
+                        <input class="in" type="text" id="website" name="website" value="<?= htmlspecialchars($restaurant['website']) ?>"> 
                     </div>
 
                     <div class="telegramAccount">
                         <strong> Telegram link:</strong>
                         <span><?= htmlspecialchars($restaurant['telegramAccount']) ?></span>
-                        <input type="text" id="telegramAccount" name="telegramAccount" value="<?= htmlspecialchars($restaurant['telegramAccount']) ?>"> 
+                        <input class="in" type="text" id="telegramAccount" name="telegramAccount" value="<?= htmlspecialchars($restaurant['telegramAccount']) ?>"> 
                     </div>
 
                     <div class="instagramAccount">
                         <strong> Instagram link:</strong>
                         <span><?= htmlspecialchars($restaurant['instagramAccount']) ?></span>
-                        <input type="text" id="instagramAccount" name="instagramAccount" value="<?= htmlspecialchars($restaurant['instagramAccount']) ?>">
+                        <input class="in" type="text" id="instagramAccount" name="instagramAccount" value="<?= htmlspecialchars($restaurant['instagramAccount']) ?>">
                     </div>
 
                     <div class="facebook">
                         <strong> facebook account:</strong>
                         <span><?= htmlspecialchars($restaurant['facebook']) ?></span>
-                        <input type="text" id="facebook" name="facebook" value="<?= htmlspecialchars($restaurant['facebook']) ?>">
+                        <input class="in" type="text" id="facebook" name="facebook" value="<?= htmlspecialchars($restaurant['facebook']) ?>">
                     </div>
 
                     <div class="phone">
                         <strong> phone number:</strong>
                         <span><?= htmlspecialchars($restaurant['phone']) ?></span>
-                        <input type="text" id="phone" name="phone" value="<?= htmlspecialchars($restaurant['phone']) ?>">
+                        <input class="in" type="text" id="phone" name="phone" value="<?= htmlspecialchars($restaurant['phone']) ?>">
                     </div>
 
                     <div class="status">
                         <strong>Status:</strong>
                         <span class="status <?= strtolower($restaurant['status']) ?>"><?= htmlspecialchars($restaurant['status']) ?></span>
-                        <select name="status" id="status">
+                        <select class="in" name="status" id="status">
                             <option value="open" <?= htmlspecialchars($restaurant['status']) == 'open' ? 'selected' : '' ?>>Open</option>
                             <option value="closed" <?= htmlspecialchars($restaurant['status']) == 'closed' ? 'selected' : '' ?>>Closed</option>
                         </select>

@@ -1,6 +1,12 @@
 
+
+.manage_menu{
+    margin: auto;
+    width: 100%;
+}
 /* Menu Header Styling */
 .menu-header {
+    width: 100%;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -27,7 +33,6 @@
     align-items: center;
 }
 
-
 .sort-select, .search-input {
     padding: 8px;
     border-radius: 5px;
@@ -40,7 +45,6 @@
     text-transform: capitalize;
 }
 
-
 .search-input{
     cursor: text;
 }
@@ -51,25 +55,82 @@
     border: none;
 }
 
-.menu-title {
-    font-size: 36px;
+.all_restaurant{
+    width: 98%;
+}
+
+.each_restaurant{
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    background-color: #d7f6fa;
+}
+
+.restaurant_info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.res_detail{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.res_card_image{
+    width: 150px;
+    height: 100px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+.res_card_image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+
+}
+
+.restaurant_name{
+    font-size: 16px;
     color: #333;
 }
 
+.actions{
+
+}
+
+
 /* Menu Section Styling */
 .menu-section {
-    background-color: white;
+    display: none;
     border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    padding: 10px;
+    background: linear-gradient(to bottom, #d7f6fa, #aaa333);
+}
+
+.section_title_box{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Section Title */
 .section-title {
-    font-size: 28px;
+    font-size: 20px;
     margin-bottom: 20px;
     color: #333;
+}
+
+.delete_all_btn{
+    color: rgb(255, 0, 0);
 }
 
 /* Table Styling */
@@ -77,17 +138,18 @@
     width: 100%;
     border-collapse: collapse;
     border: none;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .table-header {
     border: none;
     background-color: #ab6701;
+    padding: 0;
 }
 
 /* Style for Even Rows in Menu Table */
 .menu-item-row:nth-child(even) {
-    background-color: #e2dfdf;  /* Light background color for even rows */
+    background-color: #eee9e9;  /* Light background color for even rows */
 }
 
 /* Style for Odd Rows in Menu Table (Optional) */
@@ -95,16 +157,17 @@
     background-color: #ffffff;  /* White background color for odd rows */
 }
 
-
 .table-cell {
     border: none;
-    padding: 12px;
+    padding: 0.5rem 0.5rem;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    font-size: 14px;
 }
 
 .table-header th {
     color: white;
+    padding-top: 3px;
 }
 
 .image-column {
@@ -136,6 +199,7 @@ button {
 
 button:hover {
     background-color: #0056b3;
+    color: white;
 }
 
 button:focus {

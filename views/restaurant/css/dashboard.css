@@ -5,8 +5,7 @@ body {
     padding: 0;
     font-family: "Roboto", sans-serif;
     display: block;
-    width: 100%;
-    overflow-x: hidden;
+    max-width: 100%;
     position: relative;
 }
 
@@ -16,18 +15,20 @@ body {
     display: flex;
     max-width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 /* Sidebar Styles */
 .sidebar {
     position: sticky;
+    top: 2rem;
     box-sizing:border-box;
     width: 25%;
     background: #ab6701;
     color: white;
     padding: 20px;
     box-shadow: 2px 0 0 0 black;
-    overflow-x: scroll;
 }
 
 .sidbar_content{
@@ -69,7 +70,6 @@ li ul{
     transition: 0.3s;
     color: #c95101;
     transform: translateX(20px);
-    overflow: hidden;
 }
 
 /* Hide dropdown menu by default */
@@ -92,22 +92,17 @@ li ul{
 
 /* Main Content */
 .main-content {
-    margin-left: 10px;
     padding: 10px;
-    max-width: 75%;
+    width: 75%;
     height: 100%;
-    overflow-x: scroll;
 }
 /* Modal Styling */
 .modal {
     display: none; /* Hidden by default */
-    position: fixed; /* Use fixed to make it stay in place while scrolling */
-    top: 50%; /* Position it 50% from the top */
-    left: 50%; /* Position it 50% from the left */
-    transform: translate(-50%, -50%); /* Offset it by 50% of its width and height to center it */
     z-index: 1000; /* Ensure the modal is on top */
-    height: 100vh; /* Full viewport height for the overlay */
     width: 100%; /* Adjust width to fit content */
+    height: fit-content; /* Adjust height to fit content */
+    overflow: auto; /* Add scrollbars if content overflows */
     background: #9f6001af; /* Dark overlay */
     display: flex;
     align-items: center; /* Center modal content vertically */
@@ -210,6 +205,10 @@ li ul{
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .main-content{
+        width: 100%;
+    }
+
     .modal-content {
         max-width: 90%;
         padding: 15px;
@@ -249,7 +248,7 @@ li ul{
 /* Responsive Styling */
 @media (max-width: 500px) {
     .modal-content {
-        width: 95%;
+        width: 90%;
         padding: 15px;
     }
 }

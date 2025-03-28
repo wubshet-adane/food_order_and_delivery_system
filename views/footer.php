@@ -1,6 +1,6 @@
 <footer class="site-footer">
     <div class="footer-content">
-        <p>&copy; <?php echo date('Y'); ?> Food Ordering System. All rights reserved.</p>
+        <p>Copy right &copy; <?php echo date('Y'); ?> G3 Online Food Ordering System. All rights reserved.</p>
 
         <div class="social-media">
             <a href="#" target="_blank" aria-label="Facebook">🌐</a>

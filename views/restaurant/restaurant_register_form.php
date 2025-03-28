@@ -28,7 +28,7 @@
         </div>
     <div class="container">
         <h2>Register Your Restaurant</h2>
-        <button id="darkModeToggle">🌙 Toggle Dark Mode</button>
+        <button id="darkModeToggle">🌙</button>
 
         <form action="../../controllers/restaurant_register_form_controller.php?action=register" method="POST" enctype="multipart/form-data">
             <!-- Basic Details -->
@@ -36,11 +36,11 @@
                 <legend>Basic Information</legend>
                 <div class="allImage">
                     <div class="primary-info">
-                        <label for="name">Restaurant Name</label>
+                        <label for="name"><i class="fa-solid fa-utensils"></i> Restaurant Name</label>
                         <input type="text" name="name" id="name" placeholder="Enter restaurant name" required>
                     </div>
                     <div class="primary-info">
-                        <label for="phone">Phone</label>
+                        <label for="phone"><i class="fa-solid fa-phone"> </i> Phone</label>
                         <input type="text" name="phone" id="phone" placeholder="Enter phone number" required>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                         <input type="text" name="facebook" id="facebook" placeholder="facebook account">
                     </div>
                     <div class="socialMedia">
-                        <label for="website"><i class="fa-brands fa-website"> </i> Your Restaurant Website</label>
+                        <label for="website"><i class="fa-solid fa-globe"> </i> Your Restaurant Website</label>
                         <input type="text" name="website" id="website" placeholder="website URL">
                     </div>
                 </div>
@@ -166,10 +166,10 @@
     </div>
 
     <script>
-        //dark mode functionality
+        /*dark mode functionality
         document.getElementById('darkModeToggle').addEventListener('click', function() {
             document.body.classList.toggle('dark-mode');
-        });
+        });*/
 
         // File preview functionality
         document.getElementById('imageInput').addEventListener('change', function(event) {
@@ -240,6 +240,7 @@
 
         loadMapScript();
     </script>
+    <script src="../customers/javaScript/light_and_dark_mode.js"></script>
 
 </body>
 </html>

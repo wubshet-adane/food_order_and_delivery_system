@@ -113,34 +113,34 @@
                         </li>
                     <?php endforeach; ?>
                     
-<script>
-    // Wait until the page is fully loaded
-    document.addEventListener("DOMContentLoaded", function() {
-        var buttons = document.querySelectorAll('.add_to_cart');
+                    <script>
+                        // Wait until the page is fully loaded
+                        document.addEventListener("DOMContentLoaded", function() {
+                            var buttons = document.querySelectorAll('.add_to_cart');
 
-        buttons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var menuId = this.getAttribute('data-menu-id');
-                var quantityInput = document.getElementById('quantity_' + menuId);
-                
-                if (!quantityInput) {
-                    alert("Quantity input not found!");
-                    return;
-                }
+                            buttons.forEach(function(button) {
+                                button.addEventListener('click', function() {
+                                    var menuId = this.getAttribute('data-menu-id');
+                                    const quantityInput = document.getElementById('quantity_' + menuId);
+                                    
+                                    if (!quantityInput) {
+                                        alert("Quantity input not found!");
+                                        return;
+                                    }
 
-                var quantity = quantityInput.value;
+                                    var quantity = quantityInput.value;
 
-                if (quantity < 1) {
-                    alert("Please enter a valid quantity.");
-                    return;
-                }
+                                    if (quantity < 1) {
+                                        alert("Please enter a valid quantity.");
+                                        return;
+                                    }
 
-                // Redirect to cart.php with parameters
-                window.location.href = "cart.php?menu_id=" + menuId + "&quantity=" + quantity;
-            });
-        });
-    });
-</script>
+                                    // Redirect to cart.php with parameters
+                                    window.location.href = "cart.php?menu_id=" + menuId + "&quantity=" + quantity;
+                                });
+                            });
+                        });
+                    </script>
                 </ul>
             </div>
 
@@ -150,7 +150,6 @@
                 }
             ?>
         </div>
-        <br>
 
         <a class="back_to_res" href="home.php">Back to Restaurant List</a>
 

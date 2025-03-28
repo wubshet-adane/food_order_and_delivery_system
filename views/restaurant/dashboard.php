@@ -29,8 +29,10 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/display_restaurant.css">
-    <link rel="stylesheet" href="css/manage_restaurant.css">
+    <link rel="stylesheet" href="css/manage_restaurants.css">
     <link rel="stylesheet" href="css/manage_menu.css">
+    <!--sweet alert external library-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <!--header section-->
@@ -129,13 +131,12 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
         copywrite &copy; 2017 G3 Ethiopia;
     </footer>
 
+    
+    <script src="javaScript/settimeout.js"></script>
+    <script src="javaScript/menu_toggler.js"></script>
+    <!--script for closing responce messages automaticaly-->
+    <script> closeResponseById("responce_message");</script>
     <!--edit menu modal script-->
     <script src="javaScript/edit_menu_modal.js"></script>
-    <script src="javaScript/settimeout.js"></script>
-    <script src="javaScript/delete_confirmation"></script>
-    <script>
-        //script for closing responce messages automaticaly
-        closeResponseById("responce_message"); // Auto-hide after 5 seconds
-    </script>
 </body>
 </html>

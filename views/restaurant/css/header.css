@@ -72,45 +72,55 @@
     cursor: pointer;
     color: #fff;
 }
-
 @keyframes shake {
-    0% { transform: translateY(-30px); }
-    10% { transform: translateY(10px); }
-    15% { transform: translateY(-5px); }
-    17% { transform: translateY(0); }
-    100% { display: none; } /* Use 'none' instead of 'hidden' */
+    0% {opacity: 1; right: -100%; }
+    15% {opacity: 1; right: 0px; }
+    90% { opacity: 1; }
+    100% { opacity: 0; display: none; }
 }
-  
 
-/*responce message section*/
-.responce_message{
+/* Response message section */
+.responce_message {
     position: absolute;
-    top: 100%;
-    transform: translateX(-50px);
-    transition: opacity 0.5s ease-in-out;
-    transition: opacity 0.5s ease-in-out, transform 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53);
-    animation: shake 3s;
-    animation-fill-mode: forwards;
+    bottom: -55%; /* Positioned at the bottom */
+    right: 0px; /* Positioned at the right */
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    animation: shake 5s forwards;
+    max-width: 300px;
+    min-width: 200px;
+    text-align: center;
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: block;
+    margin: 0;
 }
 
-.responce_message p{
+/* Message text */
+.responce_message p {
+    width: 100%;
     font-weight: 600;
-    margin: 10px 20px;
-    border-radius: 5px;
-    width: fit-content;
-    padding: 10px 20px;
+    margin: 0;
+    padding: 10px 20px 10px 2px;
     color: #fff;
+    border-radius: 5px;
 }
 
-.responce_message .error{
-    outline: 4px solid rgb(255, 0, 0);
-    background-color: #ff0000;
+/* Error message styling */
+.responce_message .error {
+    width: 100%;
+    background-color: #ff4d4d;
+    border-left: 20px solid #8c0505;
 }
 
-.responce_message .success{
-    outline: 4px solid green;
-    background-color: rgb(red, green, blue);
+/* Success message styling */
+.responce_message .success {
+    width: 100%;
+    background-color: #28a745;
+    border-left: 20px solid #116525;
 }
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav_list {

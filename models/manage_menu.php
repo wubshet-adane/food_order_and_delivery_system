@@ -49,22 +49,21 @@ class Menu {
         
     }
     
-
     //add new item
-    public static function addItem($name, $description, $price, $image) {
+    public static function addItem($resId, $name, $catagory, $content, $description, $price, $image) {
         global $conn;
-        $sql = "INSERT INTO menu (name, description, price, image) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO menu (restaurant_id, name, catagory, content, description, price, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssds", $name, $description, $price, $image);
+        $stmt->bind_param("issssds", $resId, $name, $catagory, $content, $description, $price, $image);
         return $stmt->execute();
     }
 
     //update item
-    public static function updateItem($id, $name, $description, $price, $image) {
+    public static function updateItem($id, $name, $description, $catagory, $content, $price, $image) {
         global $conn;
-        $sql = "UPDATE menu SET name = ?, description = ?, price = ?, image = ? WHERE menu_id = ?";
+        $sql = "UPDATE menu SET name = ?, description = ?, catagory = ?, content = ?, price = ?, image = ? WHERE menu_id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssdsi", $name, $description, $price, $image, $id);
+        $stmt->bind_param("ssssdsi", $name, $description, $catagory, $content, $price, $image, $id);
         return $stmt->execute();
     }
 
