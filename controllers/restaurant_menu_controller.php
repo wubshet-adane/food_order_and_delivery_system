@@ -47,16 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("Location: ../views/restaurant/dashboard.php?page=manage_menu&error=Failed to delete item");
         }
         exit;
-    }else{
-        header("Location: ../views/restaurant/dashboard.php?page=manage_menu&error=Failed to delete item");
-        exit;
     }
 
     //functions to update menu items
-    if (isset($_POST['edit_menu'])) {
+    if (isset($_POST['edit_menu']) && $action == 'editMenu') {
         $name = $_POST['name'];
         $description = $_POST['description'];
-        $catagory = $_POST['catagory'];
+        $catagory = $_POST['category'];
         $content = $_POST['content'];
         $price = $_POST['price'];
         $image = $imagePath; // Later, we'll handle file uploads
@@ -66,9 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             header("Location: ../views/restaurant/dashboard.php?page=manage_menu&error=Failed to update item");
         }
-        exit;
-    }else{
-        header("Location: ../views/restaurant/dashboard.php?page=manage_menu&error=Failed to update item");
         exit;
     }
 } else {

@@ -19,7 +19,7 @@ function editMenu(menuId) {
     const imagePreview = document.getElementById("imagePreview");
     if (imagePreview) {
         if (editButton.dataset.image) {
-            imagePreview.src = editButton.dataset.image;
+            imagePreview.src = "restaurantAsset/"+editButton.dataset.image;
             imagePreview.style.display = "block"; // Show the image
         } else {
             imagePreview.style.display = "none"; // Hide if no image
