@@ -58,13 +58,15 @@ require_once '../../models/manage_menu.php';
                     <section class="menu-section" id="menu_section<?php echo $restaurant['restaurant_id'];?>">
                         <div class="section_title_box">
                             <h4 class="section-title">Existing Menu Items at <i style="color:#ff9900;"><?= htmlspecialchars($restaurant['name']) ?></i></h4>
-                            <button id="deleteAllMenu" class="delete_all_btn ">Delete all Menu</button>
+                            <button id="deleteAllMenu" class="delete_all_btn ">Delete all</button>
                         </div>
                         <table class="menu-table">
                             <tr class="table-header">
                                 <th class="table-cell">Image</th>
                                 <th class="table-cell">Name</th>
-                                <th class="table-cell">Description</th>
+                                <th class="table-cell">Category</th>
+                                <th class="table-cell hide_desc">Content</th>
+                                <th class="table-cell hide_desc">Description</th>
                                 <th class="table-cell">Price</th>
                                 <th class="table-cell">Actions</th>
                             </tr>
@@ -76,12 +78,14 @@ require_once '../../models/manage_menu.php';
                                     </div>
                                 </td>
                                 <td class="table-cell"><?= $item['name']; ?></td>
-                                <td class="table-cell"><?= $item['description']; ?></td>
+                                <td class="table-cell"><?= $item['catagory']; ?></td>
+                                <td class="table-cell hide_desc"><?= $item['description']; ?></td>
+                                <td class="table-cell hide_desc"><?= $item['content']; ?></td>
                                 <td class="table-cell"><?= number_format($item['price'], 2); ?> birr</td>
                                 <td class="table-cell">
                                     <form action="../../controllers/restaurant_menu_controller.php?action=delete&id=<?php echo $item['menu_id'];?>" method="POST" id="delete-form-<?= $item['menu_id'];?>" class="delete-form">
                                         <input type="hidden" name="id" value="<?= $item['menu_id']; ?>">
-                                        <button type="button" name="delete_menu" class="delete-btn" onclick="confirmDelete('<?=$item['menu_id'];?>','<?=$item['name'];?>')">❌ </button>
+                                        <button type="button" name="delete_menu" class="delete-btn" onclick="confirmDelete('<?=$item['menu_id'];?>','<?=$item['name'];?>')" title="delete"><i class="fa-solid fa-trash"></i></button>
                                         <script>
                                             function confirmDelete(menuId, menuName) {
                                                 Swal.fire({
@@ -113,7 +117,7 @@ require_once '../../models/manage_menu.php';
                                         </script>
                                     </form>
                                     <button class="edit-btn" id="edit-btn-<?= $item['menu_id'];?>" data-name="<?= $item['name']; ?>"
-                                            data-description="<?= $item['description']; ?>" data-catagory="<?= $item['catagory']; ?>" data-content="<?= $item['content']; ?>" data-price="<?= $item['price']; ?>" data-image="<?= $item['image']; ?>" onclick="editMenu(<?= $item['menu_id'];?>)"> ✏️ Edit </button>
+                                            data-description="<?= $item['description']; ?>" data-catagory="<?= $item['catagory']; ?>" data-content="<?= $item['content']; ?>" data-price="<?= $item['price']; ?>" data-image="<?= $item['image']; ?>" onclick="editMenu(<?= $item['menu_id'];?>)" title="edit"> <i class="fa fa-solid fa-pen"></i? </button>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -129,7 +133,7 @@ require_once '../../models/manage_menu.php';
 
     
     <!-- Edit Menu Modal Section -->
-    <section id="edit-modal" class="modal">
+    <section id="edit-modal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" id="close-modal">&times;</span>
             <h2 class="modal-title">Edit Menu Item</h2>

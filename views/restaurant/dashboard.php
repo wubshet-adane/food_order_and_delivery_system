@@ -76,8 +76,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
         </div>
 
         <!--main-content section-->
-        <div class="main-content">
-           
+        <div class="main-content"> 
             <?php
             $page = isset($_GET['page']) ? $_GET['page'] : 'display_restaurants';
 
