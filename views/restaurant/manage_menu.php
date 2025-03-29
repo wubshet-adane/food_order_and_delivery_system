@@ -58,7 +58,36 @@ require_once '../../models/manage_menu.php';
                     <section class="menu-section" id="menu_section<?php echo $restaurant['restaurant_id'];?>">
                         <div class="section_title_box">
                             <h4 class="section-title">Existing Menu Items at <i style="color:#ff9900;"><?= htmlspecialchars($restaurant['name']) ?></i></h4>
-                            <button id="deleteAllMenu" class="delete_all_btn ">Delete all</button>
+                            <button id="deleteAllMenu" class="delete_all_btn" onclick="deleteAllMenu('<?php echo $restaurant['restaurant_id'];?>', '<?php echo $restaurant['name'];?>')">Delete all</button>
+                            <script>
+                                function deleteAllMenu(resId, resName) {
+                                    Swal.fire({
+                                        title: 'Are you sure?',
+                                        html: `You want to delete <span style="color: red; font-weight: bold; font-family: Arial, sans-serif;">All menu items</span> at <span style="color: blue; font-weight: bold; font-style:italic;">${resName}</span>?`,
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#d33',
+                                        cancelButtonColor: '#3085d6',
+                                        confirmButtonText: 'Delete all menu!',
+                                        cancelButtonText: 'Cancel'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = `../../controllers/restaurant_menu_controller.php?action=delete&restaurant_id=${resId}`;
+                                            Swal.fire(
+                                                'Deleted!',
+                                                `Menu items ${resName} have been deleted.`,
+                                                'success'
+                                            );
+                                        } else {
+                                            Swal.fire(
+                                                'Cancelled',
+                                                'Your menu item is safe:)',
+                                                'error'
+                                            );
+                                        }
+                                    });
+                                }
+                            </script>
                         </div>
                         <table class="menu-table">
                             <tr class="table-header">
