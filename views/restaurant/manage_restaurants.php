@@ -30,12 +30,11 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
     <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
     <!--font ausome for star rating-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!--local style css files-->
-    <link rel="stylesheet" href="../../views/restaurant/css/manage_restaurants.css">
+    <link rel="stylesheet" href="css/manage_restaurants.css">
+    <link rel="stylesheet" href="css/header.css">
     <!--sweet alert external library-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <script type="module" src="../customers/javaScript/map.js"></script>
+    <script src="../customers/javaScript/map.js"></script>
 
     <style>
        
@@ -44,8 +43,10 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
 </head>
 
 <body>
+<?php include 'header.php';?>
+
     <section class="restaurant-management">
-        <form action="../../controllers/restaurant_register_form_controller.php?action=update_restaurant&restaurant_id=<?= $resId ?>" method="POST" autocomplete="on" enctype="multipart/form-data">
+        <form action="../../controllers/restaurant_register_form_controller.php?action=update_restaurant&restaurant_id=<?= $resId ?>" method="POST" enctype="multipart/form-data">
             <div class="restaurant-list">
                 <div class="top_buttons">
                     <div class="go_back">
