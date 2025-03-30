@@ -161,7 +161,7 @@
                         <div class="restaurant-details">
                             <p><i class="fa fa-map-marker"></i> <?php echo htmlspecialchars($restaurant['location']); ?></p>
                             <p><i class="fa-solid fa-phone"></i> <?php echo htmlspecialchars($restaurant['phone']); ?></p>
-                            <hr>
+
                             <div class="res_card_bottom">
                                 <!--add rating-->
                                 <p>Review: 
