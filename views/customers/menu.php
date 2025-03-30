@@ -117,7 +117,7 @@
                         // Wait until the page is fully loaded
                         document.addEventListener("DOMContentLoaded", function() {
                             var buttons = document.querySelectorAll('.add_to_cart');
-
+                            
                             buttons.forEach(function(button) {
                                 button.addEventListener('click', function() {
                                     var menuId = this.getAttribute('data-menu-id');

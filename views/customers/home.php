@@ -1,6 +1,10 @@
     <?php
     session_start();
     require_once __DIR__ . '/../../config/database.php';
+    include "../../models/recomendation.php";
+
+    //get recomendation restaurants
+    $recomendation = Recomendation::getRecomendation();
 
     $search = $_GET['search'] ?? '';
     $sort = $_GET['sort'] ?? 'name';
@@ -81,6 +85,8 @@
         exit();
     }
     ?>
+
+    
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -177,7 +183,6 @@
     <div class="">
         <div>
         </div>
-
     </div>
 
     <!--become a member-->
