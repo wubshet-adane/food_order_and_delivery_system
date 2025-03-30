@@ -200,6 +200,13 @@ body {
     margin: 1px auto;
 }
 
+.res_card_bottom{
+    background-color: #d9effe;
+    border-radius: 0 0 10px 10px;
+    margin: 0;
+    width: 100%;
+}
+
 .restaurant-rating{
     text-align: right;
     font-family: "Roboto", sans-serif;

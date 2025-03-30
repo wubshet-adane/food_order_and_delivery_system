@@ -20,8 +20,16 @@
         $sort_order = 'ASC';
     }
 
-    $sql = "SELECT * FROM restaurants WHERE name LIKE ? OR location LIKE ? OR rating LIKE ? ORDER BY $sort $sort_order";
+    $sql = "SELECT r.*, COALESCE(AVG(rv.rating), 0) AS avg_rating,
+    COALESCE(COUNT(DISTINCT rv.user_id), 0) AS no_of_reviewers
+    FROM restaurants r LEFT JOIN review rv ON r.restaurant_id = rv.restaurant_id
+    WHERE r.name LIKE ? OR r.description OR r.location LIKE ? OR r.phone LIKE ?
+    GROUP BY r.restaurant_id, r.name, r.location, r.image, r.phone, r.status
+    ORDER BY $sort $sort_order";  
     $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        die("Query preparation failed: " . $conn->error);
+    }
     $searchQuery = "%" . $search . "%";
     $stmt->bind_param("sss", $searchQuery, $searchQuery, $searchQuery);
     $stmt->execute();
@@ -42,17 +50,33 @@
                         <p><strong>Location:</strong> <?php echo htmlspecialchars($restaurant['location']); ?></p>
                         <p><strong>Phone:</strong> <?php echo htmlspecialchars($restaurant['phone']); ?></p>
                         <!--add rating-->
-                        <div class="restaurant-rating">
-                            <h3>Rating</h3>
-                            <div class="star-rating">
-                                <i class="fa-solid fa-star" data-value="1"></i>
-                                <i class="fa-solid fa-star" data-value="2"></i>
-                                <i class="fa-solid fa-star" data-value="3"></i>
-                                <i class="fa-solid fa-star" data-value="4"></i>
-                                <i class="fa-solid fa-star" data-value="5"></i>
-                                <div class="rating-value"><?php echo $restaurant['rating']; ?>/5</div>
-                            </div>
-                        </div>
+                        <p>Review: 
+                            <?php 
+                                $rating = round($restaurant['avg_rating'], 1); // Round to 1 decimal place
+                            
+                                // Display stars based on the average rating
+                                $fullStars = floor($rating); // Count full stars
+                                $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0; // Check for a half star
+                                $emptyStars = 5 - ($fullStars + $halfStar); // Remaining empty stars
+                        
+                                // Display full stars
+                                for ($i = 0; $i < $fullStars; $i++) {
+                                    echo '<i class="fa-solid fa-star"></i>'; // Full Star
+                                }
+                        
+                                // Display half star if needed
+                                if ($halfStar) {
+                                    echo '<i class="fa-solid fa-star-half-stroke"></i>'; // Half Star
+                                }
+                        
+                                // Display empty stars
+                                for ($i = 0; $i < $emptyStars; $i++) {
+                                    echo '<i class="fa-regular fa-star"></i>'; // Empty Star
+                                }
+                            ?>
+                            <strong> <?=$rating?>/5</strong>
+                            <span class="reviewer"><?=$restaurant['no_of_reviewers']?> <i class="fa-solid fa-person"></i></span>
+                        </p>
                         
                         <div class="redirect">
                             <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Display menu from this restaurant">View Menu</a> 
@@ -138,21 +162,40 @@
                             <p><i class="fa fa-map-marker"></i> <?php echo htmlspecialchars($restaurant['location']); ?></p>
                             <p><i class="fa-solid fa-phone"></i> <?php echo htmlspecialchars($restaurant['phone']); ?></p>
                             <hr>
-                            <!--add rating-->
-                            <div class="restaurant-rating">
-                                <div class="star-rating">
-                                    <i class="fa-solid fa-star" data-value="1"></i>
-                                    <i class="fa-solid fa-star" data-value="2"></i>
-                                    <i class="fa-solid fa-star" data-value="3"></i>
-                                    <i class="fa-solid fa-star" data-value="4"></i>
-                                    <i class="fa-solid fa-star" data-value="5"></i>
-                                    <div class="rating-value"><?php echo $restaurant['rating']; ?>/5</div>
+                            <div class="res_card_bottom">
+                                <!--add rating-->
+                                <p>Review: 
+                                    <?php 
+                                        $rating = round($restaurant['avg_rating'], 1); // Round to 1 decimal place
+                                    
+                                        // Display stars based on the average rating
+                                        $fullStars = floor($rating); // Count full stars
+                                        $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0; // Check for a half star
+                                        $emptyStars = 5 - ($fullStars + $halfStar); // Remaining empty stars
+                                
+                                        // Display full stars
+                                        for ($i = 0; $i < $fullStars; $i++) {
+                                            echo '<i class="fa-solid fa-star"></i>'; // Full Star
+                                        }
+                                
+                                        // Display half star if needed
+                                        if ($halfStar) {
+                                            echo '<i class="fa-solid fa-star-half-stroke"></i>'; // Half Star
+                                        }
+                                
+                                        // Display empty stars
+                                        for ($i = 0; $i < $emptyStars; $i++) {
+                                            echo '<i class="fa-regular fa-star"></i>'; // Empty Star
+                                        }
+                                    ?>
+                                    <strong> <?=$rating?>/5</strong>
+                                    <span class="reviewer"><?=$restaurant['no_of_reviewers']?> <i class="fa-solid fa-person"></i></span>
+                                </p>
+                                <br>
+                                <div class="redirect">
+                                    <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Display menu from this restaurant">View Menu</a> 
+                                    <a href="restaurant_details_for_customers.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Details about restaurant"><i class="fa fa-external-link" aria-hidden="true"></i></a>
                                 </div>
-                            </div>
-
-                            <div class="redirect">
-                                <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Display menu from this restaurant">View Menu</a> 
-                                <a href="restaurant_details_for_customers.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Details about restaurant"><i class="fa fa-external-link" aria-hidden="true"></i></a>
                             </div>
                         </div>
                         <?php
@@ -222,8 +265,7 @@
         <p>&copy; <?php echo date('Y'); ?> FoodieExpress. All rights reserved.</p>
     </footer>
     </body>
-            <!--external javascripts -->
-        <script src="javaScript/rating.js" type="text/javascript" defer crossorigin="anonymous"></script>
+
         <script>
             const searchInput = document.getElementById('searchInput');
             const sortSelect = document.getElementById('sortSelect');

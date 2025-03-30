@@ -44,7 +44,7 @@
                                                 echo '<i class="fa-regular fa-star"></i>'; // Empty Star
                                             }
                                         ?>
-                                        <strong> <?=$rating?></strong>
+                                        <strong> <?=$rating?>/5</strong>
                                         <span class="reviewer"><?=$rec['no_of_reviewers']?> <i class="fa-solid fa-person"></i></span>
                                     </p>
                                 </div>

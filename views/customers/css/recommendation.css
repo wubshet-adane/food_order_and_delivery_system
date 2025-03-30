@@ -124,3 +124,12 @@
     font-weight: bold;
     color: #4CAF50;
 }
+
+.reviewer{
+    float: right;
+    background:  #ffffff;
+    padding: 5px 10px;
+    border-radius: 50%;
+    color: #000000;    
+    
+}
