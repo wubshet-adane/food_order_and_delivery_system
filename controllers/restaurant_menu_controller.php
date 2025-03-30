@@ -1,7 +1,7 @@
 <?php
 require_once '../models/manage_menu.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST'|| $_SERVER['REQUEST_METHOD'] == 'GET') {
     
         // Handle file upload for images and documents
         function uploadFile($fieldName) {
@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $imagePath = uploadFile('image');
         $action = $_GET['action'] ?? null;
+        $resId = $_GET['res_id'] ?? null;
         $id = $_GET['id'];
 
     //functions to add menu items
@@ -43,6 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($action == 'delete') {
         if (Menu::deleteItem($id)) {
             header("Location: ../views/restaurant/dashboard.php?page=manage_menu&success=Item succesfuly deleted");
+        } else {
+            header("Location: ../views/restaurant/dashboard.php?page=manage_menu&error=Failed to delete item");
+        }
+        exit;
+    }
+
+    //functions to delete ALL menu items
+    if ($action == 'deleteAll') {
+        if (Menu::deleteAllItem($resId)) {
+            header("Location: ../views/restaurant/dashboard.php?page=manage_menu&success=All menu items succesfuly deleted");
         } else {
             header("Location: ../views/restaurant/dashboard.php?page=manage_menu&error=Failed to delete item");
         }

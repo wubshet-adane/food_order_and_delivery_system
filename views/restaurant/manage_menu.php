@@ -72,7 +72,7 @@ require_once '../../models/manage_menu.php';
                                         cancelButtonText: 'Cancel'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            window.location.href = `../../controllers/restaurant_menu_controller.php?action=delete&restaurant_id=${resId}`;
+                                            window.location.href = `../../controllers/restaurant_menu_controller.php?action=deleteAll&res_id=${resId}`;
                                             Swal.fire(
                                                 'Deleted!',
                                                 `Menu items ${resName} have been deleted.`,

@@ -75,5 +75,16 @@ class Menu {
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
+
+    //delete item
+    public static function deleteAllItem($resId) {
+        global $conn;
+        $sql = "DELETE FROM menu WHERE restaurant_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $resId);
+        return $stmt->execute();
+    }
+
+    
 }
 ?>
