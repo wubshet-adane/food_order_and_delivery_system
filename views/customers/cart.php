@@ -8,12 +8,17 @@ $menu_id = $_GET['menu_id'] ?? null;
 $quantity = $_GET['quantity'] ?? 1;
 
 // Fetch cart items from DB
-$sql = "SELECT * FROM menu WHERE menu_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $menu_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$item = $result->fetch_assoc();
+$user_id = $_SESSION['user_id'];
+
+$sql = "SELECT cart.id AS cart_id, menu.name, menus.price, menus.image, cart.quantity 
+        FROM cart 
+        JOIN menu ON cart.menu_id = menu.id 
+        WHERE cart.user_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $menu_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $item = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>

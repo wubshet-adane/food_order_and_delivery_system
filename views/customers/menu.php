@@ -75,22 +75,22 @@
         <h2>Menu</h2>
     </section>
 
-        <!--search and sort section-->
-        <section class="search-sort container">
-                <form id="searchForm" method="GET" class="search-form">
-                    <label for="search" class="label">Search Menus:</label>
-                    <input type="text" id="searchInput" name="search" placeholder="Search restaurants..." value="<?php echo htmlspecialchars($search); ?>">
-                    
-                    <select id="sortSelect" name="sort">
-                        <option value="catagory" <?php if ($sort === 'catagory') echo 'selected'; ?>>Catagory</option>
-                        <option value="nameASC" <?php if ($sort === 'nameASC') echo 'selected'; ?>>Name: A to Z</option>
-                        <option value="nameDESC" <?php if ($sort === 'nameDESC') echo 'selected'; ?>>Name: Z to A</option>
-                        <option value="priceASC" <?php if ($sort === 'priceASC') echo 'selected'; ?>>Price: Low to High</option>
-                        <option value="priceDESC" <?php if ($sort === 'priceDESC') echo 'selected'; ?>>Price: High to Low</option>
-                    </select>
-                    <button type="submit">Find</button>
-                </form>
-            </section>
+    <!--search and sort section-->
+    <section class="search-sort container">
+        <form id="searchForm" method="GET" class="search-form">
+            <label for="search" class="label">Search Menus:</label>
+            <input type="text" id="searchInput" name="search" placeholder="Search restaurants..." value="<?php echo htmlspecialchars($search); ?>">
+            
+            <select id="sortSelect" name="sort">
+                <option value="catagory" <?php if ($sort === 'catagory') echo 'selected'; ?>>Catagory</option>
+                <option value="nameASC" <?php if ($sort === 'nameASC') echo 'selected'; ?>>Name: A to Z</option>
+                <option value="nameDESC" <?php if ($sort === 'nameDESC') echo 'selected'; ?>>Name: Z to A</option>
+                <option value="priceASC" <?php if ($sort === 'priceASC') echo 'selected'; ?>>Price: Low to High</option>
+                <option value="priceDESC" <?php if ($sort === 'priceDESC') echo 'selected'; ?>>Price: High to Low</option>
+            </select>
+            <button type="submit">Find</button>
+        </form>
+    </section>
 
         <div class="menu_container">
             <?php
@@ -109,7 +109,7 @@
                             <p><?php echo htmlspecialchars($item['catagory']); ?></p>
                             <p>Price: $<?php echo number_format($item['price'], 2); ?></p>
                             <input type="number"  name="quantity[<?php echo $item['menu_id']; ?>]" id="quantity_<?php echo $item['menu_id']; ?>" min="1" value="1" style="width: 50px;">
-                            <button type="button"  data-menu-id="<?php echo $item['menu_id']; ?>" class="add_to_cart" title="Add item to Cart"> Add to cart <span style="font-size: 20px; color: white;">🛒</span></button>
+                            <button type="button"  data-menu-id="<?php echo $item['menu_id']; ?>" class="add_to_cart" title="Add item to Cart"> Add to cart <i class="fa-solid fa-cart-plus"></i></button>
                         </li>
                     <?php endforeach; ?>
                     
@@ -134,7 +134,6 @@
                                         alert("Please enter a valid quantity.");
                                         return;
                                     }
-
                                     // Redirect to cart.php with parameters
                                     window.location.href = "cart.php?menu_id=" + menuId + "&quantity=" + quantity;
                                 });
