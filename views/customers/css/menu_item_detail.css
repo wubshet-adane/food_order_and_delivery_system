@@ -61,7 +61,7 @@ p{
     color: #055;
 }
 
-.item-actions .add-to-cart {
+button {
     padding: 6px 20px;
     background-color: #ff9900;
     color: white;
@@ -72,7 +72,7 @@ p{
     transition: background-color 0.3s ease;
 }
 
-.item-actions .add-to-cart:hover {
+button:hover {
     background-color: #8e5602;
 }
 

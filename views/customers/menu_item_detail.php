@@ -66,7 +66,7 @@ if (isset($_GET['menu_id'])) {
 
                     <h2><?php echo htmlspecialchars($item['name']); ?></h2>
                     <h4 class="description"><?php echo htmlspecialchars($item['description']); ?></h4><br>
-                    <h4>price for single item: 
+                    <h4>price for single item:
                         <span class="price"><?php echo number_format($item['price'], 2); ?> Birr.</span>
                     </h4><br>
                     <div class="detail_info">
@@ -76,6 +76,7 @@ if (isset($_GET['menu_id'])) {
                         <p><?php echo htmlspecialchars($item['description']);?></p>
                         <h4>To make this type of meal we were contained the following type of ingrediants:</h4>
                         <p><?php echo htmlspecialchars($item['content']);?></p>
+                        <input type="hidden"  name="quantity[<?php echo $item['menu_id']; ?>]" id="quantity_<?php echo $item['menu_id']; ?>" min="1" value="1" style="width: 50px;">
                         <h4>related informations</h4>
                         <code>
                             <p>Location: <?php echo htmlspecialchars($cafe['location']); ?></p>
@@ -84,7 +85,7 @@ if (isset($_GET['menu_id'])) {
                     </div>
 
                     <div class="item-actions">
-                        <a href="" class="add-to-cart" id="add-to-cart">Add to Cart 🛒</a>
+                        <button type="button" data-menu-id="<?php echo $item['menu_id']; ?>" class="add_to_cart" title="Add item to Cart"> Add to cart <i class="fa-solid fa-cart-plus"></i></button>
                     </div>
                 </div>
 
@@ -99,6 +100,8 @@ if (isset($_GET['menu_id'])) {
             // Optionally, you can store the item in the session or use local storage.
         }
     </script>
+    <!-- script for add items to cart automaticalky without reload the page by using AJAX -->
+     <script src="javaScript/add_menuto_cart_AJAX.js"></script>
     
 </body>
 </html>
