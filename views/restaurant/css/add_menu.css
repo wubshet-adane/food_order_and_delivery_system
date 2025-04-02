@@ -17,18 +17,47 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         h2 {
             text-align: center;
             color: #333;
         }
+
         .input-group {
             margin-bottom: 15px;
         }
+
         .input-group label {
             font-weight: bold;
             display: block;
             margin-bottom: 5px;
         }
+
+        label{
+            position: relative;
+        }
+
+        .detail_info{
+            color: #fff;
+            position: absolute;
+            display: none;
+            background:rgba(112, 3, 131, 0.9);
+            border-radius: 10px;
+            width: 250px;
+            left: 0;
+            top:15px;
+            padding: 4px;
+            z-index: 1000;
+        }
+
+        label .fa-solid:hover + .detail_info{
+            display: block;
+        }
+
+        .detail_info:hover{
+            display: block;
+        }
+
         .input-group input,
         .input-group select,
         .input-group textarea {
@@ -38,12 +67,15 @@
             border-radius: 5px;
             font-size: 16px;
         }
+
         .input-group textarea {
             resize: vertical;
         }
+
         .input-group input[type="file"] {
             padding: 5px;
         }
+
         #imagePreview {
             display: none;
             width: 100px;

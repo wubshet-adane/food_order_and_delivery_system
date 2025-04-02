@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout | Online Food Ordering</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .logout-container {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        .logout-btn {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-container">
+        <h2>Are you sure you want to logout?</h2>
+        <p>Your session will be terminated, and you’ll need to log in again.</p>
+        <a href="logout.php" class="btn btn-danger logout-btn">Yes, Logout</a>
+        <a href="dashboard.php" class="btn btn-secondary logout-btn">Cancel</a>
+    </div>
+</body>
+</html>

@@ -10,15 +10,19 @@
         <a href="home.php">Home</a>
         <a href="about.php">About</a>
         <a href="contact.php">Contact</a>
-        <a href="cart.php">Cart 🛒</a>
         <a href="menu.php">Menu</a>
     </div>
 
     <!-- Authentication Links -->
     <div class="auth-links">
-        <a href="login.php">Login</a>
-        <a href="register.php">Register</a>
-        <a href="logout.php">Logout</a>
+        <?php if(!isset($_SESSION['loggedIn'])){
+        ?>
+            <a href="../auth/customer_login.php">Login</a>
+            <a href="register.php">Sign Up</a>
+        <?php }else{?>
+            <a href="cart.php"><i class="fa-solid fa-cart-plus"></i><sup>12</sup></a>
+            <a href="../auth/logout.php">Logout</a>
+            <?php }?>
         <button id="darkModeToggle"><i class="fa-solid fa-moon"></i></button>
     </div>
 </div>

@@ -75,10 +75,10 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
 
         <div class="restaurant-list">
             <?php foreach ($restaurants as $restaurant): ?>
-                <div class="header" style="background: linear-gradient(rgba(142,13,332,0.1), rgba(12,1,12,0.1)), url('../restaurant/restaurantAsset/<?php echo $restaurant['banner']?>');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;">
+                <div class="header" style="background: linear-gradient(rgba(8,13,8,0.9), rgba(12,1,12,0.1)), url('../restaurant/restaurantAsset/<?php echo $restaurant['banner']?>');
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: cover;">
                     
                     <!-- Top Bar -->
                     <div class="top-bar">
@@ -92,16 +92,20 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
                             <a href="home.php">Home</a>
                             <a href="about.php">About</a>
                             <a href="contact.php">Contact</a>
-                            <a href="cart.php">Cart 🛒</a>
-                            <a href="menu.php">Menu</a>
+                            <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>">Menu</a>
                         </div>
 
                         <!-- Authentication Links -->
                         <div class="auth-links">
                             <button id="darkModeToggle">🌙 Dark Mode</button>
-                            <a href="login.php">Login</a>
-                            <a href="register.php">Register</a>
-                            <a href="logout.php">Logout</a>
+                            <?php if(!isset($_SESSION['loggedIn'])){
+                            ?>
+                                <a href="../auth/customer_login.php">Login</a>
+                                <a href="register.php">Sign Up</a>
+                            <?php }else{?>
+                                <a href="cart.php"><i class="fa-solid fa-cart-plus"></i><sup>12</sup></a>
+                                <a href="../auth/logout.php">Logout</a>
+                            <?php }?>
                         </div>
                     </div>
 

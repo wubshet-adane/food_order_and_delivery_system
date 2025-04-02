@@ -40,22 +40,27 @@
         </div>
 
         <div class="input-group">
-            <label for="content">Ingredients <i class="fa-solid fa-circle-info"></i></label>
+            <label for="content">Ingredients <i class="fa-solid fa-circle-info"></i> <p class="detail_info">
+                Enter ingredients or contents that your restaurant 
+                used to prepare this meal, separate ingredients with commas, like "meat, salad, rice ..."</p> </label>
             <textarea name="content" rows="3" placeholder="List ingredients to prepare the meal"></textarea>
         </div>
 
         <div class="input-group">
-            <label for="description">Description <i class="fa-solid fa-circle-info"></i></label>
+            <label for="description">Description <i class="fa-solid fa-circle-info"></i><p class="detail_info">
+                Describe detail this menu simply understand to customers like "uses for bodies, for motivation, e t c..."</p> </label>
             <textarea name="description" placeholder="Description about this menu item" rows="4"></textarea>
         </div>
 
         <div class="input-group">
-            <label for="price">Price <i class="fa-solid fa-circle-info"></i></label>
+            <label for="price">Price <i class="fa-solid fa-circle-info"></i><p class="detail_info">
+                write price of this meal in ethiopian currency, hence don't add above two digit after point..."</p> </label>
             <input type="number" name="price" id="price" placeholder="Price" step="0.01" required>
         </div>
 
         <div class="input-group">
-            <label for="image">Menu Image <i class="fa-solid fa-circle-info"></i></label>
+            <label for="image">Menu Image <i class="fa-solid fa-circle-info"></i> <p class="detail_info">
+                select square sized image and then post that image that will display at customers interface, ..."</p> </label>
             <input type="file" name="image" id="image" required>
             <img src="" id="imagePreview">
         </div>

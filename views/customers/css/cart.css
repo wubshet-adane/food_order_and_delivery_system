@@ -1,11 +1,14 @@
 body { 
-    font-family: Arial, sans-serif;
+    text-transform: capitalize;
+    font-family: 'roboto', sans-serif;
     padding: 20px; 
     background: #f4f4f4; 
 }
-h1 {
+h1 ,h3 {
+    font-family: 'roboto', sans-serif;
     text-align: center;
 }
+
 table {
     width: 100%; 
     border-collapse: collapse; 
@@ -17,18 +20,87 @@ th, td {
     border-bottom: 1px solid #ddd; 
 }
 th { 
-    background: #ff9900; 
+    background-color: #888;
     color: white; 
 }
 td img{
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 80px;
     border-radius: 10px;
     transition: transform 0.5s;
 }
 td img:hover{
     transform: scale(1.1);
+}
 
+.cart_item{
+    position: relative;
+}
+
+.cart_item .fa-circle-info{
+    cursor: pointer;
+}
+
+.detail_info{
+    position: absolute;
+    left: 0;
+    top:14px;
+    text-transform: capitalize;
+    font-family: 'roboto', sans-serif;
+    font-size: 12px;
+    display: none;
+    border-radius: 10px;
+    width: 150px;
+    background-color: #888;
+    padding: 10px;
+    color: #fff;
+    z-index: 1000;
+    text-align: left;
+}
+
+.cart_item .fa-circle-info:hover + .detail_info{
+    display: block; 
+}
+
+.detail_info:hover{
+    display: block;
+}
+
+.originalQuantity{
+    margin: auto;
+    width: 55px;
+}
+.originalQuantity:hover{
+    cursor: pointer;
+    border: 2px solid #ff9900;
+}
+.editableQuantity{
+    display: none;
+    border: 2px solid #ff9900;
+}
+
+/* Button Styling */
+td button, .add_more_menu {
+    color: rgb(255, 0, 0);
+    text-transform: capitalize;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+td button:hover, .add_more_menu:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+td button:focus, .add_more_menu:focus {
+    outline: none;
+}
+
+.update_icon, .remove_icon{
+    display: none;
 }
 .cart-container { 
     max-width: 90%; 
@@ -38,6 +110,14 @@ td img:hover{
     border-radius: 10px; 
     box-shadow: 0px 4px 10px rgba(0,0,0,0.1); 
 }
+
+.add_more_menu{
+    float: right;
+    margin: 4px;
+    background: #ff9900;
+    color: white;
+}
+
 /* Checkout Section Box */
 .checkout_section_box {
     display: flex;
@@ -119,6 +199,28 @@ td img:hover{
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    body{
+        font-size: 14px;
+    }
+    td img{
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        transition: transform 0.5s;
+    }
+
+    .td_price{
+        display: none;
+    }
+
+    .update_txt, .remove_txt{
+        display: none;
+    }
+
+    .update_icon, .remove_icon{
+        display: block;
+    }
+
     .checkout_section_box {
         flex-direction: column;
         align-items: center;

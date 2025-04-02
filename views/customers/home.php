@@ -117,6 +117,7 @@
         <meta charset="UTF-8">
         <title>Customer Home - Online Food Ordering</title>
         <link rel="stylesheet" href="css/home.css">
+        <link rel="stylesheet" href="css/topbar.css">
         <link rel="stylesheet" href="css/recommendation.css">
 
         <!--font ausome for star rating-->
@@ -125,7 +126,7 @@
     <body>
 
     <?php
-    include "header/topnav.php";
+    include "topbar.php";
     include "recommendation.php";
     ?>
     <!--search and sort section-->
@@ -240,7 +241,7 @@
                 <h2>Become a <span>Customer</span></h2>
                 <p>Order your favorite meals with ease and convenience.</p>
                 <div class="partner_redirect_link_box">
-                    <a href="../auth/customer_register.php"> Customer</a>
+                    <a href="../auth/customer_login.php"> Customer</a>
                 </div>
             </div>
             <div class="box restaurant">
