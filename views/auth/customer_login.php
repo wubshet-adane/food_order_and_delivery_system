@@ -40,15 +40,13 @@
             
             <button type="submit" class="login-btn">Login</button>
             
-            <div class="google-login">
-                <button id="googleLogin">
-                    <i class="fab fa-google"></i> Continue with Google
-                </button>
-            </div>
-
             <p class="signup-text">Don't have an account? <a href="signup.php">Sign Up</a></p>
-            
         </form>
+        <div class="google-login">
+            <button id="googleLogin">
+                <i class="fab fa-google"></i> Continue with Google
+            </button>
+        </div>
     </div>
 </body>
 </html>

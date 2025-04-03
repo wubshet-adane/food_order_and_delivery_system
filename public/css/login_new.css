@@ -124,7 +124,7 @@ input.invalid {
 }
 
 /* Login Button */
-.login-btn, #googleLogin{
+.login-btn{
     width: 100%;
     padding: 10px;
     background-color: #ff9900;
@@ -135,7 +135,7 @@ input.invalid {
     font-size: 16px;
 }
 
-.login-btn:hover, #googleLogin {
+.login-btn:hover{
     background-color: #ff5900;
 }
 

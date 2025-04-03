@@ -154,7 +154,7 @@ input.invalid {
 <body style="background: linear-gradient(rgba(0, 0, 0, 1), rgba(9, 17, 0, 0.1)), url('../../public/images/restaurant_login_bg.jpg');">
     <div class="full-container">
         <div class="login-container" style="background: linear-gradient(rgba(0, 0, 0, 0), rgba(9, 17, 0, 0.9))">
-            <h2 style="text-align: center; margin-bottom: 4px;"> Login as Restaurants Owner</h2>
+            <h2 style="text-align: center; margin-bottom: 4px; color: #ff9900;"> Login as Restaurants Owner</h2>
             <!--form and image setion container-->
             <div class="login-content">
             <!--left side form section-->
@@ -164,7 +164,7 @@ input.invalid {
                         <p id="responseMessage" style="background-color: #DDFF00FF; font-size: 14px;"></p>
 
                         <div class="input-group">
-                            <label for="email">Email Address</label>
+                            <label for="email" style="color: #fff;">Email Address</label>
                             <div class="input-wrapper">
                                 <i class="fas fa-envelope"></i>
                                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
@@ -173,7 +173,7 @@ input.invalid {
                         </div>
                         
                         <div class="input-group">
-                            <label for="password">Password</label>
+                            <label for="password" style="color: #fff;">Password</label>
                             <div class="input-wrapper">
                                 <i class="fas fa-lock"></i>
                                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
@@ -188,15 +188,14 @@ input.invalid {
                         
                         <button type="submit" class="login-btn">Login</button>
                         
-                        <div class="google-login">
-                            <a id="googleLogin">
-                                <i class="fab fa-google"></i> Continue with Google
-                            </a>
-                        </div>
-
-                        <p class="signup-text">Don't have an account? <a href="restaurant_register.php">Sign Up</a></p>
-                        
+                        <p class="signup-text" style="color: #fff;">Don't have an account? <a href="restaurant_register.php">Sign Up</a></p>
                     </form>
+                    
+                    <div class="google-login">
+                        <button id="googleLogin">
+                            <i class="fab fa-google"></i> Continue with Google
+                        </button>
+                    </div>
                 </div>
                 <!--right side image section-->
                 <div class="login-image" style="background-image: url('../../public/images/restaurant.jpg');">

@@ -74,7 +74,7 @@ body {
 /* right Side (Image) */
 .login-image {
     box-sizing:border-box;
-    border-radius:0 0 20px 0;
+    border-radius:0 0 20px 20px;
     flex: 1;
     background: url('../images/login.jpg') no-repeat center center;
     background-size: cover;
