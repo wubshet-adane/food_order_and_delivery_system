@@ -1,0 +1,255 @@
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Navigation */
+.navbar {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-link {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    background-color: white;
+    color: #333;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: none;
+    min-width: 200px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    display: block;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 0.5rem 0;
+}
+
+/* Sidebar */
+.container-fluid {
+    display: flex;
+}
+
+
+.nav.flex-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0 1rem;
+}
+
+.nav.flex-column .nav-link {
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.nav.flex-column .nav-link:hover {
+    background-color: #f0f0f0;
+}
+
+.nav.flex-column .nav-link.active {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+/* Main Content */
+main {
+    margin-left: 220px;
+    padding: 1.5rem;
+    flex-grow: 1;
+    background-color: white;
+    min-height: calc(100vh - 60px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+    
+    main {
+        margin-left: 0;
+    }
+    
+    .navbar-nav {
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #2c3e50;
+        padding: 1rem;
+        display: none;
+    }
+    
+    .navbar-nav.show {
+        display: flex;
+    }
+}
+
+.sidebar {
+    position: fixed;
+    top: 56px;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 20px 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+    padding: 10px 20px;
+}
+
+.sidebar .nav-link.active {
+    color: #0d6efd;
+}
+
+.sidebar .nav-link:hover {
+    color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+}
+
+.main-content {
+    margin-left: 220px;
+    padding-top: 20px;
+}
+
+/* Card styles */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-footer {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Table styles */
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Badge styles */
+.badge {
+    font-weight: 500;
+    padding: 5px 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .sidebar {
+        position: static;
+        height: auto;
+        padding: 0;
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+/* Animation for status changes */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.status-updated {
+    animation: pulse 0.5s ease;
+}

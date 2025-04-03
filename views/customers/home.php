@@ -165,7 +165,7 @@
 
                             <div class="res_card_bottom">
                                 <!--add rating-->
-                                <p>Review: 
+                                <p>Review:
                                     <?php 
                                         $rating = round($restaurant['avg_rating'], 1); // Round to 1 decimal place
                                     
@@ -255,7 +255,7 @@
                 <h2>Become a <span>Delivery Person</span></h2>
                 <p>Earn money by delivering food to hungry customers.</p>
                 <div class="partner_redirect_link_box">
-                    <a href="../delivery/home.php">Delivery</a>
+                    <a href="../auth/delivery_login.php">Delivery</a>
                 </div>
             </div>
         </div>

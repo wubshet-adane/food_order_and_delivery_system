@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
-            console.log("Quantity:", quantity);
+            //console.log("Quantity:", quantity);
 
             fetch("add_to_cart.php", {
                 method: "POST",
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(response => response.text())  // Fetch as raw text
             .then(data => {
-                console.log("Raw Response Text:", data);  // Log raw response
+                //console.log("Raw Response Text:", data);  // Log raw response
                 try {
                     const jsonData = JSON.parse(data);  // Manually parse JSON if valid
                     console.log("Parsed Response:", jsonData);

@@ -44,97 +44,6 @@ body {
     width: 100%;
 }
 
-.responce_message_error p{
-    background-color: rgb(255, 134, 120);
-    color: rgb(0, 0, 0);
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    animation: shake 3s;
-    animation-fill-mode: forwards;
-    margin: 0 auto;
-}
-
-@keyframes shake {
-    0% { transform: translateY(-30px); }
-    10% { transform: translateY(10px); }
-    15% { transform: translateY(-5px); }
-    17% { transform: translateY(0); }
-    100% { display: none; } /* Use 'none' instead of 'hidden' */
-}
-
-.input-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-label {
-    display: block;
-    margin-bottom: 1px;
-    color: #ffffff;
-}
-
-input {
-    width: 100%;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: white;
-}
-
-
-h2{
-    color: #ff9900;
-}
-.forget {
-    text-decoration: none;
-    color: #00FFF7FF; /* Bootstrap blue */
-    font-size: 14px;
-}
-
-.forget:hover {
-    text-decoration: underline;
-    color: #0056b3; /* Darker blue */
-}
-
-input#showPassword{
-    width: fit-content;
-    margin: 0 0 0 1rem;
-    padding: 0;
-    text-align: left;
-    cursor: pointer;
-}
-
-button {
-    margin: auto;
-    width: 50%;
-    padding: 5px;
-    border: none;
-    background: #ff6b01;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #e55d00;
-}
-
-.register-link {
-    margin-top: 15px;
-    font-size: 14px;
-    color:#ffffff; 
-}
-
-.register-link a {
-    color: #01e1ff;
-    text-decoration: none;
-}
-
-.register-link a:hover {
-    text-decoration: underline;
-}
 
 /* Left Side (Form) */
 .form-section {
@@ -162,15 +71,6 @@ button:hover {
     border: 1px solid #ced4da;
     padding: 10px;
 }
-
-/* Show Password Checkbox */
-.form-check-input {
-    margin-top: 3px;
-    font-size: 14px;
-    text-align: center;
-    color:white;
-}
-
 /* right Side (Image) */
 .login-image {
     box-sizing:border-box;

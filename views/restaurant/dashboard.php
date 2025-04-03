@@ -8,7 +8,7 @@ require_once '../../config/database.php';
 // Check if user is logged in and has the correct user type
 if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !isset($_SESSION['loggedIn']) || !isset($_SESSION['user_email']) || !isset($_SESSION['password'])) {
     
-    header("Location: ../auth/restaurant_login.php?message=Please enter correct credentials!");
+    header("Location: ../auth/restaurant_login.php?message=Please authenticate to access.");
     exit; // Stop execution after redirection
 }
 $ownerId = $_SESSION['user_id'];

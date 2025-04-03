@@ -55,10 +55,14 @@ $cart = $cartModel->getCart($user_id);
             <tbody id="cart-body">
                 <?php
                     $total = 0;
+                    $qty = 0;
+                    $res_id = $row['res_id'] ?? null; // Get restaurant_id from the first row if available
 
                     if ($cart->num_rows>0){
                         while ($row = $cart->fetch_assoc()){
-                            $total += $row['sub_total']; // Add each item's subtotal to tota
+                            $total += $row['sub_total']; // Add each item's subtotal to total
+                            $qty += $row['quantity']; // Add each item's quantity to total quantity
+                            $_SESSION['qty'] = $qty; // Update session variable with total quantity
                             ?>
                             <tr>
                                 <td>
@@ -105,7 +109,7 @@ $cart = $cartModel->getCart($user_id);
                 ?>
             </tbody>
         </table>
-        <button class="add_more_menu" onclick="window.location.href='home.php'">add more menu</button>
+        <button class="add_more_menu" onclick="window.location.href='menu.php?restaurant_id=<?php echo $res_id;?>'">add more menu</button>
     </div>
 
     <!--checkout section -->

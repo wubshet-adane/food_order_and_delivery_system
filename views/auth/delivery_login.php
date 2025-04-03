@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delivery Worker Login</title>
     <link rel="stylesheet" href="../../public/css/login_new.css">
-    <script src="../customers/javaScript/login_validation.js" defer></script>
+    <script src="../delivery/js/login_validation.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <div class="login-container">
-        <h2>Customers Login</h2>
-        <p id="responseMessage" style="font-size: 14px;"></p>
+        <h2>Delivery Worker Login</h2>
 
+        <p id="responseMessage"></p>
         <form id="loginForm">
             <div class="input-group">
                 <label for="email">Email Address</label>

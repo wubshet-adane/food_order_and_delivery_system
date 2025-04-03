@@ -9,25 +9,21 @@
         header("Location: ../auth/customer_login.php");
         exit();
     }
-    // redirect with restaurant id data from the first page 
+    // redirect with restaurant id data from the first page
     $restaurant_id = $_GET['restaurant_id'] ?? null;
 
+    if($_SERVER['REQUEST_METHOD'] == 'GET'){
         $search = $_GET['search'] ?? '';
-        $sort = $_GET['sort'] ?? 'name';
-        $sort_order = $_GET['sort_order'] ?? 'ASC';
+        $sort = $_GET['sort'] ?? 'name ASC';
 
-        $allowedSortColumns = ['catagory', 'name', 'price'];
-        if (!in_array($sort, $allowedSortColumns)) {
-            $sort = 'name';
-        }
-        if ($sort == 'nameASC' || $sort == 'priceASC' || $sort == 'catagory'){
-            $sort_order = 'ASC';
-        }else{
-            $sort_order = 'DESC';
+        $text = "";
+        if ($search) {
+            $text = "Search Results for :";
         }
 
         if ($restaurant_id) {
-            $sql = "SELECT * FROM menu WHERE restaurant_id = ? AND (name LIKE ? OR description LIKE ? OR catagory LIKE ?) ORDER BY $sort $sort_order";
+            $sql = "SELECT * FROM menu WHERE restaurant_id = ? AND (name LIKE ? OR description LIKE ? OR catagory LIKE ?) 
+            ORDER BY $sort";
             $stmt = $conn->prepare($sql);
             $searchQuery = "%" . $search . "%";
             $stmt->bind_param("isss", $restaurant_id, $searchQuery, $searchQuery, $searchQuery);
@@ -38,8 +34,8 @@
         else {
         header("Location: home.php");
         exit();
+        }
     }
-
     $sql = "SELECT * FROM restaurants WHERE restaurant_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $restaurant_id);
@@ -58,9 +54,10 @@
         <!--font ausome for star rating-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="css/home.css">
-        <link rel="stylesheet" href="css/menu.css">
         <link rel="stylesheet" href="css/topbar.css">
         <link rel="stylesheet" href="../footer.css">
+        <link rel="stylesheet" href="css/menu.css">
+
     </head>
     <body>
 
@@ -77,22 +74,24 @@
 
     <!--search and sort section-->
     <section class="search-sort container">
-        <form id="searchForm" method="GET" class="search-form">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="searchForm" method="GET" class="search-form">
             <label for="search" class="label">Search Menus:</label>
+            <input type="hidden" name="restaurant_id" value="<?php echo htmlspecialchars($restaurant['restaurant_id']); ?>">
             <input type="text" id="searchInput" name="search" placeholder="Search restaurants..." value="<?php echo htmlspecialchars($search); ?>">
             
             <select id="sortSelect" name="sort">
                 <option value="catagory" <?php if ($sort === 'catagory') echo 'selected'; ?>>Catagory</option>
-                <option value="nameASC" <?php if ($sort === 'nameASC') echo 'selected'; ?>>Name: A to Z</option>
-                <option value="nameDESC" <?php if ($sort === 'nameDESC') echo 'selected'; ?>>Name: Z to A</option>
-                <option value="priceASC" <?php if ($sort === 'priceASC') echo 'selected'; ?>>Price: Low to High</option>
-                <option value="priceDESC" <?php if ($sort === 'priceDESC') echo 'selected'; ?>>Price: High to Low</option>
+                <option value="name ASC" <?php if ($sort === 'name ASC') echo 'selected'; ?>>Name: A to Z</option>
+                <option value="name DESC" <?php if ($sort === 'name DESC') echo 'selected'; ?>>Name: Z to A</option>
+                <option value="price ASC" <?php if ($sort === 'price ASC') echo 'selected'; ?>>Price: Low to High</option>
+                <option value="price DESC" <?php if ($sort === 'price DESC') echo 'selected'; ?>>Price: High to Low</option>
             </select>
             <button type="submit">Find</button>
         </form>
     </section>
 
         <div class="menu_container">
+            <h2 style="text-align: center;"><span><?php echo $text ?></span> <span style="color: #88ff; font-style: italic;"><?php echo $search?></span> </h2>
             <?php
                 if ($menu_items) {
             ?>

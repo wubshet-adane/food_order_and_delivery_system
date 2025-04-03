@@ -62,13 +62,10 @@ if (isset($_GET['menu_id'])) {
                 </div>
 
                 <div class="item-info">
-                <button class="back-to-menu" onclick="window.history.back()">Back to Menu</button>
+                <button class="back-to-menu" onclick="window.history.back()"><i class="fa-solid fa-backward-step"></i> Back to Menu</button>
 
                     <h2><?php echo htmlspecialchars($item['name']); ?></h2>
                     <h4 class="description"><?php echo htmlspecialchars($item['description']); ?></h4><br>
-                    <h4>price for single item:
-                        <span class="price"><?php echo number_format($item['price'], 2); ?> Birr.</span>
-                    </h4><br>
                     <div class="detail_info">
                         <h4>Detail information about this food item:</h4>
                         <h4>This food Prepared at <?php echo $cafe['name']; ?></h4>
@@ -83,6 +80,9 @@ if (isset($_GET['menu_id'])) {
                             <p>Phone: <?php echo htmlspecialchars($cafe['phone']); ?></p>
                         </code>
                     </div>
+                    <h4>price for single item:
+                        <span class="price"><?php echo number_format($item['price'], 2); ?> Birr.</span>
+                    </h4><br>
 
                     <div class="item-actions">
                         <button type="button" data-menu-id="<?php echo $item['menu_id']; ?>" class="add_to_cart" title="Add item to Cart"> Add to cart <i class="fa-solid fa-cart-plus"></i></button>

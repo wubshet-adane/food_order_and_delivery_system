@@ -10,22 +10,22 @@ class Restaurant {
 
     public function registerRestaurant($data) {
         $query = "INSERT INTO restaurants (
-            owner_id, 
-            name, 
-            image, 
-            banner, 
-            license, 
-            location, 
-            latitude, 
-            longitude, 
-            phone, 
-            status, 
-            description, 
-            tiktokAccount, 
-            telegramAccount, 
-            instagramAccount, 
-            facebook, 
-            website, 
+            owner_id,
+            name,
+            image,
+            banner,
+            license,
+            location,
+            latitude,
+            longitude,
+            phone,
+            status,
+            description,
+            tiktokAccount,
+            telegramAccount,
+            instagramAccount,
+            facebook,
+            website,
             opening_and_closing_hour
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -71,10 +71,10 @@ class Restaurant {
 
     public function updateRestaurant($restaurantId, $data) {
         // Use an UPDATE query to update the existing restaurant record
-        $query = "UPDATE restaurants SET 
-            name = ?, 
+        $query = "UPDATE restaurants SET
+            name = ?,
             image = ?, 
-            banner = ?, 
+            banner = ?,
             license = ?, 
             location = ?, 
             latitude = ?, 

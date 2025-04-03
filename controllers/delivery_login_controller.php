@@ -1,7 +1,7 @@
-
 <?php
 session_start();
-require_once __DIR__ . '/../models/restaurant.php';
+require_once __DIR__ . '/../models/delivery.php';
+// use database connection
 
 $response = ["success" => false, "message" => "Invalid request", "redirect_url" => null];
 
@@ -23,20 +23,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode($response);
         exit();
     }
-    
-    $restaurant = Restaurant::login($email, $password);
-
-    if ($restaurant) {
-        $_SESSION['user_id'] = $restaurant['user_id'];
-        $_SESSION['user_email'] = $restaurant['email'];
-        $_SESSION['password'] = $restaurant['password'];
+    // Check if user exists in database
+    $user = DeliveryUser::login($email, $password);
+    if ($user) {
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['user_email'] = $user['email'];
+        $_SESSION['password'] = $user['password'];
         $_SESSION['loggedIn'] = true;
-        $_SESSION['userType'] = "restaurant";
-
+        $_SESSION['userType'] = "delivery";
         //set response message and redirect url
         $response["success"] = true;
         $response["message"] = "Login successful";
-        $response['redirect_url'] = "../restaurant/dashboard.php?message=successfuly logged in";
+        $response['redirect_url'] = "../delivery/index.php";
         echo json_encode($response);
         exit();
     } else {
@@ -44,9 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode($response);
         exit();
     }
-    }
-    else {
+}
+else {
     echo json_encode($response);
     exit();
-    }
-?>
+}
