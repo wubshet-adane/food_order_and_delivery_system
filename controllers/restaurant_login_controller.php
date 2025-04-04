@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode($response);
         exit();
     } else {
-        $response["message"] = "Incorrect email or password!";
+        $response["message"] = "Incorrect email or passwor4d!";
         echo json_encode($response);
         exit();
     }

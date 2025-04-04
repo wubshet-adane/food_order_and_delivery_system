@@ -30,10 +30,9 @@
             $stmt->execute();
             $result = $stmt->get_result();
             $menu_items = $result->fetch_all(MYSQLI_ASSOC);
-        }
-        else {
-        header("Location: home.php");
-        exit();
+        }else {
+            header("Location: home.php");
+            exit();
         }
     }
     $sql = "SELECT * FROM restaurants WHERE restaurant_id = ?";

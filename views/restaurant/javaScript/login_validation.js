@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let email = emailInput.value;
         let password = passwordInput.value;
 
-        fetch("/food_ordering_system/controllers/customer_login_controller.php", {
+        fetch("/food_ordering_system/controllers/restaurant_login_controller.php", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: "email=" + encodeURIComponent(email) + "&password=" + encodeURIComponent(password)
@@ -73,7 +73,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             if (data.success === true && data.message === "Login successful") {
                 window.location.href = data.redirect_url;
-                return;
             } else {
                 responseMessage.textContent = data.message;
                 responseMessage.style.color = data.success ? "green" : "red";

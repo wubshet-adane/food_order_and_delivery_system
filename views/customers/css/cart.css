@@ -121,31 +121,30 @@ td button:focus, .add_more_menu:focus {
 /* Checkout Section Box */
 .checkout_section_box {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
     padding: 30px;
-    background: #f8f9fa;
+    background: #eee;
     border-radius: 12px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
+    width: calc(100% - 60px);
+    max-width: 1200px;
     margin: 40px auto;
 }
 
 /* Left Side - Can be used for additional checkout details */
 .left_side_checkout_section {
-    flex: 1;
-    background: url('checkout-bg.jpg') center/cover no-repeat; /* Replace with an actual image */
-    min-height: 300px;
+    background: url('../../../public/images/delivery.jpg') center cover no-repeat; /* Replace with an actual image */
     border-radius: 12px;
+    flex: 1;
 }
 
 /* Right Side - Order Summary */
 .right_side_checkout_section {
-    flex: 1;
     padding: 25px;
-    background: white;
+    background: rgb(241, 240, 240);
     border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.9);
 }
 
 /* Order Summary Section */

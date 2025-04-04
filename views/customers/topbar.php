@@ -22,7 +22,7 @@
         <?php }else{?>
             <a href="cart.php"><i class="fa-solid fa-cart-plus" style="position: relative">
                 <sup style="position: absolute; top: -12px; left: 12px; background: #0f1; color: #111; padding: 3px 2px; font-size: 10px; border-radius: 50%;">
-                    <?php 
+                    <?php
                     if(isset($_SESSION['qty'])){
                         echo $_SESSION['qty'];
                     }else{
@@ -31,7 +31,7 @@
                     </sup>
                 </i>
             </a>
-            <a href="../auth/logout.php">Logout</a>
+            <a href="../auth/customer_logout.php">Logout</a>
             <?php }?>
         <button id="darkModeToggle"><i class="fa-solid fa-moon"></i></button>
     </div>
