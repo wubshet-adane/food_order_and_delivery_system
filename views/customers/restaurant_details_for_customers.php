@@ -1,5 +1,6 @@
 <?php
 require_once '../../models/restaurant_details_for_customers.php';
+require_once '../../models/restaurant_review.php';
 require_once '../../config/database.php';
 
 session_start(); // Ensure the session is started
@@ -13,7 +14,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "customer" || !iss
 $resId = $_GET['restaurant_id'];
 
 $restaurantModel = new Restaurant($conn);
+$reviewModel = new Review($conn);
 $restaurants = $restaurantModel->getOneRestaurant($resId);
+$restaurantReviews = $reviewModel->getRestaurantReviews($resId);
 
 /*
     $apiKey = "AIzaSyAiwVbMDuB2I6fSDJSNhym8mTmE3kc4VLM"; // Your Google API Key
@@ -135,6 +138,25 @@ $restaurants = $restaurantModel->getOneRestaurant($resId);
                         <div><strong class="res_info"> Physical Location City or WellKnown Place </strong>
                             <i class="fa fa-map-marker"></i> <?= htmlspecialchars($restaurant['location'])?>
                             <div id="map"></div>
+                        </div>
+                    </div>
+
+                    <div class="restaurant_review_section">
+                        <strong class="res_info">top 10 reviews from our customers</strong>
+                        <div class="review_box">
+                            <?php foreach ($restaurantReviews as $review) :?>
+                                <div class="review_card">
+                                    <ul class="reviewer_info">
+                                        <li><img src="../../public/images/profile icon.jpg" alt="user img"> <br> <?= htmlspecialchars($review['user_name']) ?></li>                                    
+                                        <li class="review_text">&quot;<?= htmlspecialchars($review['review_text']) ?>&quot;</li>
+                                        <?php
+                                            $day =  date("l, F j, Y \a\\t g:i A", strtotime($review['created_at']));
+                                        ?>
+                                        <li class="rating"><?= htmlspecialchars($review['rating']) ?> <i class="fa-solid fa-star"></i></li>
+                                        <li><span><?= $day ?></span></li>
+                                    </ul>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
 

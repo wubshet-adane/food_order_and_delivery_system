@@ -120,6 +120,73 @@ body{
     border-radius: 5px;
 }
 
+.restaurant_review_section{
+    padding: 2rem;
+    margin: 2rem auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    text-align: center;
+}
+
+.review_box{
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.review_card{
+    margin: 0;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    text-align: center;
+}
+
+.reviewer_info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    list-style-type: none;
+    padding: 0;
+    margin: auto;
+    text-align: center;
+    color: #333;
+}
+
+.reviewer_info li{
+    font-size: 16px;
+    text-transform: capitalize;
+    color: #333;
+}
+
+.reviewer_info li img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.reviewer_info .review_text{
+    font-size: 14px;
+    font-family: cursive;
+}
+
+.reviewer_info li span{
+    color: #888;
+    font-size: 12px;
+    font-style: italic;
+    text-align: right;
+}
+
 
 @media screen and(max-width:900px) {
   
