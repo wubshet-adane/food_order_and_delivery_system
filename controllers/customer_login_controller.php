@@ -30,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['user_email'] = $user['email'];
         $_SESSION['password'] = $user['password'];
+        $_SESSION['profile_image'] = $user['image'];
         $_SESSION['loggedIn'] = true;
         $_SESSION['userType'] = "customer";
         //set response message and redirect url

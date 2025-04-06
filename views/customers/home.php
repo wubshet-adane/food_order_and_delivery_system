@@ -6,36 +6,42 @@
     //get recomendation restaurants
     $recomendation = Recomendation::getRecomendation();
 
+    //default value for lat andlng
+    
+    if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['latitude']) && isset($_GET['longitude'])) {
+        $latitude = floatval($_GET['latitude']);
+        $longitude = floatval($_GET['longitude']);
+    }  
+    else {
+        $latitude = 0.0; // Default latitude
+        $longitude = 0.0; // Default longitude
+    }
     $search = $_GET['search'] ?? '';
-    $sort = $_GET['sort'] ?? 'name';
-    $sort_order = $_GET['sort_order'] ?? 'ASC';
-
-    $allowedSortColumns = ['name', 'location', 'rating'];
-    if (!in_array($sort, $allowedSortColumns)) {
-        $sort = 'name';
-    }
-    if ($sort == 'rating'){
-        $sort_order = 'DESC';
-    }else{
-        $sort_order = 'ASC';
-    }
+    $sort = $_GET['sort'] ?? 'distance_km ASC';
+    
 
     $sql = "SELECT r.*, COALESCE(AVG(rv.rating), 0) AS avg_rating,
-    COALESCE(COUNT(DISTINCT rv.user_id), 0) AS no_of_reviewers
+    COALESCE(COUNT(DISTINCT rv.user_id), 0) AS no_of_reviewers,
+    (6371 * ACOS(
+        COS(RADIANS(?)) * COS(RADIANS(r.latitude)) * COS(RADIANS(r.longitude) - RADIANS(?)) +
+        SIN(RADIANS(?)) * SIN(RADIANS(r.latitude))
+    )) AS distance_km
     FROM restaurants r LEFT JOIN review rv ON r.restaurant_id = rv.restaurant_id
-    WHERE r.name LIKE ? OR r.description OR r.location LIKE ? OR r.phone LIKE ?
-    GROUP BY r.restaurant_id, r.name, r.location, r.image, r.phone, r.status
-    ORDER BY $sort $sort_order";  
+    WHERE r.name LIKE ? OR r.description LIKE ? OR r.location LIKE ? OR r.phone LIKE ?
+    GROUP BY r.restaurant_id, r.name, r.location, r.image, r.phone, r.status, r.latitude, r.longitude
+    ORDER BY $sort";  
+
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         die("Query preparation failed: " . $conn->error);
     }
     $searchQuery = "%" . $search . "%";
-    $stmt->bind_param("sss", $searchQuery, $searchQuery, $searchQuery);
+    $stmt->bind_param("dddssss", $latitude, $longitude, $latitude, $searchQuery, $searchQuery, $searchQuery, $searchQuery);
     $stmt->execute();
     $result = $stmt->get_result();
     $restaurants = $result->fetch_all(MYSQLI_ASSOC);
 
+    //echo json_encode($latitude, $longitude);
     // Handle AJAX request
     if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
         if ($restaurants) {
@@ -48,6 +54,7 @@
                     </div>
                     <div class="restaurant-details">
                         <p><strong>Location:</strong> <?php echo htmlspecialchars($restaurant['location']); ?></p>
+                        <p><strong>distance from your location:</strong> <?php echo round(htmlspecialchars($restaurant['distance_km']), 2); ?> KM</p>
                         <p><strong>Phone:</strong> <?php echo htmlspecialchars($restaurant['phone']); ?></p>
                         <!--add rating-->
                         <p>Review: 
@@ -104,7 +111,10 @@
             <?php
             }
         } else {
-            echo "<p>No restaurants found. Please try again.</p>";
+            echo "<div class='no_restaurants'>
+                    <img src='../../public/images/no restaurants.jpg' alt='not found' width='400px' height='350px' style='margin: 0 auto; border-radius:10px; display: block;'>
+                    <h2 style='text-align: center;'>No restaurants found.</h2>
+                </div>";
         }
         exit();
     }
@@ -115,13 +125,31 @@
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Customer Home - Online Food Ordering</title>
+        <title>G3- food home</title>
+        <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
         <link rel="stylesheet" href="css/home.css">
         <link rel="stylesheet" href="css/topbar.css">
+        <link rel="stylesheet" href="../footer.css">
         <link rel="stylesheet" href="css/recommendation.css">
-
         <!--font ausome for star rating-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- SweetAlert CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.25/dist/sweetalert2.min.css">
+        <!-- SweetAlert JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.25/dist/sweetalert2.min.js"></script>
+
+        <style>
+            .phone{
+                text-decoration:none;
+                text-align: center;
+                padding: 3px auto;
+            }
+            .phone:hover{
+                color:blue;
+                text-decoration:underline;
+                background: linear-gradient(to right, #00000011, #ff9900, #00000011);
+            }
+        </style>
     </head>
     <body>
 
@@ -136,9 +164,11 @@
             <input type="text" id="searchInput" name="search" placeholder="Search restaurants..." value="<?php echo htmlspecialchars($search); ?>">
             
             <select id="sortSelect" name="sort">
-                <option value="name" <?php if ($sort === 'name') echo 'selected'; ?>>Sort by Name</option>
-                <option value="location" <?php if ($sort === 'location') echo 'selected'; ?>>Sort by Location</option>
-                <option value="rating" <?php if ($sort === 'rating') echo 'selected'; ?>>Sort by Rating</option>
+                <option value="name ASC" <?php if ($sort === 'name ASC') echo 'selected'; ?>>Restaurant name ascending</option>
+                <option value="name DESC" <?php if ($sort === 'name DESC') echo 'selected'; ?>>Restaurant name dscending</option>
+                <option value="distance_km ASC" <?php if ($sort === 'distance_km') echo 'selected'; ?>>Nearest Restaurant first</option>
+                <option value="avg_rating DESC" <?php if ($sort === 'avg_rating DESC') echo 'selected'; ?>>Top rated first</option>
+                <option value="avg_rating ASC" <?php if ($sort === 'avg_rating ASC') echo 'selected'; ?>>Least rated first</option>
             </select>
 
             <button type="submit">Find</button>
@@ -156,12 +186,12 @@
                 <?php foreach ($restaurants as $restaurant): ?>
                     <div class="restaurant-card">
                         <div class="restaurant-image">
-                            <img src="../restaurant/restaurantAsset/<?php echo $restaurant['image']; ?>" alt="<?php echo $restaurant['name']; ?>">
+                            <img src="../restaurant/restaurantAsset/<?php echo $restaurant['image']; ?>" alt="<?php echo $restaurant['name'];?>">
                             <h3 class="res-name"><?php echo htmlspecialchars($restaurant['name']); ?>:</h3>
                         </div>
                         <div class="restaurant-details">
                             <p><i class="fa fa-map-marker"></i> <?php echo htmlspecialchars($restaurant['location']); ?></p>
-                            <p><i class="fa-solid fa-phone"></i> <?php echo htmlspecialchars($restaurant['phone']); ?></p>
+                            <p><a class="phone" href="tel:<?=  htmlspecialchars($restaurant['phone']); ?>"><i class="fa-solid fa-phone"></i> <?php echo htmlspecialchars($restaurant['phone']); ?></a></p>
 
                             <div class="res_card_bottom">
                                 <!--add rating-->
@@ -219,7 +249,10 @@
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>No restaurants found. Please try again.</p>
+                <div class="no_restaurants">
+                    <img src="../../public/images/no restaurants.jpg" alt="not found" width="200px" height="200px"style='margin: 0 auto; border-radius:10px; display: block;'>
+                    <h2 style='text-align: center;'>No restaurants found.</h2>
+                </div>
             <?php endif; ?>
         </div>
     </section>
@@ -261,31 +294,66 @@
         </div>
     </div>
     
-    <footer class="footer">
-        <p>&copy; <?php echo date('Y'); ?> FoodieExpress. All rights reserved.</p>
-    </footer>
+    <?php include '../footer.php'; ?>
     </body>
 
-        <script>
-            const searchInput = document.getElementById('searchInput');
-            const sortSelect = document.getElementById('sortSelect');
-            const restaurantResults = document.getElementById('restaurantResults');
+    <!--search and sort AJAX functionality-->
+    <script>
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+    const restaurantResults = document.getElementById('restaurantResults');
 
-            function fetchRestaurants() {
+    function fetchRestaurants() {
+        if (!navigator.geolocation) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Geolocation is not supported by your browser.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
                 const search = searchInput.value;
                 const sort = sortSelect.value;
 
                 const xhr = new XMLHttpRequest();
-                xhr.open('GET', `<?php echo basename($_SERVER['PHP_SELF']); ?>?ajax=1&search=${encodeURIComponent(search)}&sort=${encodeURIComponent(sort)}`, true);
-                xhr.onload = function() {
+                xhr.open(
+                    'GET',
+                    `<?php echo basename($_SERVER['PHP_SELF']); ?>?ajax=1&search=${encodeURIComponent(search)}&sort=${encodeURIComponent(sort)}&latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}`,
+                    true
+                );
+                xhr.onload = function () {
                     if (xhr.status === 200) {
                         restaurantResults.innerHTML = xhr.responseText;
                     }
                 };
                 xhr.send();
+            },
+            function (error) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Error getting location: ' + error.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
             }
+        );
+    }
 
-            searchInput.addEventListener('input', fetchRestaurants);
-            sortSelect.addEventListener('change', fetchRestaurants);
-        </script>
+    searchInput.addEventListener('input', fetchRestaurants);
+    sortSelect.addEventListener('change', fetchRestaurants);
+</script>
+
+
+
     </html>

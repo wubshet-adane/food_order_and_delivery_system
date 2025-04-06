@@ -1,8 +1,6 @@
 <footer class="site-footer">
     <div class="footer-content">
-        <p>Copy right &copy; <?php echo date('Y'); ?> G3 Online Food Ordering System. All rights reserved.</p>
-
-        <div class="social-media">
+    <div class="social-media">
             <a href="#" target="_blank" aria-label="Facebook">🌐</a>
             <a href="#" target="_blank" aria-label="Twitter">🐦</a>
             <a href="#" target="_blank" aria-label="Instagram">📸</a>
@@ -18,4 +16,6 @@
     </div>
 
     <button id="scrollToTopBtn" title="Go to top">⬆️</button>
+        <p>Copy right &copy; <?php echo date('Y'); ?> G3 Online Food Ordering System. All rights reserved.</p>
+
 </footer>

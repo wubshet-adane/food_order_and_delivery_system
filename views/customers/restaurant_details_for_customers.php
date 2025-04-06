@@ -34,6 +34,7 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
     <title>Restaurant detail</title>
     <link rel="stylesheet" href="css/restaurant_details_for_customers.css">
     <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="../footer.css">
     <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
     <!--font ausome for star rating-->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -92,7 +93,7 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
 
                         <!-- Center Navigation Links -->
                         <div class="nav-links">
-                            <a href="home.php">Home</a>
+                            <a class="back" href="javascript:history.back()"><i class=" fa fa-solid fa-arrow-left"></i></a>
                             <a href="about.php">About</a>
                             <a href="contact.php">Contact</a>
                             <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>">Menu</a>
@@ -100,14 +101,37 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
 
                         <!-- Authentication Links -->
                         <div class="auth-links">
-                            <button id="darkModeToggle">🌙 Dark Mode</button>
                             <?php if(!isset($_SESSION['loggedIn'])){
                             ?>
                                 <a href="../auth/customer_login.php">Login</a>
                                 <a href="register.php">Sign Up</a>
                             <?php }else{?>
-                                <a href="cart.php"><i class="fa-solid fa-cart-plus"></i><sup>12</sup></a>
-                                <a href="../auth/logout.php">Logout</a>
+                                <div>
+                                    <a href="cart.php"><i class="fa-solid fa-cart-plus" style="position: relative">
+                                        <sup style="position: absolute; top: -12px; left: 12px; background: #0f1; color: #111; padding: 3px 2px; font-size: 10px; border-radius: 50%;">
+                                            <?php
+                                            if(isset($_SESSION['qty'])){
+                                                echo $_SESSION['qty'];
+                                            }else{
+                                                echo 0;
+                                            }?>
+                                            </sup>
+                                        </i>
+                                    </a>
+                                </div>
+                                <div class="profile-dropdown">
+                                    <a href="javascript:void(0)" class="profile-dropbtn"><img src="../../public/images/<?php echo $_SESSION['profile_image']?>" alt="profile"></a>
+                                    <div class="profile-dropdown-content">
+                                        <ul>
+                                            <li><a href="profile.php"><i class="fa-solid fa-user"></i>&nbsp;&nbsp; Profile</a></li>
+                                            <li><a href="cart.php"><i class="fa-solid fa-cart-plus"></i>&nbsp;&nbsp; Cart</a></li>
+                                            <li><a href="order_history.php"><i class="fa-solid fa-bars"></i>&nbsp;&nbsp; Order History</a></li>
+                                            <li><a href="restaurant_list.php"><i class="fa-solid fa-key"></i>&nbsp;&nbsp; Change password</a></li>
+                                            <li><a href="restaurant_details_for_customers.php"><i class="fa-solid fa-gear"></i>&nbsp;&nbsp; Account settings</a></li>
+                                            <li><a href="../auth/logout.php"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp; Logout</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
                             <?php }?>
                         </div>
                     </div>
@@ -132,13 +156,15 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
                         </div>
                     </div>
 
-                    <p class="box"><strong class="res_info"> Detail Description about <?= htmlspecialchars($restaurant['name']) ?>:</strong> <span class="description"><?= htmlspecialchars($restaurant['description']) ?></span></p>
+                    <p class="box">
+                        <strong class="res_info"> Detail Description about <?= htmlspecialchars($restaurant['name']) ?>:</strong> 
+                        <span class="description"><?= htmlspecialchars($restaurant['description']) ?></span>
+                    </p>
                                        
                     <div class="map-container box">
-                        <div><strong class="res_info"> Physical Location City or WellKnown Place </strong>
-                            <i class="fa fa-map-marker"></i> <?= htmlspecialchars($restaurant['location'])?>
-                            <div id="map"></div>
-                        </div>
+                        <strong class="res_info"> Physical Location City or WellKnown Place </strong>
+                        <i class="fa fa-map-marker"></i> <?= htmlspecialchars($restaurant['location'])?>
+                        <div id="map"></div>
                     </div>
 
                     <div class="restaurant_review_section">
@@ -160,16 +186,18 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
                         </div>
                     </div>
 
-                    <p class="box social_media"><strong class="res_info"> Get in touch with the following:</strong>
-                        <a href="<?= htmlspecialchars($restaurant['website']) ?>" target="_blank"><span class="material-symbols-outlined">language </span> Website </a> 
-                        <a href="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a> 
-                        <a href="<?= htmlspecialchars($restaurant['telegramAccount']) ?>" target="_blank"><i class="fa-brands fa-telegram"></i> Telegram</a> 
-                        <a href="<?= htmlspecialchars($restaurant['instagramAccount']) ?>" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a>
-                        <a href="tel:<?= htmlspecialchars($restaurant['phone']) ?>"><i class="fa-solid fa-phone"></i> <?= htmlspecialchars($restaurant['phone'])?></a>
-                    </p>
-
                     <p class="box"><strong class="res_info"> Working Hours:</strong> <?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?>
                     </p>
+
+                    <div class="box social_media"><strong class="res_info"> Get in touch with the following:</strong>
+                        <div>
+                            <div><a href="<?= htmlspecialchars($restaurant['website']) ?>" target="_blank"><span class="material-symbols-outlined">language </span> <span class="link"><?= htmlspecialchars($restaurant['website']) ?> </a></span> </div>
+                            <div><a href="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>" target="_blank"><i class="fa-brands fa-tiktok"></i> <span class="link"><?= htmlspecialchars($restaurant['tiktokAccount']) ?></span></a> </div>
+                            <div><a href="<?= htmlspecialchars($restaurant['telegramAccount']) ?>" target="_blank"><i class="fa-brands fa-telegram"></i> <span class="link"><?= htmlspecialchars($restaurant['telegramAccount']) ?></span></a> </div>
+                            <div><a href="<?= htmlspecialchars($restaurant['instagramAccount']) ?>" target="_blank"><i class="fa-brands fa-instagram"></i> <span class="link"><?= htmlspecialchars($restaurant['instagramAccount']) ?></span></a></div>
+                            <div><a href="tel:<?= htmlspecialchars($restaurant['phone']) ?>"><i class="fa-solid fa-phone"></i> <span class="link"><?= htmlspecialchars($restaurant['phone'])?></span></a></div>
+                        </div>
+                    </div>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -184,14 +212,14 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
             let img = document.getElementById("license");
 
             img.addEventListener("click", () => {
-                if (img.style.width !== '100%') {
-                    img.style.width = '100%';
+                if (img.style.width !== '80%') {
+                    img.style.width = '80%';
                 } else {
-                    img.style.width = '400px';
+                    img.style.width = '25%';
                 }
             });
         });
     </script>
-
+    <?php include "../footer.php";?>
 </body>
 </html>

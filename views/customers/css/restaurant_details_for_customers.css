@@ -24,6 +24,7 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 .res_name {
     position: absolute;
     top: 87%;
@@ -50,24 +51,40 @@ body{
     background-color: #fff;
 }
 .restaurant-card > .box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
     box-sizing: border-box;
     box-shadow: 0 2px 10px rgba(8,8,8,0.1);
     padding: 2rem;
     border-radius: 10px;
     text-transform: capitalize;
     color: #888;
-
+    margin: .5rem auto;
 }
 
 .image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
     width: 100%;
-    cursor: pointer;
     margin: auto;
+    align-items: center;
+    align-content: center;
 }
 
 .image img{
-    margin: auto;
-    max-width: 80%;
+    cursor: pointer;
+    width: 25%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s;
+    margin: 0;
+    padding: 0;
 }
 
 .res_info{
@@ -81,23 +98,49 @@ body{
 
 .description{
     color: #888;
-    line-height: 1.5rem;
+    font-size: 16px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    margin: 1rem auto;
+    padding: 0 1rem;
+    text-align: center;
+    line-height: 1.5;
+}
+.social_media div{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin:auto;
+    padding: 0 1rem;
+    flex-wrap: wrap;
 }
 
-.social_media a{
-    color: #b57600;
+
+.social_media div div a{
+    width: 200px;
+    color: #005b9c;
     text-decoration: none;
-    margin:1rem;
+    margin: 0;
     border-radius:5px;
-    background-color: #efe5e5;
-    padding: 3px 1rem;
+    background-color: #ffffff;
+    padding: 3px;
+    text-align: center;
+    font-size: 13px;
+    font-style: italic;
+    white-space: nowrap;        /* Prevents line break */
+    overflow: hidden;           /* Hides overflow text */
+    text-overflow: ellipsis;
 }
 .social_media a:hover{
     background-color: #f5f5f5;
 }
 .map-container {
-    margin: 10px 0;
-}
+    margin: 10px auto;
+    width: 100%;
+}/*
 .edit-btn, .delete-btn {
     padding: 8px;
     margin-top: 10px;
@@ -111,11 +154,11 @@ body{
 .delete-btn {
     background-color: #dc3545;
     color: white;
-}
+}*/
 #map{
     display: flex;
     height: 500px;
-    width: 90%;
+    width: 100%;
     margin: auto;
     border-radius: 5px;
 }
@@ -191,8 +234,9 @@ body{
 @media screen and(max-width:900px) {
   
     .res_name {
+        position:absolute;
         width: 80%;
-        top: 80%;
+        bottom: 0;
     }
     .image{
         padding-top: 10px;
@@ -201,15 +245,12 @@ body{
     .res_info{
         text-align: left;
     }
-    .social_media{
-        display:block;
-    }
-    .social_media a{
-        display: block;
-        margin: 1rem auto;
-    }
     #map {
-        height: 300px;
+        height: 200px;
         width: 100%;
+    }
+    
+    .link{
+        display: none;
     }
 }

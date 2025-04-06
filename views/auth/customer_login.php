@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delivery Worker Login</title>
+    <title>G3 customers login page</title>
+    <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
     <link rel="stylesheet" href="../../public/css/login_new.css">
     <script src="../customers/javaScript/login_validation.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">

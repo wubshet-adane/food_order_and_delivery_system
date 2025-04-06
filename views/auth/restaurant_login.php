@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurants Login</title>
+    <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
     <link rel="stylesheet" href="../../public/css/login.css">
     <script src="../restaurant/javaScript/login_validation.js" defer></script>
     <!--font ausome for star rating-->

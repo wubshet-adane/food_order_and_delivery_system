@@ -101,8 +101,8 @@
                 <!--upload location-->
                 <div class="allImage">
                     <div class="location">
-                        <label for="location">Location  <i class="fa-solid fa-circle-info"></i></label>
-                        <input type="text" name="location" id="location" placeholder="Enter location" required>
+                        <label for="address">Location  <i class="fa-solid fa-circle-info"></i></label>
+                        <input type="text" name="location" id="address" placeholder="Enter location" required>
                     </div>
                 </div>
 
@@ -210,36 +210,75 @@
             }
         });
 
+        
+
         // Google Maps Integration
+        let map;
+        let marker;
+        let geocoder;
+
         function initMap() {
-            const map = new google.maps.Map(document.getElementById("google-map"), {
-                center: { lat: 10.35, lng: 37.73333 },
-                zoom: 8,
+            const defaultLocation = { lat: 11.1, lng: 37.73 }; // Debre Markos
+            geocoder = new google.maps.Geocoder();
+
+            map = new google.maps.Map(document.getElementById("google-map"), {
+                center: defaultLocation,
+                zoom: 14,
             });
 
-            const marker = new google.maps.Marker({
-                position: { lat: 10.35, lng: 37.73333 },
-                map: map,
-                draggable: true,
+            map.addListener("click", function (e) {
+                const lat = e.latLng.lat();
+                const lng = e.latLng.lng();
+
+                // Set values to inputs
+                document.getElementById("latitude").value = lat;
+                document.getElementById("longitude").value = lng;
+
+                // Place or move marker
+                if (marker) {
+                    marker.setPosition(e.latLng);
+                } else {
+                    marker = new google.maps.Marker({
+                        position: e.latLng,
+                        map: map,
+                    });
+                }
+
+                // Get address using reverse geocoding
+                getAddressFromLatLng(lat, lng);
             });
 
-            google.maps.event.addListener(marker, 'dragend', function(event) {
-                document.getElementById('latitude').value = event.latLng.lat();
-                document.getElementById('longitude').value = event.latLng.lng();
+            // Center map to user's location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
+                    map.setCenter(userLocation);
+                });
+            }
+        }
+
+        function getAddressFromLatLng(lat, lng) {
+            const latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
+            geocoder.geocode({ location: latlng }, function (results, status) {
+                if (status === "OK") {
+                    if (results[0]) {
+                        document.getElementById("address").value = results[0].formatted_address;
+                    } else {
+                        document.getElementById("address").value = "No address found";
+                    }
+                } else {
+                    document.getElementById("address").value = "Geocoder failed: " + status;
+                }
             });
         }
 
-        // Load Google Maps API
-        function loadMapScript() {
-            const script = document.createElement("script");
-            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap`;
-            script.async = true;
-            script.defer = true;
-            document.body.appendChild(script);
-        }
-
-        loadMapScript();
     </script>
+
+    <!--google map api-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap" async defer></script>
     <script src="../customers/javaScript/light_and_dark_mode.js"></script>
 
 </body>
