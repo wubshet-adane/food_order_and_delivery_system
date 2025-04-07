@@ -125,7 +125,13 @@
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>G3- food home</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="G3 Food Ordering System - Find the best restaurants near you. Order food online with ease.">
+        <meta name="keywords" content="food, ordering, online, restaurants, delivery, G3 Food Ordering System">
+        <meta name="author" content="G3 Team">
+        <meta name="robots" content="index, follow">
+        <meta name="theme-color" content="#ff9900">
+        <title>Find Restaurants - G3 Food Ordering System</title>
         <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
         <link rel="stylesheet" href="css/home.css">
         <link rel="stylesheet" href="css/topbar.css">
