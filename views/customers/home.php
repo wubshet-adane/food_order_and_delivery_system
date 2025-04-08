@@ -129,6 +129,15 @@
         <meta name="description" content="G3 Food Ordering System - Find the best restaurants near you. Order food online with ease.">
         <meta name="keywords" content="food, ordering, online, restaurants, delivery, G3 Food Ordering System">
         <meta name="author" content="G3 Team">
+        <meta name="copyright" content="G3 Food Ordering System">
+        <meta name="language" content="English">
+        <meta name="revisit-after" content="1 days">
+        <meta name="rating" content="General">
+        <meta name="distribution" content="Global">
+        <meta name="googlebot" content="index, follow">
+        <meta name="google" content="notranslate">
+        <meta name="msapplication-TileColor" content="#ff9900">
+        <meta name="msapplication-TileImage" content="../../public/images/logo-icon.png">
         <meta name="robots" content="index, follow">
         <meta name="theme-color" content="#ff9900">
         <title>Find Restaurants - G3 Food Ordering System</title>
@@ -359,7 +368,4 @@
     searchInput.addEventListener('input', fetchRestaurants);
     sortSelect.addEventListener('change', fetchRestaurants);
 </script>
-
-
-
-    </html>
+</html>

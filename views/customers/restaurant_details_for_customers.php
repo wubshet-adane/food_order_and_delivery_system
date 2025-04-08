@@ -30,7 +30,20 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta>name="description" content="Restaurant details page for customers. View restaurant information, reviews, and more.">
+    <meta name="keywords" content="restaurant, details, reviews, food, order, online, system">
+    <meta name="author" content="G3 Online Food Ordering System">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-title" content="G3 FoodOrder">
+    <meta name="application-name" content="G3 FoodOrder">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="../../public/images/logo-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Restaurant detail</title>
     <link rel="stylesheet" href="css/restaurant_details_for_customers.css">
     <link rel="stylesheet" href="css/topbar.css">

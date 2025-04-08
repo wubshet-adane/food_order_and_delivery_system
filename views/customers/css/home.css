@@ -354,3 +354,56 @@ body {
     padding: 15px 0;
     text-align: center;
 }
+
+
+
+@media screen and (max-width: 768px) {
+    .restaurant-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .search-sort {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search-sort input, .search-sort select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    
+.restaurant-image {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    border-radius: 10px 10px 0 0;
+}
+
+.restaurant-image img {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+    height: 150px;
+    object-fit: cover;
+}
+
+.res-name {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 90%;
+    max-width: 100%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    font-weight: bold;
+    font-family: cursive;
+    text-transform: capitalize;
+    padding: 0 10px;
+    background-color: rgba(0, 0, 0, 0.4); /* semi-transparent dark background for better contrast */
+    color: #fff; /* white text for contrast */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); /* improve readability */
+    border-radius: 6px;
+}
+
+
+}

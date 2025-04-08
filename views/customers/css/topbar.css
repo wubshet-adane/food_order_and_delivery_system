@@ -125,4 +125,10 @@
         .nav-links {
             display: none; /* You can replace with hamburger menu if needed */
         }
+
+        .logo a img {
+            width: 120px;
+            height: 30px;
+            border-radius: 5px;
+        }
     }

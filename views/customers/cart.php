@@ -210,40 +210,39 @@ $cart = $cartModel->getCart($user_id);
                     <button type="submit" id="submitBtn">Place Order</button>
                     <div id="responseMsg" class="response-msg"></div>
                 </form>
-
-            </div>
-
-            <div class="payment_section">
-                <h2>Payment Method</h2>
-                <div class="payment_method">
-                    <input type="radio" id="cash" name="payment_method" value="cash" checked>
-                    <label for="cash">Cash on Delivery</label>
-                </div>
-                <div class="payment_method">
-                    <input type="radio" id="credit_card" name="payment_method" value="credit_card">
-                    <label for="credit_card">Credit Card</label>
-                </div>
-                <div class="payment_method">
-                    <input type="radio" id="mobile_money" name="payment_method" value="mobile_money">
-                    <label for="mobile_money">Mobile Money</label>
-                </div>
-                <div class="payment_method">
-                    <input type="radio" id="bank_transfer" name="payment_method" value="bank_transfer">
-                    <label for="bank_transfer">Bank Transfer</label>
-                </div>
-                <div class="payment_method">
-                    <input type="radio" id="paypal" name="payment_method" value="paypal">
-                    <label for="paypal">PayPal</label>
-                </div>
-                <div class="payment_method">
-                    <input type="radio" id="screenshot" name="payment_method" value="screenshot">
-                    <label for="screenshot">Screenshot</label>
-                </div>
-
+                
+                    <!--payment method section-->
+                <div class="payment_section">
+                    <h2>Payment Method</h2>
+                    <div class="payment_method">
+                        <input type="radio" id="cash" name="payment_method" value="cash" checked>
+                        <label for="cash">Cash on Delivery</label>
+                    </div>
+                    <div class="payment_method">
+                        <input type="radio" id="credit_card" name="payment_method" value="credit_card">
+                        <label for="credit_card">Credit Card</label>
+                    </div>
+                    <div class="payment_method">
+                        <input type="radio" id="mobile_money" name="payment_method" value="mobile_money">
+                        <label for="mobile_money">Mobile Money</label>
+                    </div>
+                    <div class="payment_method">
+                        <input type="radio" id="bank_transfer" name="payment_method" value="bank_transfer">
+                        <label for="bank_transfer">Bank Transfer</label>
+                    </div>
+                    <div class="payment_method">
+                        <input type="radio" id="paypal" name="payment_method" value="paypal">
+                        <label for="paypal">PayPal</label>
+                    </div>
+                    <div class="payment_method">
+                        <input type="radio" id="screenshot" name="payment_method" value="screenshot">
+                        <label for="screenshot">Screenshot</label>
+                    </div>
                 </div>
             </div>
+
+            <!--cart summary section-->
             <div class="right_side_checkout_section">
-
                 <div class="detail_section">
                     <h2>Order Summary</h2>
                     <p>Discount: <span>--ETB</span> </p>
@@ -254,7 +253,6 @@ $cart = $cartModel->getCart($user_id);
                 </div>
                 <button onclick = "window.location.href='checkout.php'" class="btn btn-checkout" id="btn-checkout">Proceed to Checkout</button>
                 <input type="hidden" id="qqqqty" value="<?=$_SESSION['qty']?>">
-
             </div>
         </section>
     </div>
@@ -281,8 +279,6 @@ $cart = $cartModel->getCart($user_id);
             }
         }
 
-    
-        //start when document lodding
         document.addEventListener("DOMContentLoaded", function () {
             // Update quantity in cart
             document.querySelectorAll(".editableQuantity").forEach(function (input) {
@@ -347,6 +343,7 @@ $cart = $cartModel->getCart($user_id);
                 }
             }
             toggleCheckoutButton();
+                        
         });
     </script>
 
