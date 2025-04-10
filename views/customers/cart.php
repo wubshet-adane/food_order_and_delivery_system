@@ -28,6 +28,8 @@ $cart = $cartModel->getCart($user_id);
     <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
     <!--font ausome for star rating-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!--google font-->
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="css/cart.css">
     <link rel="stylesheet" href="css/topbar.css">
@@ -67,6 +69,7 @@ $cart = $cartModel->getCart($user_id);
         $qty = 0;
         $_SESSION['qty'] = 0; // Initialize session variable for quantity
         $res_id = 0; // Get restaurant_id from the first row if available
+        $delivery_distance = $_SESSION['distance']; // Initialize delivery distance
 
         if ($cart->num_rows>0){
             ?>
@@ -153,60 +156,72 @@ $cart = $cartModel->getCart($user_id);
         <!--checkout section -->
         <section class="checkout_section_box">
             <div class="left_side_checkout_section">
-                
+            <!--image-->
+                <div class="pre_checkout_form" id="pre_checkout_form">
+                    <img src="../../public/images/checkout order.jpg" alt="checkout">
+                </div>
+
+                <!--checkout form-->
                 <form id="checkoutForm" class="checkout-form" autocomplete="off">
-                    <h2>Checkout</h2>
+                    <h2>billing information</h2>
 
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" name="full_name" id="full_name" required>
-                        <span class="error" id="error_name"></span>
+                    <!--contcat related information-->
+                    <p>contact info:</p>
+                    <div class="checkout_contact_information">
+                        <div class="form-group">
+                            <input type="text" name="full_name" id="full_name" placeholder="enter contact name *" required>
+                            <span class="error" id="error_name"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="email" name="email" id="email" placeholder="enter correct email *" required>
+                            <span class="error" id="error_email"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="tel" name="phone" id="phone" placeholder="phone number now you are using *" required pattern="^(\+?\d{1,3}[- ]?)?\(?\d{2,4}\)?[- ]?\d{3,4}[- ]?\d{3,4}$" title="Please enter a valid phone number.">
+                            <span class="error" id="error_phone"></span>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" name="email" id="email" required>
-                        <span class="error" id="error_email"></span>
+                    <!-- Delivery Address Information -->
+                     <br>
+                    <div class="delivery_address">delivery address: <i class="fa-solid fa-circle-info"></i>
+                        <div class="detail_info">
+                            <strong style="color:rgb(0, 0, 0); font-size:16px;"> How to select your delivery location:</strong><br>
+                            Drag the red marker to your desired delivery address on the map
+                            Then address, Longitude and Latitude will be automatically filled based on your chosen location.
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="tel" name="phone" id="phone" required pattern="^\d{10}$">
-                        <span class="error" id="error_phone"></span>
+                    <div class="delivery_address_info">
+                        <div class="form-group">
+                            <textarea name="address" id="address" placeholder="e.g., House #12, Arat Kilo, Addis Ababa" required></textarea>
+                            <span class="error" id="error_address"></span>
+                        </div>
+                        <!-- lat and lng Coordinates -->
+                        <div class="form-group latandlng">
+                            <div>
+                                <label for="latitude">latitude:</label>
+                                <input type="text" id="latitude" name="latitude">
+                            </div>
+                            <div>
+                                <label for="longitude">Longitude:</label>
+                                <input type="text" id="longitude" name="longitude">
+                            </div>
+                        </div>
+                        <!-- Map Section -->
+                        <div class="form-group">
+                            <div id="map"></div>
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <label>Delivery Address</label>
-                        <textarea name="address" id="address" required></textarea>
-                        <span class="error" id="error_address"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Confirm Your Location on Map</label>
-                        <div id="map" style="height: 250px; width: 100%; border: 1px solid #ccc; border-radius: 8px;"></div>
-                    </div>
-
-                    <!-- Hidden coords -->
-                    <input type="hidden" id="latitude" name="latitude">
-                    <input type="hidden" id="longitude" name="longitude">
-
-                    <div class="form-group">
-                        <label>City</label>
-                        <input type="text" name="city" id="city" required>
-                    </div>
-
                     <div class="form-group">
                         <label>Order Note (optional)</label>
-                        <textarea name="note" id="note"></textarea>
+                        <textarea name="note" id="note" rows="4"></textarea>
                     </div>
-
                     <div class="form-group confirm">
-                        <label>
                         <input type="checkbox" id="confirm" required>
-                        I confirm the above details are correct.
-                        </label>
+                        <span>I confirm the above details are correct. </span>
                     </div>
-
                     <button type="submit" id="submitBtn">Place Order</button>
                     <div id="responseMsg" class="response-msg"></div>
                 </form>
@@ -244,12 +259,22 @@ $cart = $cartModel->getCart($user_id);
             <!--cart summary section-->
             <div class="right_side_checkout_section">
                 <div class="detail_section">
+                    <?php 
+                    if (is_NaN($delivery_distance)){
+                        $delivery_fee = "error with location!"; // Set delivery fee to 0 if distance is not available
+                    }else{
+                        $delivery_distance = $_SESSION['distance']; // Get the delivery distance from the session
+                        $delivery_fee = $delivery_distance * 30;
+                        $service_fee = $total * 0.05; // 5% service fee
+                        $grand_total = $total + $delivery_fee + $service_fee; // Calculate the grand total
+                    }
+                     ?>
                     <h2>Order Summary</h2>
-                    <p>Discount: <span>--ETB</span> </p>
-                    <p>Delivery Fee: <span>---ETB</span> </p>
-                    <p>Subtotal: <span>---ETB</span> </p>
-                    <p>Shipping: <span>NA</span> </p>
-                    <p>Grand Total: <span id="total"><?php echo number_format($total, 2); ?> ETB</span> </p>
+                    <p>Discount: <span>0.00 birr</span> </p>
+                    <p>Delivery Fee: <span><?php echo round($delivery_fee, 2); ?> birr</span> </p>
+                    <p>Service Fee: <span><?php echo round($service_fee, 2)?> birr</span> </p>
+                    <p>Subtotal: <span id="sub_total"><?php echo number_format($total, 2); ?> birr</span> </p>
+                    <p>Grand Total: <span id="grand_total"><?php echo number_format($grand_total, 2); ?> birr</span> </p>
                 </div>
                 <button onclick = "window.location.href='checkout.php'" class="btn btn-checkout" id="btn-checkout">Proceed to Checkout</button>
                 <input type="hidden" id="qqqqty" value="<?=$_SESSION['qty']?>">
@@ -349,5 +374,6 @@ $cart = $cartModel->getCart($user_id);
 
     <script src="javaScript/handle_customers_location.js"></script>
     <script src="javaScript/checkoutInfoVlidation_AJAX.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap" async defer></script>
 </body>
 </html>

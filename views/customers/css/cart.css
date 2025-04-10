@@ -1,8 +1,12 @@
 body { 
+    margin: auto;
     text-transform: capitalize;
     font-family: 'roboto', sans-serif;
-    padding: 20px; 
+    padding: 0; 
     background: #f4f4f4; 
+    box-sizing: border-box;
+    font-size: 16px; /* Default font size */
+    color: #333; /* Default text color */
 }
 h1 ,h3 {
     font-family: 'roboto', sans-serif;
@@ -20,9 +24,15 @@ th, td {
     border-bottom: 1px solid #ddd; 
 }
 th { 
-    background-color: #888;
-    color: white; 
+    background: linear-gradient(to right, #333333, #ff990085), url('../../../public/images/cartBg.jpg'); /* Fixed missing slash */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; /* Align image center */
+    background-color: #f4f4f4; /* Fallback color */
+    background-attachment: fixed; /* Use this instead of background-position for "fixed" effect */
+    color: rgb(255, 255, 255); 
 }
+
 td img{
     width: 100px;
     height: 80px;
@@ -33,11 +43,11 @@ td img:hover{
     transform: scale(1.1);
 }
 
-.cart_item{
+.cart_item, .delivery_address{
     position: relative;
 }
 
-.cart_item .fa-circle-info{
+.cart_item .fa-circle-info, .delivery_address .fa-circle-info{
     cursor: pointer;
 }
 
@@ -58,7 +68,7 @@ td img:hover{
     text-align: left;
 }
 
-.cart_item .fa-circle-info:hover + .detail_info{
+.cart_item .fa-circle-info:hover + .detail_info, .delivery_address .fa-circle-info:hover + .detail_info{
     display: block; 
 }
 
@@ -103,7 +113,7 @@ td button:focus, .add_more_menu:focus {
     display: none;
 }
 .cart-container { 
-    max-width: 90%; 
+    max-width: 95%; 
     margin: auto; 
     background: white; 
     padding: 20px; 
@@ -120,6 +130,7 @@ td button:focus, .add_more_menu:focus {
 
 /* Checkout Section Box */
 .checkout_section_box {
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -134,9 +145,31 @@ td button:focus, .add_more_menu:focus {
 
 /* Left Side - Can be used for additional checkout details */
 .left_side_checkout_section {
-    background: url('../../../public/images/delivery.jpg') center cover no-repeat; /* Replace with an actual image */
+    width: 90%;
     border-radius: 12px;
     flex: 1;
+}
+
+.pre_checkout_form{
+    width: 90%;
+    min-height: 400px;
+    padding: 30px;
+    border-radius: 12px;
+    margin:auto 20px auto auto;
+}
+
+.pre_checkout_form img{
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    margin: 0 auto;
+    display: block;
+    max-height: 400px;
+    max-width: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s;
+
 }
 
 /* Right Side - Order Summary */
@@ -196,10 +229,34 @@ td button:focus, .add_more_menu:focus {
     transform: translateY(-3px);
 }
 
+.total { 
+    text-align: right; 
+    font-size: 18px; 
+    margin-top: 20px; 
+}
+.btn { 
+    padding: 10px; 
+    border: none; 
+    cursor: pointer; 
+    border-radius: 5px; 
+    font-size: 14px; 
+}
+.btn:hover { 
+    opacity: 0.8; 
+}
+input[type="number"] { 
+    width: 50px; 
+    text-align: center; 
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     body{
         font-size: 14px;
+    }
+    .cart-container{
+        width: 100%;
+        padding: 10px;
     }
     td img{
         width: 50px;
@@ -223,17 +280,32 @@ td button:focus, .add_more_menu:focus {
     .checkout_section_box {
         flex-direction: column;
         align-items: center;
-        padding: 20px;
+        padding: 0px;
+        width: 100%;
+        max-width: 100%;
+        margin: 20px 0;
     }
 
     .left_side_checkout_section {
         width: 100%;
         min-height: 200px;
+        margin: 0 0 20px 0;
+    }
+
+    .pre_checkout_form {
+        width: 100%;
+        padding: 0px;
+        margin: 0 auto;
+    }
+    .pre_checkout_form img {
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
     }
 
     .right_side_checkout_section {
-        width: 100%;
-        padding: 20px;
+        width: calc(100% - 30px);
+        padding: 15px;
         margin-top: 20px;
     }
 
@@ -242,31 +314,3 @@ td button:focus, .add_more_menu:focus {
     }
 }
 
-
-.total { 
-    text-align: right; 
-    font-size: 18px; 
-    margin-top: 20px; 
-}
-.btn { 
-    padding: 10px; 
-    border: none; 
-    cursor: pointer; 
-    border-radius: 5px; 
-    font-size: 14px; 
-}
-.btn-update { 
-    background: #007bff; 
-    color: white; 
-}
-.btn-remove { 
-    background: #dc3545; 
-    color: white; 
-}
-.btn:hover { 
-    opacity: 0.8; 
-}
-input[type="number"] { 
-    width: 50px; 
-    text-align: center; 
-}

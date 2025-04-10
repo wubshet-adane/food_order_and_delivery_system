@@ -86,7 +86,7 @@
                         </p>
                         
                         <div class="redirect">
-                            <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Display menu from this restaurant">View Menu</a> 
+                            <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id'];?>&distance=<?php echo round(htmlspecialchars($restaurant['distance_km']))?>" class="btn" title="Display menu from this restaurant">View Menu</a> 
                             <a href="restaurant_details_for_customers.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Details about restaurant"><i class="fa fa-external-link" aria-hidden="true"></i></a>
                         </div>
                     </div>

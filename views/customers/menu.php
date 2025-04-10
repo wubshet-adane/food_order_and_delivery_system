@@ -11,6 +11,7 @@
     }
     // redirect with restaurant id data from the first page
     $restaurant_id = $_GET['restaurant_id'] ?? null;
+    $_SESSION['distance'] = $_GET['distance'] ?? error_log("Distance not set");
 
     if($_SERVER['REQUEST_METHOD'] == 'GET'){
         $search = $_GET['search'] ?? '';
