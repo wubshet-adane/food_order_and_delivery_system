@@ -173,17 +173,17 @@ $cart = $cartModel->getCart($user_id);
                             <p>contact info:</p>
                             <div class="checkout_contact_information">
                                 <div class="form-group">
-                                    <input type="text" name="full_name" id="full_name" placeholder="Chaltu Yohannis *" required>
+                                    <input type="text" name="full_name" id="full_name" placeholder="Chaltu Yohannis *" required><br>
                                     <span class="error" id="error_name"></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="email" name="email" id="email" placeholder="order@gmail.com *" required>
+                                    <input type="email" name="email" id="email" placeholder="order@gmail.com *" required><br>
                                     <span class="error" id="error_email"></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="tel" name="phone" id="phone" placeholder="0987654321 *" required pattern="^[+]?[0-9]{10,15}$" title="Please enter a valid phone number.">
+                                    <input type="tel" name="phone" id="phone" placeholder="0987654321 *" required pattern="^[+]?[0-9]{10,15}$" title="Please enter a valid phone number."><br>
                                     <span class="error" id="error_phone"></span>
                                 </div>
                             </div>
@@ -199,19 +199,19 @@ $cart = $cartModel->getCart($user_id);
                             </div>
                             <div class="delivery_address_info">
                                 <div class="form-group">
-                                    <textarea name="address" id="address" placeholder="e.g., House #12, Arat Kilo, Addis Ababa" required></textarea>
+                                    <textarea name="address" id="address" placeholder="e.g., House #12, Arat Kilo, Addis Ababa" required></textarea><br>
                                     <span class="error" id="error_address"></span>
                                 </div>
                                 <!-- lat and lng Coordinates -->
                                 <div class="form-group latandlng">
                                     <div>
                                         <label for="latitude">latitude:</label>
-                                        <input type="text" id="latitude" name="latitude">
+                                        <input type="text" id="latitude" name="latitude"><br>
                                         <span class="error" id="error_latitude"></span>
                                     </div>
                                     <div>
                                         <label for="longitude">Longitude:</label>
-                                        <input type="text" id="longitude" name="longitude">
+                                        <input type="text" id="longitude" name="longitude"><br>
                                         <span class="error" id="error_longitude"></span>
                                     </div>
                                 </div>
@@ -221,44 +221,76 @@ $cart = $cartModel->getCart($user_id);
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Order Note (optional)</label>
+                                <label for="note">Order Note (optional)</label>
                                 <textarea name="note" id="note" rows="4" placeholder="Write something what you want to say about your order!"></textarea>
                             </div>
                             <div class="form-group confirm">
-                                <input type="checkbox" id="confirm" required>
-                                <span>I confirm the above details are correct. </span>
-                                <span class="error" id="error_confirm"></span>
+                                <div >
+                                    <input type="checkbox" id="confirm" style="margin: 0; padding: 0; text-align: left; width: 20px;" required>
+                                    <span style="margin: 0;">I confirm the above details are correct. </span><br>
+                                    <span class="error" id="error_confirm"></span>
+                                </div>
                             </div>
                         </div>
                         
                         <!--payment method section-->
                         <div id="pament_section" class="hidden_payment_section">
                             <h2>Billing Information</h2>
-                            <h4>Choose your payment method:</h4>                
-                            <div class="payment_method">
-                                <input type="radio" id="cash" name="payment_method" value="cash" checked>
-                                <label for="cash">Cash on Delivery</label>
-                            </div>
-                            <div class="payment_method">
-                                <input type="radio" id="credit_card" name="payment_method" value="credit_card">
-                                <label for="credit_card">Credit Card</label>
-                            </div>
-                            <div class="payment_method">
-                                <input type="radio" id="mobile_money" name="payment_method" value="mobile_money">
-                                <label for="mobile_money">Mobile Money</label>
-                            </div>
-                            <div class="payment_method">
-                                <input type="radio" id="bank_transfer" name="payment_method" value="bank_transfer">
-                                <label for="bank_transfer">Bank Transfer</label>
-                            </div>
-                            <div class="payment_method">
-                                <input type="radio" id="paypal" name="payment_method" value="paypal">
-                                <label for="paypal">PayPal</label>
-                            </div>
-                            <div class="payment_method">
-                                <input type="radio" id="screenshot" name="payment_method" value="screenshot">
-                                <label for="screenshot">Screenshot</label>
-                            </div>
+                            <h4>Choose your payment method:</h4>
+                            <!--screenshot payment method-->
+                            <section class="screenshot_section">
+                                <div class="payment_method">
+                                    <input type="radio" id="telebirr" name="payment_method" value="telebirr" checked>
+                                    <label for="telebirr">Screenshot</label>
+                                </div>
+                                <!-- screenshot upload section-->
+                                <div class="upload_section" id="upload_section">
+                                    <label for="screenshot" class="upload_label">Upload Screenshot:</label>
+                                    <input type="file" id="screenshot" name="screenshot" accept="image/*" onchange="readURL(this)">
+                                    <span class="error" id="error_screenshot"></span>
+                                    <div id="preview"></div>
+                                    <!--upload screenshot preview-->
+                                    <script>
+                                        // Wait for the DOM to be fully loaded
+                                        window.addEventListener('DOMContentLoaded', function () {
+                                            const img = document.getElementById('screenshot');
+
+                                            // Function to preview image as background
+                                            function readURL(input) {
+                                                if (input.files && input.files[0]) {
+                                                    var reader = new FileReader();
+                                                    reader.onload = function (e) {
+                                                        var preview = document.getElementById('preview');
+                                                        preview.style.backgroundImage = 'url(' + e.target.result + ')';
+                                                        preview.style.opacity = '0'; // for transition
+                                                        setTimeout(function () {
+                                                            preview.style.display = "block";
+                                                        }, 10);
+                                                    };
+                                                    reader.readAsDataURL(input.files[0]);
+                                                }
+                                            }
+
+                                            // Attach event listener if needed (or use inline `onchange`)
+                                            img.addEventListener('change', function () {
+                                                readURL(this);
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            </section>
+
+                            <!-- telebirr payment method-->
+                            <section class="telebirr_section" id="telebirr_section">
+                                <div class="payment_method">
+                                    <input type="radio" id="screenshot" name="payment_method" value="screenshot">
+                                    <label for="screenshot">telebirr</label>
+                                </div>
+                                <!--telebirrform-->
+                                <div>
+
+                                </div>
+                            </section>
                         </div>
 
                         <button type="submit" id="submitBtn">Proceed to Checkout</button>

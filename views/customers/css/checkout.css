@@ -91,7 +91,6 @@
 
   .form-group {
     margin-bottom: 15px;
-    position: relative;
   }
   
   .form-group label {
@@ -155,8 +154,19 @@
     text-align: center;
     font-size: 14px;
   }
+
+  #preview{
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border: 2px dashed #ccc;
+    margin-top: 10px;
+    transition: opacity 0.65s ease;
+    display: none;
+  }
   
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 768px) {
     .checkout-form {
       width: calc(100% - 10px);
       padding: 5px;
@@ -173,9 +183,22 @@
       font-size: 14px;
     }
 
+    .form-group{
+      position: relative;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .form-group .error {
+      display: block;
+      position: relative;
+      margin-top: 5px;
+    }
+
     .form-group input,
     .form-group select,
-    .form-group textarea{
+    .form-group textarea,
+    .form-group span{
       width: 90%;
       padding: 8px;
       border: 1px solid #aaa;
