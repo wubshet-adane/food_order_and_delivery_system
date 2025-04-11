@@ -144,7 +144,7 @@
         <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
         <link rel="stylesheet" href="css/home.css">
         <link rel="stylesheet" href="css/topbar.css">
-        <link rel="stylesheet" href="../footer.css">
+        <link rel="stylesheet" href="css/footer.css">
         <link rel="stylesheet" href="css/recommendation.css">
         <!--font ausome for star rating-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -309,7 +309,7 @@
         </div>
     </div>
     
-    <?php include '../footer.php'; ?>
+    <?php include 'footer.php'; ?>
     </body>
 
     <!--search and sort AJAX functionality-->
