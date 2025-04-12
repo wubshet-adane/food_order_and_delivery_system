@@ -42,19 +42,19 @@ document.addEventListener("DOMContentLoaded", function () {
     loginForm.addEventListener("submit", function (e) {
         e.preventDefault();
         if (!validateEmail(emailInput.value) && !validatePassword(passwordInput.value)) {
-            responseMessage.textContent = "Invalid email and password format!";
+            responseMessage.textContent = "Invalid email and password!";
             responseMessage.style.color = "red";
             emailerr.style.display = "none";
             passworderr.style.display = "none";
             return;
         }else if(!validateEmail(emailInput.value) && validatePassword(passwordInput.value)){
-            emailerr.textContent = "Invalid email format";
+            emailerr.textContent = "Invalid email";
             emailerr.style.color = "red";
             emailerr.style.display = "block";
             responseMessage.style.display = "none";
             passworderr.style.display = "none";
         }else if(validateEmail(emailInput.value) && !validatePassword(passwordInput.value)){
-            passworderr.textContent = "Invalid password format (password must contain alphanumeric and special character and at least 8 size)";
+            passworderr.textContent = "Invalid password!";
             passworderr.style.color = "red";
             passworderr.style.display = "block";
             responseMessage.style.display = "none";

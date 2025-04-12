@@ -30,7 +30,7 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
 
 <head>
     <meta charset="UTF-8">
-    <meta>name="description" content="Restaurant details page for customers. View restaurant information, reviews, and more.">
+    <meta name="description" content="Restaurant details page for customers. View restaurant information, reviews, and more.">
     <meta name="keywords" content="restaurant, details, reviews, food, order, online, system">
     <meta name="author" content="G3 Online Food Ordering System">
     <meta name="robots" content="index, follow">

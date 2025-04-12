@@ -7,14 +7,18 @@
     <title>G3 customers login page</title>
     <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
     <link rel="stylesheet" href="../../public/css/login_new.css">
+    <link rel="stylesheet" href="../../public/css/footer.css">
     <script src="../customers/javaScript/login_validation.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <div class="login-container">
-        <h2>Customers Login</h2>
+        <div style="border-radius: 50%; padding: 20px;">
+            <img src="../../public/images/logo-icon.png" alt="" width="100px" height="100px">
+            <h2 style="padding: o; margin: 0; text-transform: capitalize; font-weight: 400; font-family: cursive; color:#ff9900;"><strong class="G3">G3</strong> online food</h2>
+        </div>
         <p id="responseMessage" style="font-size: 14px;"></p>
-
+        
         <form id="loginForm">
             <div class="input-group">
                 <label for="email">Email Address</label>
@@ -49,5 +53,10 @@
             </button>
         </div>
     </div>
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 G3 online food ordering system. All Rights Reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>

@@ -22,6 +22,20 @@ body {
     padding: 10;
 }
 
+.G3{
+    background:
+        linear-gradient(to top, #ffffff9b, #000, #ffffff9b),
+        linear-gradient(to right, #ffffff9b,  #000, #ffffff9b),
+        linear-gradient(to bottom, #ffffff9b,  #000, #ffffff9b),
+        linear-gradient(to left, #ffffff9b,  #000, #ffffff9b);
+    font-size: 35px; 
+    font-weight: 500; 
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+    color: #fff;
+    padding: 0 2px;
+    border-radius: 6px;
+}
+
 /* Container with Two Sections */
 .login-container, .register-container {
     max-width: 900px;

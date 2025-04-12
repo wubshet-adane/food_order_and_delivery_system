@@ -44,7 +44,7 @@
                         <li><a href="order_history.php"><i class="fa-solid fa-bars"></i>&nbsp;&nbsp; Order History</a></li>
                         <li><a href="restaurant_list.php"><i class="fa-solid fa-key"></i>&nbsp;&nbsp; Change password</a></li>
                         <li><a href="restaurant_details_for_customers.php"><i class="fa-solid fa-gear"></i>&nbsp;&nbsp; Account settings</a></li>
-                        <li><a href="../auth/logout.php"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp; Logout</a></li>
+                        <li><a href="logout.html"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp; Logout</a></li>
                     </ul>
                 </div>
             </div>

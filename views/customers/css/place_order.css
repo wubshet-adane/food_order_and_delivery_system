@@ -1,0 +1,19 @@
+*{
+    text-transform: capitalize;
+    box-sizing: border-box;
+    margin: auto;
+}
+body{
+    width: 100%;
+    margin: auto;
+    padding: 0;
+}
+
+.header_section{
+    width: 100%;
+}
+
+.place_order_container{
+    width: 100%;
+    margin: auto;
+}

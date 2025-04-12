@@ -234,27 +234,36 @@ $cart = $cartModel->getCart($user_id);
                         </div>
                         
                         <!--payment method section-->
+                        <h4>Choose your payment method:</h4>
                         <div id="pament_section" class="hidden_payment_section">
-                            <h2>Billing Information</h2>
-                            <h4>Choose your payment method:</h4>
                             <!--screenshot payment method-->
                             <section class="screenshot_section">
-                                <div class="payment_method">
-                                    <input type="radio" id="telebirr" name="payment_method" value="telebirr" checked>
-                                    <label for="telebirr">Screenshot</label>
+                                <div class="payment_method" id="screenshot_payment_method">
+                                    <div class="payment_method_text">
+                                        <h2>Screenshot payment method</h2>
+                                        <p><img src="../../public/images/screenshot icon.jpg" alt="" width="50px" height="50px"> <span> upload screenshot</span></p>
+                                    </div>
+                                    <div class="payment_method_radio" id="screenshotchecked">
+                                        
+                                    </div>
                                 </div>
-                                <!-- screenshot upload section-->
+                                <!-- screenshot upload section
                                 <div class="upload_section" id="upload_section">
-                                    <label for="screenshot" class="upload_label">Upload Screenshot:</label>
+                                    <p>pay with the following bank account, telebirr and upload screenshot</p>
+                                    <ul style="list-style-type: none;">
+                                        <li><strong>CBE Account:</strong> G3 food online food ordering sytem, 10000456789</li>
+                                        <li><strong>Telebirr:</strong>  0912345678</li>
+                                        <li><strong>Mpesa</strong> 0789898989</li>
+                                    </ul>
+                                    <label for="screenshot" class="upload_label">Upload Screenshot:</label><br>
                                     <input type="file" id="screenshot" name="screenshot" accept="image/*" onchange="readURL(this)">
                                     <span class="error" id="error_screenshot"></span>
                                     <div id="preview"></div>
-                                    <!--upload screenshot preview-->
+                                    upload screenshot preview
                                     <script>
                                         // Wait for the DOM to be fully loaded
                                         window.addEventListener('DOMContentLoaded', function () {
                                             const img = document.getElementById('screenshot');
-
                                             // Function to preview image as background
                                             function readURL(input) {
                                                 if (input.files && input.files[0]) {
@@ -265,12 +274,12 @@ $cart = $cartModel->getCart($user_id);
                                                         preview.style.opacity = '0'; // for transition
                                                         setTimeout(function () {
                                                             preview.style.display = "block";
+                                                            preview.style.opacity = "1";
                                                         }, 10);
                                                     };
                                                     reader.readAsDataURL(input.files[0]);
                                                 }
                                             }
-
                                             // Attach event listener if needed (or use inline `onchange`)
                                             img.addEventListener('change', function () {
                                                 readURL(this);
@@ -278,18 +287,38 @@ $cart = $cartModel->getCart($user_id);
                                         });
                                     </script>
                                 </div>
+                                -->
                             </section>
 
                             <!-- telebirr payment method-->
                             <section class="telebirr_section" id="telebirr_section">
-                                <div class="payment_method">
-                                    <input type="radio" id="screenshot" name="payment_method" value="screenshot">
-                                    <label for="screenshot">telebirr</label>
+                                <div class="payment_method" id="telebirr_payment_method">
+                                    <div class="payment_method_text">
+                                        <h2>telebirr payment method-</h2>
+                                        <p><img src="../../public/images/telebirr icon.jpg" alt="" width="50px" height="50px"> <span>pay with telebirr</span></p>
+                                    </div>
+                                    <div class="payment_method_radio" id="telebirrchecked">
+                                        
+                                    </div>
                                 </div>
-                                <!--telebirrform-->
-                                <div>
-
+                                <!--telebirrform
+                                <div class="form_group telebirr_form">
+                                    <label for="telebirr_number">Enter your Telebirr Number:</label>
+                                    <input type="tel" id="telebirr_number" name="telebirr_number" placeholder="e.g., 0912345678" required pattern="^[+]?[0-9]{10,15}$" title="Please enter a valid phone number."><br>
+                                    <span class="error" id="error_telebirr"></span>
+                                    <label for="telebirr_code">Enter your Telebirr Code:</label>
+                                    <input type="password" id="telebirr_code" name="telebirr_code" placeholder="e.g., 123456" required><br>
+                                    <span class="error" id="error_telebirr_code"></span>
+                                    <label for="telebirr_amount">Enter the Amount:</label>
+                                    <input type="number" id="telebirr_amount" name="telebirr_amount" placeholder="e.g., 100.00" required><br>
+                                    <span class="error" id="error_telebirr_amount"></span>
+                                    <label for="telebirr_screenshot">Upload Telebirr Screenshot:</label>
+                                    <input type="file" id="telebirr_screenshot" name="telebirr_screenshot" accept="image/*" onchange="readURL(this)">
+                                    <span class="error" id="error_telebirr_screenshot"></span>
+                                    <div id="preview_telebirr"></div>
+                                    upload telebirr screenshot preview
                                 </div>
+                                -->
                             </section>
                         </div>
 
@@ -301,7 +330,7 @@ $cart = $cartModel->getCart($user_id);
                 <!--cart summary section-->
                 <div class="right_side_checkout_section">
                     <div class="detail_section">
-                        <?php 
+                        <?php
                         if (is_NaN($delivery_distance)){
                             $delivery_fee = "error with location!"; // Set delivery fee to 0 if distance is not available
                         }else{
@@ -413,6 +442,33 @@ $cart = $cartModel->getCart($user_id);
             }
             toggleCheckoutButton();
                         
+        });
+    </script>
+    <!--script for toggling payment method-->
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            const screenshotRadio = document.getElementById('screenshot');
+            const telebirrRadio = document.getElementById('telebirr');
+            const uploadSection = document.querySelector('.upload_section');
+            const telebirrForm = document.querySelector('.telebirr_form');
+
+            function togglePaymentSections() {
+                if (screenshotRadio.checked) {
+                    uploadSection.style.display = 'block';
+                    telebirrForm.style.display = 'none';
+                } else if (telebirrRadio.checked) {
+                    uploadSection.style.display = 'none';
+                    telebirrForm.style.display = 'block';
+                } else {
+                    uploadSection.style.display = 'none';
+                    telebirrForm.style.display = 'none';
+                }
+            }
+            // Attach event listeners
+            screenshotRadio.addEventListener('change', togglePaymentSections);
+            telebirrRadio.addEventListener('change', togglePaymentSections);
+            // Call initially in case one is selected by default
+            togglePaymentSections();
         });
     </script>
 

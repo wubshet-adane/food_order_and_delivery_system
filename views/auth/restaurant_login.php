@@ -155,7 +155,11 @@ input.invalid {
 <body style="background: linear-gradient(rgba(0, 0, 0, 1), rgba(9, 17, 0, 0.1)), url('../../public/images/restaurant_login_bg.jpg');">
     <div class="full-container">
         <div class="login-container" style="background: linear-gradient(rgba(0, 0, 0, 0), rgba(9, 17, 0, 0.9))">
-            <h2 style="text-align: center; margin-bottom: 4px; color: #ff9900;"> Login as Restaurants Owner</h2>
+            <div style="border-radius: 50%; padding: 20px; margin: 0; text-align: center;">
+                <img src="../../public/images/logo-icon.png" alt="" width="100px" height="100px">
+                <h2 style="padding: o; margin: 0; text-transform: capitalize; font-weight: 400; font-family: cursive; color:#ff9900;"><strong class="G3">G3</strong> online food</h2>
+            </div>      
+            <h2 style="text-align: center; margin-bottom: 4px; color: #ff9900;"> continue as Restaurants Owner</h2>
             <!--form and image setion container-->
             <div class="login-content">
             <!--left side form section-->

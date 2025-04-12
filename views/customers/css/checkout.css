@@ -90,12 +90,13 @@
   }
 
   .form-group {
-    margin-bottom: 15px;
+    position: relative;
+    margin: 15px auto;
   }
   
   .form-group label {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 1px;
     font-weight: 500;
   }
   
@@ -148,6 +149,22 @@
     transform: translateY(3px);
     background-color: #218838;
   }
+
+  #saveBtn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color, transform 0.3s;
+  }
   
   .response-msg {
     margin-top: 10px;
@@ -155,15 +172,66 @@
     font-size: 14px;
   }
 
+  .upload_section,
+  .telebirr_form {
+      display: none;
+      margin-bottom: 15px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+  }
+
   #preview{
-    width: 200px;
-    height: 200px;
-    background-size: cover;
-    background-position: center;
-    border: 2px dashed #ccc;
-    margin-top: 10px;
-    transition: opacity 0.65s ease;
-    display: none;
+      width: 200px;
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      border: 1px dashed #ccc;
+      margin-top: 10px;
+      display: none;
+      transition: opacity 0.5s ease;
+  }
+
+  input[type="file"] {
+      margin-top: 10px;
+      padding: 5px;
+      border: 1px solid #ccc; 
+      border-radius: 4px;
+      width: 100%;
+      cursor: pointer;
+      background-color: #f5faff;
+      transition: background-color 0.3s;
+  }
+
+  .payment_method {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #e7f1ff;
+      padding: 5px;
+      margin: auto;
+      border-radius: 6px;
+      border-left: 8px solid #081f29;
+      cursor: pointer;
+      gap: 20px;
+  }
+
+  .payment_method_text h2{
+    font-size: 16px;
+  }
+
+  .payment_method_text p span{
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    color: #0072ab;
+    align-content: baseline;
+  }
+
+  .payment_method_text p img{
+    width: 25px;
+    height: 25px;
+    border-radius: 3px;
   }
   
   @media screen and (max-width: 768px) {
@@ -192,20 +260,19 @@
     .form-group .error {
       display: block;
       position: relative;
-      margin-top: 5px;
+      margin-top: -2px;
     }
 
     .form-group input,
     .form-group select,
-    .form-group textarea,
-    .form-group span{
+    .form-group textarea{
       width: 90%;
       padding: 8px;
       border: 1px solid #aaa;
       border-radius: 4px;
       font-size: 14px;
       transition: border-color 0.3s;
-      margin: 4px auto;
+      margin: 4px auto auto 0;
     }
   
     #submitBtn {

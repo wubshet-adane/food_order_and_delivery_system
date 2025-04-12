@@ -8,14 +8,28 @@ body {
     height: 100vh;
 }
 
+.G3{
+    background:
+        linear-gradient(to top, #ffffff9b, #000, #ffffff9b),
+        linear-gradient(to right, #ffffff9b,  #000, #ffffff9b),
+        linear-gradient(to bottom, #ffffff9b,  #000, #ffffff9b),
+        linear-gradient(to left, #ffffff9b,  #000, #ffffff9b);
+    font-size: 35px; 
+    font-weight: 500; 
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+    color: #fff;
+    padding: 0 2px;
+    border-radius: 6px;
+}
+
 /* Login Container */
 .login-container {
     background: rgba(255, 255, 255, 0.9);
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 350px;
+    margin-bottom: 4rem;
 }
 
 /* Input Groups */
@@ -70,8 +84,8 @@ input.invalid {
 }
 
 .error-message{
-    background-color: #ddff00;
-    color: red;
+    background-color: #ff8888;
+    color: rgb(0, 0, 0);
     font-size: 12px;
     margin-top: 5px;    
 }
