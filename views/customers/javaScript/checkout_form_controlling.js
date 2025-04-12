@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
         paymentSection.style.justifyContent = "space-between";
         titleH2.textContent = "Payment Information";
         this.textContent = "Save";
+        this.id = "saveBtn";
     });
 
     const screenshot_payment_method = document.getElementById('screenshot_payment_method');
