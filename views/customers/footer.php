@@ -1,5 +1,6 @@
 
     <footer class="site-footer">
+        <p id="scrollToTopBtn" title="Go to top"><img src="../../public/images/scrollup icon.jpg" alt="up"></p>
         <div class="footer-container">
             <div class="footer-about">
             <h3>About Us</h3>
@@ -26,6 +27,6 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 G3 online food ordering system. All Rights Reserved.</p>
+            <p>Copy right &copy; <?php echo date('Y'); ?> G3 online food ordering system. All Rights Reserved.</p>
         </div>
     </footer>

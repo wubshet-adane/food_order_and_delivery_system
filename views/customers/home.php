@@ -310,62 +310,63 @@
     </div>
     
     <?php include 'footer.php'; ?>
+    <script src="javaScript/scroll_up.js"></script>
     </body>
 
     <!--search and sort AJAX functionality-->
     <script>
-    const searchInput = document.getElementById('searchInput');
-    const sortSelect = document.getElementById('sortSelect');
-    const restaurantResults = document.getElementById('restaurantResults');
+        const searchInput = document.getElementById('searchInput');
+        const sortSelect = document.getElementById('sortSelect');
+        const restaurantResults = document.getElementById('restaurantResults');
 
-    function fetchRestaurants() {
-        if (!navigator.geolocation) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Geolocation is not supported by your browser.',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-                const search = searchInput.value;
-                const sort = sortSelect.value;
-
-                const xhr = new XMLHttpRequest();
-                xhr.open(
-                    'GET',
-                    `<?php echo basename($_SERVER['PHP_SELF']); ?>?ajax=1&search=${encodeURIComponent(search)}&sort=${encodeURIComponent(sort)}&latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}`,
-                    true
-                );
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        restaurantResults.innerHTML = xhr.responseText;
-                    }
-                };
-                xhr.send();
-            },
-            function (error) {
+        function fetchRestaurants() {
+            if (!navigator.geolocation) {
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Error getting location: ' + error.message,
+                    text: 'Geolocation is not supported by your browser.',
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
+                return;
             }
-        );
-    }
 
-    searchInput.addEventListener('input', fetchRestaurants);
-    sortSelect.addEventListener('change', fetchRestaurants);
-</script>
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    const search = searchInput.value;
+                    const sort = sortSelect.value;
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open(
+                        'GET',
+                        `<?php echo basename($_SERVER['PHP_SELF']); ?>?ajax=1&search=${encodeURIComponent(search)}&sort=${encodeURIComponent(sort)}&latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}`,
+                        true
+                    );
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            restaurantResults.innerHTML = xhr.responseText;
+                        }
+                    };
+                    xhr.send();
+                },
+                function (error) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Error getting location: ' + error.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        }
+
+        searchInput.addEventListener('input', fetchRestaurants);
+        sortSelect.addEventListener('change', fetchRestaurants);
+    </script>
 </html>

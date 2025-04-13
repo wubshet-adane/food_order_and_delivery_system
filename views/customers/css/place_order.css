@@ -1,19 +1,134 @@
-*{
-    text-transform: capitalize;
-    box-sizing: border-box;
-    margin: auto;
-}
-body{
-    width: 100%;
-    margin: auto;
-    padding: 0;
+          body {
+                font-family: 'Arial', sans-serif;
+                background-color: #f5f5f5;
+                color: #333;
+                padding: 0;
+                margin: 0;
+            }
+
+            .place_order_container {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+                background-color: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                margin: 20px auto;
+                max-width: 950px;
+            }
+
+            h2 {
+                color: #ff9900;
+                margin-bottom: 10px;
+            }
+
+            button {
+                background-color: #ff9900;
+                padding: 12px 20px;
+                border-radius: 10px;
+                color: white;
+                border: none;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            button:hover {
+                background-color: #e68a00;
+            }
+
+
+            .payment_method_error {
+                background-color: #fff3f3;
+                color: #d9534f;
+                padding: 15px;
+                border-radius: 10px;
+                text-align: center;
+            }
+
+            .delivery_address_section, .payment_section {
+                background: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .delivery_address_section h2, .payment_section h2 {
+                color: #ff9900;
+            }
+            
+            .payment_method {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #92d195;
+                padding: 5px;
+                margin: .5rem auto;
+                border-radius: 6px;
+                border-left: 8px solid #081f29;
+                gap: 20px;
+            }
+          
+            .payment_method_text h2{
+              font-size: 20px;
+            }
+          
+            .payment_method_text p span{
+              font-size: 16px;
+              margin: 0;
+              padding: 0;
+              color: #0072ab;
+              align-content: baseline;
+            }
+          
+            .payment_method_text p img{
+              width: 40px;
+              height: 40px;
+              border-radius: 6px;
+            }
+            
+  .upload_section,
+  .telebirr_form {
+      margin-bottom: 15px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+  }
+
+  input[type="file"] {
+      margin-top: 10px;
+      padding: 5px;
+      border: 1px solid #ccc; 
+      border-radius: 4px;
+      width: 100%;
+      cursor: pointer;
+      background-color: #f5faff;
+      transition: background-color 0.3s;
+  }
+
+  #preview{
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border: 1px dashed #ccc;
+    margin-top: 10px;
+    display: none;
+    transition: opacity 0.5s ease;
 }
 
-.header_section{
-    width: 100%;
-}
+            button {
+                display: block;
+                margin-top: 15px;
+            }
 
-.place_order_container{
-    width: 100%;
-    margin: auto;
-}
+            @media (max-width: 768px) {
+                .place_order_container {
+                    padding: 15px;
+                }
+
+                button {
+                    width: 100%;
+                }
+            }

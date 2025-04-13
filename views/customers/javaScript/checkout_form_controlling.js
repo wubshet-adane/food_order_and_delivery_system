@@ -1,11 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
     const titleH2 = document.getElementById("title_h2");
+    const backBtn = document.getElementById("back_btn");
     const preCheckoutForm = document.getElementById("pre_checkout_form");
     const formInfoSection = document.getElementById("form_info_section");
     const paymentSection = document.getElementById("pament_section");
     const submitBtn = document.getElementById("submitBtn");
     const checkoutBtn = document.getElementById("btn-checkout");
     const checkoutForm = document.getElementById("checkoutForm");
+    
+    // Initial setup
+    backBtn.style.display = "none";
+    formInfoSection.classList.add("form_info_section");
+    paymentSection.classList.add("payment_section");
+    checkoutBtn.disabled = true;
+    checkoutBtn.style.cursor = "not-allowed";
+    checkoutBtn.style.backgroundColor = "#ccc";
 
     // Handle Next/Save click
     submitBtn.addEventListener("click", function (e) {
@@ -109,11 +118,9 @@ document.addEventListener("DOMContentLoaded", function () {
         formInfoSection.classList.remove("visible_sections");
         formInfoSection.classList.add("form_info_section");
         paymentSection.classList.remove("hidden_payment_section");
-        paymentSection.style.display = "flex";
-        paymentSection.style.justifyContent = "space-between";
         titleH2.textContent = "Payment Information";
-        this.textContent = "Save";
-        this.id = "saveBtn";
+        backBtn.style.display = "block";
+        this.style.display = "none";
     });
 
     const screenshot_payment_method = document.getElementById('screenshot_payment_method');
@@ -123,13 +130,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const saveBtn = document.getElementById('saveBtn');
 
     let payment_method = "";
-
-    // Initial setup
-    formInfoSection.classList.add("form_info_section");
-    paymentSection.classList.add("payment_section");
-    checkoutBtn.disabled = true;
-    checkoutBtn.style.cursor = "not-allowed";
-    checkoutBtn.style.backgroundColor = "#ccc";
 
     // Payment method selection
     screenshot_payment_method.addEventListener('click', function () {
@@ -142,6 +142,10 @@ document.addEventListener("DOMContentLoaded", function () {
         telebirr_payment_method.style.border = "none";
         telebirr_payment_method.style.backgroundColor = "#e7f1ff";
         payment_method = "screenshot";
+        saveBtn.style.backgroundColor = "#10a";
+        saveBtn.textContent = "save";
+        saveBtn.disabled = false;
+        saveBtn.style.cursor = "pointer";
     });
 
     telebirr_payment_method.addEventListener('click', function () {
@@ -154,17 +158,70 @@ document.addEventListener("DOMContentLoaded", function () {
         screenshot_payment_method.style.border = "none";
         screenshot_payment_method.style.backgroundColor = "#e7f1ff";
         payment_method = "telebirr";
+        saveBtn.style.backgroundColor = "#10a";
+        saveBtn.style.color = "#fff";
+        saveBtn.textContent = "save";
+        saveBtn.disabled = false;
+        saveBtn.style.cursor = "pointer";
     });
 
     // Save button click: validate payment method
     saveBtn.addEventListener('click', function () {
         if (payment_method === "") {
-            alert("Please select a payment method before proceeding.");
+            Swal.fire({
+                title: 'Error!',
+                text: 'please select payment method first',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
             return;
         }
         checkoutBtn.disabled = false;
         checkoutBtn.style.cursor = "pointer";
         checkoutBtn.style.backgroundColor = "#10a";
+        this.style.backgroundColor = "#fff";
+        this.style.color = "#10f343";
+        this.textContent = "your information are correctly saved, let's click place order button ↗️↗️↗️";
+        this.disabled = true;
+        this.style.cursor = "auto";
+    });
+
+    //goto back and edit address information
+    backBtn.addEventListener('click', function () {
+        formInfoSection.classList.add("visible_sections");
+        formInfoSection.classList.remove("form_info_section");
+        paymentSection.classList.add("hidden_payment_section");
+        submitBtn.style.display = "block";
+        this.style.display = "none";
+    });
+
+    checkoutBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        // Gather data
+        const fullName = document.getElementById("full_name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const latitude = document.getElementById("latitude").value.trim();
+        const longitude = document.getElementById("longitude").value.trim();
+        const delivery_address = document.getElementById("address").value.trim(); // Optional
+        const note = document.getElementById("note").value.trim(); // Optional
+    
+        // Construct the data object
+        const data = {
+            full_name: fullName,
+            email: email,
+            phone: phone,
+            latitude: latitude,
+            longitude: longitude,
+            delivery_address: delivery_address,
+            note: note,
+        };
+    
+        // Save data to localStorage as JSON
+        localStorage.setItem("checkoutData", JSON.stringify(data));
+    
+        // Redirect to place_order.php
+        window.location.href = `/food_ordering_system/views/customers/place_order.php?payment_method=${payment_method}`;
     });
 
 });

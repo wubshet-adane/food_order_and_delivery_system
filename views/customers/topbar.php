@@ -7,7 +7,7 @@
 
     <!-- Center Navigation Links -->
     <div class="nav-links">
-        <a class="back" href="javascript:back()"><i class="fa-solid fa-backward"></i></a>
+        <a class="back" href="javascript:history.back()"><i class="fa-solid fa-backward"></i></a>
         <a href="about.php">About</a>
         <a href="contact.php">Contact</a>
     </div>
@@ -42,8 +42,8 @@
                         <li><a href="profile.php"><i class="fa-solid fa-user"></i>&nbsp;&nbsp; Profile</a></li>
                         <li><a href="cart.php"><i class="fa-solid fa-cart-plus"></i>&nbsp;&nbsp; Cart</a></li>
                         <li><a href="order_history.php"><i class="fa-solid fa-bars"></i>&nbsp;&nbsp; Order History</a></li>
-                        <li><a href="restaurant_list.php"><i class="fa-solid fa-key"></i>&nbsp;&nbsp; Change password</a></li>
-                        <li><a href="restaurant_details_for_customers.php"><i class="fa-solid fa-gear"></i>&nbsp;&nbsp; Account settings</a></li>
+                        <li><a href="profile.php"><i class="fa-solid fa-key"></i>&nbsp;&nbsp; Change password</a></li>
+                        <li><a href="account.php"><i class="fa-solid fa-gear"></i>&nbsp;&nbsp; Account settings</a></li>
                         <li><a href="logout.html"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp; Logout</a></li>
                     </ul>
                 </div>

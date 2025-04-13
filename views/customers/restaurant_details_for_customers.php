@@ -47,7 +47,7 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
     <title>Restaurant detail</title>
     <link rel="stylesheet" href="css/restaurant_details_for_customers.css">
     <link rel="stylesheet" href="css/topbar.css">
-    <link rel="stylesheet" href="../footer.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
     <!--font ausome for star rating-->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -69,8 +69,6 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="40" viewBox="0 0 120 40"%3E%3Crect width="120" height="40" rx="8" ry="8" style="fill:%23ffffff;opacity:0.15;" /%3E%3C/svg%3E');
-    background-size: cover;
 }
 
 /* Specific status colors */
@@ -141,7 +139,7 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
                                             <li><a href="order_history.php"><i class="fa-solid fa-bars"></i>&nbsp;&nbsp; Order History</a></li>
                                             <li><a href="restaurant_list.php"><i class="fa-solid fa-key"></i>&nbsp;&nbsp; Change password</a></li>
                                             <li><a href="restaurant_details_for_customers.php"><i class="fa-solid fa-gear"></i>&nbsp;&nbsp; Account settings</a></li>
-                                            <li><a href="../auth/logout.php"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp; Logout</a></li>
+                                            <li><a href="logout.html"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp; Logout</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -233,6 +231,7 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
             });
         });
     </script>
-    <?php include "../footer.php";?>
+    <?php include "footer.php";?>
+    <script src="javaScript/scroll_up.js"></script>
 </body>
 </html>

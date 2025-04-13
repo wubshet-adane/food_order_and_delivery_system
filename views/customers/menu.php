@@ -46,37 +46,34 @@
     ?>
     <!DOCTYPE html>
     <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Menu page for <?php echo htmlspecialchars($restaurant['name']); ?>">
-        <meta name="keywords" content="menu, <?php echo htmlspecialchars($restaurant['name']); ?>, food, restaurant">
-        <meta name="author" content="Wubshet Adane">
-        <meta name="theme-color" content="#ff9900">
-        <meta name="robots" content="index, follow">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap">
-        <title><?php echo htmlspecialchars($restaurant['name']); ?></title>
-        <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
-        <!--font ausome for star rating-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="stylesheet" href="css/home.css">
-        <link rel="stylesheet" href="css/topbar.css">
-        <link rel="stylesheet" href="css/footer.css">
-        <link rel="stylesheet" href="css/menu.css">
-
-    </head>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="description" content="Menu page for <?php echo htmlspecialchars($restaurant['name']); ?>">
+            <meta name="keywords" content="menu, <?php echo htmlspecialchars($restaurant['name']); ?>, food, restaurant">
+            <meta name="author" content="Wubshet Adane">
+            <meta name="theme-color" content="#ff9900">
+            <meta name="robots" content="index, follow">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap">
+            <title><?php echo htmlspecialchars($restaurant['name']); ?></title>
+            <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
+            <!--font ausome for star rating-->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <link rel="stylesheet" href="css/home.css">
+            <link rel="stylesheet" href="css/topbar.css">
+            <link rel="stylesheet" href="css/footer.css">
+            <link rel="stylesheet" href="css/menu.css">
+        </head>
     <body>
 
-    <section class="header" style="background: linear-gradient(to bottom, #004868FF, #0099FF00), url('../restaurant/restaurantAsset/<?php echo $restaurant['banner']?>'); background-position: center; background-repeat: no-repeat; background-size: cover;">
+    <section class="header" style="background: linear-gradient(to bottom, #002636FF, #0099FF00), url('../restaurant/restaurantAsset/<?php echo $restaurant['banner']?>'); background-position: center; background-repeat: no-repeat; background-size: cover;">
     <!-- Top Bar -->
             <?php
                 include "topbar.php";
             ?>
             <div class="header_content">
-                <h1><?php echo htmlspecialchars($restaurant['name']); ?></h1>
-                <h3 class="restaurant-moto">
-                    we are here to serve you the best food in town.
-                </h3>
+                <h1 style="color:#ff9900;"><?php echo htmlspecialchars($restaurant['name']); ?></h1>
+                <h3 style="font-family: monospace;" class="restaurant-moto">&quot; we are here to serve you the best food in town.&quot; </h3>
                 <p>Location: <?php echo htmlspecialchars($restaurant['location']); ?></p>
                 <p>Phone: <?php echo htmlspecialchars($restaurant['phone']); ?></p>
             </div>
@@ -162,7 +159,7 @@
         <?php include "footer.php";?>
 
         <script src="javaScript/light_and_dark_mode.js"></script>
-        <script src="../scroll_up.js"></script>
+        <script src="javaScript/scroll_up.js"></script>
 
     </body>
     </html>

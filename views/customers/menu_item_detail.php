@@ -43,7 +43,8 @@ if (isset($_GET['menu_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Item Details</title>
     <link rel="stylesheet" href="css/menu_item_detail.css"> <!-- Link to external stylesheet -->
-    <link rel="stylesheet" href="../footer.css">
+    <link rel="stylesheet" href="css/topbar.css"> <!-- Link to external stylesheet -->
+    <link rel="stylesheet" href="css/footer.css">
     <!--font awsome-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -51,6 +52,9 @@ if (isset($_GET['menu_id'])) {
 </head>
 <body>
 
+<header class="header_section">
+    <?php include "topbar.php";?>
+</header>
     <div class="container">
         <?php if (isset($error_message)): ?>
             <div class="error-message">
@@ -104,7 +108,8 @@ if (isset($_GET['menu_id'])) {
     <!-- script for add items to cart automaticalky without reload the page by using AJAX -->
      <script src="javaScript/add_menuto_cart_AJAX.js"></script>
 
-     <?php include "../footer.php";?>
-    
+     <?php include "footer.php";?>
+     <script src="javaScript/scroll_up.js"></script>
+  
 </body>
 </html>

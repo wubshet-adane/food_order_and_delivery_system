@@ -209,7 +209,7 @@
       align-items: center;
       background-color: #e7f1ff;
       padding: 5px;
-      margin: auto;
+      margin: .5rem auto;
       border-radius: 6px;
       border-left: 8px solid #081f29;
       cursor: pointer;

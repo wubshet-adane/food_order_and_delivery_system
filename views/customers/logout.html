@@ -10,14 +10,14 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f8f9fa;
+            background-color: #b9b7b7;
         }
         .logout-container {
             text-align: center;
             background: white;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.8);
         }
         .logout-btn {
             margin: 10px;
@@ -29,7 +29,7 @@
         <h2>Are you sure you want to logout?</h2>
         <p>Your session will be terminated, and you’ll need to log in again.</p>
         <a href="../auth/customer_logout.php" class="logout-btn">Yes, Logout</a>
-        <a href="" class="logout-btn">Cancel</a>
+        <a href="javascript:history.back()" class="logout-btn">Cancel</a>
     </div>
 </body>
 </html>

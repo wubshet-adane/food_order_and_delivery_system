@@ -30,17 +30,13 @@ $cart = $cartModel->getCart($user_id);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!--google font-->
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-    
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.25/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="css/cart.css">
     <link rel="stylesheet" href="css/topbar.css">
     <link rel="stylesheet" href="css/checkout.css">
     <link rel="stylesheet" href="css/footer.css">
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Optional: Mobile-first layout styling -->
+   
     <style>
     #map {
         height: 300px;
@@ -160,6 +156,7 @@ $cart = $cartModel->getCart($user_id);
                     <!--checkout form-->
                     <form id="checkoutForm" class="checkout-form" method="POST">
                         <h2 id="title_h2">order information</h2>
+                        <button id="back_btn">⬅️</button>
                         <!--image-->
                         <div class="pre_checkout_form" id="pre_checkout_form">
                             <img src="../../public/images/checkout order.jpg" alt="checkout">
@@ -236,90 +233,93 @@ $cart = $cartModel->getCart($user_id);
                         <!--payment method section-->
                         <h4>Choose your payment method:</h4>
                         <div id="pament_section" class="hidden_payment_section">
-                            <!--screenshot payment method-->
-                            <section class="screenshot_section">
-                                <div class="payment_method" id="screenshot_payment_method">
-                                    <div class="payment_method_text">
-                                        <h2>Screenshot payment method</h2>
-                                        <p><img src="../../public/images/screenshot icon.jpg" alt="" width="50px" height="50px"> <span> upload screenshot</span></p>
+                            <div class="flex_column_payment">
+                                <!--screenshot payment method-->
+                                <section class="screenshot_section">
+                                    <div class="payment_method" id="screenshot_payment_method">
+                                        <div class="payment_method_text">
+                                            <h2>Screenshot payment method</h2>
+                                            <p><img src="../../public/images/screenshot icon.jpg" alt="" width="50px" height="50px"> <span> upload screenshot</span></p>
+                                        </div>
+                                        <div class="payment_method_radio" id="screenshotchecked">
+                                            
+                                        </div>
                                     </div>
-                                    <div class="payment_method_radio" id="screenshotchecked">
-                                        
-                                    </div>
-                                </div>
-                                <!-- screenshot upload section
-                                <div class="upload_section" id="upload_section">
-                                    <p>pay with the following bank account, telebirr and upload screenshot</p>
-                                    <ul style="list-style-type: none;">
-                                        <li><strong>CBE Account:</strong> G3 food online food ordering sytem, 10000456789</li>
-                                        <li><strong>Telebirr:</strong>  0912345678</li>
-                                        <li><strong>Mpesa</strong> 0789898989</li>
-                                    </ul>
-                                    <label for="screenshot" class="upload_label">Upload Screenshot:</label><br>
-                                    <input type="file" id="screenshot" name="screenshot" accept="image/*" onchange="readURL(this)">
-                                    <span class="error" id="error_screenshot"></span>
-                                    <div id="preview"></div>
-                                    upload screenshot preview
-                                    <script>
-                                        // Wait for the DOM to be fully loaded
-                                        window.addEventListener('DOMContentLoaded', function () {
-                                            const img = document.getElementById('screenshot');
-                                            // Function to preview image as background
-                                            function readURL(input) {
-                                                if (input.files && input.files[0]) {
-                                                    var reader = new FileReader();
-                                                    reader.onload = function (e) {
-                                                        var preview = document.getElementById('preview');
-                                                        preview.style.backgroundImage = 'url(' + e.target.result + ')';
-                                                        preview.style.opacity = '0'; // for transition
-                                                        setTimeout(function () {
-                                                            preview.style.display = "block";
-                                                            preview.style.opacity = "1";
-                                                        }, 10);
-                                                    };
-                                                    reader.readAsDataURL(input.files[0]);
+                                    <!-- screenshot upload section
+                                    <div class="upload_section" id="upload_section">
+                                        <p>pay with the following bank account, telebirr and upload screenshot</p>
+                                        <ul style="list-style-type: none;">
+                                            <li><strong>CBE Account:</strong> G3 food online food ordering sytem, 10000456789</li>
+                                            <li><strong>Telebirr:</strong>  0912345678</li>
+                                            <li><strong>Mpesa</strong> 0789898989</li>
+                                        </ul>
+                                        <label for="screenshot" class="upload_label">Upload Screenshot:</label><br>
+                                        <input type="file" id="screenshot" name="screenshot" accept="image/*" onchange="readURL(this)">
+                                        <span class="error" id="error_screenshot"></span>
+                                        <div id="preview"></div>
+                                        upload screenshot preview
+                                        <script>
+                                            // Wait for the DOM to be fully loaded
+                                            window.addEventListener('DOMContentLoaded', function () {
+                                                const img = document.getElementById('screenshot');
+                                                // Function to preview image as background
+                                                function readURL(input) {
+                                                    if (input.files && input.files[0]) {
+                                                        var reader = new FileReader();
+                                                        reader.onload = function (e) {
+                                                            var preview = document.getElementById('preview');
+                                                            preview.style.backgroundImage = 'url(' + e.target.result + ')';
+                                                            preview.style.opacity = '0'; // for transition
+                                                            setTimeout(function () {
+                                                                preview.style.display = "block";
+                                                                preview.style.opacity = "1";
+                                                            }, 10);
+                                                        };
+                                                        reader.readAsDataURL(input.files[0]);
+                                                    }
                                                 }
-                                            }
-                                            // Attach event listener if needed (or use inline `onchange`)
-                                            img.addEventListener('change', function () {
-                                                readURL(this);
+                                                // Attach event listener if needed (or use inline `onchange`)
+                                                img.addEventListener('change', function () {
+                                                    readURL(this);
+                                                });
                                             });
-                                        });
-                                    </script>
-                                </div>
-                                -->
-                            </section>
+                                        </script>
+                                    </div>
+                                    -->
+                                </section>
 
-                            <!-- telebirr payment method-->
-                            <section class="telebirr_section" id="telebirr_section">
-                                <div class="payment_method" id="telebirr_payment_method">
-                                    <div class="payment_method_text">
-                                        <h2>telebirr payment method-</h2>
-                                        <p><img src="../../public/images/telebirr icon.jpg" alt="" width="50px" height="50px"> <span>pay with telebirr</span></p>
+                                <!-- telebirr payment method-->
+                                <section class="telebirr_section" id="telebirr_section">
+                                    <div class="payment_method" id="telebirr_payment_method">
+                                        <div class="payment_method_text">
+                                            <h2>telebirr payment method-</h2>
+                                            <p><img src="../../public/images/telebirr icon.jpg" alt="" width="50px" height="50px"> <span>pay with telebirr</span></p>
+                                        </div>
+                                        <div class="payment_method_radio" id="telebirrchecked">
+                                            
+                                        </div>
                                     </div>
-                                    <div class="payment_method_radio" id="telebirrchecked">
-                                        
+                                    <!--telebirrform
+                                    <div class="form_group telebirr_form">
+                                        <label for="telebirr_number">Enter your Telebirr Number:</label>
+                                        <input type="tel" id="telebirr_number" name="telebirr_number" placeholder="e.g., 0912345678" required pattern="^[+]?[0-9]{10,15}$" title="Please enter a valid phone number."><br>
+                                        <span class="error" id="error_telebirr"></span>
+                                        <label for="telebirr_code">Enter your Telebirr Code:</label>
+                                        <input type="password" id="telebirr_code" name="telebirr_code" placeholder="e.g., 123456" required><br>
+                                        <span class="error" id="error_telebirr_code"></span>
+                                        <label for="telebirr_amount">Enter the Amount:</label>
+                                        <input type="number" id="telebirr_amount" name="telebirr_amount" placeholder="e.g., 100.00" required><br>
+                                        <span class="error" id="error_telebirr_amount"></span>
+                                        <label for="telebirr_screenshot">Upload Telebirr Screenshot:</label>
+                                        <input type="file" id="telebirr_screenshot" name="telebirr_screenshot" accept="image/*" onchange="readURL(this)">
+                                        <span class="error" id="error_telebirr_screenshot"></span>
+                                        <div id="preview_telebirr"></div>
+                                        upload telebirr screenshot preview
                                     </div>
-                                </div>
-                                <!--telebirrform
-                                <div class="form_group telebirr_form">
-                                    <label for="telebirr_number">Enter your Telebirr Number:</label>
-                                    <input type="tel" id="telebirr_number" name="telebirr_number" placeholder="e.g., 0912345678" required pattern="^[+]?[0-9]{10,15}$" title="Please enter a valid phone number."><br>
-                                    <span class="error" id="error_telebirr"></span>
-                                    <label for="telebirr_code">Enter your Telebirr Code:</label>
-                                    <input type="password" id="telebirr_code" name="telebirr_code" placeholder="e.g., 123456" required><br>
-                                    <span class="error" id="error_telebirr_code"></span>
-                                    <label for="telebirr_amount">Enter the Amount:</label>
-                                    <input type="number" id="telebirr_amount" name="telebirr_amount" placeholder="e.g., 100.00" required><br>
-                                    <span class="error" id="error_telebirr_amount"></span>
-                                    <label for="telebirr_screenshot">Upload Telebirr Screenshot:</label>
-                                    <input type="file" id="telebirr_screenshot" name="telebirr_screenshot" accept="image/*" onchange="readURL(this)">
-                                    <span class="error" id="error_telebirr_screenshot"></span>
-                                    <div id="preview_telebirr"></div>
-                                    upload telebirr screenshot preview
-                                </div>
-                                -->
-                            </section>
+                                    -->
+                                </section>
+                            </div>
+                            <button id="saveBtn">Save</button>
                         </div>
 
                         <button type="submit" id="submitBtn">Proceed to Checkout</button>
@@ -347,7 +347,7 @@ $cart = $cartModel->getCart($user_id);
                         <p>Subtotal: <span id="sub_total"><?php echo number_format($total, 2); ?> birr</span> </p>
                         <p>Grand Total: <span id="grand_total"><?php echo number_format($grand_total, 2); ?> birr</span> </p>
                     </div>
-                    <button onclick = "window.location.href='checkout.php'" class="btn btn-checkout" id="btn-checkout">Place order</button>
+                    <button class="btn btn-checkout" id="btn-checkout">Check out</button>
                     <input type="hidden" id="qqqqty" value="<?=$_SESSION['qty']?>">
                 </div>
             </section>
@@ -475,6 +475,8 @@ $cart = $cartModel->getCart($user_id);
     <script src="javaScript/handle_customers_location.js"></script>
     <script src="javaScript/checkoutInfoVlidation_AJAX.js"></script>
     <script src="javaScript/checkout_form_controlling.js"></script>
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.25/dist/sweetalert2.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap" async defer></script>
 </body>
 </html>
