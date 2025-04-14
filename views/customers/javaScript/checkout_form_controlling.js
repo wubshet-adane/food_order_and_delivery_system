@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Payment method selection
     screenshot_payment_method.addEventListener('click', function () {
-        screenshot_payment_method.style.borderLeftWidth = "3px";
+        screenshot_payment_method.style.borderLeftWidth = "8px";
         screenshot_payment_method.style.borderLeftStyle = "solid";
         screenshot_payment_method.style.borderLeftColor = "green";
         screenshot_payment_method.style.backgroundColor = "#21883751";
@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     telebirr_payment_method.addEventListener('click', function () {
-        telebirr_payment_method.style.borderLeftWidth = "3px";
+        telebirr_payment_method.style.borderLeftWidth = "8px";
         telebirr_payment_method.style.borderLeftStyle = "solid";
         telebirr_payment_method.style.borderLeftColor = "green";
         telebirr_payment_method.style.backgroundColor = "#21883751";
@@ -173,11 +173,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Save button click: validate payment method
     saveBtn.addEventListener('click', function () {
-        if (payment_method === "") {
-            alert("Please select a payment method");
-            return;
-            }
-        
         // If payment method is valid, enable checkout button
         checkoutBtn.disabled = false;
         checkoutBtn.style.cursor = "pointer";
@@ -190,10 +185,11 @@ document.addEventListener("DOMContentLoaded", function () {
         this.style.cursor = "auto";
     });
 
+    
     //goto back and edit address information
     backBtn.addEventListener('click', function () {
-        formInfoSection.classList.add("visible_sections");
         formInfoSection.classList.remove("form_info_section");
+        formInfoSection.classList.add("visible_sections");
         paymentSection.classList.add("hidden_payment_section");
         submitBtn.style.display = "block";
         this.style.display = "none";
@@ -241,16 +237,16 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(result => {
             Swal.close(); // Close the loading spinner
-            if (result.success) {
+            if (result.status) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Success!',
-                    text: 'Your delivery information has been saved. Redirecting to order placement...',
-                    timer: 1000,
+                    text: result.message || 'Your delivery information has been saved. Redirecting to order placement...',
+                    timer: 3000,
                     showConfirmButton: false
                 }).then(() => {
                     // Optionally redirect to another page or submit final checkout form
-                    window.location.href = "../place_order.php";
+                    window.location.href = `place_order.php?paymentMethod=${payment_method}&orderNote=${note}&discount=${discount}&service_fee=${service_fee}&sub_total=${sub_total}`;
                 });
             } else {
                 Swal.fire({

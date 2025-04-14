@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = SaveCustomerDeliveryInfo::saveCustDeliveryInfo($customer_id, $fullname, $phone, $email, $address, $latitude, $longitude);
 
     if ($result) {
-        echo json_encode(['status' => 'success', 'message' => 'Saved successfully']);
+        echo json_encode($result);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Something went wrong while saving']);
     }

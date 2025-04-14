@@ -21,7 +21,7 @@ class SaveCustomerDeliveryInfo {
 
             // If a record exists, update it
             if ($result->num_rows > 0) {
-                $updateQuery = "UPDATE customer_delivery_address 
+                $updateQuery = "UPDATE customer_delivery_address
                                 SET name = ?, phone = ?, email = ?, delivery_address = ?, latitude = ?, longitude = ?
                                 WHERE user_id = ?";
 

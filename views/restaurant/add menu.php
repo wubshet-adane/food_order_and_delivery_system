@@ -59,6 +59,12 @@
         </div>
 
         <div class="input-group">
+            <label for="discount">Discount <i class="fa-solid fa-circle-info"></i><p class="detail_info">
+                If you want, write discount amount in number format with out percent sign like if you want to add "10%" discount just write as '10'.</p> </label>
+            <input type="number" name="discount" id="discount" placeholder="discount" min="1" max="100">
+        </div>
+
+        <div class="input-group">
             <label for="image">Menu Image <i class="fa-solid fa-circle-info"></i> <p class="detail_info">
                 select square sized image and then post that image that will display at customers interface, ..."</p> </label>
             <input type="file" name="image" id="image" required>
