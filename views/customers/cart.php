@@ -4,7 +4,7 @@ require '../../config/database.php'; // your DB connection
 require_once __DIR__ . "/../../models/cart.php";
 
 //check if user is logged in or not...
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email']) || !isset($_SESSION['loggedIn'])){
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email']) || !isset($_SESSION['loggedIn']) || $_SESSION['userType'] !== "customer") {
     header("Location: ../auth/customer_login.php");
     exit();
 }
@@ -14,7 +14,6 @@ $user_id = $_SESSION['user_id'];
 
 //create object using class name and send connection as parameter for constructor created at cart.php at model repository...
 $cartModel = new Cart($conn);
-
 //call function with looggewd in user id  as argument by usinng created object
 $cart = $cartModel->getCart($user_id);
 ?>
@@ -63,14 +62,14 @@ $cart = $cartModel->getCart($user_id);
         <?php
         $total = 0;
         $qty = 0;
+        $discount = 0;
+        $total_discount = 0;
         $_SESSION['qty'] = 0; // Initialize session variable for quantity
         $res_id = 0; // Get restaurant_id from the first row if available
-        $delivery_distance = $_SESSION['distance']; // Initialize delivery distance
+        //$delivery_distance = $_SESSION['distance']; // Initialize delivery distance
 
         if ($cart->num_rows>0){
             ?>
-
-
         <div class="table_box">
             <table>
                 <thead>
@@ -84,56 +83,56 @@ $cart = $cartModel->getCart($user_id);
                     </tr>
                 </thead>
                 <tbody id="cart-body">
-                <?php
-                            while ($row = $cart->fetch_assoc()){
-                                $res_id = $row['res_id']; // Get restaurant_id from the first row
-                                $total += $row['sub_total']; // Add each item's subtotal to total
-                                $qty += $row['quantity']; // Add each item's quantity to total quantity
-                                $_SESSION['qty'] = $qty; // Update session variable with total quantity
-                                ?>
-                                <tr>
-                                    <td>
-                                        <img src="../../uploads/menu_images/<?= $row['menu_image']?>" alt="<?= $row['menu_item']?>">
-                                    </td>
-                                    <td>
-                                        <div class="cart_item">
-                                            <?= $row['menu_item']?> <i class="fa-solid fa-circle-info"></i>
-                                            <div class="detail_info">
-                                                <strong style="color:rgb(0, 0, 0); font-size:16px;"> information</strong><br>
-                                                this menu is contains `<?= $row['content']?>` <i>from</i> <?= $row['restaurant_name']?>.
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="originalQuantity" id="originalQuantity_<?=$row['id']?>" onclick="editQty('<?=$row['id']?>')">
-                                            <?=$row['quantity']?>
-                                        </div>
-                                        <input class="editableQuantity" type="number" name="quantity" id="editableQuantity_<?=$row['id']?>" value="<?=$row['quantity']?>" data-cart-id="<?=$row['id']?>">
-                                    </td>
-                                    <td class="td_price">
-                                        <?php echo number_format($row['menu_price'], 2);?>
-                                    </td>
-                                    <td>
-                                        <?php echo number_format($row['sub_total'], 2);?>
-                                    </td>
-                                    <td>
-                                        <!--<button class="update_btn"><span class="update_txt">update</span> <i class="update_icon fa-regular fa-pen-to-square"></i></button>-->
-                                        <button class="remove_btn" data-cart-id="<?=$row['id']?>"><span class="remove_txt">remove</span> <i class="remove_icon fa-solid fa-xmark"></i></button>
-                                    </td>
-                                </tr>
-
-                                <?php
-                            }
-
-                        }else{?>
-                                <div>
-                                    <img src="../../public/images/empty cart.jpg" alt="empty cart" style="width: 400px; height: 300px; margin: 0 auto; display: block;">
-                                </div>
-                                <p colspan="6" style="text-align: center; font-size: 20px; color: #ff0000;">
-                                    Your cart is empty!
-                                </p>
                     <?php
-                        }
+                    while ($row = $cart->fetch_assoc()){
+                        $res_id = $row['res_id']; // Get restaurant_id from the first row
+                        $total += $row['sub_total']; // Add each item's subtotal to total
+                        $qty += $row['quantity']; // Add each item's quantity to total quantity
+                        $_SESSION['qty'] = $qty; // Update session variable with total quantity
+                        $discount = ($row['menu_price'] * $row['discount'] / 100) * $row['quantity'];
+                        $total_discount += $discount;
+                        ?>
+                        <tr>
+                            <td>
+                                <img src="../../uploads/menu_images/<?= $row['menu_image']?>" alt="<?= $row['menu_item']?>">
+                            </td>
+                            <td>
+                                <div class="cart_item">
+                                    <?= $row['menu_item']?> <i class="fa-solid fa-circle-info"></i>
+                                    <div class="detail_info">
+                                        <strong style="color:rgb(0, 0, 0); font-size:16px;"> information</strong><br>
+                                        this menu is contains `<?= $row['content']?>` <i>from</i> <?= $row['restaurant_name']?> and <?=$row['discount']?> % discount per item .
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="originalQuantity" id="originalQuantity_<?=$row['id']?>" onclick="editQty('<?=$row['id']?>')">
+                                    <?=$row['quantity']?>
+                                </div>
+                                <input class="editableQuantity" type="number" name="quantity" id="editableQuantity_<?=$row['id']?>" value="<?=$row['quantity']?>" data-cart-id="<?=$row['id']?>">
+                            </td>
+                            <td class="td_price">
+                                <?php echo number_format($row['menu_price'], 2);?>
+                            </td>
+                            <td>
+                                <?php echo number_format($row['sub_total'], 2);?>
+                            </td>
+                            <td>
+                                <!--<button class="update_btn"><span class="update_txt">update</span> <i class="update_icon fa-regular fa-pen-to-square"></i></button>-->
+                                <button class="remove_btn" data-cart-id="<?=$row['id']?>"><span class="remove_txt">remove</span> <i class="remove_icon fa-solid fa-xmark"></i></button>
+                            </td>
+                        </tr>
+                    <?php
+                    }
+                }else{?>
+                        <div>
+                            <img src="../../public/images/empty cart.jpg" alt="empty cart" style="width: 400px; height: 300px; margin: 0 auto; display: block;">
+                        </div>
+                        <p colspan="6" style="text-align: center; font-size: 20px; color: #ff0000;">
+                            Your cart is empty!
+                        </p>
+            <?php
+                }
                     ?>
                 </tbody>
 
@@ -154,7 +153,7 @@ $cart = $cartModel->getCart($user_id);
             <section class="checkout_section_box" id="checkout_section_box">
                 <div class="left_side_checkout_section">
                     <!--checkout form-->
-                    <form id="checkoutForm" class="checkout-form" method="POST">
+                    <form id="checkoutForm" class="checkout-form" method="POST" autocomplete="on">
                         <h2 id="title_h2">order information</h2>
                         <button id="back_btn">⬅️</button>
                         <!--image-->
@@ -245,47 +244,6 @@ $cart = $cartModel->getCart($user_id);
                                             
                                         </div>
                                     </div>
-                                    <!-- screenshot upload section
-                                    <div class="upload_section" id="upload_section">
-                                        <p>pay with the following bank account, telebirr and upload screenshot</p>
-                                        <ul style="list-style-type: none;">
-                                            <li><strong>CBE Account:</strong> G3 food online food ordering sytem, 10000456789</li>
-                                            <li><strong>Telebirr:</strong>  0912345678</li>
-                                            <li><strong>Mpesa</strong> 0789898989</li>
-                                        </ul>
-                                        <label for="screenshot" class="upload_label">Upload Screenshot:</label><br>
-                                        <input type="file" id="screenshot" name="screenshot" accept="image/*" onchange="readURL(this)">
-                                        <span class="error" id="error_screenshot"></span>
-                                        <div id="preview"></div>
-                                        upload screenshot preview
-                                        <script>
-                                            // Wait for the DOM to be fully loaded
-                                            window.addEventListener('DOMContentLoaded', function () {
-                                                const img = document.getElementById('screenshot');
-                                                // Function to preview image as background
-                                                function readURL(input) {
-                                                    if (input.files && input.files[0]) {
-                                                        var reader = new FileReader();
-                                                        reader.onload = function (e) {
-                                                            var preview = document.getElementById('preview');
-                                                            preview.style.backgroundImage = 'url(' + e.target.result + ')';
-                                                            preview.style.opacity = '0'; // for transition
-                                                            setTimeout(function () {
-                                                                preview.style.display = "block";
-                                                                preview.style.opacity = "1";
-                                                            }, 10);
-                                                        };
-                                                        reader.readAsDataURL(input.files[0]);
-                                                    }
-                                                }
-                                                // Attach event listener if needed (or use inline `onchange`)
-                                                img.addEventListener('change', function () {
-                                                    readURL(this);
-                                                });
-                                            });
-                                        </script>
-                                    </div>
-                                    -->
                                 </section>
 
                                 <!-- telebirr payment method-->
@@ -299,24 +257,6 @@ $cart = $cartModel->getCart($user_id);
                                             
                                         </div>
                                     </div>
-                                    <!--telebirrform
-                                    <div class="form_group telebirr_form">
-                                        <label for="telebirr_number">Enter your Telebirr Number:</label>
-                                        <input type="tel" id="telebirr_number" name="telebirr_number" placeholder="e.g., 0912345678" required pattern="^[+]?[0-9]{10,15}$" title="Please enter a valid phone number."><br>
-                                        <span class="error" id="error_telebirr"></span>
-                                        <label for="telebirr_code">Enter your Telebirr Code:</label>
-                                        <input type="password" id="telebirr_code" name="telebirr_code" placeholder="e.g., 123456" required><br>
-                                        <span class="error" id="error_telebirr_code"></span>
-                                        <label for="telebirr_amount">Enter the Amount:</label>
-                                        <input type="number" id="telebirr_amount" name="telebirr_amount" placeholder="e.g., 100.00" required><br>
-                                        <span class="error" id="error_telebirr_amount"></span>
-                                        <label for="telebirr_screenshot">Upload Telebirr Screenshot:</label>
-                                        <input type="file" id="telebirr_screenshot" name="telebirr_screenshot" accept="image/*" onchange="readURL(this)">
-                                        <span class="error" id="error_telebirr_screenshot"></span>
-                                        <div id="preview_telebirr"></div>
-                                        upload telebirr screenshot preview
-                                    </div>
-                                    -->
                                 </section>
                             </div>
                             <button id="saveBtn">Save</button>
@@ -331,27 +271,38 @@ $cart = $cartModel->getCart($user_id);
                 <div class="right_side_checkout_section">
                     <div class="detail_section">
                         <?php
-                        if (is_NaN($delivery_distance)){
-                            $delivery_fee = "error with location!"; // Set delivery fee to 0 if distance is not available
-                        }else{
-                            $delivery_distance = $_SESSION['distance']; // Get the delivery distance from the session
-                            $delivery_fee = $delivery_distance * 30;
+                            $delivery_fee =" + delivery fee";
                             $service_fee = $total * 0.05; // 5% service fee
-                            $grand_total = $total + $delivery_fee + $service_fee; // Calculate the grand total
-                        }
+                            $grand_total = round($total + $service_fee - $total_discount, 2);
+                            $grand_total = $grand_total.$delivery_fee; // Calculate the grand total
                         ?>
                         <h2>Order Summary</h2>
-                        <p>Discount: <span>0.00 birr</span> </p>
-                        <p>Delivery Fee: <span><?php echo round($delivery_fee, 2); ?> birr</span> </p>
-                        <p>Service Fee: <span><?php echo round($service_fee, 2)?> birr</span> </p>
-                        <p>Subtotal: <span id="sub_total"><?php echo number_format($total, 2); ?> birr</span> </p>
-                        <p>Grand Total: <span id="grand_total"><?php echo number_format($grand_total, 2); ?> birr</span> </p>
+                        <p>Discount:
+                            <span style="color: #11ee22"><?php echo round($total_discount, 2);?>  birr
+                            <input type="hidden" id="discount" value="<?php echo round($total_discount, 2);?>">
+                        </span>
+                        </p>
+                        <p>Delivery Fee: <span>calculated by address</span> </p>
+                        <p>Service Fee: 
+                            <span><?php echo round($service_fee, 2)?> birr
+                                <input type="hidden" id="service_fee" value="<?php echo round($service_fee, 2)?>">
+                            </span> 
+                        </p>
+                        <p>Subtotal: 
+                            <span><?php echo number_format($total, 2); ?> birr
+                            <input type="hidden" id="sub_total" value="<?php echo number_format($total, 2); ?>">
+                            </span> </p>
+                        <p>Grand Total: <span id="grand_total"><?php echo $grand_total; ?> </span> </p>
                     </div>
-                    <button class="btn btn-checkout" id="btn-checkout">Check out</button>
+                    <button class="btn btn-checkout" id="btn-checkout">Place order</button>
                     <input type="hidden" id="qqqqty" value="<?=$_SESSION['qty']?>">
                 </div>
             </section>
         <?php endif; ?>
+        <div class="infoSection">
+            <p>for each 1 kilometer (km) of distance between the restaurant and the delivery location, 
+            we will charge the customer 30 Ethiopian Birr as a delivery fee.</p>
+        </div>
     </div>
     <?php include "footer.php";?>
 
@@ -444,37 +395,11 @@ $cart = $cartModel->getCart($user_id);
                         
         });
     </script>
-    <!--script for toggling payment method-->
-    <script>
-        window.addEventListener('DOMContentLoaded', function () {
-            const screenshotRadio = document.getElementById('screenshot');
-            const telebirrRadio = document.getElementById('telebirr');
-            const uploadSection = document.querySelector('.upload_section');
-            const telebirrForm = document.querySelector('.telebirr_form');
-
-            function togglePaymentSections() {
-                if (screenshotRadio.checked) {
-                    uploadSection.style.display = 'block';
-                    telebirrForm.style.display = 'none';
-                } else if (telebirrRadio.checked) {
-                    uploadSection.style.display = 'none';
-                    telebirrForm.style.display = 'block';
-                } else {
-                    uploadSection.style.display = 'none';
-                    telebirrForm.style.display = 'none';
-                }
-            }
-            // Attach event listeners
-            screenshotRadio.addEventListener('change', togglePaymentSections);
-            telebirrRadio.addEventListener('change', togglePaymentSections);
-            // Call initially in case one is selected by default
-            togglePaymentSections();
-        });
-    </script>
 
     <script src="javaScript/handle_customers_location.js"></script>
-    <script src="javaScript/checkoutInfoVlidation_AJAX.js"></script>
     <script src="javaScript/checkout_form_controlling.js"></script>
+    <script src="javaScript/scroll_up.js"></script>
+
     <!-- SweetAlert JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.25/dist/sweetalert2.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap" async defer></script>

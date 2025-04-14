@@ -1,40 +1,46 @@
-// Wait until the page is fully loaded
 document.addEventListener("DOMContentLoaded", function() {
     var buttons = document.querySelectorAll('.add_to_cart');
-    
+
     buttons.forEach(function(button) {
         button.addEventListener('click', function() {
             var menuId = this.getAttribute('data-menu-id');
             var quantityInput = document.getElementById('quantity_' + menuId);
-            
-            console.log("Menu ID:", menuId);
-            console.log("Quantity Input:", quantityInput);
+            var discountElement = document.getElementById('discount_' + menuId);
 
             if (!quantityInput) {
                 alert("Quantity input not found!");
                 return;
             }
 
+            if (!discountElement) {
+                alert("Discount element not found!");
+                return;
+            }
+
             var quantity = parseInt(quantityInput.value);
+            var discountValue = parseInt(discountElement.value.replace(/[^\d.]/g, ''));
 
             if (quantity < 1 || isNaN(quantity)) {
                 alert("Please enter a valid quantity.");
                 return;
             }
 
-            //console.log("Quantity:", quantity);
+            if (isNaN(discountValue)) {
+                alert("Invalid discount value.");
+                return;
+            }
 
             fetch("add_to_cart.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: "menu_id=" + menuId + "&quantity=" + quantity
+                body: "menu_id=" + encodeURIComponent(menuId) +
+                      "&quantity=" + encodeURIComponent(quantity) +
+                      "&discount=" + encodeURIComponent(discountValue)
             })
-            .then(response => response.text())  // Fetch as raw text
+            .then(response => response.text())
             .then(data => {
-                //console.log("Raw Response Text:", data);  // Log raw response
                 try {
-                    const jsonData = JSON.parse(data);  // Manually parse JSON if valid
-                    console.log("Parsed Response:", jsonData);
+                    const jsonData = JSON.parse(data);
                     alert(jsonData.message);
                 } catch (error) {
                     console.error("JSON Parse Error:", error);

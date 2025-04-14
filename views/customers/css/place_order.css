@@ -18,6 +18,52 @@
                 max-width: 950px;
             }
 
+            .go_back {
+                background-color: #4CAF50;
+                padding: 10px 20px;
+                border: none;
+                width: fit-content;
+                box-shadow: 0 3px 5px rgba(0, 0, 0, 0.8);
+                border-radius: 0 10px 10px 0;
+                position: relative;
+                color: white;
+                cursor: pointer;
+                font-weight: bold;
+                margin-left: 3rem;
+            }
+            
+            /* Create the arrow shape */
+            .go_back::after {
+                content: "";
+                position: absolute;
+                left: -28px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 0;
+                height: 0;
+                border-top: 22px solid transparent;
+                border-bottom: 22px solid transparent;
+                border-right: 25px solid #4CAF50;
+            }
+            
+            /* Hover effect for the main button */
+            .go_back:hover {
+                background-color: #3e8e41;
+                transform: translateY(2px);
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            }
+            
+            /* Hover effect for the arrow */
+            .go_back:hover::after {
+                border-left-color: #3e8e41;
+            }
+            
+            .go_back a{
+                text-decoration: none;
+                color: white;
+
+            }
+
             h2 {
                 color: #ff9900;
                 margin-bottom: 10px;

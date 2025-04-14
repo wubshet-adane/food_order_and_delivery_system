@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $menu_id = $_POST['menu_id'];
 $quantity = $_POST['quantity'] ?? 1; // Default quantity to 1 if not provided
+$discount = $_POST['discount'] ?? 0; // Default discount to 0 if not provided
 
 if (!$menu_id) {
     echo json_encode(["message" => "Menu ID is missing!"]);
@@ -34,9 +35,9 @@ if ($result->num_rows > 0) {
     $stmt->bind_param("iii", $quantity, $user_id, $menu_id);
 } else {
     // Insert new item
-    $insertQuery = "INSERT INTO cart (user_id, menu_id, quantity) VALUES (?, ?, ?)";
+    $insertQuery = "INSERT INTO cart (user_id, menu_id, quantity, discount) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($insertQuery);
-    $stmt->bind_param("iii", $user_id, $menu_id, $quantity);
+    $stmt->bind_param("iiii", $user_id, $menu_id, $quantity, $discount);
 }
 
 if ($stmt->execute()) {

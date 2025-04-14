@@ -8,8 +8,12 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email']) || !isset($_
     exit();
 }
 
-$paymnet_method = $_GET['payment_method']; // Use session or fallback
-echo $paymnet_method;
+//get restaurant specific lat and lng
+$lat = $_SESSION['restaurant_latitude'];
+$lng = $_SESSION['restaurant_longitude'];
+//get customer delivery address lat and lg
+//get selected payment method from redirect url
+$paymnet_method = $_GET['payment_method'] ?? "";
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +26,8 @@ echo $paymnet_method;
         <link rel="stylesheet" href="css/topbar.css">
         <link rel="stylesheet" href="css/place_order.css">
         <link rel="stylesheet" href="css/footer.css">
+        <!--font awsome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     
     </head>
@@ -31,6 +37,9 @@ echo $paymnet_method;
     </header>
 
     <section class="place_order_container">
+        <div class="go_back">
+            <a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Go Back </a>
+        </div>        
         <div class="delivery_address_section">
             <div class="contact_information">
                 <h2>Your Delivery Contact Information</h2>

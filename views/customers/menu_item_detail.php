@@ -85,10 +85,17 @@ if (isset($_GET['menu_id'])) {
                             <p>Phone: <?php echo htmlspecialchars($cafe['phone']); ?></p>
                         </code>
                     </div>
-                    <h4>price for single item:
+                    <h4>price:
                         <span class="price"><?php echo number_format($item['price'], 2); ?> Birr.</span>
                     </h4><br>
-
+                    <h4>Discount:
+                        <span class="price"><?php echo $item['discount']; ?>% == <?php echo $item['price'] * $item['discount']/100; ?> Birr</span>
+                    </h4><br>
+                    <h4>charge price:
+                        <span class="price"><?php echo round($item['price'] - ($item['price'] * $item['discount']/100), 2); ?> Birr.</span>
+                    </h4><br>
+                    <input type="hidden" id="discount_<?php echo $item['menu_id']; ?>" value="<?php echo $item['discount'];?>">
+                    
                     <div class="item-actions">
                         <button type="button" data-menu-id="<?php echo $item['menu_id']; ?>" class="add_to_cart" title="Add item to Cart"> Add to cart <i class="fa-solid fa-cart-plus"></i></button>
                     </div>

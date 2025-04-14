@@ -189,7 +189,7 @@ td button:focus, .add_more_menu:focus {
 }
 
 .detail_section p {
-    font-size: 16px;
+    font-size: 14px;
     color: #555;
     display: flex;
     justify-content: space-between;
@@ -197,7 +197,7 @@ td button:focus, .add_more_menu:focus {
 }
 
 .detail_section p span {
-    font-weight: bold;
+    font-family:fantasy;
     color: #007bff;
 }
 
@@ -241,6 +241,34 @@ input[type="number"] {
     width: 50px; 
     text-align: center; 
 }
+
+.infoSection{
+    margin: auto;
+    width: fit-content;
+    padding: 1rem;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #00c8ff, #ffcc00, #560090);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    animation: gradientBG 8s ease infinite;
+    background-clip: text;
+}
+
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.infoSection p {
+    color: transparent;
+    background-color: transparent; /* or rgba(0, 0, 0, 0) */
+    margin: auto;
+    font-weight: 400;
+    font-family: cursive;
+    font-size: large;
+
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
