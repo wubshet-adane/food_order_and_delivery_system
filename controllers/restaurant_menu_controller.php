@@ -30,9 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'|| $_SERVER['REQUEST_METHOD'] == 'GET') 
         $content = $_POST['content'];
         $description = $_POST['description'];
         $price = $_POST['price'];
+        $discount = $_POST['discount'] ?? 0;
         $image = $imagePath; // You should handle file uploads properly
 
-        if(Menu::addItem( $resId, $name, $catagory, $content, $description, $price, $image)) {
+        if(Menu::addItem( $resId, $name, $catagory, $content, $description, $price, $discount, $image)) {
             header("Location: ../views/restaurant/dashboard.php?page=manage_menu&success=Item successfuly added");
         } else {
             header("Location: ../views/restaurant/dashboard.php?page=manage_menu&error=Failed to add item");
@@ -67,9 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'|| $_SERVER['REQUEST_METHOD'] == 'GET') 
         $catagory = $_POST['category'];
         $content = $_POST['content'];
         $price = $_POST['price'];
+        $discount = $_POST['discount'] ?? 0;
         $image = $imagePath; // Later, we'll handle file uploads
 
-        if (Menu::updateItem($id, $name, $description, $catagory, $content, $price, $image)) {
+        if (Menu::updateItem($id, $name, $description, $catagory, $content, $price, $discount, $image)) {
             header("Location: ../views/restaurant/dashboard.php?page=manage_menu&success=Item succesfuly updated");
         } else {
             header("Location: ../views/restaurant/dashboard.php?page=manage_menu&error=Failed to update item");

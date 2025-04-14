@@ -198,6 +198,11 @@ require_once '../../models/manage_menu.php';
                 </div>
                 
                 <div class="input-group">
+                    <label for="edit-discount">Discount</label>
+                    <input type="number" name="discount" id="edit-discount" placeholder="in percent but cant add % sign"  class="edit-input">
+                </div>
+                
+                <div class="input-group">
                     <label for="edit-ingredients">Ingredients (contents)</label>
                     <textarea name="content" id="edit-content" placeholder="Ingredients (separate with commas)" class="edit-input"></textarea>
                 </div>
