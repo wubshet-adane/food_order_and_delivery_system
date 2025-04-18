@@ -52,10 +52,17 @@ class Menu {
     //add new item
     public static function addItem($resId, $name, $catagory, $content, $description, $price, $discount, $image) {
         global $conn;
-        $sql = "INSERT INTO menu (restaurant_id, name, catagory, content, description, price, discount, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO menu (restaurant_id, name, catagory, content, description, price, discount, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("issssdis", $resId, $name, $catagory, $content, $description, $price, $discount, $image);
-        return $stmt->execute();
+        if (!$stmt) {
+            // Print the SQL error for debugging
+            die("SQL Prepare Failed: " . $conn->error);
+        }
+        $stmt->bind_param("issssdds", $resId, $name, $catagory, $content, $description, $price, $discount, $image);
+        if (!$stmt) {
+            die("SQL Prepare Error: " . $conn->error);
+        }
+            return $stmt->execute();
     }
 
     //update item
@@ -63,8 +70,15 @@ class Menu {
         global $conn;
         $sql = "UPDATE menu SET name = ?, description = ?, catagory = ?, content = ?, price = ?, $discount, image = ? WHERE menu_id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssdsi", $name, $description, $catagory, $content, $price, $discount, $image, $id);
-        return $stmt->execute();
+        if (!$stmt) {
+            // Print the SQL error for debugging
+            die("SQL Prepare Failed: " . $conn->error);
+        }
+        $stmt->bind_param("ssssddsi", $name, $description, $catagory, $content, $price, $discount, $image, $id);
+        if (!$stmt) {
+           die("SQL Prepare Error: " . $conn->error);
+        }
+           return $stmt->execute();
     }
 
     //delete item

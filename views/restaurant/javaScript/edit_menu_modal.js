@@ -14,6 +14,7 @@ function editMenu(menuId) {
     document.getElementById("edit-category").value = editButton.dataset.category || "";
     document.getElementById("edit-content").value = editButton.dataset.content || "";
     document.getElementById("edit-price").value = editButton.dataset.price || "";
+    document.getElementById("edit-discount").value = editButton.dataset.discount || "";
 
     // Handle image preview
     const imagePreview = document.getElementById("imagePreview");

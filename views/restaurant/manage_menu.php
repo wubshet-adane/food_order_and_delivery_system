@@ -146,7 +146,11 @@ require_once '../../models/manage_menu.php';
                                         </script>
                                     </form>
                                     <button class="edit-btn" id="edit-btn-<?= $item['menu_id'];?>" data-name="<?= $item['name']; ?>"
-                                            data-description="<?= $item['description']; ?>" data-catagory="<?= $item['catagory']; ?>" data-content="<?= $item['content']; ?>" data-price="<?= $item['price']; ?>" data-image="<?= $item['image']; ?>" onclick="editMenu(<?= $item['menu_id'];?>)" title="edit"> <i class="fa fa-solid fa-pen"></i? </button>
+                                        data-description="<?= $item['description']; ?>" data-catagory="<?= $item['catagory']; ?>" 
+                                        data-content="<?= $item['content']; ?>" data-price="<?= $item['price']; ?>" data-discount="<?=$item['discount']?>" 
+                                        data-image="<?= $item['image']; ?>" onclick="editMenu(<?= $item['menu_id'];?>)" title="edit">
+                                        <i class="fa fa-solid fa-pen"></i>
+                                    </button>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

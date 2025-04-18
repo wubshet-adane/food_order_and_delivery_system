@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const paymentSection = document.getElementById("pament_section");
     const submitBtn = document.getElementById("submitBtn");
     const checkoutBtn = document.getElementById("btn-checkout");
-    const checkoutForm = document.getElementById("checkoutForm");
     
     // Initial setup
     backBtn.style.display = "none";
@@ -31,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var error = [];
 
         const name = document.getElementById("full_name").value.trim();
-        const regex = /^[A-Za-z]+ [A-Za-z]+$/;
+        const regex = /^[A-Za-z ]+$/;
         if (!regex.test(name)) {
             error[0] = "Full_name must consist of atleast two words.";
             document.getElementById("full_name").style.borderColor = "red";
@@ -58,8 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("error_email").textContent = "";
         }
 
-        const phone = document.getElementById("phone").value.trim();
-        const phoneRegex = /^(?:\+251\s?)?\d{3}\s?\d{2}\s?\d{4}$|^\d{10}$/;
+        var phone = document.getElementById("phone").value.trim();
+        const phoneRegex = /^(?:\+251\d{9}|0\d{9})$/;
         if (!phoneRegex.test(phone)) {
             error[2] = "Please enter a valid phone number.";
             document.getElementById("phone").style.borderColor = "red";
@@ -128,16 +127,30 @@ document.addEventListener("DOMContentLoaded", function () {
         backBtn.style.display = "block";
         this.style.display = "none";
     });
+    
+    
+    //goto back and edit address information
+    backBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        formInfoSection.classList.remove("form_info_section");
+        formInfoSection.classList.add("visible_sections");
+        paymentSection.classList.add("hidden_payment_section");
+        submitBtn.style.display = "block";
+        this.style.display = "none";
+    });
 
     const screenshot_payment_method = document.getElementById('screenshot_payment_method');
     const telebirr_payment_method = document.getElementById('telebirr_payment_method');
+    const paypal_payment_method = document.getElementById('paypal_payment_method');
     const screenshotchecked = document.getElementById('screenshotchecked');
     const telebirrchecked = document.getElementById('telebirrchecked');
+    const paypalchecked = document.getElementById('paypalchecked');
     const saveBtn = document.getElementById('saveBtn');
 
     let payment_method = "";
 
     // Payment method selection
+    //screenshot payment method
     screenshot_payment_method.addEventListener('click', function () {
         screenshot_payment_method.style.borderLeftWidth = "8px";
         screenshot_payment_method.style.borderLeftStyle = "solid";
@@ -145,8 +158,11 @@ document.addEventListener("DOMContentLoaded", function () {
         screenshot_payment_method.style.backgroundColor = "#21883751";
         screenshotchecked.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
         telebirrchecked.innerHTML = `<i class="fa-regular fa-circle"></i>`;
+        paypalchecked.innerHTML = `<i class="fa-regular fa-circle"></i>`;
         telebirr_payment_method.style.border = "none";
+        paypal_payment_method.style.border = "none";
         telebirr_payment_method.style.backgroundColor = "#e7f1ff";
+        paypal_payment_method.style.backgroundColor = "#e7f1ff";
         payment_method = "screenshot";
         saveBtn.style.backgroundColor = "#10a";
         saveBtn.textContent = "save";
@@ -154,25 +170,76 @@ document.addEventListener("DOMContentLoaded", function () {
         saveBtn.style.cursor = "pointer";
     });
 
+    //telebirr payyment method
     telebirr_payment_method.addEventListener('click', function () {
+        if (payment_method === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'comingsoon!!!!',
+                text: 'un available payment method',
+            });
+            return;
+        }
+        /*
         telebirr_payment_method.style.borderLeftWidth = "8px";
         telebirr_payment_method.style.borderLeftStyle = "solid";
         telebirr_payment_method.style.borderLeftColor = "green";
         telebirr_payment_method.style.backgroundColor = "#21883751";
         telebirrchecked.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
         screenshotchecked.innerHTML = `<i class="fa-regular fa-circle"></i>`;
+        paypalchecked.innerHTML = `<i class="fa-regular fa-circle"></i>`;
         screenshot_payment_method.style.border = "none";
+        paypal_payment_method.style.border = "none";
         screenshot_payment_method.style.backgroundColor = "#e7f1ff";
+        paypal_payment_method.style.backgroundColor = "#e7f1ff";
         payment_method = "telebirr";
         saveBtn.style.backgroundColor = "#10a";
         saveBtn.style.color = "#fff";
         saveBtn.textContent = "save";
         saveBtn.disabled = false;
-        saveBtn.style.cursor = "pointer";
+        saveBtn.style.cursor = "pointer";*/
+    });
+
+    //paypal payment method
+    paypal_payment_method.addEventListener('click', function () {
+        if (payment_method === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'comingsoon!!!!',
+                text: 'un available payment method',
+            });
+            return;
+        }
+        /*paypal_payment_method.style.borderLeftWidth = "8px";
+        paypal_payment_method.style.borderLeftStyle = "solid";
+        paypal_payment_method.style.borderLeftColor = "green";
+        paypal_payment_method.style.backgroundColor = "#21883751";
+        paypalchecked.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+        telebirrchecked.innerHTML = `<i class="fa-regular fa-circle"></i>`;
+        screenshotchecked.innerHTML = `<i class="fa-regular fa-circle"></i>`;
+        telebirr_payment_method.style.border = "none";
+        screenshot_payment_method.style.border = "none";
+        screenshot_payment_method.style.backgroundColor = "#e7f1ff";
+        telebirr_payment_method.style.backgroundColor = "#e7f1ff";
+        payment_method = "paypal";
+        saveBtn.style.backgroundColor = "#10a";
+        saveBtn.style.color = "#fff";
+        saveBtn.textContent = "save";
+        saveBtn.disabled = false;
+        saveBtn.style.cursor = "pointer";*/
     });
 
     // Save button click: validate payment method
-    saveBtn.addEventListener('click', function () {
+    saveBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (payment_method === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'warning!',
+                text: 'please select payment method',
+            });
+            return;
+        }
         // If payment method is valid, enable checkout button
         checkoutBtn.disabled = false;
         checkoutBtn.style.cursor = "pointer";
@@ -183,16 +250,6 @@ document.addEventListener("DOMContentLoaded", function () {
         this.textContent = "Your information is ready to save, now click the Place Order button ↗️↗️↗️";
         this.disabled = true;
         this.style.cursor = "auto";
-    });
-
-    
-    //goto back and edit address information
-    backBtn.addEventListener('click', function () {
-        formInfoSection.classList.remove("form_info_section");
-        formInfoSection.classList.add("visible_sections");
-        paymentSection.classList.add("hidden_payment_section");
-        submitBtn.style.display = "block";
-        this.style.display = "none";
     });
 
     checkoutBtn.addEventListener('click', function (e) {

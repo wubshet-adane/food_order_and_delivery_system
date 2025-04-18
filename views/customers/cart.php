@@ -86,6 +86,11 @@ $cart = $cartModel->getCart($user_id);
                     <?php
                     while ($row = $cart->fetch_assoc()){
                         $res_id = $row['res_id']; // Get restaurant_id from the first row
+                        //strore latitude and longitude value in session
+                        $_SESSION['restaurant_latitude'] = $row['lat'];
+                        $_SESSION['restaurant_longitude'] = $row['lng'];
+                        $_SESSION['restaurant_id'] = $res_id;
+
                         $total += $row['sub_total']; // Add each item's subtotal to total
                         $qty += $row['quantity']; // Add each item's quantity to total quantity
                         $_SESSION['qty'] = $qty; // Update session variable with total quantity
@@ -258,6 +263,18 @@ $cart = $cartModel->getCart($user_id);
                                         </div>
                                     </div>
                                 </section>
+                                <!-- telebirr payment method-->
+                                <section class="paypal_section" id="paypal_section">
+                                    <div class="payment_method" id="paypal_payment_method">
+                                        <div class="payment_method_text">
+                                            <h2>paypal payment method-</h2>
+                                            <p><img src="../../public/images/paypal icon.jpg" alt="" width="50px" height="50px"> <span>pay with paypal</span></p>
+                                        </div>
+                                        <div class="payment_method_radio" id="paypalchecked">
+                                            
+                                        </div>
+                                    </div>
+                                </section>
                             </div>
                             <button id="saveBtn">Save</button>
                         </div>
@@ -290,7 +307,7 @@ $cart = $cartModel->getCart($user_id);
                         </p>
                         <p>Subtotal: 
                             <span><?php echo number_format($total, 2); ?> birr
-                            <input type="hidden" id="sub_total" value="<?php echo number_format($total, 2); ?>">
+                            <input type="hidden" id="sub_total" value="<?php echo round($total, 2); ?>">
                             </span> </p>
                         <p>Grand Total: <span id="grand_total"><?php echo $grand_total; ?> </span> </p>
                     </div>

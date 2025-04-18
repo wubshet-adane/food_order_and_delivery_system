@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'|| $_SERVER['REQUEST_METHOD'] == 'GET') 
         $imagePath = uploadFile('image');
         $action = $_GET['action'] ?? null;
         $resId = $_GET['res_id'] ?? null;
-        $id = $_GET['id'];
+        $id = $_GET['id'] ?? null;
 
     //functions to add menu items
     if (isset($_POST['add_menu'])) {

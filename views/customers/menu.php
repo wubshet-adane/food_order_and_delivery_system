@@ -41,12 +41,7 @@
     $stmt->bind_param("i", $restaurant_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $restaurant = $result->fetch_assoc();
-
-    //strore latitude and longitude value in session
-    $_SESSION['restaurant_latitude'] = $restaurant['latitude'];
-    $_SESSION['restaurant_longitude'] = $restaurant['longitude'];
-    
+    $restaurant = $result->fetch_assoc();    
     ?>
     <!DOCTYPE html>
     <html>
