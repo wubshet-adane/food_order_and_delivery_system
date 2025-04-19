@@ -224,6 +224,7 @@ $cart = $cartModel->getCart($user_id);
                             <div class="form-group">
                                 <label for="note">Order Note (optional)</label>
                                 <textarea name="note" id="note" rows="4" placeholder="Write something what you want to say about your order!"></textarea>
+                                <span class="error" id="error_note"></span>
                             </div>
                             <div class="form-group confirm">
                                 <div >

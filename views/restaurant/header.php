@@ -9,7 +9,7 @@
                 <li><a href="#">About</a></li>
                 <li><a href="#">Services</a></li>
                 <li><a href="#">Portfolio</a></li>
-                <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                <li><a href="logout.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </nav>
 

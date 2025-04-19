@@ -14,16 +14,16 @@ session_start();
     $res_lng = $_SESSION['restaurant_longitude'];
     $res_id = $_SESSION['restaurant_id'];
 
+    //get delivery address information
     $delivery_info = new Delivery_info($conn);
     $delivery = $delivery_info->getDeliveryInfo($user_Id);
 
-    //get customer delivery address lat and lg
     //get selected payment method from redirect url
-    $paymnet_method = $_GET['paymentMethod'];
-    $note = $_GET['orderNote'];
-    $discount = $_GET['discount'];
-    $service_fee = $_GET['service_fee'];
-    $sub_total = $_GET['sub_total'];
+    $paymnet_method = $_GET['paymentMethod'] ?? null;
+    $note = $_GET['orderNote'] ?? null;
+    $discount = $_GET['discount'] ?? null;
+    $service_fee = $_GET['service_fee'] ?? null;
+    $sub_total = $_GET['sub_total'] ?? null;
 
 ?>
 

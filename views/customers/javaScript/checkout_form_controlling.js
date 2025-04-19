@@ -92,12 +92,23 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("error_longitude").textContent = "";
         }
 
-        const confirm = document.getElementById("confirm").checked;
-        if (!confirm) {
-            error[5] = "Please confirm that you have entered the correct information.";
-            document.getElementById("error_confirm").textContent = error[5];
+        const about_order_note = document.getElementById("note").value.trim();
+        if (!about_order_note) {
+            error[5] = "Please enter a note about your order.";
+            document.getElementById("note").style.borderColor = "red";
+            document.getElementById("note").scrollIntoView({ behavior: 'smooth' });
         } else {
             error[5] = null;
+            document.getElementById("note").style.borderColor = "green";
+            document.getElementById("error_note").textContent = "";
+        }
+
+        const confirm = document.getElementById("confirm").checked;
+        if (!confirm) {
+            error[6] = "Please confirm that you have entered the correct information.";
+            document.getElementById("error_confirm").textContent = error[5];
+        } else {
+            error[6] = null;
             document.getElementById("confirm").style.outline = "2px solid green";
             document.getElementById("error_confirm").textContent = "";
         }
@@ -109,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "error_phone",
             "error_latitude",
             "error_longitude",
+            "error_note",
             "error_confirm"
         ];
         for (let i = 0; i < error.length; i++) {

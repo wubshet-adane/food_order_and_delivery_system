@@ -66,15 +66,15 @@ class Menu {
     }
 
     //update item
-    public static function updateItem($id, $name, $description, $catagory, $content, $price, $discount, $image) {
+    public static function updateItem($resId, $name, $description, $catagory, $content, $price, $discount, $image) {
         global $conn;
-        $sql = "UPDATE menu SET name = ?, description = ?, catagory = ?, content = ?, price = ?, $discount, image = ? WHERE menu_id = ?";
+        $sql = "UPDATE menu SET name = ?, description = ?, catagory = ?, content = ?, price = ?, discount = ?, image = ? WHERE menu_id = ?";
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
             // Print the SQL error for debugging
             die("SQL Prepare Failed: " . $conn->error);
         }
-        $stmt->bind_param("ssssddsi", $name, $description, $catagory, $content, $price, $discount, $image, $id);
+        $stmt->bind_param("ssssddsi", $name, $description, $catagory, $content, $price, $discount, $image, $resId);
         if (!$stmt) {
            die("SQL Prepare Error: " . $conn->error);
         }
