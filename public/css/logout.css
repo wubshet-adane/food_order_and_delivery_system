@@ -5,7 +5,7 @@
         --secondary-hover: #3dbbb2;
         --text-color: #333;
         --light-gray: #f8f9fa;
-        --transition: all 0.3s ease;
+        --transition: all .3s ease;
     }
     
     body {
@@ -14,9 +14,16 @@
         align-items: center;
         min-height: 100vh;
         margin: 0;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        background: linear-gradient(170deg, #8693b1, #87a5b9, #4d3045, #000000);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: var(--text-color);
+    }
+
+    .wave{
+        position:absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
     }
     
     .logout-container {
@@ -101,7 +108,7 @@
     @keyframes fadeInUp {
         from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(-100px);
         }
         to {
             opacity: 1;
@@ -111,6 +118,7 @@
     
     @media (max-width: 480px) {
         .logout-container {
+            width: calc(90% - 40px);
             padding: 30px 20px;
         }
         
@@ -120,6 +128,6 @@
         }
         
         .logout-btn {
-            width: 100%;
+            width: calc(100% - 60px);
         }
     }

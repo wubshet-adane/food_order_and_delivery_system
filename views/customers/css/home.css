@@ -57,28 +57,30 @@ body {
 }
 
 .search-sort input, .search-sort select {
-    padding: 5px;
+    padding: 10px;
     margin-right: 5px;
     border: 2px solid #ff9800;
-    border-radius: 5px;
+    border-radius: 20px;
     width: 150px;
 }
 
 .search-sort button {
-    padding: 5px 5px;
+    padding: 10px;
     background-color: #ff9800;
-    color: #fff;
+    color: #000000;
+    font-weight: bold;
     border: none;
     cursor: pointer;
     border-radius: 5px;
 }
 
 .search-sort button:hover {
-    background-color: #222;
+    background-color: #000000;
+    color: #fff;
 }
 
 .restaurants_quote{
-    margin: auto;
+    margin: 5rem auto;
     text-align:center;
     text-transform: capitalize;
 }
@@ -90,7 +92,7 @@ body {
 }
 
 .restaurants_quote p{
-    margin-top: 0;
+    margin-top: auto;
     font-size: 20px;
     font-family: cursive;
     font-weight: 600;
@@ -234,6 +236,7 @@ body {
 /* become a member box*/
 .become_partner{
     padding: 2rem 0;
+    margin: 2rem auto;
 }
 
 .become_partner .container {
@@ -261,8 +264,6 @@ body {
 }
 
 .become_partner .container .box{
-    box-shadow: 0 0 10px #000000,
-    0 0 25px #bc7101, 0 0 50px #bc7101;
     font-family: Oswald;
 }
 
@@ -305,12 +306,12 @@ body {
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
 }
 
 .box:hover {
     transform: translateY(-4px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px #000000, 0 0 25px #bc7101, 0 0 50px #eaff00;
 }
 
 .box h2 {
@@ -358,17 +359,21 @@ body {
 
 
 @media screen and (max-width: 768px) {
+  
     .restaurant-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 
     .search-sort {
-        flex-direction: column;
-        align-items: flex-start;
+        justify-content: center;
+        padding: 2rem;
+        float: none;
+        width: 100%;
+        margin: auto;
     }
 
     .search-sort input, .search-sort select {
-        width: 100%;
+        width: calc(100% - 100px);
         margin-bottom: 10px;
     }
 

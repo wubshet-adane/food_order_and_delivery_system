@@ -27,6 +27,23 @@
         gap: 20px;
     }
 
+    .login_box, .sign_up_box{
+        background-color: #ffffdf;
+        padding: .5rem 1rem;
+        border-radius: 20px;
+    }
+
+    .login_box:hover, .sign_up_box:hover{
+        background-color: #ffffff00;
+    }
+
+    .login, .signup{
+        text-decoration: none;
+        text-transform: capitalize;
+        color: #af6a03;
+        font-weight: bold;
+    }
+
     .nav-links a {
         color: white;
         text-decoration: none;
@@ -126,6 +143,11 @@
             display: none; /* You can replace with hamburger menu if needed */
         }
 
+        .login, .signup{
+            font-weight: normal;
+            font-size: 16px;
+        }
+        
         .logo a img {
             width: 120px;
             height: 30px;

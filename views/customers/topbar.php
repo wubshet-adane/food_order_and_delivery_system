@@ -16,8 +16,12 @@
     <div class="auth-links">
         <?php if(!isset($_SESSION['loggedIn'])){
         ?>
-            <a href="../auth/customer_login.php">Login</a>
-            <a href="register.php">Sign Up</a>
+            <div class="login_box">
+                <a class="login" href="../auth/customer_login.php" title="continue as customer">Login</a>
+            </div>
+            <div class="sign_up_box">
+                <a class="signup" href="register.php" title="continue as customer">SignUp</a>
+            </div>
         <?php }else{?>
             <div>
                 <a href="cart.php"><i class="fa-solid fa-cart-plus" style="position: relative">

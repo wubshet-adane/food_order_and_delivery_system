@@ -26,6 +26,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
     <!--font ausome for star rating-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/orders.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/display_restaurant.css">
@@ -137,5 +138,6 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <script> closeResponseById("responce_message");</script>
     <!--edit menu modal script-->
     <script src="javaScript/edit_menu_modal.js"></script>
+
 </body>
 </html>

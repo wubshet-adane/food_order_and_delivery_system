@@ -3,13 +3,12 @@ session_start();
 include '../../config/database.php'; // Database connection
 
 // Check if user is logged in and is a delivery person
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'delivery') {
-    header('Location: login.php');
+if (!isset($_SESSION['user_id']) || !$_SESSION['loggedIn'] || $_SESSION['userType'] !== 'delivery') {
+    header('Location: ../auth/delivery_login.php');
     exit;
 }
 
 $deliveryPersonId = $_SESSION['user_id'];
-$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
@@ -53,13 +52,16 @@ $delivering = getOrdersByStatus($conn, 'Delivering', $deliveryPersonId);
 $delivered = getOrdersByStatus($conn, 'Delivered', $deliveryPersonId);
 
 function getOrdersByStatus($conn, $status, $deliveryPersonId) {
-    $sql = "SELECT o.*, c.name as customer_name, r.name as restaurant_name 
-            FROM orders o
-            JOIN customers c ON o.customer_id = c.customer_id
-            JOIN restaurants r ON o.restaurant_id = r.restaurant_id
-            WHERE o.status = ? AND o.delivery_id = ?";
+    $sql = "SELECT o.*, u.name as customer_name, r.name as restaurant_name
+        FROM orders o
+        JOIN users u ON o.customer_id = u.user_id
+        JOIN restaurants r ON o.restaurant_id = r.restaurant_id
+        WHERE o.status = ? AND o.delivery_person_id = ?";
     
     $stmt = $conn->prepare($sql);
+    if (!$stmt){
+        die("Prepare failed: " . $conn->error); // helpful debugging message
+    }
     $stmt->bind_param("si", $status, $deliveryPersonId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -68,9 +70,12 @@ function getOrdersByStatus($conn, $status, $deliveryPersonId) {
     // Get order items for each order
     foreach ($orders as &$order) {
         $stmt = $conn->prepare("SELECT m.name, oi.quantity, oi.price 
-                              FROM order_items oi
-                              JOIN menu m ON oi.menu_id = m.menu_id
-                              WHERE oi.order_id = ?");
+            FROM order_items oi
+            JOIN menu m ON oi.menu_id = m.menu_id
+            WHERE oi.order_id = ?");
+        if (!$stmt){
+            die("Prepare failed: " . $conn->connect_error); // helpful debugging message
+        }
         $stmt->bind_param("i", $order['order_id']);
         $stmt->execute();
         $result = $stmt->get_result();
