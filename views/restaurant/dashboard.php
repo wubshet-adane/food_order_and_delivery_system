@@ -14,7 +14,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !i
 $ownerId = $_SESSION['user_id'];
 $restaurantModel = new Restaurant($conn);
 $restaurants = $restaurantModel->getAllRestaurants($ownerId);
-
 ?>
 
 <!DOCTYPE html>
