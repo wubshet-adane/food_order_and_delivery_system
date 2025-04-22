@@ -31,13 +31,17 @@ body {
     padding: 20px;
 }
 
-.container {
+.order_container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background: var(--white);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
+}
+
+.tabs_header{
+    margin: auto;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -75,22 +79,29 @@ h1, h2, h3, h4, h5, h6 {
     flex-wrap: wrap;
     margin-bottom: 20px;
     border-bottom: 1px solid #dee2e6;
+    gap: 2px;
 }
 
 .tab-button {
-    padding: 0.75rem 1.5rem;
+    padding: 2rem 1.5rem;
     background: none;
     border: none;
     cursor: pointer;
-    font-weight: 500;
+    font-weight: bold;
+    font-size: 18px;
     color: var(--secondary);
     position: relative;
     transition: var(--transition);
+    max-width:300px;
+    min-width: 250px;
+    margin: auto;
+    box-shadow: var(--box-shadow);
 }
 
 .tab-button.active {
     color: var(--primary);
     font-weight: 600;
+    box-shadow: var(--box-shadow);
 }
 
 .tab-button.active::after {
@@ -104,7 +115,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tab-button:hover:not(.active) {
-    color: var(--primary-dark);
+    color: var(--warning);
 }
 
 .badge {
@@ -118,6 +129,20 @@ h1, h2, h3, h4, h5, h6 {
     vertical-align: baseline;
     border-radius: 0.25rem;
     color: var(--white);
+}
+
+.status-pending{
+    background: var(--primary);
+}
+
+.new_order{
+    color: var(--success);
+    font-weight: bold;
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
 }
 
 .bg-secondary {
@@ -139,7 +164,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .accordion-item {
     margin-bottom: 15px;
-    border: 1px solid #dee2e6;
+    border: 1px solid #0688b07b;
     border-radius: var(--border-radius);
     overflow: hidden;
 }

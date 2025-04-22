@@ -43,6 +43,7 @@
     $result = $stmt->get_result();
     $restaurant = $result->fetch_assoc();    
     ?>
+
     <!DOCTYPE html>
     <html>
         <head>
@@ -65,8 +66,8 @@
         </head>
     <body>
 
-    <section class="header" style="background: linear-gradient(to bottom, #002636FF, #0099FF00), url('../restaurant/restaurantAsset/<?php echo $restaurant['banner']?>'); background-position: center; background-repeat: no-repeat; background-size: cover;">
-    <!-- Top Bar -->
+        <section class="header" style="background: linear-gradient(to bottom, #002636FF, #0099FF00), url('../restaurant/restaurantAsset/<?php echo $restaurant['banner']?>'); background-position: center; background-repeat: no-repeat; background-size: cover;">
+            <!-- Top Bar -->
             <?php
                 include "topbar.php";
             ?>

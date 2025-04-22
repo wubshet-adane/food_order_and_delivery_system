@@ -5,76 +5,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !i
 }
 $owner_id = $_SESSION['user_id'];
 
-// Handle status updates
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['update_status'])) {
-        $order_id = $_POST['order_id'];
-        $new_status = $_POST['new_status'];
-        
-        // Validate status transition
-        $valid_statuses = ['Accepted', 'Preparing', 'Out for Delivery'];
-        $stmt = $conn->prepare("SELECT status FROM orders WHERE order_id = ? AND restaurant_id IN (SELECT restaurant_id FROM restaurants WHERE owner_id = ?)");
-        $stmt->bind_param("ii", $order_id, $owner_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result->num_rows > 0) {
-            $order = $result->fetch_assoc();
-            $current_status = $order['status'];
-            
-            // Check if the new status is valid
-            if (in_array($new_status, $valid_statuses)) {
-                // Update status
-                $update_stmt = $conn->prepare("UPDATE orders SET status = ? WHERE order_id = ?");
-                $update_stmt->bind_param("si", $new_status, $order_id);
-                $update_stmt->execute();
-                
-                if ($update_stmt->affected_rows > 0) {
-                    $success_msg = "Order status updated successfully!";
-                } else {
-                    $error_msg = "Failed to update order status.";
-                }
-            } else {
-                $error_msg = "Invalid status transition.";
-            }
-        } else {
-            $error_msg = "Order not found or you don't have permission to update it.";
-        }
-    }
-    
-    // Handle accept/reject actions
-    if (isset($_POST['action'])) {
-        $order_id = $_POST['order_id'];
-        $action = $_POST['action'];
-        
-        // Verify the order belongs to this owner's restaurant
-        $stmt = $conn->prepare("SELECT order_id FROM orders WHERE order_id = ? AND restaurant_id IN (SELECT restaurant_id FROM restaurants WHERE owner_id = ?)");
-        $stmt->bind_param("ii", $order_id, $owner_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result->num_rows > 0) {
-            if ($action == 'accept') {
-                $new_status = 'Accepted';
-            } elseif ($action == 'reject') {
-                $new_status = 'Cancelled';
-            }
-            
-            $update_stmt = $conn->prepare("UPDATE orders SET status = ? WHERE order_id = ?");
-            $update_stmt->bind_param("si", $new_status, $order_id);
-            $update_stmt->execute();
-            
-            if ($update_stmt->affected_rows > 0) {
-                $success_msg = "Order has been " . ($action == 'accept' ? "accepted" : "rejected") . "!";
-            } else {
-                $error_msg = "Failed to update order status.";
-            }
-        } else {
-            $error_msg = "Order not found or you don't have permission to modify it.";
-        }
-    }
-}
-
 // Get all restaurants owned by this user
 $restaurants_stmt = $conn->prepare("SELECT * FROM restaurants WHERE owner_id = ?");
 $restaurants_stmt->bind_param("i", $owner_id);
@@ -92,7 +22,7 @@ if ($restaurants_result->num_rows > 0) {
         
         // Get pending orders for this restaurant
         $pending_stmt = $conn->prepare("
-            SELECT o.*, p.*, u.name as customer_name, cda.phone as customer_phone 
+            SELECT o.*, p.*, cda.name AS customer_name, cda.phone AS customer_phone, cda.email AS customer_email, cda.delivery_address 
             FROM orders o
             JOIN users u ON o.customer_id = u.user_id
             JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
@@ -114,7 +44,7 @@ if ($restaurants_result->num_rows > 0) {
         
         // Get active orders (Accepted, Preparing, Out for Delivery) for this restaurant
         $active_stmt = $conn->prepare("
-            SELECT o.*, u.name as customer_name, cda.phone as customer_phone 
+            SELECT o.*, cda.name AS customer_name, cda.phone AS customer_phone, cda.email AS customer_email, cda.delivery_address
             FROM orders o
             JOIN users u ON o.customer_id = u.user_id
             JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
@@ -141,7 +71,7 @@ if ($restaurants_result->num_rows > 0) {
         
         // Get delivered orders for this restaurant
         $delivered_stmt = $conn->prepare("
-            SELECT o.*, u.name as customer_name, cda.phone as customer_phone 
+            SELECT o.*, cda.name AS customer_name, cda.phone AS customer_phone, cda.email AS customer_email, cda.delivery_address 
             FROM orders o
             JOIN users u ON o.customer_id = u.user_id
             JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
@@ -161,27 +91,31 @@ if ($restaurants_result->num_rows > 0) {
 }
 ?>
 
-    <div class="container">
-        <h1>Orders Management</h1>
-        
-        <?php if (isset($success_msg)): ?>
-            <div class="alert alert-success"><?php echo $success_msg; ?></div>
-        <?php endif; ?>
-        
-        <?php if (isset($error_msg)): ?>
-            <div class="alert alert-danger"><?php echo $error_msg; ?></div>
-        <?php endif; ?>
-        
-        <div class="tabs" id="ordersTab">
-            <button class="tab-button active" onclick="openTab('pending')">
-                New Orders <span class="badge bg-secondary"><?php echo count($pending_orders); ?></span>
-            </button>
-            <button class="tab-button" onclick="openTab('active')">
-                Active Orders <span class="badge bg-primary"><?php echo count($active_orders); ?></span>
-            </button>
-            <button class="tab-button" onclick="openTab('delivered')">
-                Delivered Orders <span class="badge bg-success"><?php echo count($delivered_orders); ?></span>
-            </button>
+    <div class="order_container">
+        <div class="tabs_header">
+            <h1>Orders Management</h1>
+            
+            <div class="responce_message">
+                <?php if (isset($success_msg)): ?>
+                    <div class="alert alert-success"><?php echo $success_msg; ?></div>
+                <?php endif; ?>
+                
+                <?php if (isset($error_msg)): ?>
+                    <div class="alert alert-danger"><?php echo $error_msg; ?></div>
+                <?php endif; ?>
+            </div>
+            
+            <div class="tabs" id="ordersTab">
+                <button class="tab-button active" onclick="openTab('pending')">
+                    New Orders <span class="badge bg-secondary"><?php echo count($pending_orders); ?></span>
+                </button>
+                <button class="tab-button" onclick="openTab('active')">
+                    Active Orders <span class="badge bg-primary"><?php echo count($active_orders); ?></span>
+                </button>
+                <button class="tab-button" onclick="openTab('delivered')">
+                    Delivered Orders <span class="badge bg-success"><?php echo count($delivered_orders); ?></span>
+                </button>
+            </div>
         </div>
         
         <!-- Pending Orders Tab -->
@@ -198,6 +132,7 @@ if ($restaurants_result->num_rows > 0) {
                                         <div>
                                             <span class="fw-bold">Order #<?php echo $order['order_id']; ?></span>
                                             <span class="ms-3 badge status-badge status-<?php echo $order['status']; ?>"><?php echo $order['status']; ?></span>
+                                            <span class="new_order">New</span>
                                         </div>
                                         <div>
                                             <span class="text-muted"><?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></span>
