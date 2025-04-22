@@ -3,7 +3,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !i
     header("Location: ../auth/restaurant_login.php?unauthenticated user!");
     exit;
 }
+require_once __DIR__ . "/../../models/update_orders_restaurant.php";
 $owner_id = $_SESSION['user_id'];
+
+$update_oder_status = new OrderUpdate($conn);
+$order_update = $update_oder_status->orderUpdateFunction($owner_id);
 
 // Get all restaurants owned by this user
 $restaurants_stmt = $conn->prepare("SELECT * FROM restaurants WHERE owner_id = ?");
@@ -44,7 +48,7 @@ if ($restaurants_result->num_rows > 0) {
         
         // Get active orders (Accepted, Preparing, Out for Delivery) for this restaurant
         $active_stmt = $conn->prepare("
-            SELECT o.*, cda.name AS customer_name, cda.phone AS customer_phone, cda.email AS customer_email, cda.delivery_address
+            SELECT o.*, p.*, cda.name AS customer_name, cda.phone AS customer_phone, cda.email AS customer_email, cda.delivery_address
             FROM orders o
             JOIN users u ON o.customer_id = u.user_id
             JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
@@ -71,7 +75,7 @@ if ($restaurants_result->num_rows > 0) {
         
         // Get delivered orders for this restaurant
         $delivered_stmt = $conn->prepare("
-            SELECT o.*, cda.name AS customer_name, cda.phone AS customer_phone, cda.email AS customer_email, cda.delivery_address 
+            SELECT o.*, p.*, cda.name AS customer_name, cda.phone AS customer_phone, cda.email AS customer_email, cda.delivery_address 
             FROM orders o
             JOIN users u ON o.customer_id = u.user_id
             JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
@@ -121,7 +125,7 @@ if ($restaurants_result->num_rows > 0) {
         <!-- Pending Orders Tab -->
         <div id="pending" class="tab-content" style="display: block;">
             <?php if (empty($pending_orders)): ?>
-                <div class="alert alert-info">No pending orders at this time.</div>
+                <div class="alert alert-info"><img src="../../public/images/no order.jpg" alt="No delivered orders yet."></div>
             <?php else: ?>
                 <div class="accordion" id="pendingAccordion">
                     <?php foreach ($pending_orders as $index => $order): ?>
@@ -145,13 +149,18 @@ if ($restaurants_result->num_rows > 0) {
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <h5>Customer Information</h5>
-                                            <p><strong>Name:</strong> <?php echo $order['customer_name']; ?></p>
-                                            <p><strong>Phone:</strong> <?php echo $order['customer_phone']; ?></p>
+                                            <p><strong>Name:</strong> &nbsp;&nbsp;<span><?php echo $order['customer_name']; ?></span></p>
+                                            <p><strong>Phone:</strong> &nbsp;&nbsp;<span><?php echo $order['customer_phone']; ?></span></p>
+                                            <p><strong>Email:</strong> &nbsp;&nbsp;<span><?php echo $order['customer_email']; ?></span></p>
+                                            <p><strong>Delivery address:</strong> &nbsp;&nbsp;<span><?php echo $order['delivery_address']; ?></span></p>
                                         </div>
                                         <div class="col-md-6">
                                             <h5>Restaurant</h5>
-                                            <p><?php echo $order['restaurant_name']; ?></p>
-                                            <p><strong>Total:</strong> <?php echo number_format($order['amount'], 2); ?> ETB</p>
+                                            <p>&nbsp;&nbsp;<span><?php echo $order['restaurant_name']; ?></span></p>
+                                            <p><strong>Total:</strong> &nbsp;&nbsp; <span><?php echo number_format($order['amount'], 2); ?></span> ETB</p>
+                                            <p><strong>Payment method</strong>&nbsp;&nbsp; <span><?php echo $order['payment_method']?></span></p>
+                                            <div class="resizable_payment_screenshot" id="resizable"><img src="../../uploads/payments/<?php echo $order['payment_file']?>" alt="<?php echo $order['payment_file'] . 'payment screenshot'?>"></div>
+                                            <p><strong>Transaction id:</strong>&nbsp;&nbsp; <span style="font-family: 'Courier New', Courier, monospace;"> <?php echo $order['transaction_id']; ?></span></p>
                                         </div>
                                     </div>
                                     
@@ -205,7 +214,7 @@ if ($restaurants_result->num_rows > 0) {
         <!-- Active Orders Tab -->
         <div id="active" class="tab-content" style="display: none;">
             <?php if (empty($active_orders)): ?>
-                <div class="alert alert-info">No active orders at this time.</div>
+                <div class="alert alert-info"><img src="../../public/images/no order.jpg" alt="No delivered orders yet."></div>
             <?php else: ?>
                 <div class="accordion" id="activeAccordion">
                     <?php foreach ($active_orders as $index => $order): ?>
@@ -228,16 +237,19 @@ if ($restaurants_result->num_rows > 0) {
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <h5>Customer Information</h5>
-                                            <p><strong>Name:</strong> <?php echo $order['customer_name']; ?></p>
-                                            <p><strong>Phone:</strong> <?php echo $order['customer_phone']; ?></p>
+                                            <p><strong>Name:</strong> <span>&nbsp;&nbsp;<?php echo $order['customer_name']; ?></span></p>
+                                            <p><strong>Phone:</strong> <span>&nbsp;&nbsp;<?php echo $order['customer_phone']; ?></span></p>
+                                            <p><strong>Email:</strong> <span>&nbsp;&nbsp;<?php echo $order['customer_email']; ?></span></p>
+                                            <p><strong>Delivery address:</strong> &nbsp;&nbsp;<span><?php echo $order['delivery_address']; ?></span></p>
+                                            <p><strong>Order description:</strong> &nbsp;&nbsp;<span><?php echo $order['o_description']; ?></span></p>
                                         </div>
                                         <div class="col-md-6">
                                             <h5>Restaurant</h5>
                                             <p><?php echo $order['restaurant_name']; ?></p>
-                                            <p><strong>Total:</strong> <?php echo number_format($order['amount'], 2); ?> ETB</p>
-                                            <?php if ($order['secret_code']): ?>
-                                                <p><strong>Secret Code:</strong> <?php echo $order['secret_code']; ?></p>
-                                            <?php endif; ?>
+                                            <p><strong>Total:</strong> &nbsp;&nbsp; <span><?php echo number_format($order['amount'], 2); ?></span> ETB</p>
+                                            <p><strong>Payment method</strong>&nbsp;&nbsp; <span><?php echo $order['payment_method']?></span></p>
+                                            <div class="resizable_payment_screenshot" id="resizable"><img src="../../uploads/payments/<?php echo $order['payment_file']?>" alt="<?php echo $order['payment_file'] . 'payment screenshot'?>"></div>
+                                            <p><strong>Transaction id:</strong>&nbsp;&nbsp; <span style="font-family: 'Courier New', Courier, monospace;"> <?php echo $order['transaction_id']; ?></span></p>
                                         </div>
                                     </div>
                                     
@@ -252,17 +264,19 @@ if ($restaurants_result->num_rows > 0) {
                                     $items_stmt->bind_param("i", $order['order_id']);
                                     $items_stmt->execute();
                                     $items_result = $items_stmt->get_result();
-                                    
+
+
+                                    $i = 0;
+
                                     while ($item = $items_result->fetch_assoc()):
+                                        $i++;
                                     ?>
                                         <div class="order-item">
                                             <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <?php echo $item['name']; ?>
-                                                    <span class="text-muted">x<?php echo $item['quantity']; ?></span>
-                                                </div>
-                                                <div>
-                                                    <?php echo number_format($item['price'] * $item['quantity'], 2); ?> ETB
+                                                    <?php echo $i. '. ' . $item['name']; ?>
+                                                    <span class="text-muted">x<?php echo $item['quantity']; ?></span>&nbsp;&nbsp;&nbsp;
+                                                    <span style="font-family:'Courier New', Courier, monospace;"><?php echo number_format($item['price'] * $item['quantity'], 2); ?> ETB</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -297,7 +311,7 @@ if ($restaurants_result->num_rows > 0) {
         <!-- Delivered Orders Tab -->
         <div id="delivered" class="tab-content" style="display: none;">
             <?php if (empty($delivered_orders)): ?>
-                <div class="alert alert-info">No delivered orders yet.</div>
+                <div class="alert alert-info"><img src="../../public/images/no order.jpg" alt="No delivered orders yet."></div>
             <?php else: ?>
                 <div class="accordion" id="deliveredAccordion">
                     <?php foreach ($delivered_orders as $index => $order): ?>
@@ -322,14 +336,17 @@ if ($restaurants_result->num_rows > 0) {
                                             <h5>Customer Information</h5>
                                             <p><strong>Name:</strong> <?php echo $order['customer_name']; ?></p>
                                             <p><strong>Phone:</strong> <?php echo $order['customer_phone']; ?></p>
+                                            <p><strong>Email:</strong> <span>&nbsp;&nbsp;<?php echo $order['customer_email']; ?></span></p>
+                                            <p><strong>Delivery address:</strong> &nbsp;&nbsp;<span><?php echo $order['delivery_address']; ?></span></p>
+                                            <p><strong>Order description:</strong> &nbsp;&nbsp;<span><?php echo $order['o_description']; ?></span></p>
                                         </div>
                                         <div class="col-md-6">
                                             <h5>Restaurant</h5>
                                             <p><?php echo $order['restaurant_name']; ?></p>
-                                            <p><strong>Total:</strong> <?php echo number_format($order['total_price'], 2); ?> ETB</p>
-                                            <?php if ($order['secret_code']): ?>
-                                                <p><strong>Secret Code:</strong> <?php echo $order['secret_code']; ?></p>
-                                            <?php endif; ?>
+                                            <p><strong>Total:</strong> &nbsp;&nbsp; <span><?php echo number_format($order['amount'], 2); ?></span> ETB</p>
+                                            <p><strong>Payment method</strong>&nbsp;&nbsp; <span><?php echo $order['payment_method']?></span></p>
+                                            <div class="resizable_payment_screenshot" id="resizable"><img src="../../uploads/payments/<?php echo $order['payment_file']?>" alt="<?php echo $order['payment_file'] . 'payment screenshot'?>"></div>
+                                            <p><strong>Transaction id:</strong>&nbsp;&nbsp; <span style="font-family: 'Courier New', Courier, monospace;"> <?php echo $order['transaction_id']; ?></span></p>
                                         </div>
                                     </div>
                                     

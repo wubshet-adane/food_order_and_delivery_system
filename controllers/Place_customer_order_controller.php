@@ -6,7 +6,6 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-
 // 👇 Instantiate controller and place order
 require_once __DIR__ . '/../config/database.php'; // Ensure database connection available
 require_once __DIR__ . '/../models/place_order_model.php';
