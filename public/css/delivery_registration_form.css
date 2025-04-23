@@ -1,0 +1,330 @@
+/* ===== MOBILE FIRST DESIGN ===== */
+:root {
+    --primary: #ff9900;       /* Brand red */
+    --primary-dark: #c11a1a;
+    --secondary: #1DD1A1;     /* Success green */
+    --dark: #2F3640;          /* Text color */
+    --light: #F5F6FA;         /* Background */
+    --gray: #DCDDE1;          /* Borders */
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --transition: all 0.3s ease;
+  }
+  
+  /* ===== BASE STYLES ===== */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    color: var(--dark);
+    background-color: var(--light);
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* ===== FORM CONTAINER ===== */
+  .registration-container {
+    min-width: 1200px;
+    margin: 0;
+    background: #fbfbfb;
+    min-height: 100vh;
+    padding: 1.5rem;
+    box-shadow: 0 0 8px rgba(140, 140, 140, 0.9);
+  }
+  
+  h1 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  #deliveryForm{
+    margin: 0 auto;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  
+  /* ===== FORM ELEMENTS (MOBILE OPTIMIZED) ===== */
+  fieldset {
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: none;
+    margin-bottom: 1.5rem;
+  }
+  
+  legend {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--dark);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Input Fields */
+  .form-group {
+    max-width: 100%;
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+
+  #togglePassword{
+    width: fit-content;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.3rem;
+    transition: var(--transition);
+    background-color: #FFF;
+    cursor: pointer;
+    color: var(--primary);
+    z-index: 1;
+    text-indent: -40px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  input, select, textarea {
+    width: 500px;
+    max-width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gray);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: #FFF;
+  }
+  
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+  }
+  
+  /* Floating Labels (Advanced UX) */
+  .form-group.floating-label {
+    position: relative;
+    padding-top: 1.5rem;
+  }
+  
+  .floating-label label {
+    position: absolute;
+    top: 1.75rem;
+    left: 1rem;
+    color: #777;
+    transition: var(--transition);
+    pointer-events: none;
+  }
+  
+  .floating-label input:focus + label,
+  .floating-label input:not(:placeholder-shown) + label {
+    top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--primary);
+  }
+  
+  /* File Upload Styling */
+  .file-upload {
+    position: relative;
+    border: 2px dashed var(--gray);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: var(--transition);
+  }
+  
+  .file-upload:hover {
+    border-color: var(--primary);
+  }
+  
+  .file-upload input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .file-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .file-upload-icon {
+    font-size: 2rem;
+    color: var(--primary);
+  }
+  
+  /* Checkbox Styling */
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .checkbox-group input {
+    width: auto;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--gray);
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .checkbox-group input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+  }
+  
+  .checkbox-group input:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 0.75rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* Submit Button (Micro-interactions) */
+  .submit-btn {
+    background-color: var(--primary);
+    color: rgb(4, 0, 83);
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    max-width: calc(100% - 2rem);
+    margin: 0 auto;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+  }
+  
+  .submit-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+  
+  .submit-btn:active {
+    transform: translateY(0);
+  }
+  
+  /* Error Handling */
+  .error-message {
+    color: var(--primary-dark);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+  
+  input.error, select.error, textarea.error {
+    border-color: var(--primary-dark);
+  }
+  
+  /* Success State (After Submission) */
+  .success-message {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .success-icon {
+    font-size: 3rem;
+    color: var(--secondary);
+    margin-bottom: 1rem;
+  }
+  
+  /* ===== TABLET & DESKTOP (RESPONSIVE) ===== */
+  @media (min-width: 768px) {
+    body {
+      padding: 2rem;
+      background-color: #F9F9F9;
+    }
+  
+    .registration-container {
+      max-width: 600px;
+      margin: 0 auto;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 2.5rem;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 768px){
+    fieldset{
+        border: 1px solid var(--primary-light);
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        display: block;
+    }
+  }
+    
+  
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .registration-container {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  /* Loading Spinner (For Form Submission) */
+  .loading-spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin: 0 auto;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Submit Button Loading State */
+  .submit-btn.loading {
+    pointer-events: none;
+  }
+  
+  .submit-btn.loading .btn-text {
+    visibility: hidden;
+  }
+  
+  .submit-btn.loading .loading-spinner {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }

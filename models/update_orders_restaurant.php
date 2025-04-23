@@ -38,12 +38,12 @@ class OrderUpdate
                         $update_stmt->execute();
                         
                         if ($update_stmt->affected_rows > 0) {
-                            $success_msg = "Order status updated successfully!";
+                            return $success_msg = "Order status updated successfully!";
                         } else {
-                            $error_msg = "Failed to update order status.";
+                            return $error_msg = "Failed to update order status.";
                         }
                     } else {
-                        $error_msg = "Invalid status transition.";
+                        return $error_msg = "Invalid status transition.";
                     }
                 } else {
                     $error_msg = "Order not found or you don't have permission to update it.";
@@ -73,12 +73,13 @@ class OrderUpdate
                     $update_stmt->execute();
                     
                     if ($update_stmt->affected_rows > 0) {
-                        $success_msg = "Order has been " . ($action == 'accept' ? "accepted" : "rejected") . "!";
+                        return $success_msg = "Order has been " . ($action == 'accept' ? "accepted" : "rejected") . "!";
+                       
                     } else {
-                        $error_msg = "Failed to update order status.";
+                        return $error_msg = "Failed to update order status.";
                     }
                 } else {
-                    $error_msg = "Order not found or you don't have permission to modify it.";
+                    return $error_msg = "Order not found or you don't have permission to modify it.";
                 }
             }
         }

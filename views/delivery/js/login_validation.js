@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const responseMessage = document.getElementById("responseMessage");
     const emailerr = document.getElementById('emailError');
     const passworderr = document.getElementById('passwordError');
-
+/*
     function validateEmail(email) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
@@ -37,11 +37,11 @@ document.addEventListener("DOMContentLoaded", function () {
             passwordInput.classList.remove("valid");
             passworderr.style.display = "block";
         }
-    });
+    });*/
 
     loginForm.addEventListener("submit", function (e) {
         e.preventDefault();
-        if (!validateEmail(emailInput.value) && !validatePassword(passwordInput.value)) {
+        /*if (!validateEmail(emailInput.value) && !validatePassword(passwordInput.value)) {
             responseMessage.textContent = "Invalid email and password!";
             responseMessage.style.color = "red";
             emailerr.style.display = "none";
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
             passworderr.style.display = "block";
             responseMessage.style.display = "none";
             emailerr.style.display = "none";
-        }
+        }*/
 
         let email = emailInput.value;
         let password = passwordInput.value;
