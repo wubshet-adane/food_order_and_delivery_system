@@ -15,7 +15,6 @@ class DeliverRegister {
             $checkStmt->execute();
             if ($checkStmt->get_result()->num_rows > 0) {
                 $checkStmt->close();
-                $conn->close();
                 $result = "1";
                 return $result;
             }
@@ -80,6 +79,35 @@ class DeliverRegister {
         } finally {
             // Commit transaction if no errors occurred
             $conn->commit();
+        }
+    }
+
+    public static function C($delivery_partner_id ){
+        global $conn;
+    
+        // Begin transaction
+        $conn->begin_transaction();
+        try{
+            // retrive delivery person based on id
+            $Stmt = $conn->prepare("SELECT * FROM delivery_partners WHERE id = ?");
+            $Stmt->bind_param("i", $delivery_partner_id);
+            $Stmt->execute();
+            if ($Stmt->get_result()->num_rows < 0) {
+                return false;
+            }
+            $result = $Stmt->get_result()->fetch_assoc();
+            $Stmt->close();
+            $conn->close();
+            return $result;
+        }
+        catch (Exception $e) {
+            // Rollback transaction on error
+            $conn->rollback();
+            return false;
+        } finally {
+            // Commit transaction if no errors occurred
+            $conn->commit();
+            $conn->close();
         }
     }
 }

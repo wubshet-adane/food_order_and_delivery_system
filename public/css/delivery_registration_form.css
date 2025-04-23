@@ -358,8 +358,6 @@ input.error, select.error, textarea.error {
     border-radius: 12px;
     box-shadow: var(--shadow);
     padding: 0;
-    background-color:#1DD1A1;
-    max-width: 100%;
   }
 
   #deliveryForm {

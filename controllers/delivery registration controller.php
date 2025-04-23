@@ -26,10 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = 'pending';
     
     // Handle file uploads
-    $profile_image = isset($_FILES['profile_image']) ? handleFileUpload('profile_image', $upload_dir) : null;
+    $profile_image = isset($_FILES['profile_image']) ? handleFileUpload('profile_image', $upload_dir) : "0";
     $id_proof = handleFileUpload('id_proof', $upload_dir);
     $address_proof = handleFileUpload('address_proof', $upload_dir);
-    $license_copy = isset($_FILES['license_copy']) ? handleFileUpload('license_copy', $upload_dir) : null;
+    $license_copy = isset($_FILES['license_copy']) ? handleFileUpload('license_copy', $upload_dir) : "0";
 
     $result = DeliverRegister::deliveryRegistrationfunction([
         'fullname' => $fullname,

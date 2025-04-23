@@ -133,7 +133,7 @@
                 
                 <div class="form-group">
                     <label for="address">Full Address*</label>
-                    <textarea id="address" name="address" rows="3" required></textarea>
+                    <textarea id="address" name="address" rows="3" required placeholder="Debremarkos,Amhara, Ethiopia"></textarea>
                 </div>
             </fieldset>
             
