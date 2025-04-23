@@ -52,11 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'status' => $status
     ]);
     
-    if ($result) {
+    if ($result && $result != "1") {
         // redirect or show success message
         header("Location: ../views/delivery/delivery_registration_success.php");
         exit;
-    }elseif ($result === "Email already registered") {
+    }elseif ($result == "1") {
+        // Email already registered
         header("Location: ../views/auth/delivery_registration.php?error=Email already registered.");
         exit;
     }else {
@@ -74,7 +75,7 @@ function handleFileUpload($fieldName, $uploadDir) {
         
         // Generate unique filename
         $new_filename = uniqid() . '.' . $file_ext;
-        $destination = $new_filename;
+        $destination = $uploadDir . $new_filename;
         
         // Check file type
         $allowed_types = ['jpg', 'jpeg', 'png', 'pdf', 'gif', 'webp', 'bmp', 'svg', 'tiff', 'ico'];
@@ -84,7 +85,7 @@ function handleFileUpload($fieldName, $uploadDir) {
         
         // Move uploaded file
         if (move_uploaded_file($file_tmp, $destination)) {
-            return $destination;
+            return $file_name;
         } else {
             die("Error uploading file.");
         }

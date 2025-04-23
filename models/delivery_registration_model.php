@@ -10,12 +10,14 @@ class DeliverRegister {
         $conn->begin_transaction();
         try {
             // step 1 check email exist or not
-            $checkStmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+            $checkStmt = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
             $checkStmt->bind_param("s", $data['email']);
             $checkStmt->execute();
             if ($checkStmt->get_result()->num_rows > 0) {
-                $result = "Email already registered";
-                die("Email already registered");
+                $checkStmt->close();
+                $conn->close();
+                $result = "1";
+                return $result;
             }
             $checkStmt->close();
             

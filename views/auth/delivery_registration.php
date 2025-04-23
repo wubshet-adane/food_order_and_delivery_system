@@ -3,20 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="G3 Food Delivery Partner Registration Form">
+    <meta name="keywords" content="G3, Food Delivery, Registration, Partner, Form">
+    <meta name="author" content="G3 Team">
+    <meta name="theme-color" content="#ff9900">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="google" content="notranslate">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="1 days">
+    <meta name="rating" content="General">
+    <meta name="distribution" content="Global">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="G3 Food Delivery">
+    <meta name="application-name" content="G3 Food Delivery">
+    <meta name="msapplication-TileColor" content="#ff9900">
+    <meta name="msapplication-TileImage" content="../../public/images/logo-icon.png">
     <title>Food Delivery Partner Registration</title>
+    <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
     <link rel="stylesheet" href="../../public/css/delivery_registration_form.css">
     <!--font awsome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .logo_container {
+            position: relative;
+            border-radius: 50%;
+            padding: 20px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #FFFFFFFF 0%, #838382 50%, #FFFFFFFF 100%);
+            box-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.2),
+                0 0 20px rgba(255, 255, 255, 0.15),
+                0 0 30px rgba(255, 255, 255, 0.1);
+            transition: all 0.5s ease;
+            z-index: 1;
+            max-width: 100%;
+        }
+
+        .logo_container::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            background: linear-gradient(to right, #FFFFFFFF 0%, #FFFFFF4C 50%, #FFFFFFFF 100%);    border-radius: 50%;
+            z-index: -1;
+        }
+          
+        .G3{
+            background:
+                linear-gradient(to top, #ffffff9b, #000, #ffffff9b),
+                linear-gradient(to right, #ffffff9b,  #000, #ffffff9b),
+                linear-gradient(to bottom, #ffffff9b,  #000, #ffffff9b),
+                linear-gradient(to left, #ffffff9b,  #000, #ffffff9b);
+            font-size: 35px;
+            font-weight: 500; 
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+            color: #fff;
+            padding: 0 2px;
+            border-radius: 6px;
+        }
+        @media (max-width: 768px) {
+            .logo_container {
+                padding: 10px;
+                margin: auto;
+                width: 450px;
+            }
+            .G3 {
+                font-size: 25px; 
+            }
+
+        }
+
+            
+    </style>
 </head>
 <body>
     <div class="registration-container">
+        <div class="logo_container">
+            <img src="../../public/images/logo-icon.png" alt="" width="100px" height="100px">
+            <h2 style="padding: o; margin: auto; text-transform: capitalize; font-weight: 400; font-family: cursive; color:#ff9900;"><strong class="G3">G3</strong> online food</h2>
+        </div>
+
         <h1>Become a Food Delivery Partner</h1>
         <form id="deliveryForm" action="../../controllers/delivery registration controller.php" method="POST" enctype="multipart/form-data">
-            <?php 
-                if (isset($_GET['error'])) {
-                    echo '<p style="color:red; text-align:center;">' . htmlspecialchars($_GET['error']) . '</p>';
-                }
-            ?>
+                <!--Secure SweetAlert2 Error Notification-->
+            <?php if (isset($_GET['error'])): ?>
+                <div class="alert-text">
+                    <span ><?php echo htmlspecialchars($_GET['error'], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <span><button class="alert-close">&times;</button> </span>
+                </div>
+            <?php endif; ?>
+
             <!-- Personal Information -->
             <fieldset>
                 <legend>Personal Information</legend>
@@ -150,5 +237,44 @@
     </div>
     
     <script src="../../public/js/delivery_registration_form_validatio.js"></script>
+
+    <script>
+        // Auto-hide alert with fade-out animation
+        function autoHideAlert() {
+            const alertElement = document.querySelector('.alert-text');
+            if (alertElement) {
+                // Show alert (in case it's hidden by default)
+                alertElement.style.display = 'block';
+                alertElement.style.opacity = '1';
+                alertElement.style.transition = 'opacity 0.5s ease';
+                
+                // Start hide timer
+                setTimeout(() => {
+                    alertElement.style.opacity = '0';
+                    
+                    // Remove element after fade out completes
+                    setTimeout(() => {
+                        alertElement.style.display = 'none';
+                        
+                        // Optional: Remove from DOM completely
+                        // alertElement.remove();
+                    }, 500); // Match this with transition time
+                }, 5000); // 3 seconds before starting fade
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            autoHideAlert();
+            
+            // Optional: Close button functionality
+            const closeButtons = document.querySelectorAll('.alert-close');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.alert-text').style.display = 'none';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
