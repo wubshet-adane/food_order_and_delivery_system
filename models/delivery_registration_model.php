@@ -16,7 +16,9 @@ class DeliverRegister {
             if ($resultCheck->num_rows > 0) {
                 $checkStmt->close();
                 $conn->rollback();
-                return "1"; // Email already exists
+                $result = "Email already exists";
+                // Return the error message
+                return $result;
             }
             $checkStmt->close();
 

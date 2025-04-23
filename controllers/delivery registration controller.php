@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // redirect or show success message
         header("Location: ../views/delivery/delivery_registration_success.php");
         exit;
-    }elseif ($result == "1") {
+    }elseif ($result == "Email already exists") {
         // Email already registered
         header("Location: ../views/auth/delivery_registration.php?error=Email already registered.");
         exit;
