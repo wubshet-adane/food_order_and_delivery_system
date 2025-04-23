@@ -6,26 +6,24 @@ class DeliverRegister {
     public static function deliveryRegistrationfunction($data) {
         global $conn;
     
-        // Begin transaction
         $conn->begin_transaction();
         try {
-            // step 1 check email exist or not
+            // Step 1: Check if email already exists
             $checkStmt = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
             $checkStmt->bind_param("s", $data['email']);
             $checkStmt->execute();
-            if ($checkStmt->get_result()->num_rows > 0) {
+            $resultCheck = $checkStmt->get_result();
+            if ($resultCheck->num_rows > 0) {
                 $checkStmt->close();
-                $result = "1";
-                return $result;
+                $conn->rollback();
+                return "1"; // Email already exists
             }
             $checkStmt->close();
-            
+
             // Step 2: Insert into `users` table
             $userStmt = $conn->prepare("INSERT INTO users (name, image, email, password, role) VALUES (?, ?, ?, ?, ?)");
-            
-            // Hash password before storing
             $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
-        
+
             $userStmt->bind_param("sssss",
                 $data['fullname'],
                 $data['profile_image'],
@@ -33,11 +31,10 @@ class DeliverRegister {
                 $hashedPassword,
                 $data['role']
             );
-        
-            // Get inserted user_id
+            $userStmt->execute();
             $user_id = $conn->insert_id;
             $userStmt->close();
-        
+
             // Step 3: Insert into `delivery_partners` table
             $partnerStmt = $conn->prepare("INSERT INTO delivery_partners (
                 user_id, dob, phone, address,
@@ -47,7 +44,7 @@ class DeliverRegister {
             ) VALUES (
                 ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
             )");
-        
+
             $partnerStmt->bind_param("isssssssssssss",
                 $user_id,
                 $data['dob'],
@@ -64,50 +61,38 @@ class DeliverRegister {
                 $data['account_number'],
                 $data['status']
             );
-        
+
             $result = $partnerStmt->execute();
-        
             $partnerStmt->close();
-            $conn->close();
-        
+
+            $conn->commit();
             return $result;
 
         } catch (Exception $e) {
-            // Rollback transaction on error
             $conn->rollback();
             return false;
-        } finally {
-            // Commit transaction if no errors occurred
-            $conn->commit();
         }
     }
 
-    public static function C($delivery_partner_id ){
+    public static function C($delivery_partner_id) {
         global $conn;
-    
-        // Begin transaction
-        $conn->begin_transaction();
-        try{
-            // retrive delivery person based on id
-            $Stmt = $conn->prepare("SELECT * FROM delivery_partners WHERE id = ?");
-            $Stmt->bind_param("i", $delivery_partner_id);
-            $Stmt->execute();
-            if ($Stmt->get_result()->num_rows < 0) {
+
+        try {
+            $stmt = $conn->prepare("SELECT * FROM delivery_partners WHERE id = ?");
+            $stmt->bind_param("i", $delivery_partner_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows <= 0) {
+                $stmt->close();
                 return false;
             }
-            $result = $Stmt->get_result()->fetch_assoc();
-            $Stmt->close();
-            $conn->close();
-            return $result;
-        }
-        catch (Exception $e) {
-            // Rollback transaction on error
-            $conn->rollback();
+
+            $data = $result->fetch_assoc();
+            $stmt->close();
+            return $data;
+
+        } catch (Exception $e) {
             return false;
-        } finally {
-            // Commit transaction if no errors occurred
-            $conn->commit();
-            $conn->close();
         }
     }
 }
