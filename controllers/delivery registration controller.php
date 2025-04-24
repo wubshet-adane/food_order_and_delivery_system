@@ -26,10 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = 'pending';
     
     // Handle file uploads
-    $profile_image = isset($_FILES['profile_image']) ? handleFileUpload('profile_image', $upload_dir) : "0";
+    $profile_image = isset($_FILES['profile_image']) ? handleFileUpload('profile_image', $upload_dir) : "none.jpg";
     $id_proof = handleFileUpload('id_proof', $upload_dir);
     $address_proof = handleFileUpload('address_proof', $upload_dir);
-    $license_copy = isset($_FILES['license_copy']) ? handleFileUpload('license_copy', $upload_dir) : "0";
+    $license_copy = isset($_FILES['license_copy']) ? handleFileUpload('license_copy', $upload_dir) : "none.jpg";
 
     $result = DeliverRegister::deliveryRegistrationfunction([
         'fullname' => $fullname,
@@ -52,11 +52,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'status' => $status
     ]);
     
-    if ($result && $result != "1") {
+    if ($result) {
         // redirect or show success message
         header("Location: ../views/delivery/delivery_registration_success.php");
         exit;
-    }elseif ($result == "Email already exists") {
+    }elseif ($error) {
         // Email already registered
         header("Location: ../views/auth/delivery_registration.php?error=Email already registered.");
         exit;
@@ -90,7 +90,7 @@ function handleFileUpload($fieldName, $uploadDir) {
             die("Error uploading file.");
         }
     } else {
-        die("Error: File upload failed for " . $fieldName);
+        return "0";
     }
 }
 ?>

@@ -184,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const passwordError = document.getElementById('password-error');
         if (!validatePassword(passwordInput, passwordError)) {
             isValid = false;
+            return;
         } else{
             passwordError.textContent = '';
         }
@@ -195,6 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
             confirmPasswordError.textContent = 'Passwords do not match';
             confirmPasswordInput.focus();
             isValid = false;
+            return;
         } else {
             confirmPasswordError.textContent = '';
         }

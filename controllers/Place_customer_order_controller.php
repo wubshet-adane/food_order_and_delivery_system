@@ -101,11 +101,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $payment->savePayment($order_id, $amount, $payment_method, $filename, $payment_trans);
                     // 🔹 4. Clear cart
                     $clearCart->clearCart($customer_id);
-
                     // ✅ Commit all changes
                     $this->conn->commit();
-                    //at the end redirect success responce for frontend AJAX
-                    return ['success' => true, 'message' => 'Order placed successfully.'];
+                
+                    // Send email notification
+                    $stmt_email = $this->conn->prepare("
+                        SELECT o.*, r.name AS restaurant_name, cda.name AS customer_name, cda.email AS customer_email
+                        FROM orders o
+                        JOIN restaurants r ON o.restaurant_id = r.res_id
+                        JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
+                        WHERE o.order_id = ?
+                    ");
+                    if (!$stmt_email) {
+                        echo json_encode([
+                            'success' => false,
+                            'message' => 'Failed to prepare statement for sending notification email.'
+                        ]);
+                        throw new Exception("Failed to prepare statement for sending notification email.");
+                    }
+                    $stmt_email->bind_param("i", $order_id);
+                    if (!$stmt_email) {
+                        echo json_encode([
+                            'success' => false,
+                            'message' => 'Failed to bind parameters for sending notification email.'
+                        ]);
+                        throw new Exception("Failed to bind parameters for sending notification email.");
+                    }
+                    $stmt_email->execute();
+                    $result_email = $stmt_email->get_result();
+                    $order_details = $result_email->fetch_assoc();
+                    $customer_name = $order_details['customer_name'];
+                    $restaurant_name = $order_details['restaurant_name'];
+                    $customer_email = $order_details['customer_email'];
+                    $status = $order_details['order_status'];
+                    $secret_code = $order_details['secret_code'];
+                    $order_id = $order_details['order_id'];
+                    // email constractor
+
+                    $email_sent = sendOrderCompleteEmail($customer_email, $order_id, $customer_name, $restaurant_name, $secret_code, $status, $amount);
+                    if (!$email_sent) {
+                        echo json_encode([
+                            'success' => false,
+                            'message' => 'Order placed but email failed to send.'
+                        ]);
+                        throw new Exception("Order placed but email failed to send.");
+                    }
+                    // Close statement
+                    $stmt_email->close();
+                    echo json_encode([
+                        'success' => true,
+                        'message' => 'Order placed successfully.'
+                    ]);
                 }
                 catch (Exception $e) {
                     // Rollback if any step fails
@@ -114,31 +160,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }//end of function
         }//end of class
-
-        //call function
-        $controller = new PlaceOrderController($conn);//create object by constractor
-        $result = $controller->placeOrder($customer_id, $res_id, $order_note, $order_status, $secret_code, $filename, $payment_method, $payment_trans, $amount);
-
-        // when order cmpleted send email notification for customers
-        if ($result) {
-            $stmt = $conn->prepare("
-                SELECT cda.email, cda.name 
-                FROM orders o
-                JOIN users u ON o.customer_id = u.user_id
-                JOIN customer_delivery_address cda ON u.user_id = cda.user_id
-                WHERE o.order_id = ?
-            ");            
-            $stmt->bind_param("i", $order_id);
-            $stmt->execute();
-            $result = $stmt->get_result()->fetch_assoc();
-            $email = $result['email'];
-            $name = $result['name'];
-            sendOrderCompleteEmail($email, $order_id, $name, $amount);
-
-
-            echo json_encode($result);
-
-        }
 
     } catch (Exception $e) {
         // Handle all errors

@@ -48,7 +48,6 @@ document.getElementById('place_order_btn').addEventListener('click', function (e
 
             // Prepare FormData
             const formData = new FormData();
-            // formData.append('cust_id', cust_id); // Uncomment if needed
             formData.append('res_id', res_id);
             formData.append('grand_total', grand_total);
             formData.append('order_note', order_note);

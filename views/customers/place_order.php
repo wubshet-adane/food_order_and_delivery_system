@@ -179,24 +179,13 @@ session_start();
                                             <div class="transactionid">
                                                 <input type="text" id="transaction_id_input" class="transaction_id_input" required placeholder="enter transaction id">
                                             </div>
-                                            <!--camera settings-->
-                                            <div class="camera_section">
-                                                 <!-- Video element for the camera preview -->
-                                                <video id="video" width="300" height="200" autoplay></video>
-                                                <!-- Button to take a picture -->
-                                                <button type="button" id="captureButton">Capture</button>
-                                                <!-- Canvas element to store the captured image -->
-                                                <canvas id="canvas" style="display:none;"></canvas>
-                                            </div>
-
-
-
+                                            
                                             <!--upload screenshot preview-->
                                             <script>
                                                     // Wait for the DOM to be fully loaded
                                                     window.addEventListener('DOMContentLoaded', function () {
                                                         const img = document.getElementById('screenshot_img');
-                                                        const on_off = document.getElementById('camera_on_off');
+                                                        //const on_off = document.getElementById('camera_on_off');
 
                                                         // Function to preview image as background
                                                         function readURL(input) {
@@ -220,7 +209,7 @@ session_start();
                                                         });
 
 
-                                                        // Access the user's camera
+                                                        /* Access the user's camera
                                                         on_off.addEventListener('click', function(){
                                                             const camera_section = document.querySelector('.camera_section');
                                                             const video = document.getElementById('video');
@@ -277,7 +266,7 @@ session_start();
                                                             while (n--) u8arr[n] = bstr.charCodeAt(n);
                                                             return new File([u8arr], filename, { type: mime });
                                                         }
-                                                    });
+                                                    });*/
                                                 });
                                             </script>
                                         </div>
@@ -318,8 +307,7 @@ session_start();
     ?>
     <section>
         <div>
-            <p>not delivereviled information</p>
-
+            <p>not delivery information</p>
         </div>
     </section>
     <?php
@@ -328,56 +316,6 @@ session_start();
     include "footer.php"; 
     ?>
 
-    <script>
-        /*
-        // Get checkoutData from localStorage
-        document.addEventListener("DOMContentLoaded", function () {
-            const data = JSON.parse(localStorage.getItem("checkoutData"));
-
-            if (data) {
-                document.getElementById("checkoutFullName").innerText = data.full_name || "N/A";
-                document.getElementById("checkoutEmail").innerText = data.email || "N/A";
-                document.getElementById("checkoutPhone").innerText = data.phone || "N/A";
-                document.getElementById("checkoutAddress").innerText = data.delivery_address || "N/A";
-                document.getElementById("latitude").innerText = data.latitude || "N/A";
-                document.getElementById("longitude").innerText = data.longitude || "N/A";
-                
-            }
-
-            document.getElementById("place_order_btn")?.addEventListener("click", function () {
-                if (data) {
-                    alert("Checkout data missing!");
-                    return;
-                }
-
-                // Confirmation modal
-                if (confirm("Are you sure you want to place this order?")) {
-                    fetch("ajax/place_order_ajax.php", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(data)
-                    })
-                    .then(response => response.json())
-                    .then(res => {
-                        if (res.success) {
-                            alert("✅ Order placed successfully!");
-                            localStorage.removeItem("checkoutData");
-                            window.location.href = "my_orders.php";
-                        } else {
-                            alert("❌ Failed to place order: " + res.message);
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        alert("❌ An error occurred!");
-                    });
-                }
-            });
-        });
-        */
-    </script>
     <!--scroll top btn-->
     <script src="javaScript/scroll_up.js"></script>
 
