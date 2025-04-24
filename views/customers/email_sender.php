@@ -14,7 +14,7 @@ function sendOrderCompleteEmail($to, $order_id, $customer_name, $restaurant_name
         $mail->Username = '0967490154w@gmail.com';
         $mail->Password = '12ab,.12';
         $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
+        $mail->Port = 587; // Port 587 for TLS
         $mail->SMTPDebug = 2; // or 3 for more details
         $mail->Debugoutput = 'html'; // Debug output format
         $mail->setFrom('0967490154w@gmail.com', 'Food Ordering System');
@@ -38,9 +38,7 @@ function sendOrderCompleteEmail($to, $order_id, $customer_name, $restaurant_name
 
         $mail->send();
         return true;
-    } catch (Exception $e) {
-        error_log("Email error: {$mail->ErrorInfo}");
+    } catch (Exception) {
         return false;
-
     }
 }

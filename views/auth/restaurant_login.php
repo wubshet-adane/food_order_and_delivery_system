@@ -193,7 +193,7 @@ input.invalid {
                         
                         <button type="submit" class="login-btn">Login</button>
                         
-                        <p class="signup-text" style="color: #fff;">Don't have an account? <a href="restaurant_register.php">Sign Up</a></p>
+                        <p class="signup-text" style="color: #fff;">Don't have an account? <a href="restaurant_owner_registration.php">Sign Up</a></p>
                     </form>
                     
                     <div class="google-login">

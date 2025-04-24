@@ -24,7 +24,8 @@
     <meta name="msapplication-TileImage" content="../../public/images/logo-icon.png">
     <title>Food Delivery Partner Registration</title>
     <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
-    <link rel="stylesheet" href="../../public/css/delivery_registration_form.css">
+    <link rel="stylesheet" href="../../public/css/restaurant_owner_registration.css">
+    <link rel="stylesheet" href="../customers/css/footer.css">
     <!--font awsome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -208,22 +209,23 @@
                 </div>
             </fieldset>
 
-             <!-- Bank Details -->
+             <!-- password Details -->
              <fieldset>
-                <legend>Password Section</legend>
-                <div class="form-group">
-                    <label for="password">Password*</label>
-                    <input type="password" id="password" name="password" required placeholder="********">
-                    <i class="fas fa-eye password-toggle" id="togglePassword"></i>
-                    <span class="error-message" id="password-error"></span>
-                </div>
-                
-                <div class="form-group">
-                    <label for="confirm_password">Confirm password*</label>
-                    <input type="password" id="confirm_password" name="confirm_password" required placeholder="confirm password">
-                    <span class="error-message" id="confirm-password-error"></span>
-                </div>
-            </fieldset>
+                  <legend>Password Section</legend>
+                  <div class="form-group">
+                      <label for="password">Password*</label>
+                      <input type="password" id="password" name="password" required placeholder="********">
+                      <i class="fas fa-eye password-toggle" data-id="password" onclick="togglePasword(password)"></i>
+                      <span class="error-message" id="password-error"></span>
+                  </div>
+                  
+                  <div class="form-group">
+                      <label for="confirm_password">Confirm password*</label>
+                      <input type="password" id="confirm_password" name="confirm_password" required placeholder="confirm password">
+                      <i class="fas fa-eye password-toggle" data-id="confirm_password" onclick="togglePasword(confirm_password)"></i>
+                      <span class="error-message" id="confirm-password-error"></span>
+                  </div>
+              </fieldset>
 
             <!-- Terms and Conditions -->
             <div class="form-group checkbox-group">
@@ -231,13 +233,15 @@
                 <label for="terms">I agree to the Terms and Conditions and Privacy Policy*</label>
                 <span class="error-message" id="terms-error"></span>
             </div>
-            
+                        
             <button type="submit" id="submit-btn" class="submit-btn">Register</button>
+            <p class="login-link">Already have an account? <a href="delivery_login.php">Login here</a></p>
+            <p class="login-link">Go back to <a href="../customers/home.php">Home</a></p>
         </form>
     </div>
-    
-    <script src="../../public/js/delivery_registration_form_validatio.js"></script>
+    <?php include "../customers/footer.php";?>
 
+    <script src="../../public/js/delivery_registration_form_validatio.js"></script>
     <script>
         // Auto-hide alert with fade-out animation
         function autoHideAlert() {
@@ -262,6 +266,22 @@
                 }, 5000); // 3 seconds before starting fade
             }
         }
+        
+        //pasword toggler
+        function togglePasword(Id){
+            const passwordInput = document.getElementById(Id.id);
+            const passwordIcon = document.querySelector(`.password-toggle[data-id="${Id.id}"]`);
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                passwordIcon.classList.remove("fa-eye");
+                passwordIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                passwordIcon.classList.remove("fa-eye-slash");
+                passwordIcon.classList.add("fa-eye");
+            }
+        }
+
 
         // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {

@@ -19,20 +19,21 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  line-height: 1.6;
   color: var(--dark);
-  background-color: var(--light);
+  background-color: #999;
   padding: 0;
-  -webkit-font-smoothing: antialiased;
+  margin: auto;
+  width: 100%;
 }
 
 /* ===== FORM CONTAINER ===== */
 .registration-container {
-  min-width: 1200px;
-  margin: 0;
-  background: #ffffff;
+  max-width: 1200px;
+  margin:2rem auto;
   padding: 1.5rem;
-  box-shadow: 0 0 8px rgba(140, 140, 140, 0.9);
+  background-color: #FFF;
+  box-shadow: 0 0 8px rgba(140, 140, 140, 0.3);
+  border-radius: 12px;
 }
 
 h1 {
@@ -47,7 +48,6 @@ h1 {
   position: fixed;
   top: 2rem;
   right: 2rem;
-  margin: 1rem;
   z-index: 1000;
   background-color: #ff00005b;
   border-radius: 5px;
@@ -127,18 +127,20 @@ h1 {
 
 /* ===== FORM ELEMENTS ===== */
 fieldset {
-  padding: 0;
+  padding: 0 1rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  border: none;
+  border: 1px solid var(--gray);
   margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+  background: linear-gradient(to bottom, #ffffff, #00216320);
 }
 
 legend {
   font-weight: 600;
   font-size: 1.2rem;
-  color: var(--dark);
+  color: var(--primary);
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
@@ -146,12 +148,13 @@ legend {
 }
 
 .form-group {
-  max-width: 100%;
+  width: calc(50% - 1rem);
   margin-bottom: 1.25rem;
   position: relative;
 }
 
-#togglePassword {
+.password-toggle {
+  display: inline-block;
   width: fit-content;
   border: none;
   border-radius: 8px;
@@ -167,8 +170,9 @@ legend {
 label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 0.95rem;
+  font-family: oswald, sans-serif;
 }
 
 input, select, textarea {
@@ -177,7 +181,7 @@ input, select, textarea {
   padding: 0.75rem 1rem;
   border: 1px solid var(--gray);
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: .8rem;
   transition: var(--transition);
   background-color: #FFF;
 }
@@ -284,7 +288,7 @@ input:focus, select:focus, textarea:focus {
   background-color: var(--primary);
   color: rgb(4, 0, 83);
   border: none;
-  padding: 1rem 2rem;
+  padding: .5rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 8px;
@@ -292,6 +296,8 @@ input:focus, select:focus, textarea:focus {
   max-width: calc(100% - 2rem);
   margin: 0 auto;
   transition: var(--transition);
+  text-align: center;
+  display: block;
   box-shadow: var(--shadow);
 }
 
@@ -302,6 +308,22 @@ input:focus, select:focus, textarea:focus {
 
 .submit-btn:active {
   transform: translateY(0);
+}
+
+.login-link {
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: var(--transition);
+}
+.login-link a {
+  font-size: 0.9rem;
+  color: var(--primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+.login-link a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
 }
 
 /* Error Message */
@@ -328,56 +350,53 @@ input.error, select.error, textarea.error {
   margin-bottom: 1rem;
 }
 
-/* ===== TABLET & DESKTOP ===== */
-@media (min-width: 768px) {
-  body {
-    padding: 2rem;
-    background-color: #F9F9F9;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .registration-container {
-    max-width: 600px;
-    margin: 0 auto;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    padding: 2.5rem;
-  }
-
-  h1 {
-    font-size: 2rem;
-  }
-}
-
 /* ===== MOBILE SMALL SCREENS ===== */
 @media (max-width: 768px) {
   .registration-container {
-    min-width: 600px;
+    max-width: calc(100% - 2rem);
+    padding: 1rem;
     margin: 0 auto;
     border-radius: 12px;
     box-shadow: var(--shadow);
-    padding: 0;
+  }
+  h1 {
+    font-size: 1.5rem;
   }
 
   #deliveryForm {
-    display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: calc(100% - 2rem);
-    margin: 0 auto;
+    max-width: 100%;
+    width: 100%;
   }
 
   fieldset {
-    width: calc(100% - 2rem);
+    display: block;
+    justify-content: center;
+    align-items: center;
+    max-width: calc(100%);
+    width: 100%;
     margin: 0 auto;
     margin-bottom: 2rem;
     padding: 1.5rem;
     border-radius: 8px;
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-wrap: wrap;
+    border: 1px solid var(--gray);
+  }
+
+  legend {
+    color: var(--primary);
+  }
+
+  .form-group {
+    width: 100%;
+    margin: 0 0 1.5rem 0; 
+  }
+  
+  input, select, textarea {
+    width: calc(100%);
+    max-width: calc(100%);
+  }
+  .file-upload {
+    width: calc(100% - 2rem);
+    max-width: calc(100% - 2rem);
   }
 }
