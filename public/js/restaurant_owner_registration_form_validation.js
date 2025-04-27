@@ -1,35 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('deliveryForm');
-    const licenseGroup = document.getElementById('license-group');
-    const plateGroup = document.getElementById('plate-group');
-    const licenseUploadGroup = document.getElementById('license-upload-group');
     const submitBtn = document.getElementById('submit-btn');
-
-    // Show/hide fields based on vehicle type
-    vehicleType.addEventListener('change', function() {
-        const selectedVehicle = this.value;
-        
-        if (selectedVehicle === 'motorcycle' || selectedVehicle === 'car') {
-            licenseGroup.style.display = 'block';
-            plateGroup.style.display = 'block';
-            licenseUploadGroup.style.display = 'block';
-            
-            // Make license fields required
-            document.getElementById('license_number').required = true;
-            document.getElementById('plate_number').required = true;
-        } else {
-            licenseGroup.style.display = 'none';
-            plateGroup.style.display = 'none';
-            licenseUploadGroup.style.display = 'none';
-            
-            // Remove required attribute
-            document.getElementById('license_number').required = false;
-            document.getElementById('plate_number').required = false;
-        }
-    });
 
     // Form validation
     submitBtn.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent form submission for validation
+        // Clear previous error messages
+        const errorElements = document.querySelectorAll('.error-message');
+        errorElements.forEach(function(errorElement) {
+            errorElement.textContent = '';
+        });
+
         let isValid = true;
         
         // Validate name (only letters and spaces)
@@ -107,45 +88,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             accountError.textContent = '';
         }
-        
-        // Validate license number if shown
-        if (licenseGroup.style.display === 'block') {
-            const licenseInput = document.getElementById('license_number');
-            const licenseError = document.getElementById('license-error');
-            if (!licenseInput.value.trim()) {
-                licenseError.textContent = 'License number is required';
-                licenseInput.focus();
-                isValid = false;
-            } else {
-                licenseError.textContent = '';
-            }
-        }
-
-        // Validate plate number if shown
-        if (plateGroup.style.display === 'block') {
-            const plateInput = document.getElementById('plate_number');
-            const plateError = document.getElementById('plate-error');
-            if (!plateInput.value.trim()) {
-                plateError.textContent = 'Plate number is required';
-                plateInput.focus();
-                isValid = false;
-            } else {
-                plateError.textContent = '';
-            }
-        }
-
-        // Validate license upload if shown
-        if (licenseUploadGroup.style.display === 'block') {
-            const licenseUploadInput = document.getElementById('license_upload');
-            const licenseUploadError = document.getElementById('license-upload-error');
-            if (!licenseUploadInput.files.length) {
-                licenseUploadError.textContent = 'License upload is required';
-                licenseUploadInput.focus();
-                isValid = false;
-            } else {
-                licenseUploadError.textContent = '';
-            }
-        }
 
         // Enhanced Password Validation
         function validatePassword(passwordInput, passwordError) {
@@ -183,7 +125,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const passwordError = document.getElementById('password-error');
         if (!validatePassword(passwordInput, passwordError)) {
             isValid = false;
-            return;
         } else{
             passwordError.textContent = '';
         }
@@ -195,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
             confirmPasswordError.textContent = 'Passwords do not match';
             confirmPasswordInput.focus();
             isValid = false;
-            return;
         } else {
             confirmPasswordError.textContent = '';
         }

@@ -172,7 +172,6 @@ session_start();
                                             <label for="screenshot" class="upload_label">Upload Screenshot Here:</label><br>
                                             <div>
                                                 <input type="file" id="screenshot_img" name="screenshot" accept="image/*" capture="camera" required onchange="readURL(this)">
-                                                <span><button type="button" id="camera_on_off">camera</button></span>
                                             </div>
                                             <span class="error" id="error_screenshot"></span>
                                             <div id="preview"></div><!--display upload image from file-->
@@ -182,91 +181,32 @@ session_start();
                                             
                                             <!--upload screenshot preview-->
                                             <script>
-                                                    // Wait for the DOM to be fully loaded
-                                                    window.addEventListener('DOMContentLoaded', function () {
-                                                        const img = document.getElementById('screenshot_img');
-                                                        //const on_off = document.getElementById('camera_on_off');
+                                                // Wait for the DOM to be fully loaded
+                                                window.addEventListener('DOMContentLoaded', function () {
+                                                    const img = document.getElementById('screenshot_img');
+                                                    //const on_off = document.getElementById('camera_on_off');
 
-                                                        // Function to preview image as background
-                                                        function readURL(input) {
-                                                            if (input.files && input.files[0]) {
-                                                                var reader = new FileReader();
-                                                                reader.onload = function (e) {
-                                                                    var preview = document.getElementById('preview');
-                                                                    preview.style.backgroundImage = 'url(' + e.target.result + ')';
-                                                                    preview.style.opacity = '0'; // for transition
-                                                                    setTimeout(function () {
-                                                                        preview.style.display = "block";
-                                                                        preview.style.opacity = "1";
-                                                                    }, 500);
-                                                                };
-                                                                reader.readAsDataURL(input.files[0]);
-                                                            }
+                                                    // Function to preview image as background
+                                                    function readURL(input) {
+                                                        if (input.files && input.files[0]) {
+                                                            var reader = new FileReader();
+                                                            reader.onload = function (e) {
+                                                                var preview = document.getElementById('preview');
+                                                                preview.style.backgroundImage = 'url(' + e.target.result + ')';
+                                                                preview.style.opacity = '0'; // for transition
+                                                                setTimeout(function () {
+                                                                    preview.style.display = "block";
+                                                                    preview.style.opacity = "1";
+                                                                }, 500);
+                                                            };
+                                                            reader.readAsDataURL(input.files[0]);
                                                         }
-                                                        // Attach event listener if needed (or use inline `onchange`)
-                                                        img.addEventListener('change', function () {
-                                                            readURL(this);
-                                                        });
+                                                    }
+                                                    // Attach event listener if needed (or use inline `onchange`)
+                                                    img.addEventListener('change', function () {
+                                                        readURL(this);
+                                                    });
 
-
-                                                        /* Access the user's camera
-                                                        on_off.addEventListener('click', function(){
-                                                            const camera_section = document.querySelector('.camera_section');
-                                                            const video = document.getElementById('video');
-                                                            const canvas = document.getElementById('canvas');
-                                                            const captureButton = document.getElementById('captureButton');
-                                                            const paymentProofInput = document.getElementById('screenshot_img');
-
-                                                            camera_section.style.display = "block";
-                                                            
-                                                            // Start the video stream from the camera
-                                                            navigator.mediaDevices.getUserMedia({ video: true })
-                                                            .then(stream => {
-                                                                video.srcObject = stream;
-                                                            })
-                                                            .catch(err => {
-                                                                console.error("Error accessing the camera", err);
-                                                                Swal.fire({
-                                                                    icon: 'error',
-                                                                    title: 'Camera Error',
-                                                                    text: 'Unable to access the camera.',
-                                                                    confirmButtonText: 'OK'
-                                                                });
-                                                            });
-
-                                                        // Capture the image when the capture button is clicked
-                                                        captureButton.addEventListener('click', function() {
-                                                            const context = canvas.getContext('2d');
-                                                            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                                                            
-                                                            // Get the image data
-                                                            const dataUrl = canvas.toDataURL('image/png');
-                                                            
-                                                            // Create a file from the data URL (optional: for uploading)
-                                                            const imageFile = dataURLtoFile(dataUrl, 'payment_proof.png');
-                                                            
-                                                            // Set the captured image to the hidden input (for uploading)
-                                                            const fileList = new DataTransfer();
-                                                            fileList.items.add(imageFile);
-                                                            paymentProofInput.files = fileList.files;
-                                                            
-                                                            // Display captured image (optional: for preview)
-                                                            Swal.fire({
-                                                                icon: 'success',
-                                                                title: 'Image Captured',
-                                                                text: 'You can now proceed with uploading.',
-                                                                confirmButtonText: 'OK'
-                                                            });
-                                                        });
-
-                                                        // Convert data URL to File object
-                                                        function dataURLtoFile(dataUrl, filename) {
-                                                            const arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-                                                                bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-                                                            while (n--) u8arr[n] = bstr.charCodeAt(n);
-                                                            return new File([u8arr], filename, { type: mime });
-                                                        }
-                                                    });*/
                                                 });
                                             </script>
                                         </div>

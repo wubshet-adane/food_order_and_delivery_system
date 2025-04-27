@@ -63,8 +63,6 @@ document.getElementById('place_order_btn').addEventListener('click', function (e
             })
             .then(response => response.json())
             .then(result => {
-                Swal.close(); // Close loading state if any
-
                 if (result.success) {
                     Swal.fire({
                         icon: 'success',
@@ -74,7 +72,7 @@ document.getElementById('place_order_btn').addEventListener('click', function (e
                         showConfirmButton: false
                     }).then(() => {
                         // Redirect to success page or clear form
-                        window.location.href = "order_success_page.php"; // replace with actual page
+                        window.location.href = `order_success_page.php?order_id=${result.order_id}`; // replace with actual page
                     });
                 } else {
                     Swal.fire({

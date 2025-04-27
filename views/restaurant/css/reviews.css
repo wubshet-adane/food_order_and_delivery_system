@@ -1,0 +1,151 @@
+
+/* Container */
+.review_container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.review_container h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 40px;
+    color: #2c3e50;
+}
+
+/* Restaurant Box */
+.restaurant-box {
+    padding: 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #42d6e36d;
+    background: #efefef;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.restaurant-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+    background-color: #fff;
+}
+
+.restaurant-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #34495e;
+    flex: 1;
+}
+
+/* Review Box */
+.review-box {
+    margin-left: 75px;
+    margin-top: 15px;
+    background: #ffffff;
+    border-left: 4px solid #3498db6b;
+    padding: 15px 20px;
+    border-radius: 10px;
+    width: calc(100% - 100px);
+}
+
+.review-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-image {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}
+
+.review-meta {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Stars */
+.stars {
+    font-size: 18px;
+    color: #f1c40f;
+    letter-spacing: 2px;
+    user-select: none;
+}
+
+/* Comment */
+.comment {
+    font-size: 15px;
+    font-style: italic;
+    color: #2c3e50;
+    line-height: 1.5;
+}
+
+/* No Review Box */
+.no-review {
+    margin: 30px 0;
+    padding: 20px;
+    background-color: #fff5f5;
+    border: 1px dashed #ff6b6b;
+    color: #c0392b;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .restaurant-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .restaurant-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .restaurant-name {
+        font-size: 18px;
+    }
+
+    .review-box {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .review_container h1 {
+        font-size: 24px;
+    }
+
+    .stars {
+        font-size: 16px;
+    }
+
+    .comment {
+        font-size: 14px;
+    }
+
+    .profile-meta {
+        font-size: 13px;
+    }
+}

@@ -4,6 +4,7 @@ session_start();
 
 require_once '../../models/manage_restaurant.php';
 require_once '../../config/database.php';
+require_once '../../models/restaurant_review.php';
 
 // Check if user is logged in and has the correct user type
 if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !isset($_SESSION['loggedIn']) || !isset($_SESSION['user_email']) || !isset($_SESSION['password'])) {
@@ -25,12 +26,16 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
     <!--font ausome for star rating-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!--google font-->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/orders.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/display_restaurant.css">
     <link rel="stylesheet" href="css/manage_restaurants.css">
     <link rel="stylesheet" href="css/manage_menu.css">
+    <link rel="stylesheet" href="css/reviews.css">
     <!--sweet alert external library-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>

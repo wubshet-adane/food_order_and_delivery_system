@@ -31,6 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form validation
     submitBtn.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent form submission for validation
+        // Clear previous error messages
+        const errorElements = document.querySelectorAll('.error-message');
+        errorElements.forEach(function(errorElement) {
+            errorElement.textContent = '';
+        });
+
         let isValid = true;
         
         // Validate name (only letters and spaces)
@@ -184,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const passwordError = document.getElementById('password-error');
         if (!validatePassword(passwordInput, passwordError)) {
             isValid = false;
-            return;
         } else{
             passwordError.textContent = '';
         }
@@ -196,7 +202,6 @@ document.addEventListener('DOMContentLoaded', function() {
             confirmPasswordError.textContent = 'Passwords do not match';
             confirmPasswordInput.focus();
             isValid = false;
-            return;
         } else {
             confirmPasswordError.textContent = '';
         }
@@ -214,25 +219,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (isValid) {
             form.submit();
-        }
-    });
-
-
-    // Toggle password visibility
-    const togglePassword = document.getElementById('togglePassword');   
-    const passwordField = document.getElementById('password');
-    const confirmPasswordField = document.getElementById('confirm_password');
-    togglePassword.addEventListener('click', function() {
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-            confirmPasswordField.type = "text";
-            togglePassword.classList.remove("fa-eye");
-            togglePassword.classList.add("fa-eye-slash");
-        } else {
-            passwordField.type = "password";
-            confirmPasswordField.type = "password";
-            togglePassword.classList.remove("fa-eye-slash");
-            togglePassword.classList.add("fa-eye");
         }
     });
 });

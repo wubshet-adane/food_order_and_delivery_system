@@ -1,491 +1,537 @@
 <?php
 session_start();
-require '../../config/database.php'; // Include your database connection file
+require_once '../../config/database.php';
 
-
-if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !isset($_SESSION['loggedIn']) || !isset($_SESSION['user_email']) || !isset($_SESSION['password'])) {
-    header("Location: ../auth/restaurant_login.php?message=Please enter correct credentials!");
-    exit; // Stop execution after redirection
+$owner_id = $_SESSION['user_id'] ?? null;
+if (!$owner_id) {
+    header('Location: ../auth/customer_login.php');
+    exit();
 }
 
-$owner_id = $_SESSION['user_id'];
+$order_id = $_GET['order_id'] ?? 39;
+if (!$order_id) die("No order ID found.");
 
-// Handle status updates
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['update_status'])) {
-        $order_id = $_POST['order_id'];
-        $new_status = $_POST['new_status'];
-        
-        // Validate status transition
-        $valid_statuses = ['Accepted', 'Preparing', 'Out for Delivery'];
-        $stmt = $conn->prepare("SELECT status FROM orders WHERE order_id = ? AND restaurant_id IN (SELECT restaurant_id FROM restaurants WHERE owner_id = ?)");
-        $stmt->bind_param("ii", $order_id, $owner_id);
+// Fetch order + payment + delivery address info
+$stmt = $conn->prepare("
+    SELECT o.*, u.name AS account_name, r.restaurant_id, r.name AS restaurant_name,r.image AS res_image, 
+           cda.name AS customer_name, cda.email AS customer_email, 
+           cda.delivery_address AS delivery_address, cda.phone AS customer_phone,
+           p.amount AS total_amount, p.payment_method, 
+           p.payment_file AS payment_screenshot, p.transaction_id AS transaction_id
+    FROM orders o
+    JOIN restaurants r ON o.restaurant_id = r.restaurant_id
+    JOIN users u ON o.customer_id = u.user_id
+    JOIN payments p ON o.order_id = p.order_id
+    JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
+    WHERE o.order_id = ? AND o.customer_id = ?");
+
+if (!$stmt) die("Prepare failed: " . $conn->error);
+$stmt->bind_param("ii", $order_id, $owner_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$order = $result->fetch_assoc();
+$stmt->close();
+
+if (!$order) die("No order found.");
+
+$progress_map = [
+    'pending' => ['value' => 25, 'color' => 'bg-yellow-500'],
+    'Preparing' => ['value' => 50, 'color' => 'bg-blue-500'],
+    'Out for Delivery' => ['value' => 75, 'color' => 'bg-purple-500'],
+    'Delivered' => ['value' => 100, 'color' => 'bg-green-500']
+];
+$current_progress = $progress_map[$order['status']] ?? ['value' => 0, 'color' => 'bg-gray-300'];
+// Fetch ordered items
+$stmt_items = $conn->prepare("
+    SELECT m.*, oi.*
+    FROM order_items oi
+    JOIN menu m ON oi.menu_id = m.menu_id
+    WHERE oi.order_id = ?");
+$stmt_items->bind_param("i", $order_id);
+$stmt_items->execute();
+$result_items = $stmt_items->get_result();
+$order_items = $result_items->fetch_all(MYSQLI_ASSOC);
+$stmt_items->close();
+
+// Submit review
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
+    $review = trim($_POST['review']);
+    $rating = intval($_POST['rating'] ?? 5);
+    if (!empty($review)) {
+        $stmt = $conn->prepare("
+            INSERT INTO review (restaurant_id, user_id, rating, review_text, created_at)
+            VALUES (?, ?, ?, ?, NOW())");
+        if (!$stmt) die("Prepare failed: " . $conn->error);
+        // Bind parameters: restaurant_id, user_id, rating, review_text
+        $stmt->bind_param("iiss", $order['restaurant_id'], $_SESSION['userId'], $rating, $review);
+        if (!$stmt) die("Prepare failed: " . $conn->error);
         $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result->num_rows > 0) {
-            $order = $result->fetch_assoc();
-            $current_status = $order['status'];
-            
-            // Check if the new status is valid
-            if (in_array($new_status, $valid_statuses)) {
-                // Update status
-                $update_stmt = $conn->prepare("UPDATE orders SET status = ? WHERE order_id = ?");
-                $update_stmt->bind_param("si", $new_status, $order_id);
-                $update_stmt->execute();
-                
-                if ($update_stmt->affected_rows > 0) {
-                    $success_msg = "Order status updated successfully!";
-                } else {
-                    $error_msg = "Failed to update order status.";
-                }
-            } else {
-                $error_msg = "Invalid status transition.";
-            }
-        } else {
-            $error_msg = "Order not found or you don't have permission to update it.";
-        }
-    }
-    
-    // Handle accept/reject actions
-    if (isset($_POST['action'])) {
-        $order_id = $_POST['order_id'];
-        $action = $_POST['action'];
-        
-        // Verify the order belongs to this owner's restaurant
-        $stmt = $conn->prepare("SELECT order_id FROM orders WHERE order_id = ? AND restaurant_id IN (SELECT restaurant_id FROM restaurants WHERE owner_id = ?)");
-        $stmt->bind_param("ii", $order_id, $owner_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result->num_rows > 0) {
-            if ($action == 'accept') {
-                $new_status = 'Accepted';
-            } elseif ($action == 'reject') {
-                $new_status = 'Cancelled';
-            }
-            
-            $update_stmt = $conn->prepare("UPDATE orders SET status = ? WHERE order_id = ?");
-            $update_stmt->bind_param("si", $new_status, $order_id);
-            $update_stmt->execute();
-            
-            if ($update_stmt->affected_rows > 0) {
-                $success_msg = "Order has been " . ($action == 'accept' ? "accepted" : "rejected") . "!";
-            } else {
-                $error_msg = "Failed to update order status.";
-            }
-        } else {
-            $error_msg = "Order not found or you don't have permission to modify it.";
-        }
+        $stmt->close();
+        echo "<script>document.addEventListener('DOMContentLoaded',()=>{
+            document.getElementById('reviewModal').classList.add('hidden');
+            showToast('Thank you for your review!');
+        });</script>";
     }
 }
+$conn->close();
 
-// Get all restaurants owned by this user
-$restaurants_stmt = $conn->prepare("SELECT * FROM restaurants WHERE owner_id = ?");
-$restaurants_stmt->bind_param("i", $owner_id);
-$restaurants_stmt->execute();
-$restaurants_result = $restaurants_stmt->get_result();
-
-// Initialize arrays to store orders
-$pending_orders = [];
-$active_orders = [];
-$delivered_orders = [];
-
-if ($restaurants_result->num_rows > 0) {
-    while ($restaurant = $restaurants_result->fetch_assoc()) {
-        $restaurant_id = $restaurant['restaurant_id'];
-        
-        // Get pending orders for this restaurant
-        $pending_stmt = $conn->prepare("
-            SELECT o.*, c.name as customer_name, c.phone_number as customer_phone 
-            FROM orders o
-            JOIN customers c ON o.customer_id = c.customer_id
-            WHERE o.restaurant_id = ? AND o.status = 'Pending'
-            ORDER BY o.order_date DESC
-        ");
-        $pending_stmt->bind_param("i", $restaurant_id);
-        $pending_stmt->execute();
-        $pending_result = $pending_stmt->get_result();
-        
-        while ($order = $pending_result->fetch_assoc()) {
-            $order['restaurant_name'] = $restaurant['name'];
-            $pending_orders[] = $order;
-        }
-        
-        // Get active orders (Accepted, Preparing, Out for Delivery) for this restaurant
-        $active_stmt = $conn->prepare("
-            SELECT o.*, c.name as customer_name, c.phone_number as customer_phone 
-            FROM orders o
-            JOIN customers c ON o.customer_id = c.customer_id
-            WHERE o.restaurant_id = ? AND o.status IN ('Accepted', 'Preparing', 'Out for Delivery', 'Delivering')
-            ORDER BY 
-                CASE 
-                    WHEN o.status = 'Accepted' THEN 1
-                    WHEN o.status = 'Preparing' THEN 2
-                    WHEN o.status = 'Out for Delivery' THEN 3
-                    WHEN o.status = 'Delivering' THEN 4
-                    ELSE 5
-                END,
-                o.order_date DESC
-        ");
-        $active_stmt->bind_param("i", $restaurant_id);
-        $active_stmt->execute();
-        $active_result = $active_stmt->get_result();
-        
-        while ($order = $active_result->fetch_assoc()) {
-            $order['restaurant_name'] = $restaurant['name'];
-            $active_orders[] = $order;
-        }
-        
-        // Get delivered orders for this restaurant
-        $delivered_stmt = $conn->prepare("
-            SELECT o.*, c.name as customer_name, c.phone_number as customer_phone 
-            FROM orders o
-            JOIN customers c ON o.customer_id = c.customer_id
-            WHERE o.restaurant_id = ? AND o.status = 'Delivered'
-            ORDER BY o.order_date DESC
-        ");
-        $delivered_stmt->bind_param("i", $restaurant_id);
-        $delivered_stmt->execute();
-        $delivered_result = $delivered_stmt->get_result();
-        
-        while ($order = $delivered_result->fetch_assoc()) {
-            $order['restaurant_name'] = $restaurant['name'];
-            $delivered_orders[] = $order;
-        }
-    }
-}
+// Format date
+$order_date = new DateTime($order['order_date']);
+$formattedDate = $order_date->format('F j, Y, g:i A');
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Owner - Orders Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .accordion-button:not(.collapsed) {
-            background-color: #f8f9fa;
-        }
-        .status-badge {
-            font-size: 0.8rem;
-            padding: 0.35em 0.65em;
-        }
-        .status-Pending {
-            background-color: #6c757d;
-        }
-        .status-Accepted {
-            background-color: #0d6efd;
-        }
-        .status-Preparing {
-            background-color: #fd7e14;
-        }
-        .status-Out for Delivery {
-            background-color: #ffc107;
-        }
-        .status-Delivering {
-            background-color: #20c997;
-        }
-        .status-Delivered {
-            background-color: #198754;
-        }
-        .status-Cancelled {
-            background-color: #dc3545;
-        }
-        .order-item {
-            border-bottom: 1px solid #dee2e6;
-            padding: 10px 0;
-        }
-        .order-item:last-child {
-            border-bottom: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Order Confirmation - <?= htmlspecialchars($order['restaurant_name']) ?></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your order confirmation for <?= htmlspecialchars($order['restaurant_name']) ?>">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" href="../../public/images/logo-icon.png">
+  <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/order_success_page.css">
+    <link rel="stylesheet" href="css/footer.css">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+  
+    
+    .star-rating input {
+      display: none;
+    }
+    
+    .star-rating label {
+      color: #d1d5db;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+      color: #f59e0b;
+    }
+    
+    .star-rating input:checked + label {
+      color: #f59e0b;
+    }
+    
+    .toast {
+      animation: slideIn 0.3s, fadeOut 0.5s 2.5s forwards;
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+      to { opacity: 0; }
+    }
+  </style>
 </head>
-<body>
-    <div class="container py-4">
-        <h1 class="mb-4">Orders Management</h1>
-        
-        <?php if (isset($success_msg)): ?>
-            <div class="alert alert-success"><?php echo $success_msg; ?></div>
-        <?php endif; ?>
-        
-        <?php if (isset($error_msg)): ?>
-            <div class="alert alert-danger"><?php echo $error_msg; ?></div>
-        <?php endif; ?>
-        
-        <ul class="nav nav-tabs mb-4" id="ordersTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">
-                    New Orders <span class="badge bg-secondary"><?php echo count($pending_orders); ?></span>
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab">
-                    Active Orders <span class="badge bg-primary"><?php echo count($active_orders); ?></span>
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="delivered-tab" data-bs-toggle="tab" data-bs-target="#delivered" type="button" role="tab">
-                    Delivered Orders <span class="badge bg-success"><?php echo count($delivered_orders); ?></span>
-                </button>
-            </li>
-        </ul>
-        
-        <div class="tab-content" id="ordersTabContent">
-            <!-- Pending Orders Tab -->
-            <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
-                <?php if (empty($pending_orders)): ?>
-                    <div class="alert alert-info">No pending orders at this time.</div>
-                <?php else: ?>
-                    <div class="accordion" id="pendingAccordion">
-                        <?php foreach ($pending_orders as $index => $order): ?>
-                            <div class="accordion-item mb-3">
-                                <h2 class="accordion-header" id="pendingHeading<?php echo $index; ?>">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pendingCollapse<?php echo $index; ?>">
-                                        <div class="d-flex justify-content-between w-100 me-3">
-                                            <div>
-                                                <span class="fw-bold">Order #<?php echo $order['order_id']; ?></span>
-                                                <span class="ms-3 badge status-badge status-<?php echo $order['status']; ?>"><?php echo $order['status']; ?></span>
-                                            </div>
-                                            <div>
-                                                <span class="text-muted"><?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></span>
-                                            </div>
-                                        </div>
-                                    </button>
-                                </h2>
-                                <div id="pendingCollapse<?php echo $index; ?>" class="accordion-collapse collapse" aria-labelledby="pendingHeading<?php echo $index; ?>">
-                                    <div class="accordion-body">
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <h5>Customer Information</h5>
-                                                <p><strong>Name:</strong> <?php echo $order['customer_name']; ?></p>
-                                                <p><strong>Phone:</strong> <?php echo $order['customer_phone']; ?></p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h5>Restaurant</h5>
-                                                <p><?php echo $order['restaurant_name']; ?></p>
-                                                <p><strong>Total:</strong> <?php echo number_format($order['total_price'], 2); ?> ETB</p>
-                                            </div>
-                                        </div>
-                                        
-                                        <h5 class="mt-3">Order Items</h5>
-                                        <?php
-                                        // Get order items
-                                        $items_stmt = $conn->prepare("
-                                            SELECT m.name, m.price, oi.quantity 
-                                            FROM order_items oi
-                                            JOIN menu m ON oi.menu_id = m.menu_id
-                                            WHERE oi.order_id = ?
-                                        ");
-                                        $items_stmt->bind_param("i", $order['order_id']);
-                                        $items_stmt->execute();
-                                        $items_result = $items_stmt->get_result();
-                                        
-                                        while ($item = $items_result->fetch_assoc()):
-                                        ?>
-                                            <div class="order-item">
-                                                <div class="d-flex justify-content-between">
-                                                    <div>
-                                                        <?php echo $item['name']; ?>
-                                                        <span class="text-muted">x<?php echo $item['quantity']; ?></span>
-                                                    </div>
-                                                    <div>
-                                                        <?php echo number_format($item['price'] * $item['quantity'], 2); ?> ETB
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php endwhile; ?>
-                                        
-                                        <div class="d-flex justify-content-end mt-3">
-                                            <form method="post" class="me-2">
-                                                <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
-                                                <input type="hidden" name="action" value="reject">
-                                                <button type="submit" class="btn btn-danger">Reject Order</button>
-                                            </form>
-                                            <form method="post">
-                                                <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
-                                                <input type="hidden" name="action" value="accept">
-                                                <button type="submit" class="btn btn-success">Accept Order</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            
-            <!-- Active Orders Tab -->
-            <div class="tab-pane fade" id="active" role="tabpanel" aria-labelledby="active-tab">
-                <?php if (empty($active_orders)): ?>
-                    <div class="alert alert-info">No active orders at this time.</div>
-                <?php else: ?>
-                    <div class="accordion" id="activeAccordion">
-                        <?php foreach ($active_orders as $index => $order): ?>
-                            <div class="accordion-item mb-3">
-                                <h2 class="accordion-header" id="activeHeading<?php echo $index; ?>">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#activeCollapse<?php echo $index; ?>">
-                                        <div class="d-flex justify-content-between w-100 me-3">
-                                            <div>
-                                                <span class="fw-bold">Order #<?php echo $order['order_id']; ?></span>
-                                                <span class="ms-3 badge status-badge status-<?php echo $order['status']; ?>"><?php echo $order['status']; ?></span>
-                                            </div>
-                                            <div>
-                                                <span class="text-muted"><?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></span>
-                                            </div>
-                                        </div>
-                                    </button>
-                                </h2>
-                                <div id="activeCollapse<?php echo $index; ?>" class="accordion-collapse collapse" aria-labelledby="activeHeading<?php echo $index; ?>">
-                                    <div class="accordion-body">
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <h5>Customer Information</h5>
-                                                <p><strong>Name:</strong> <?php echo $order['customer_name']; ?></p>
-                                                <p><strong>Phone:</strong> <?php echo $order['customer_phone']; ?></p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h5>Restaurant</h5>
-                                                <p><?php echo $order['restaurant_name']; ?></p>
-                                                <p><strong>Total:</strong> <?php echo number_format($order['total_price'], 2); ?> ETB</p>
-                                                <?php if ($order['secret_code']): ?>
-                                                    <p><strong>Secret Code:</strong> <?php echo $order['secret_code']; ?></p>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                        
-                                        <h5 class="mt-3">Order Items</h5>
-                                        <?php
-                                        // Get order items
-                                        $items_stmt = $conn->prepare("
-                                            SELECT m.name, m.price, oi.quantity 
-                                            FROM order_items oi
-                                            JOIN menu m ON oi.menu_id = m.menu_id
-                                            WHERE oi.order_id = ?
-                                        ");
-                                        $items_stmt->bind_param("i", $order['order_id']);
-                                        $items_stmt->execute();
-                                        $items_result = $items_stmt->get_result();
-                                        
-                                        while ($item = $items_result->fetch_assoc()):
-                                        ?>
-                                            <div class="order-item">
-                                                <div class="d-flex justify-content-between">
-                                                    <div>
-                                                        <?php echo $item['name']; ?>
-                                                        <span class="text-muted">x<?php echo $item['quantity']; ?></span>
-                                                    </div>
-                                                    <div>
-                                                        <?php echo number_format($item['price'] * $item['quantity'], 2); ?> ETB
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php endwhile; ?>
-                                        
-                                        <div class="mt-4">
-                                            <h5>Update Order Status</h5>
-                                            <form method="post">
-                                                <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
-                                                
-                                                <div class="btn-group" role="group">
-                                                    <?php if ($order['status'] == 'Accepted'): ?>
-                                                        <input type="hidden" name="new_status" value="Preparing">
-                                                        <button type="submit" name="update_status" class="btn btn-warning">Mark as Preparing</button>
-                                                    <?php elseif ($order['status'] == 'Preparing'): ?>
-                                                        <input type="hidden" name="new_status" value="Out for Delivery">
-                                                        <button type="submit" name="update_status" class="btn btn-info">Mark as Out for Delivery</button>
-                                                    <?php elseif ($order['status'] == 'Out for Delivery' || $order['status'] == 'Delivering'): ?>
-                                                        <button class="btn btn-secondary" disabled>Awaiting Delivery Completion</button>
-                                                    <?php endif; ?>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            
-            <!-- Delivered Orders Tab -->
-            <div class="tab-pane fade" id="delivered" role="tabpanel" aria-labelledby="delivered-tab">
-                <?php if (empty($delivered_orders)): ?>
-                    <div class="alert alert-info">No delivered orders yet.</div>
-                <?php else: ?>
-                    <div class="accordion" id="deliveredAccordion">
-                        <?php foreach ($delivered_orders as $index => $order): ?>
-                            <div class="accordion-item mb-3">
-                                <h2 class="accordion-header" id="deliveredHeading<?php echo $index; ?>">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#deliveredCollapse<?php echo $index; ?>">
-                                        <div class="d-flex justify-content-between w-100 me-3">
-                                            <div>
-                                                <span class="fw-bold">Order #<?php echo $order['order_id']; ?></span>
-                                                <span class="ms-3 badge status-badge status-<?php echo $order['status']; ?>"><?php echo $order['status']; ?></span>
-                                            </div>
-                                            <div>
-                                                <span class="text-muted"><?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></span>
-                                            </div>
-                                        </div>
-                                    </button>
-                                </h2>
-                                <div id="deliveredCollapse<?php echo $index; ?>" class="accordion-collapse collapse" aria-labelledby="deliveredHeading<?php echo $index; ?>">
-                                    <div class="accordion-body">
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <h5>Customer Information</h5>
-                                                <p><strong>Name:</strong> <?php echo $order['customer_name']; ?></p>
-                                                <p><strong>Phone:</strong> <?php echo $order['customer_phone']; ?></p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h5>Restaurant</h5>
-                                                <p><?php echo $order['restaurant_name']; ?></p>
-                                                <p><strong>Total:</strong> <?php echo number_format($order['total_price'], 2); ?> ETB</p>
-                                                <?php if ($order['secret_code']): ?>
-                                                    <p><strong>Secret Code:</strong> <?php echo $order['secret_code']; ?></p>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                        
-                                        <h5 class="mt-3">Order Items</h5>
-                                        <?php
-                                        // Get order items
-                                        $items_stmt = $conn->prepare("
-                                            SELECT m.name, m.price, oi.quantity 
-                                            FROM order_items oi
-                                            JOIN menu m ON oi.menu_id = m.menu_id
-                                            WHERE oi.order_id = ?
-                                        ");
-                                        $items_stmt->bind_param("i", $order['order_id']);
-                                        $items_stmt->execute();
-                                        $items_result = $items_stmt->get_result();
-                                        
-                                        while ($item = $items_result->fetch_assoc()):
-                                        ?>
-                                            <div class="order-item">
-                                                <div class="d-flex justify-content-between">
-                                                    <div>
-                                                        <?php echo $item['name']; ?>
-                                                        <span class="text-muted">x<?php echo $item['quantity']; ?></span>
-                                                    </div>
-                                                    <div>
-                                                        <?php echo number_format($item['price'] * $item['quantity'], 2); ?> ETB
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php endwhile; ?>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
+<body >
+  <main class="container mx-auto px-4 py-8">
+    <!-- Success Message -->
+    <div class="max-w-4xl mx-auto mb-8 p-6 bg-white rounded-xl shadow-sm order-card">
+      <div class="text-center">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-check text-yellow-500 text-3xl"></i>
         </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Thank you for your order, <?= htmlspecialchars($order['customer_name']) ?>!</h2>
+        <p class="text-gray-600 mb-4">Your order #<?= $order['order_id'] ?> is confirmed and being prepared.</p>
+        
+        <!-- Order Status Progress -->
+        <div class="mb-6">
+          <div class="flex justify-between mb-2">
+            <span class="text-sm font-medium text-gray-700">Order Status</span>
+            <span class="text-sm font-medium <?= $current_progress['color'] ?> text-white px-2 py-1 rounded-full">
+              <?= htmlspecialchars($order['status']) ?>
+            </span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div class="progress-bar h-2.5 rounded-full <?= $current_progress['color'] ?>" 
+                 style="width: <?= $current_progress['value'] ?>%"></div>
+          </div>
+          <div class="flex justify-between mt-2 text-xs text-gray-500">
+            <span>Placed</span>
+            <span>Preparing</span>
+            <span>On the way</span>
+            <span>Delivered</span>
+          </div>
+        </div>
+        
+        <div class="flex flex-wrap justify-center gap-4 mt-6">
+          <button onclick="window.print()" class="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+            <i class="fas fa-print mr-2"></i> Print Receipt
+          </button>
+          <button onclick="document.getElementById('qrModal').classList.remove('hidden')" 
+                  class="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+            <i class="fas fa-qrcode mr-2"></i> View QR Code
+          </button>
+          <button onclick="document.getElementById('reviewModal').classList.remove('hidden')" 
+                  class="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+            <i class="fas fa-star mr-2"></i> Leave Review
+          </button>
+        </div>
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+      <!-- Order Summary -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Restaurant Info -->
+        <div class="bg-white p-6 rounded-xl shadow-sm order-card">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <i class="fas fa-store mr-2 text-yellow-500"></i> Restaurant Details
+          </h3>
+          <div class="flex items-start space-x-4">
+            <div class="flex-1">
+              <h4 class="font-medium text-gray-900"><?= htmlspecialchars($order['restaurant_name']) ?></h4>
+              <p class="text-gray-600 mt-1">Order ID: #<?= $order['order_id'] ?></p>
+              <p class="text-gray-600">Placed on: <?= $formattedDate ?></p>
+            </div>
+            <div class="w-16 h-16 rounded-lg overflow-hidden">
+              <!-- Restaurant logo would go here -->
+              <div class="w-full h-full bg-indigo-100 flex items-center justify-center">
+                <img src="../restaurant/restaurantAsset/<?=$order['res_image'];?>" alt="logo" class="w-full h-full object-cover">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="bg-white p-6 rounded-xl shadow-sm order-card">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <i class="fas fa-list-alt mr-2 text-yellow-500"></i> Your Order
+          </h3>
+          <div class="space-y-4">
+            <?php foreach ($order_items as $item): ?>
+              <div class="flex items-start space-x-4">
+                <?php if ($item['image']): ?>
+                  <img src="../../uploads/menu_images/<?= htmlspecialchars($item['image']) ?>" 
+                       alt="<?= htmlspecialchars($item['name']) ?>" 
+                       class="w-20 h-20 rounded-lg object-cover menu-item-img">
+                <?php else: ?>
+                  <div class="w-20 h-20 rounded-lg bg-gray-100 flex items-center justify-center menu-item-img">
+                    <i class="fas fa-image text-gray-400"></i>
+                  </div>
+                <?php endif; ?>
+                <div class="flex-1">
+                  <h4 class="font-medium text-gray-900"><?= htmlspecialchars($item['name']) ?></h4>
+                  <p class="text-gray-600 text-sm">quantity: <?= $item['quantity'] ?></p>
+                  <?php if ($item['discount'] > 0): ?>
+                    <p class="text-gray-600 text-sm">
+                      <span class="line-through">ETB <?= number_format($item['price'], 2) ?></span>
+                      <span class="text-green-600 ml-2"><?= $item['discount'] ?>% off</span>
+                    </p>
+                  <?php endif; ?>
+                </div>
+                <div class="text-right">
+                  <p class="font-medium text-gray-900">
+                    ETB <?= number_format(($item['quantity'] * $item['price']) - ($item['quantity'] * $item['discount']/100), 2) ?>
+                  </p>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+          
+          <div class="border-t border-gray-200 mt-6 pt-4">
+            <div class="flex justify-between py-2">
+              <span class="text-gray-600"></span>
+              <span class="font-medium">ETB <?= number_format($order['total_amount'], 2) ?></span>
+            </div>
+            <div class="flex justify-between py-2 border-t border-gray-200 mt-2">
+              <span class="text-gray-800 font-semibold">Total Balance which you paid</span>
+              <span class="text-indigo-600 font-bold">ETB <?= number_format($order['total_amount'], 2) ?></span>
+            </div>
+          </div>
+          
+          <?php if (!empty($order['o_description'])): ?>
+            <div class="mt-4 p-3 bg-blue-50 rounded-lg">
+              <h4 class="text-sm font-medium text-blue-800 mb-1">Order Note:</h4>
+              <p class="text-sm text-blue-700 italic"><?= htmlspecialchars($order['o_description']) ?></p>
+            </div>
+          <?php endif; ?>
+        </div>
+
+        <!-- Delivery Info -->
+        <div class="bg-white p-6 rounded-xl shadow-sm order-card">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <i class="fas fa-truck mr-2 text-yellow-500"></i> Delivery Information
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <ERD class="text-sm font-medium text-gray-500">DELIVERY ADDRESS YOU ENTERED</ERD>
+              <p class="mt-1 text-gray-900"><?= htmlspecialchars($order['delivery_address']) ?></p>
+            </div>
+            <div>
+              <h4 class="text-sm font-medium text-gray-500">CONTACT</h4>
+              <p class="mt-1 text-gray-900"><?= htmlspecialchars($order['customer_name']) ?></p>
+              <p class="text-gray-600"><?= htmlspecialchars($order['customer_phone']) ?></p>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <h4 class="text-sm font-medium text-gray-500">SECRET CODE</h4>
+            <div class="mt-2 flex items-center justify-between p-3 bg-indigo-50 rounded-lg">
+              <span class="font-mono font-bold text-indigo-800"><?= htmlspecialchars($order['secret_code']) ?></span>
+              <button onclick="copyToClipboard('<?= htmlspecialchars($order['secret_code']) ?>')" 
+                      class="text-indigo-600 hover:text-indigo-800 transition">
+                <i class="fas fa-copy"></i> Copy
+              </button>
+            </div>
+            <p class="mt-1 text-xs text-gray-500">Keep the above code securely!!.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment & Help -->
+      <div class="space-y-6">
+        <!-- Payment Summary -->
+        <div class="bg-white p-6 rounded-xl shadow-sm order-card">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <i class="fas fa-credit-card mr-2 text-yellow-500"></i> Payment Summary
+          </h3>
+          <div class="space-y-3">
+            <div>
+              <p class="text-sm text-gray-500">Payment Method</p>
+              <p class="font-medium">
+                <?= htmlspecialchars($order['payment_method']) ?>
+                <span class="ml-2 text-green-500">
+                  <i class="fas fa-check-circle"></i> Paid
+                </span>
+              </p>
+            </div>
+            
+            <div>
+              <p class="text-sm text-gray-500">Transaction ID</p>
+              <p class="font-mono text-sm"><?= htmlspecialchars($order['transaction_id']) ?></p>
+            </div>
+            
+            <?php if (!empty($order['payment_screenshot'])): ?>
+              <div class="mt-4">
+                <p class="text-sm text-gray-500 mb-2">Payment Proof screenshot</p>
+                <img src="../../uploads/payments/<?= htmlspecialchars($order['payment_screenshot']) ?>" 
+                     alt="Payment proof" 
+                     class="rounded-lg border border-gray-200 cursor-pointer"
+                     onclick="openImageModal('../../uploads/payments/<?= htmlspecialchars($order['payment_screenshot']) ?>')">
+              </div>
+            <?php endif; ?>
+          </div>
+        </div>
+
+        <!-- Need Help? -->
+        <div class="bg-white p-6 rounded-xl shadow-sm order-card">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <i class="fas fa-question-circle mr-2 text-yellow-500"></i> Need Help?
+          </h3>
+          <p class="text-gray-600 mb-4">If you have any questions about your order, please contact us.</p>
+          <div class="space-y-3">
+            <a href="tel:+251912345678" class="flex items-center text-indigo-600 hover:text-indigo-800 transition">
+              <i class="fas fa-phone-alt mr-2 text-yellow-500"></i> +251 965868933
+            </a>
+            <a href="/../food_ordering_system/public/support.php" class="flex items-center text-indigo-600 hover:text-indigo-800 transition">
+              <i class="fas fa-envelope mr-2 text-yellow-500"></i> g3_food order/support
+            </a>
+          </div>
+        </div>
+
+        <!-- Order Timeline -->
+        <div class="bg-white p-6 rounded-xl shadow-sm order-card">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <i class="fas fa-history mr-2 text-yellow-500"></i> Order Timeline
+          </h3>
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div class="flex-shrink-0 mt-1">
+                <div class="w-4 h-4 bg-indigo-500 rounded-full"></div>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-gray-900">Order placed</p>
+                <p class="text-sm text-gray-500"><?= $formattedDate ?></p>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="flex-shrink-0 mt-1">
+                <div class="w-4 h-4 <?= $order['status'] !== 'pending' ? 'bg-indigo-500' : 'bg-gray-300' ?> rounded-full"></div>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-gray-900">Order confirmed</p>
+                <p class="text-sm text-gray-500">
+                  <?= $order['status'] !== 'pending' ? $formattedDate : 'Pending' ?>
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="flex-shrink-0 mt-1">
+                <div class="w-4 h-4 <?= in_array($order['status'], ['Preparing', 'Out for Delivery', 'Delivered']) ? 'bg-indigo-500' : 'bg-gray-300' ?> rounded-full"></div>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-gray-900">Food preparation</p>
+                <p class="text-sm text-gray-500">
+                  <?= in_array($order['status'], ['Preparing', 'Out for Delivery', 'Delivered']) ? 'In progress' : 'Pending' ?>
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="flex-shrink-0 mt-1">
+                <div class="w-4 h-4 <?= in_array($order['status'], ['Out for Delivery', 'Delivered']) ? 'bg-indigo-500' : 'bg-gray-300' ?> rounded-full"></div>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-gray-900">Out for delivery</p>
+                <p class="text-sm text-gray-500">
+                  <?= in_array($order['status'], ['Out for Delivery', 'Delivered']) ? 'On the way' : 'Pending' ?>
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="flex-shrink-0 mt-1">
+                <div class="w-4 h-4 <?= $order['status'] === 'Delivered' ? 'bg-indigo-500' : 'bg-gray-300' ?> rounded-full"></div>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-gray-900">Delivered</p>
+                <p class="text-sm text-gray-500">
+                  <?= $order['status'] === 'Delivered' ? 'Completed' : 'Pending' ?>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- QR Code Modal -->
+  <div id="qrModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black bg-opacity-50">
+    <div class="bg-white rounded-xl max-w-sm w-full p-6 relative">
+      <button onclick="document.getElementById('qrModal').classList.add('hidden')" 
+              class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times"></i>
+      </button>
+      <h3 class="text-xl font-bold text-center text-gray-800 mb-4">Order Verification</h3>
+      <div class="flex justify-center mb-4">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=<?= htmlspecialchars($order['secret_code']) ?>&size=200x200" 
+             alt="QR Code" class="w-48 h-48">
+      </div>
+      <p class="text-center text-gray-600 mb-2">Scan this QR code to verify your order</p>
+      <p class="text-center text-sm text-gray-500">Order #<?= $order['order_id'] ?></p>
+      <div class="mt-4 flex justify-center">
+        <button onclick="downloadQRCode()" 
+                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+          <i class="fas fa-download mr-2"></i> Download QR
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Modal -->
+  <div id="reviewModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black bg-opacity-50">
+    <div class="bg-white rounded-xl max-w-md w-full p-6 relative">
+      <button onclick="document.getElementById('reviewModal').classList.add('hidden')" 
+              class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times"></i>
+      </button>
+      <h3 class="text-xl font-bold text-center text-gray-800 mb-4">Rate Your Experience</h3>
+      <form method="POST">
+        <div class="mb-6">
+          <p class="text-center text-gray-600 mb-3">How would you rate <?= htmlspecialchars($order['restaurant_name']) ?>?</p>
+          <div class="star-rating flex justify-center space-x-2">
+            <input type="radio" id="star5" name="rating" value="5" checked />
+            <label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
+            <input type="radio" id="star4" name="rating" value="4" />
+            <label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
+            <input type="radio" id="star3" name="rating" value="3" />
+            <label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
+            <input type="radio" id="star2" name="rating" value="2" />
+            <label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
+            <input type="radio" id="star1" name="rating" value="1" />
+            <label for="star1" title="1 star"><i class="fas fa-star"></i></label>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="review" class="block text-sm font-medium text-gray-700 mb-1">Your Review</label>
+          <textarea name="review" id="review" rows="4" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" 
+                    placeholder="How was your experience?"></textarea>
+        </div>
+        <div class="flex justify-center space-x-3">
+          <button type="submit" name="submit_review" 
+                  class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+            <i class="fas fa-check mr-2"></i> Submit
+          </button>
+          <button type="button" onclick="document.getElementById('reviewModal').classList.add('hidden')" 
+                  class="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">
+            <i class="fas fa-times mr-2"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div id="imageModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black bg-opacity-75">
+    <div class="relative max-w-4xl">
+      <button onclick="document.getElementById('imageModal').classList.add('hidden')" 
+              class="absolute -top-10 right-0 text-white hover:text-gray-300">
+        <i class="fas fa-times text-2xl"></i>
+      </button>
+      <img id="modalImage" src="" alt="Enlarged view" class="max-h-screen rounded-lg">
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-4 right-4 hidden">
+    <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center">
+      <i class="fas fa-check-circle mr-2"></i>
+      <span id="toastMessage"></span>
+    </div>
+  </div>
+
+  <?php include_once __DIR__ . "/footer.php";?>
+
+  <script>
+    // Show review modal after delay
+    setTimeout(() => {
+      document.getElementById('reviewModal').classList.remove('hidden');
+    }, 30000); // Show after 30 seconds
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Copied to clipboard!');
+      });
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      toastMessage.textContent = message;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+
+    function openImageModal(src) {
+      document.getElementById('modalImage').src = src;
+      document.getElementById('imageModal').classList.remove('hidden');
+    }
+
+    function downloadQRCode() {
+      const link = document.createElement('a');
+      link.href = `https://api.qrserver.com/v1/create-qr-code/?data=<?= htmlspecialchars($order['secret_code']) ?>&size=200x200`;
+      link.download = `order-<?= $order['order_id'] ?>-qrcode.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+  <script src="javaScript/scroll_up.js"></script>
 </body>
 </html>

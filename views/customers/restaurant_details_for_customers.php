@@ -115,7 +115,7 @@ $restaurantReviews = $reviewModel->getRestaurantReviews($resId);
                             <?php if(!isset($_SESSION['loggedIn'])){
                             ?>
                                 <a href="../auth/customer_login.php">Login</a>
-                                <a href="register.php">Sign Up</a>
+                                <a href="../auth/restaurant_owner_registration.php">Sign Up</a>
                             <?php }else{?>
                                 <div>
                                     <a href="cart.php"><i class="fa-solid fa-cart-plus" style="position: relative">

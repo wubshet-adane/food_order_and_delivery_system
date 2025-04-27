@@ -37,8 +37,11 @@ function sendOrderCompleteEmail($to, $order_id, $customer_name, $restaurant_name
         $mail->AltBody = "Hello $customer_name,\nYour order from $restaurant_name is completed.\nOrder ID: $order_id\nStatus: $status\nSecret Code: $secret_code\nAmount: ETB $amount\nThank you!";
 
         $mail->send();
-        return true;
-    } catch (Exception) {
-        return false;
+        return 'email sent successfully';
+    } catch (Exception $e) {
+        // Log the error message
+        error_log("Email could not be sent. Mailer Error: {$mail->ErrorInfo}");
+        return 'email not sent';
     }
 }
+?>

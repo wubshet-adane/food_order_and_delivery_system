@@ -1,1 +1,13 @@
-{}
+{
+  "name": "food_ordering_system",
+  "version": "1.0.0",
+  "description": "A food ordering system built with Tailwind CSS",
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.4"
+  }
+}

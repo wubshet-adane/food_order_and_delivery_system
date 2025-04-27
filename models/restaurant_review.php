@@ -10,28 +10,23 @@ class Review
     }
 
     //to get specific restaurant review
-    public function getRestaurantReviews($resId)
-    {
+    public function getRestaurantReviews($resId){
         $sql = "SELECT
                     rv.id AS review_id,
                     rv.rating,
                     rv.review_text,
                     rv.created_at,
-                    
                     users.user_id,
-                    users.name AS user_name,
-                    users.email AS user_email
-                    /*
-                    res.restaurant_id,
                     res.name AS restaurant_name,
-                    res.location AS restaurant_address
-                    */
+                    res.image AS restaurant_logo,
+                    users.name AS user_name,
+                    users.image AS user_image,
+                    users.email AS user_email
                 FROM review rv
                 JOIN users ON rv.user_id = users.user_id
                 JOIN restaurants res ON rv.restaurant_id = res.restaurant_id
-                WHERE rv.restaurant_id = ?
-                ORDER BY rv.rating DESC
-                LIMIT 10";
+                WHERE res.restaurant_id = ?
+                ORDER BY rv.rating DESC";
 
         $stmt = $this->conn->prepare($sql);
         // Check if `prepare()` failed
@@ -49,5 +44,6 @@ class Review
         }
         return $review; // Always return an array
     }
+
 }
 ?>

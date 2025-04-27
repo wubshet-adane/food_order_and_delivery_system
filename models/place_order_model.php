@@ -29,7 +29,7 @@ class Place_customer_order_model {
     public function clearCart($user_id) {
         $stmt = $this->conn->prepare("DELETE FROM cart WHERE user_id = ?");
         $stmt->bind_param("i", $user_id);
-        return $stmt->execute();
+        $stmt->execute();
     }
 }
 ?>

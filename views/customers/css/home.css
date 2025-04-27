@@ -201,7 +201,6 @@ body {
 }
 
 .res_card_bottom{
-    background: linear-gradient(to bottom, #ffffff, #a4a1a8);
     border-radius: 0 0 10px 10px;
     margin: 0;
     padding: 6px;
