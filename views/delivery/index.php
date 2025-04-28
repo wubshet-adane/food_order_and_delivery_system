@@ -161,7 +161,7 @@ $conn->close();
         <div class="w-64 bg-indigo-800 text-white p-4">
             <div class="flex items-center justify-between mb-8">
                 <h1 class="text-xl font-bold"> G-3 Food Order</h1>
-                <button class="text-white focus:outline-none lg:hidden" id="sidebar_toggler">
+                <button class="text-white focus:outline-none" id="sidebar_toggler">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
@@ -533,9 +533,7 @@ $conn->close();
                         <p class="text-gray-600 mb-4">Interactive map would load here</p>
                         <div class="animate-pulse h-48 w-full bg-gray-200 rounded"></div>
                     </div>
-                </div>
-            `;
-            
+                </div>`;
             setTimeout(() => {
                 mapContainer.innerHTML = `
                     <div class="w-full h-full bg-gray-100 rounded-lg flex items-center justify-center">
