@@ -40,9 +40,13 @@
             <!-- Dark Mode Toggle Button -->
             <button id="darkModeToggle"><i class="fa-solid fa-moon"></i></button>   
             <div class="profile-dropdown">
-                <a href="javascript:void(0)" class="profile-dropbtn"><img src="../../public/images/<?php echo $_SESSION['profile_image']?>" alt="profile"></a>
+                <a href="javascript:void(0)" class="profile-dropbtn"><img src="<?php echo !empty($_SESSION['profile_image']) ? '../../uploads/user_profiles/' . $_SESSION['profile_image'] : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['name']) . '&size=200';?>" alt="<?=$_SESSION['name']?>"></a>
                 <div class="profile-dropdown-content">
                     <ul>
+                        <p style="text-align: center;">
+                            <img style = "border: 2px dotted black;  border-radius: 50%;" src="<?php echo !empty($_SESSION['profile_image']) ? '../../uploads/user_profiles/' . $_SESSION['profile_image'] : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['name']) . '&size=200';?>" alt="<?=$_SESSION['name']?>" width = "80px" height = "80px">
+                            <p style="font-size: 20px; font-weight: bold; color: black; text-align: center; text-transform: capitalize;"><?=$_SESSION['name']?></p>
+                        </p>
                         <li><a href="profile.php"><i class="fa-solid fa-user"></i>&nbsp;&nbsp; Profile</a></li>
                         <li><a href="cart.php"><i class="fa-solid fa-cart-plus"></i>&nbsp;&nbsp; Cart</a></li>
                         <li><a href="order_history.php"><i class="fa-solid fa-bars"></i>&nbsp;&nbsp; Order History</a></li>

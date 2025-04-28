@@ -142,7 +142,7 @@ $formattedDate = $order_date->format('F j, Y, g:i A');
         <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <i class="fas fa-check text-yellow-500 text-3xl"></i>
         </div>
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">Thank you for your order, <?= htmlspecialchars($order['customer_name']) ?>!</h2>
+        <h2 class="text-2xl font-bold text-gray-500 mb-2">Thank you for your order, <span class="text-blue-700"><?= htmlspecialchars($order['customer_name']) ?></span>!</h2>
         <p class="text-gray-600 mb-4">Your order #<?= $order['order_id'] ?> is confirmed and being prepared.</p>
         
         <!-- Order Status Progress -->
@@ -502,7 +502,7 @@ $formattedDate = $order_date->format('F j, Y, g:i A');
     // Show review modal after delay
     setTimeout(() => {
       document.getElementById('reviewModal').classList.remove('hidden');
-    }, 30000); // Show after 30 seconds
+    }, 1000); // Show after 1 seconds
 
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text).then(() => {

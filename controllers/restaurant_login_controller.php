@@ -32,6 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['password'] = $restaurant['password'];
         $_SESSION['loggedIn'] = true;
         $_SESSION['userType'] = "restaurant";
+        $_SESSION['profile_image'] = $restaurant['image'];
+        $_SESSION['name'] = $restaurant['name'];
 
         //set response message and redirect url
         $response["success"] = true;
