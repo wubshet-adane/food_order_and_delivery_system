@@ -39,8 +39,8 @@
                 </div>
             </div>
             <div>
-                <a href="cart.php"><i class="fa-solid fa-cart-plus" style="position: relative">
-                    <sup style="position: absolute; top: -12px; left: 12px; background: #0f1; color: #111; padding: 3px 2px; font-size: 10px; border-radius: 50%;">
+                <a href="cart.php" class="cart-bag"><i class="fa-solid fa-cart-plus">
+                    <sup style="position: absolute; top: -12px; left: 12px; background: #fff; color: #000; padding: 3px 2px; font-size: 10px; border-radius: 50%;">
                         <?php
                         if(isset($_SESSION['qty'])){
                             echo $_SESSION['qty'];

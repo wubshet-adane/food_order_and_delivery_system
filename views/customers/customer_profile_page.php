@@ -188,12 +188,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div style="text-align: center;">
                     <img src="<?php echo !empty($user['image']) ? '../../uploads/user_profiles/' . $user['image'] : 'https://ui-avatars.com/api/?name=' . urlencode($user['name']) . '&size=200'; ?>" 
                          alt="<?=$user['image']?>" class="profile-picture">
-                    <a href="javascript:void(0);" id="changePictureBtn" style="color: var(--primary-color); text-decoration: none;">Change Picture</a>                     <!-- Hidden image upload form initially -->
+                    <a href="javascript:void(0);" class="picture-btn" id="changePictureBtn"><i class="fa-solid fa-file-pen"></i> &nbsp;<span>Change Profile Picture</span></a>                     <!-- Hidden image upload form initially -->
                     <div id="uploadSection" style="display: none; margin-top: 10px;">
                         <form action="" method="post" enctype="multipart/form-data">
                             <input class="input-file" type="file" name="profile_picture" accept="image/*" required>
                             <button type="submit" name="update_picture" class="btn" id="update_picture_btn">Upload</button>
-                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('uploadSection').style.display='none';">Cancel</button>
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('uploadSection').style.display='none'; document.getElementById('changePictureBtn').style.display = 'inline-block';">Cancel</button>
                         </form>
                     </div>
                 </div>
@@ -381,6 +381,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             });
         });
     </script>
+
+    <script src="javaScript/scroll_up.js"></script>
 
 </body>
 </html>

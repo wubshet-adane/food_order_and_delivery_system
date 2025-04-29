@@ -1,6 +1,6 @@
 /* <style> */
 :root {
-    --primary-color: #ff6b6b;
+    --primary-color: #ff9900;
     --secondary-color: #ffa502;
     --dark-color: #2f3542;
     --light-color: #f1f2f6;
@@ -127,6 +127,32 @@ body {
     display: block;
 }
 
+.picture-btn{
+    color: var(--primary-color);
+    background: white;
+    border: 1px solid var(--primary-color);
+    padding: 8px 20px;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    margin: 0 auto;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.picture-btn span {
+    display: none;
+    transition: transform 0.3s;
+}
+
+.picture-btn:hover span {
+    display: inline;
+    transform: translateX(5px); /* optional animation */
+}
+
 .input-file{
     padding: 10px 15px;
     border: 1px solid #ddd;
@@ -185,7 +211,7 @@ body {
     background: var(--primary-color);
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 8px 25px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;

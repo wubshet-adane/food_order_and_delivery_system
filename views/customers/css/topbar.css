@@ -79,7 +79,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        color: #333;
+        color: #ffffff;
         font-size: 20px;
         border: none;
         cursor: pointer;
@@ -112,8 +112,17 @@
         font-size: 14px;
     }
 
-    .notification-dropbtn:hover  .notification-dropbtn-content{
+    .notification-dropdown:hover  .notification-dropdown-content{
         display: block;
+    }
+
+    .cart-bag{
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        color: #ffffff;
+        font-size: 20px;
+        border: none;
     }
 
     .profile-dropdown{
