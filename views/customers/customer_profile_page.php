@@ -255,7 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ?>
             
             <div style="text-align: center; margin-top: 20px;">
-                <a href="orders.php" class="btn">View All Orders</a>
+                <a href="order_history.php" class="btn">View All Orders</a>
             </div>
         </div>
     </div>
