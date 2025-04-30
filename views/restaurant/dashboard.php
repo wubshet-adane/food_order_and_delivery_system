@@ -47,34 +47,36 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <!--sidebar And MainContent section-->
     <section class="sidebarAndMainContent_section">
         <!--sidbar section-->
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
+            <div class="side_bar_header">
+                <button style="border: none; font-size:24px; background-color: #ffffff00; color: #000;" class="text-white focus:outline-none" id="sidebar_closer">
+                    <i class="fas fa-remove"></i>
+                </button>
+            </div>
             <div class="sidbar_content">
-                 <h2>🍽️ My Restaurant</h2>
                  <ul class="sidebar_ul">
-                    
                     <!-- Restaurant Management -->
-                    <li><a href="?page=display_restaurants">🏠 Manage Restaurants</a></li>
-                    <li><a href="?page=manage_menu" class="active">📋 Manage Menu</a></li>
-                    <li><a href="?page=orders">🛒 Orders</a></li>
-                    <li><a href="?page=rating_and_review">⭐ Ratings & Reviews</a></li>
-
+                    <li><a href="?page=display_restaurants"><i class="fa-solid fa-hotel"></i> &nbsp;&nbsp;Manage Restaurants</a></li>
+                    <li><a href="?page=manage_menu" class="active"><i class="fa-solid fa-utensils"></i> &nbsp;&nbsp;Manage Menu</a></li>
+                    <li><a href="?page=orders"><i class="fas fa-list-ul mr-3"></i> &nbsp;&nbsp;Orders</a></li>
+                    <li><a href="?page=rating_and_review"><i class="fa-solid fa-star"></i> &nbsp;&nbsp;Ratings & Reviews</a></li>
                     <!-- Financial Section -->
                     <li class="dropdown">
-                        <a href="?page=monetary">💰 Monetary ▾</a>
+                        <a href="?page=monetary">
+                            <i class="fa-solid fa-briefcase"></i> &nbsp;&nbsp; Monetary <i class="fa-solid fa-chevron-down" style="float: right;"></i>
+                        </a>
                         <ul class="dropdown-menu">
-                            <li><a href="?page=transactions">💳 Transactions</a></li>
-                            <li><a href="?page=earnings">📈 Earnings</a></li>
-                            <li><a href="?page=payouts">💵 Payouts</a></li>
-                            <li><a href="?page=financial_reports">📊 Financial Reports</a></li>
+                            <li><a href="?page=transactions">💳 &nbsp;&nbsp;Transactions</a></li>
+                            <li><a href="?page=earnings">📈 &nbsp;&nbsp;Earnings</a></li>
+                            <li><a href="?page=payouts">💵 &nbsp;&nbsp;Payouts</a></li>
+                            <li><a href="?page=financial_reports">📊 &nbsp;&nbsp;Financial Reports</a></li>
                         </ul>
                     </li>
-
                     <!-- Analytics & Reports -->
-                    <li><a href="?page=reports_and_analytics">📊 Reports & Analytics</a></li>
-
+                    <li><a href="?page=reports_and_analytics"><i class="fa-solid fa-chart-line"></i> &nbsp;&nbsp;Reports & Analytics</a></li>
                     <!-- Settings & Logout -->
-                    <li><a href="?page=settings">⚙️ Settings</a></li>
-                    <li><a href="?page=logout">🚪 Logout</a></li>
+                    <li><a href="?page=settings"><i class="fas fa-cog mr-3"> </i> &nbsp;&nbsp;Settings</a></li>
+                    <li><a href="logout.html"><i class="fas fa-sign-out-alt mr-3"> </i> &nbsp;&nbsp;Logout</a></li>
                 </ul>
 
             </div>
@@ -82,6 +84,13 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
 
         <!--main-content section-->
         <div class="main-content"> 
+            <h2>
+                <button style="border: none; font-size:24px; background-color: #ffffff00; color: #000;" class="text-white focus:outline-none" id="sidebar_expander" title="toggle sidebar">
+                    <span ><i class="fa-solid fa-bars"></i></span>
+                </button> &nbsp; 
+            </h2>
+            <!--write somthig for restaurant owner-->
+            <h2></h2>
             <?php
             $page = isset($_GET['page']) ? $_GET['page'] : 'display_restaurants';
 
@@ -120,9 +129,6 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                 case 'add_menu':
                     include 'add_menu.php.php';
                     break;
-                case 'logout':
-                    include 'logout.php';
-                    break;
                 default:
                     include 'display_restaurants.php';
             }
@@ -142,6 +148,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <script> closeResponseById("responce_message");</script>
     <!--edit menu modal script-->
     <script src="javaScript/edit_menu_modal.js"></script>
+    <script src="javaScript/side_bar_toggler.js"></script>
 
 </body>
 </html>

@@ -3,13 +3,13 @@
         <div class="logo">
             <a href="../customers/home.php" style="color: white; text-decoration: none;"><img src="../../public/images/logo.jpg" alt="G3 Food Order"></a>
         </div>
+        
         <nav class="nav_menu">
+            <a href="javascript:void(0)" class="notification_icon"><i class="fas fa-bell"></i></a>
             <ul class="nav_list">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Portfolio</a></li>
-                <li><a href="logout.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                <li> 
+                    <img  class="profile_image" src="../../public/images/<?= htmlspecialchars($_SESSION['profile_image']) ?>" alt="Profile Image" title="<?= htmlspecialchars($_SESSION['name'])?>">
+                </li>
             </ul>
         </nav>
 

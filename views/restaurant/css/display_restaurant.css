@@ -4,7 +4,8 @@ body{
 
 /* Container Styling */
 .restaurant-container {
-    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto; /* Center the container */
     margin: 30px auto;
     padding: 20px;
     background: #ffffff;

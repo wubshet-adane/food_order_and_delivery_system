@@ -21,6 +21,10 @@
     ?>
 
     <h2>Add New Menu Item</h2>
+    <div style="display: flex; justify-content: space-between;" >
+        <button id="darkModeToggle">🌙</button>
+        <a href="javascript:history.back()" class="back"><i class="fa-solid fa-backward">&nbsp;&nbsp;Back</i></a>
+    </div>
     <form action="../../controllers/restaurant_menu_controller.php?res_id=<?php echo $thisRestaurantId;?>" method="POST" enctype="multipart/form-data">
         
         <div class="input-group">
@@ -96,6 +100,7 @@
     // Set current year in footer
     document.getElementById('year').innerText = new Date().getFullYear();
 </script>
+<script src="../customers/javaScript/light_and_dark_mode.js"></script>
 
 </body>
 </html>

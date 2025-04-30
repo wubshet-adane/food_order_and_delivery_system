@@ -154,6 +154,7 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/dashboard.css">
     
+    
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen">
@@ -161,8 +162,8 @@ $conn->close();
         <div class="w-64 bg-indigo-800 text-white p-4">
             <div class="flex items-center justify-between mb-8">
                 <h1 class="text-xl font-bold"> G-3 Food Order</h1>
-                <button class="text-white focus:outline-none" id="sidebar_toggler">
-                    <i class="fas fa-bars"></i>
+                <button style="border: none; font-size:24px; background-color: #ffffff00; color: #000;" class="text-white focus:outline-none" id="sidebar_closer">
+                    <i class="fas fa-remove"></i>
                 </button>
             </div>
             
@@ -177,27 +178,27 @@ $conn->close();
             </div>
             
             <nav>
-                <a href="#" class="flex items-center p-2 mb-1 bg-indigo-700 rounded-lg">
+                <a href="#" class="nav-link flex items-center p-2 mb-1 bg-indigo-700 rounded-lg">
                     <i class="fas fa-tachometer-alt mr-3"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="#" class="flex items-center p-2 mb-1 hover:bg-indigo-700 rounded-lg">
+                <a href="#" class="nav-link flex items-center p-2 mb-1 hover:bg-indigo-700 rounded-lg">
                     <i class="fas fa-list-ul mr-3"></i>
                     <span>My Deliveries</span>
                 </a>
-                <a href="#" class="flex items-center p-2 mb-1 hover:bg-indigo-700 rounded-lg">
+                <a href="#" class="nav-link flex items-center p-2 mb-1 hover:bg-indigo-700 rounded-lg">
                     <i class="fas fa-map-marked-alt mr-3"></i>
                     <span>Delivery Map</span>
                 </a>
-                <a href="#" class="flex items-center p-2 mb-1 hover:bg-indigo-700 rounded-lg">
+                <a href="#" class="nav-link flex items-center p-2 mb-1 hover:bg-indigo-700 rounded-lg">
                     <i class="fas fa-chart-line mr-3"></i>
                     <span>Performance</span>
                 </a>
-                <a href="#" class="flex items-center p-2 mb-1 hover:bg-indigo-700 rounded-lg">
+                <a href="#" class="nav-link flex items-center p-2 mb-1 hover:bg-indigo-700 rounded-lg">
                     <i class="fas fa-cog mr-3"></i>
                     <span>Settings</span>
                 </a>
-                <a href="../auth/logout.php" class="flex items-center p-2 mb-1 hover:bg-indigo-700 rounded-lg">
+                <a href="logout.html" class="nav-link flex items-center p-2 mb-1 hover:bg-indigo-700 rounded-lg">
                     <i class="fas fa-sign-out-alt mr-3"></i>
                     <span>Logout</span>
                 </a>
@@ -209,7 +210,7 @@ $conn->close();
             <!-- Header -->
             <header class="bg-white shadow-sm p-4">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold text-gray-800">Delivery Dashboard</h2>
+                    <h2 class="text-xl font-semibold text-gray-800"><button style="border: none; font-size:24px; background-color: #ffffff00; color: #000;" class="text-white focus:outline-none" id="sidebar_expander" title="toggle sidebar"><span ><i class="fa-solid fa-bars"></i></span></button> &nbsp;  <span>Delivery Dashboard</span></h2>
                     <div class="flex items-center">
                         <span class="text-sm text-gray-600 mr-4"><?= date('l, F j, Y') ?></span>
                         <button class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
@@ -549,6 +550,41 @@ $conn->close();
 
         // Load map when map tab is clicked
         document.querySelector('[href="#map"]').addEventListener('click', loadMap);
+    </script>
+    <!--side bar toggler-->
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.querySelector('.w-64');
+            const closer = document.getElementById('sidebar_closer');
+            const expander = document.getElementById('sidebar_expander');
+
+            //check if side bar is hidden
+            if (sidebar.classList.contains('hidden')) {
+                    expander.style.display = 'inline-block';
+                } else {
+                    expander.style.display = 'none';
+                }
+
+            // Toggle sidebar visibility on button click
+            closer.addEventListener('click', function() {
+                sidebar.classList.toggle('hidden');
+                if (sidebar.classList.contains('hidden')) {
+                    expander.style.display = 'inline-block';
+                } else {
+                    expander.style.display = 'none';
+                }
+            });
+
+            expander.addEventListener('click', function() {
+                sidebar.classList.toggle('hidden');
+                if (sidebar.classList.contains('hidden')) {
+                    expander.style.display = 'inline-block';
+                } else {
+                    expander.style.display = 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html>

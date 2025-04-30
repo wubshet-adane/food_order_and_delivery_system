@@ -28,7 +28,10 @@
         </div>
     <div class="container">
         <h2>Register Your Restaurant</h2>
-        <button id="darkModeToggle">🌙</button>
+        <div style="display: flex; justify-content: space-between;" >
+            <button id="darkModeToggle">🌙</button>
+            <a href="javascript:history.back()" class="back"><i class="fa-solid fa-backward">&nbsp;&nbsp;Back</i></a>
+        </div>
 
         <form action="../../controllers/restaurant_register_form_controller.php?action=register" method="POST" enctype="multipart/form-data">
             <!-- Basic Details -->

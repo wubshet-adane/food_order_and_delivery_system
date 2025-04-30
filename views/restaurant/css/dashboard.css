@@ -3,7 +3,7 @@ body {
     box-sizing: border-box;
     margin: auto;
     padding: 0;
-    font-family: "Roboto", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     display: block;
     max-width: 100%;
     position: relative;
@@ -14,21 +14,32 @@ body {
     box-sizing:border-box;
     display: flex;
     max-width: 100%;
-    height: 100%;
+    height: 100mvh;
     margin: 0;
     padding: 0;
+}
+.hidden{
+    display: none;
 }
 
 /* Sidebar Styles */
 .sidebar {
-    position: sticky;
-    top: 2rem;
+    position: relative;
     box-sizing:border-box;
-    width: 25%;
-    background: #ab6701;
-    color: white;
+    width: 16rem;
+    background: #ff9900;
+    color: #1f2937;
     padding: 20px;
-    box-shadow: 2px 0 0 0 black;
+}
+
+.side_bar_header{
+    position: absolute;
+    top: 0;
+    right: 6px;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
 }
 
 .sidbar_content{
@@ -55,21 +66,26 @@ li ul{
 }
 
 .sidebar_ul li a {
-    color: white;
+    color: #1f2937;
     text-decoration: none;
     display: block;
-    font-size: 18px;
-    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     margin: 0;
     padding: 10px;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
 }
 
 .sidebar_ul li a:hover {
     background: rgba(255, 255, 255, 0.8);
-    padding-left: 10px;
-    transition: 0.3s;
     color: #c95101;
-    transform: translateX(20px);
+    border-radius: 10px;
+}
+
+.monetary-section{
+    display: flex;
+    justify-content: space-between;
 }
 
 /* Hide dropdown menu by default */
@@ -93,8 +109,11 @@ li ul{
 /* Main Content */
 .main-content {
     padding: 10px;
-    width: 75%;
+    max-width: 100%;
+    background: #f9f9f9;
     height: 100%;
+    flex: 1;
+    box-sizing: border-box;
 }
 
 /* Modal Background */

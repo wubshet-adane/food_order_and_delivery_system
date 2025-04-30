@@ -29,7 +29,7 @@
             </div>
         <?php }else{?>
             <div class="notification-dropdown">
-                <a href="javascript:void(0)" class="notification-dropbtn"><i class="fa-solid fa-bell"></i></a>
+                <a href="javascript:void(0)" class="notification-dropbtn"><i class="fa-solid fa-bell fa-shake"></i></a>
                 <div class="notification-dropdown-content">
                     <ul>
                         <li><a href="#">Notification 1</a></li>
@@ -40,7 +40,7 @@
             </div>
             <div>
                 <a href="cart.php" class="cart-bag"><i class="fa-solid fa-cart-plus">
-                    <sup style="position: absolute; top: -12px; left: 12px; background: #fff; color: #000; padding: 3px 2px; font-size: 10px; border-radius: 50%;">
+                    <sup style="position: absolute; top: -12px; left: 12px; background: #12f; color: #fff; padding: 3px; font-size: 45%; border-radius: 50%;">
                         <?php
                         if(isset($_SESSION['qty'])){
                             echo $_SESSION['qty'];

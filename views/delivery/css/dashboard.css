@@ -98,6 +98,7 @@
 
         .hidden {
             display: none;
+            transition: all 0.3s ease;
         }
 
         .overflow-auto {
@@ -116,7 +117,29 @@
             overflow-y: auto;
         }
 
+        .nav-link {
+            text-decoration: none;
+            color: var(--gray-800);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: var(--gray-200);
+            color: var(--gray-900);
+        }
+        .nav-link.active {
+            background-color: var(--indigo-600);
+            color: var(--white);
+        }
+
         /* Spacing */
+        .p-2{
+            padding: 0.5rem;
+        }
+
         .p-4 {
             padding: 1rem;
         }
@@ -629,13 +652,21 @@
             white-space: nowrap;
         }
 
+        button:hover{
+            background-color: var(--gray-200);
+            color: var(--gray-900);
+            cursor: pointer;
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+
         /* Responsive */
         @media (min-width: 768px) {
             .md\:flex {
                 display: flex;
             }
             .md\:grid-cols-2 {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns: repeat(4, minmax(0, 1fr));
             }
             .md\:grid-cols-5 {
                 grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -651,16 +682,16 @@
             .lg\:hidden {
                 display: none;
             }
-            .lg\:grid-cols-3 {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
             .lg\:col-span-2 {
                 grid-column: span 2 / span 2;
+            }
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(5, minmax(0, 1fr));
             }
         }
 
         @media (max-width: 768px){
-            .w-64{
-                display: none;
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
             }
         }

@@ -135,6 +135,8 @@ $formattedDate = $order_date->format('F j, Y, g:i A');
   </style>
 </head>
 <body >
+
+  <?php include "topbar.php"?>
   <main class="container mx-auto px-4 py-8">
     <!-- Success Message -->
     <div class="max-w-4xl mx-auto mb-8 p-6 bg-white rounded-xl shadow-sm order-card">
@@ -143,7 +145,7 @@ $formattedDate = $order_date->format('F j, Y, g:i A');
           <i class="fas fa-check text-yellow-500 text-3xl"></i>
         </div>
         <h2 class="text-2xl font-bold text-gray-500 mb-2">Thank you for your order, <span class="text-blue-700"><?= htmlspecialchars($order['customer_name']) ?></span>!</h2>
-        <p class="text-gray-600 mb-4">Your order #<?= $order['order_id'] ?> is confirmed and being prepared.</p>
+        <p class="text-gray-600 mb-4">Your order #<?= $order['order_id'] ?> is placed and being prepared.</p>
         
         <!-- Order Status Progress -->
         <div class="mb-6">
