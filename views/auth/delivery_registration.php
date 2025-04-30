@@ -296,5 +296,8 @@
             });
         });
     </script>
+
+<script src="../customers/javaScript/scroll_up.js" defer loading="async"></script>
+
 </body>
 </html>

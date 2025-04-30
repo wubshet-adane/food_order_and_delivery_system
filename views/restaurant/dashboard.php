@@ -36,6 +36,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <link rel="stylesheet" href="css/manage_restaurants.css">
     <link rel="stylesheet" href="css/manage_menu.css">
     <link rel="stylesheet" href="css/reviews.css">
+    <link rel="stylesheet" href="css/earnings.css">
     <!--sweet alert external library-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -84,13 +85,14 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
 
         <!--main-content section-->
         <div class="main-content"> 
-            <h2>
+            <h2 style="margin-bottom: 0;">
                 <button style="border: none; font-size:24px; background-color: #ffffff00; color: #000;" class="text-white focus:outline-none" id="sidebar_expander" title="toggle sidebar">
                     <span ><i class="fa-solid fa-bars"></i></span>
                 </button> &nbsp; 
+                <!-- Greeting message for restaurant owner -->
+                <storng class="welcome_message">Welcome, <span><?=$_SESSION['name']?></span></storng>   
             </h2>
-            <!--write somthig for restaurant owner-->
-            <h2></h2>
+            
             <?php
             $page = isset($_GET['page']) ? $_GET['page'] : 'display_restaurants';
 

@@ -6,17 +6,8 @@
         
         <nav class="nav_menu">
             <a href="javascript:void(0)" class="notification_icon"><i class="fas fa-bell"></i></a>
-            <ul class="nav_list">
-                <li> 
-                    <img  class="profile_image" src="../../public/images/<?= htmlspecialchars($_SESSION['profile_image']) ?>" alt="Profile Image" title="<?= htmlspecialchars($_SESSION['name'])?>">
-                </li>
-            </ul>
+            <img  class="profile_image" src="../../public/images/<?= htmlspecialchars($_SESSION['profile_image']) ?>" alt="Profile Image" title="<?= htmlspecialchars($_SESSION['name'])?>">
         </nav>
-
-        <!-- Mobile Menu Button -->
-        <div class="menu_toggle" onclick="toggleMenu()">
-            ☰
-        </div>
     </div>
      <!--responce_message section-->
      <div class="responce_message" id="responce_message">

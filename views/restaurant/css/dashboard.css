@@ -91,7 +91,7 @@ li ul{
 /* Hide dropdown menu by default */
 .dropdown-menu {
     display: none;
-    border-left: 4px solid white;
+    border-left: 1px solid #111;
     border-radius: 8px;
     padding: 0;
     list-style: none;
@@ -114,6 +114,12 @@ li ul{
     height: 100%;
     flex: 1;
     box-sizing: border-box;
+}
+
+.welcome_message span{
+    font-style: italic;
+    text-transform: capitalize;
+    color:#0056b3;
 }
 
 /* Modal Background */
@@ -141,6 +147,18 @@ li ul{
     position: relative;
     height: 95vh;
     overflow-y: auto; /* Enables scrolling when content exceeds height */
+}
+
+.greeting_message{
+    font-size: 95%;
+    font-weight: normal;
+    color: #888;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'roboto', sans-serif;
+    font-style: italic;
+    margin-bottom: 2rem;
+    margin-top: 0;
 }
 
 /* Modal Title */
@@ -232,8 +250,20 @@ li ul{
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .sidebarAndMainContent_section{
+        position: relative;
+        min-width: 100%;
+    }
+
+    .sidebar{
+        position: absolute;
+        top: 0;
+        min-width: 16rem;
+        height: 100%;
+    }
+
     .main-content{
-        width: 100%;
+        min-height: 100%;
     }
 
     .edit-modal{

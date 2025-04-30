@@ -102,7 +102,7 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
                 <?php foreach ($restaurants as $restaurant): ?>
                 <div>
                     <div class="res_name">
-                        <span><h1><?= htmlspecialchars($restaurant['name']) ?></h1></span>
+                        <span><h3><?= htmlspecialchars($restaurant['name']) ?></h3></span>
                         <h1><input class="in" type="text" id="name" name="name" value="<?= htmlspecialchars($restaurant['name']) ?>"></h1>
                     </div>
 
@@ -226,6 +226,7 @@ $restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
     </section>
     <!--edit restaurant script-->
     <script src="javaScript/edit_restaurant.js" defer loading="async"></script>
+    <script src="../customers/javaScript/scroll_up.js" defer loading="async"></script>
     <!--map script-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=places&v=weekly" defer loading="async">
     </script>

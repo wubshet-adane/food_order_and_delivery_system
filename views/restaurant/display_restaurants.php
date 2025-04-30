@@ -1,6 +1,11 @@
+<p class="greeting_message">
+        "Here you can manage your restaurant’s menu, view incoming orders, track deliveries, and update business info. Use the sidebar to navigate between different sections of your dashboard."
+    </p>
+
 <section class="restaurant-container">
+    
     <div class="restaurant-header">
-        <h2>📍 My Restaurant Locations</h2>
+        <h2>Your Registered Restaurants</h2>
         <button class="add-restaurant-btn" onclick="location.href='restaurant_register_form.php'">Add Restaurant</button>
     </div>
 
