@@ -68,7 +68,7 @@ document.getElementById('place_order_btn').addEventListener('click', function (e
                         icon: 'success',
                         title: 'Order Placed!',
                         text: result.message || 'Your order has been placed successfully.',
-                        timer: 2000,
+                        timer: 3000,
                         showConfirmButton: false
                     }).then(() => {
                         // Redirect to success page or clear form

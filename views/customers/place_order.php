@@ -171,7 +171,7 @@ session_start();
                                             </ul>
                                             <label for="screenshot" class="upload_label">Upload Screenshot Here:</label><br>
                                             <div>
-                                                <input type="file" id="screenshot_img" name="screenshot" accept="image/*" capture="camera" required onchange="readURL(this)">
+                                                <input type="file" id="screenshot_img" name="screenshot" accept="image/*" required onchange="readURL(this)">
                                             </div>
                                             <span class="error" id="error_screenshot"></span>
                                             <div id="preview"></div><!--display upload image from file-->

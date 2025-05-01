@@ -124,8 +124,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //call function
         $controller = new PlaceOrderController($conn);//create object by constractor
         $result = $controller->placeOrder($customer_id, $res_id, $order_note, $order_status, $secret_code, $filename, $payment_method, $payment_trans, $amount);
+        
+        
         // Send email
-        /*
         global $conn;
         $order_id = $result['order_id'];
         $stmt_email = $conn->prepare("
@@ -154,7 +155,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $order_id = $order_details['order_id'];
         
                     $email_sent = sendOrderCompleteEmail($customer_email, $order_id, $customer_name, $restaurant_name, $secret_code, $status, $amount);
-        
+                 if ($email_sent == 'email sent successfully') {
+                        $result['message'] = 'Order placed succefully, check your email.';
+                    } else {
+                        $result['message'] = 'Order placed but email could not be sent.';
+                    }
                 } else {
                     $result['message'] = 'Order placed but could not retrieve details for email.';
                 }
@@ -164,7 +169,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         // Close statement
         $stmt_email->close();
-        */
         echo json_encode($result);
         
     } catch (Exception $e) {

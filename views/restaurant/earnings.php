@@ -25,12 +25,19 @@ $sql = "
     SELECT SUM(p.amount) AS total_earnings 
         FROM orders o
         JOIN payments p ON o.order_id = p.order_id
-        WHERE o.customer_id = ? $dateCondition";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $restaurant_id);
-$stmt->execute();
-$result = $stmt->get_result()->fetch_assoc();
-$totalEarnings = $result['total_earnings'] ?? 0.00;
+        JOIN users u ON o.customer_id = u.user_id
+        JOIN restaurants r ON o.restaurant_id = r.restaurant_id
+        WHERE r.owner_id = ? $dateCondition";
+if ($stmt = $conn->prepare($sql)) {
+    $stmt->bind_param("i", $restaurant_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $totalEarnings = $result['total_earnings'] ?? 0.00;
+} else {
+    error_log("SQL Error: " . $conn->error);
+    // Optional: throw new Exception("Database query failed.");
+}
+
 
 // Stats cards (today, week, month, all)
 $stats = [];
@@ -40,8 +47,14 @@ foreach (['daily', 'weekly', 'monthly', 'all'] as $period) {
         SELECT SUM(p.amount) AS total 
         FROM orders o
         JOIN payments p ON o.order_id = p.order_id
-        WHERE o.customer_id = ? $cond";
+        JOIN users u ON o.customer_id = u.user_id
+        JOIN restaurants r ON o.restaurant_id = r.restaurant_id
+        WHERE r.owner_id = ? $cond";
     $stmt = $conn->prepare($query);
+    if(!$stmt) {
+        die("SQL Error: " . $conn->error);
+        // Optional: throw new Exception("Database query failed.");
+    }
     $stmt->bind_param("i", $restaurant_id);
     $stmt->execute();
     $res = $stmt->get_result()->fetch_assoc();
@@ -49,25 +62,41 @@ foreach (['daily', 'weekly', 'monthly', 'all'] as $period) {
 }
 
 // Get recent paid transactions
-$transactions = [];
-$sql = "
-    SELECT u.name AS customer_name, p.amount AS total_amount, o.order_date 
-    FROM orders o
-    JOIN payments p ON o.order_id = p.order_id
-    JOIN users u ON o.customer_id = o.customer_id
-    JOIN restaurants r ON o.restaurant_id = r.restaurant_id
-    WHERE o.customer_id = ?
-    ORDER BY order_date DESC LIMIT 10";
-$stmt = $conn->prepare($sql);
-if (!$stmt) {
-    die($conn->error);
+function getRecentTransactions($conn, $restaurant_id, $limit = 100) {
+    $transactions = [];
+
+    $sql = "
+        SELECT 
+            u.name AS customer_name, 
+            p.amount AS total_amount, 
+            o.order_date 
+        FROM orders o
+        JOIN payments p ON o.order_id = p.order_id
+        JOIN users u ON o.customer_id = u.user_id
+        JOIN restaurants r ON o.restaurant_id = r.restaurant_id
+        WHERE r.owner_id = ?
+        ORDER BY o.order_date DESC 
+        LIMIT ?
+    ";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("ii", $restaurant_id, $limit);
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        while ($row = $res->fetch_assoc()) {
+            $transactions[] = $row;
+        }
+
+        $stmt->close();
+    } else {
+        error_log("SQL Error: " . $conn->error);
+        // Optional: throw new Exception("Database query failed.");
+    }
+
+    return $transactions;
 }
-$stmt->bind_param("i", $restaurant_id);
-$stmt->execute();
-$res = $stmt->get_result();
-while ($row = $res->fetch_assoc()) {
-    $transactions[] = $row;
-}
+$transactions = getRecentTransactions($conn, $restaurant_id);
 ?>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -113,10 +142,13 @@ while ($row = $res->fetch_assoc()) {
             <th>Amount</th>
             <th>Date</th>
         </tr>
-        <?php foreach ($transactions as $t): ?>
+
+        <?php 
+        $transactions = array_slice($transactions, 0, 10); // Limit to 10 transactions
+        foreach ($transactions as $t): ?>
             <tr>
                 <td><?= htmlspecialchars($t['customer_name']) ?></td>
-                <td>$<?= number_format($t['total_amount'], 2) ?></td>
+                <td><?= number_format($t['total_amount'], 2) ?> <strong>&nbsp; Birr</strong></td>
                 <td><?= date("M d, Y", strtotime($t['order_date'])) ?></td>
             </tr>
         <?php endforeach; ?>

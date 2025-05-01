@@ -11,19 +11,17 @@ function sendOrderCompleteEmail($to, $order_id, $customer_name, $restaurant_name
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = '0967490154w@gmail.com';
-        $mail->Password = '12ab,.12';
+        $mail->Username = 'esraeladmasu958@gmail.com';
+        $mail->Password = 'dtfxlonzswmgashc';
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587; // Port 587 for TLS
-        $mail->SMTPDebug = 2; // or 3 for more details
-        $mail->Debugoutput = 'html'; // Debug output format
-        $mail->setFrom('0967490154w@gmail.com', 'Food Ordering System');
+        $mail->setFrom('esraeladmasu958@gmail.com', 'G-3 Online Food Ordering System');
         $mail->addAddress($to, $customer_name);
 
         $mail->isHTML(true);
-        $mail->Subject = "🎉 Order #$order_id Completed!";
+        $mail->Subject = "Order #$order_id plaeced successfully!";
         $mail->Body = "<h3>Hello $customer_name,</h3>
-            <p>Your order from <strong>$restaurant_name</strong> is now <strong>completed</strong>.</p>
+            <p>Your order from <strong>$restaurant_name</strong> is now <strong>placed successfully!</strong>.</p>
             <ul>
                 <li><strong>Order ID:</strong> #$order_id</li>
                 <li><strong>Status:</strong> $status</li>
@@ -37,6 +35,7 @@ function sendOrderCompleteEmail($to, $order_id, $customer_name, $restaurant_name
         $mail->AltBody = "Hello $customer_name,\nYour order from $restaurant_name is completed.\nOrder ID: $order_id\nStatus: $status\nSecret Code: $secret_code\nAmount: ETB $amount\nThank you!";
 
         $mail->send();
+        
         return 'email sent successfully';
     } catch (Exception $e) {
         // Log the error message

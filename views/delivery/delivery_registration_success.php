@@ -37,7 +37,7 @@
         
         <div class="contact-info">
             <h3>Need Help?</h3>
-            <p>If you have any questions about your application status, please contact our support team at <strong>support@deliveryapp.com</strong> or call <strong>(800) 123-4567</strong>.</p>
+            <p>If you have any questions about your application status, please contact our support team at <strong><a href="../../public/contact.php">contact us</a></strong> or call <strong>(+251) 965868933</strong>.</p>
         </div>
         
         <a href="dashboard.html" class="btn">Go to Dashboard</a>
