@@ -152,8 +152,8 @@ $transactions = getRecentTransactions($conn, $restaurant_id);
             $index++;
         ?>
             <tr class="<?= $index % 2 == 0 ? 'even_row' : 'odd_row' ?>">
-                <td><?=$index?></td>
-                <td><?= htmlspecialchars($t['customer_name']) ?></td>
+                <td><?=$index?>.</td>
+                <td><?= ucwords(htmlspecialchars($t['customer_name'])) ?></td>
                 <td><?= number_format($t['total_amount'], 2) ?> <strong>&nbsp; Birr</strong></td>
                 <td><?= date("M d, Y", strtotime($t['order_date'])) ?></td>
             </tr>
