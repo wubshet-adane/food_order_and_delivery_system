@@ -145,8 +145,12 @@ $transactions = getRecentTransactions($conn, $restaurant_id);
 
         <?php 
         $transactions = array_slice($transactions, 0, 10); // Limit to 10 transactions
-        foreach ($transactions as $t): ?>
-            <tr>
+        //index numbers for transactions
+        $index = 0;
+        foreach ($transactions as $t): 
+            $index++;
+        ?>
+            <tr class="<?= $index % 2 == 0 ? 'even' : 'odd' ?>">
                 <td><?= htmlspecialchars($t['customer_name']) ?></td>
                 <td><?= number_format($t['total_amount'], 2) ?> <strong>&nbsp; Birr</strong></td>
                 <td><?= date("M d, Y", strtotime($t['order_date'])) ?></td>
