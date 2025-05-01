@@ -138,6 +138,7 @@ $transactions = getRecentTransactions($conn, $restaurant_id);
     <h3>Recent Transactions</h3>
     <table>
         <tr>
+            <th>#</th>
             <th>Customer</th>
             <th>Amount</th>
             <th>Date</th>
