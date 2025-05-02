@@ -6,11 +6,11 @@
         die(json_encode(['error' => 'Unauthorized']));
     }
 
-    $order_id = $_GET['order_id'] ?? 0;
+    $order_id = $_GET['order_id'] ?? null;
 
     // Get order details
     $order_query = "
-        SELECT o.*, p.*, r.name AS restaurant_name, r.location AS restaurant_address
+        SELECT o.*, p.amount AS amount, p.transaction_id AS transaction_id, p.payment_method, p.payment_file, r.name AS restaurant_name, r.location AS restaurant_address
         FROM orders o
         JOIN order_items oi ON o.order_id = oi.order_id
         JOIN menu m ON oi.menu_id = m.menu_id
@@ -109,15 +109,15 @@
                         <?php echo htmlspecialchars($delivery['city']); ?>, <?php echo htmlspecialchars($address['state']); ?> <?php echo htmlspecialchars($address['zip']); ?><br>
                         <?php echo htmlspecialchars($delivery['phone']); ?>
                     <?php else: ?>
-                        Address information not available
+                        &nbsp;&nbsp;&nbsp;&nbsp;Address information not available!
                     <?php endif; ?>
                 </div>
             </div>
             
             <div class="address-card">
-                <div class="address-type">Delivery Instructions</div>
+                <div class="address-type">Order Description</div>
                 <div class="address-details">
-                    <i><?php echo $order['o_description'] ? nl2br(htmlspecialchars($order['o_description'])) : 'No special instructions'; ?></i>
+                    <i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $order['o_description'] ? nl2br(htmlspecialchars('"'.$order['o_description']).'"') : 'No special instructions'; ?></i>
                 </div>
             </div>
         </div>
@@ -134,14 +134,14 @@
                             <i class="fas fa-credit-card"></i> Card ending in <?php echo substr($order['card_number'], -4); ?><br>
                             Exp: <?php echo $order['expiry']; ?>
                         <?php else: ?>
-                            <i class="fas fa-money-bill-wave"></i> <?php echo ucfirst($order['payment_method']); ?>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-money-bill-wave"></i> <?php echo ucfirst($order['payment_method']); ?>
                             <div class="screenshot-container">
                                 <img class="screenshot-image" src="../../uploads/payments/<?=$order['payment_file']?>" alt="screenshot image">
                             </div>
                             <i><strong>Transaction Id: </strong> <?=$order['transaction_id']?></i>
                         <?php endif; ?>
                     <?php else: ?>
-                        Payment information not available
+                        &nbsp;&nbsp;&nbsp;&nbsp;Payment information not available
                     <?php endif; ?>
                 </div>
             </div>
@@ -153,7 +153,7 @@
                         <?php echo nl2br(htmlspecialchars($payment['billing_address'])); ?>
                     <?php else: ?> -->
                         <i>
-                            Same as delivery address
+                        &nbsp;&nbsp;&nbsp;&nbsp;Same as delivery address
                         </i>
                     <!-- <?php endif; ?> -->
                 </div>
@@ -201,9 +201,7 @@
     </div>
 
     <div class="action-buttons">
-        <button class="btn btn-outline">
-            <i class="fas fa-print"></i> generate QR code
-        </button>
+      
         <button class="btn btn-outline" onclick="window.print()">
             <i class="fas fa-print"></i> Print Receipt
         </button>

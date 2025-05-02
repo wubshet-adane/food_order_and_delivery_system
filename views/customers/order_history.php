@@ -10,7 +10,7 @@ require_once '../../config/database.php';
 
 $user_id = $_SESSION['user_id'];
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limit = 6;
+$limit = 8;
 $offset = ($page - 1) * $limit;
 
 // Get total orders for pagination
@@ -27,12 +27,13 @@ $total_stmt->close();
 $order_query = "
     SELECT o.*, p.amount AS amount, r.name AS restaurant_name, r.location AS restaurant_address
     FROM orders o
-    JOIN order_items oi ON o.order_id = oi.order_id
-    JOIN menu m ON oi.menu_id = m.menu_id
     JOIN payments p ON o.order_id = p.order_id
-    JOIN restaurants r ON m.restaurant_id = r.restaurant_id
+    JOIN restaurants r ON o.restaurant_id = r.restaurant_id
     WHERE customer_id = ? ORDER BY order_date DESC LIMIT ? OFFSET ?";
 $order_stmt = $conn->prepare($order_query);
+if ($order_stmt === false) {
+    die('Prepare failed: ' . htmlspecialchars($conn->error));
+}
 $order_stmt->bind_param("iii", $user_id, $limit, $offset);
 $order_stmt->execute();
 $order_result = $order_stmt->get_result();
@@ -82,7 +83,35 @@ $order_stmt->close();
                         
                         <div class="order-summary">
                             <div>
-                                <div class="order-restaurant">From <span style="font-style: italic; color: #134D79FF; text-transform: capitalize; font-weight: bold; "><?=$order['restaurant_name']?></span></div>
+                                <div class="order-restaurant">From <span style="font-style: italic; color: #134D79FF; text-transform: capitalize; font-weight: bold; "><?=$order['restaurant_name']?></span> 
+                                    <!--QR generate btn-->
+                                    <button onclick="document.getElementById('qrModal_<?=$order['order_id']?>').classList.remove('QR_hide')" 
+                                            class="QR_modal_expand ">
+                                        <i class="fas fa-qrcode mr-2"></i> Generate QR Code
+                                    </button>
+                                       <!-- QR Code Modal -->
+                                    <div id="qrModal_<?=$order['order_id']?>" class=" fixed QR_hide">
+                                        <div id="relative">
+                                        <button onclick="document.getElementById('qrModal_<?=$order['order_id']?>').classList.add('QR_hide')" 
+                                                class="QR_modal_close">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <h3>Order Verification</h3>
+                                        <div class="qrimagebox">
+                                            <img src="https://api.qrserver.com/v1/create-qr-code/?data=<?= htmlspecialchars($order['secret_code']) ?>&size=200x200" 
+                                                alt="QR Code" class="w-48 h-48">
+                                        </div>
+                                        <p class=" qr_info text-center text-gray-600 mb-2">Scan this QR code to verify your order</p>
+                                        <p class="orderid text-center text-sm text-gray-500">Order #<?= $order['order_id'] ?></p>
+                                        <div class="downloadqrbtn ">
+                                            <button onclick="downloadQRCode()" 
+                                                    class=" dawnloadbtn ">
+                                            <i class="fas fa-download mr-2"></i> Download QR
+                                            </button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="order-items-count">
                                     <?php
                                     //get order items details fro this order
@@ -104,7 +133,7 @@ $order_stmt->close();
                                     ?>
                                 </div>
                             </div>
-                            <div class="order-amount">$<?php echo number_format($order['amount'], 2); ?></div>
+                            <div class="order-amount">$<?php echo number_format($order['amount'], 2); ?></div>        
                         </div>
                         
                         <div class="order-details" id="details-<?php echo $order['order_id']; ?>">
@@ -169,7 +198,7 @@ $order_stmt->close();
     </div>
 
     <?php include_once __DIR__ . "/footer.php";?>
-    <script src="javaScript/order_detail_toggler.js"></script>
+    <script src="javaScript/order_history_detail_toggler.js"></script>
     <script src="javaScript/cancel_order.js"></script>
 </body>
 </html>

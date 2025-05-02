@@ -63,3 +63,13 @@ document.addEventListener('DOMContentLoaded', function() {
         firstDetailsDiv.classList.add('active');
     }
 });
+
+//function to download QR code
+function downloadQRCode() {
+    const link = document.createElement('a');
+    link.href = `https://api.qrserver.com/v1/create-qr-code/?data=<?= htmlspecialchars($order['secret_code']) ?>&size=200x200`;
+    link.download = `order-<?= $order['order_id'] ?>-qrcode.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }

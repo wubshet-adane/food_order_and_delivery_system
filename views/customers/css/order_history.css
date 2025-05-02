@@ -24,6 +24,10 @@
             color: var(--dark-color);
         }
         
+        i{
+            color: #4ba593;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -326,7 +330,112 @@
             transform: scale(1.2);
             color: var(--secondary-color);
         }
+
+        #qrModal {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            z-index: 1000;
+            align-items: center;        /* vertical centering */
+            justify-content: center;    /* horizontal centering */
+            padding: 1rem;              /* 16px padding */
+            background-color: rgba(0, 0, 0, 0.3); /* backdrop */
+        }
         
+        #relative {
+            background-color: white;       /* Tailwind's `bg-white` */
+            border-radius: 0.75rem;        /* Tailwind's `rounded-xl` = 12px */
+            max-width: 24rem;              /* Tailwind's `max-w-sm` = 384px */
+            width: 100%;                   /* Tailwind's `w-full` */
+            padding: 1.5rem;               /* Tailwind's `p-6` = 24px on all sides */
+            position: relative;            /* Tailwind's `relative` */
+        }
+
+        .QR_modal_close {
+            position: absolute;             /* `absolute` */
+            top: 1rem;                      /* `top-4` = 16px */
+            right: 1rem;                    /* `right-4` = 16px */
+            color: #43454a;                 /* `text-gray-500` */
+            transition: color 0.2s ease;   /* Optional: smooth color change on hover */
+            font-weight: bold;
+            font-size: 1.5rem;             /* `text-2xl` = 24px */
+            padding: 0.2rem 0.5rem;               /* `p-2` = 8px */
+            border-radius: 0.375rem;       /* `rounded-md` = 6px */
+            cursor: pointer;               /* `cursor-pointer` */
+            transition: all 0.2s ease;       /* Optional: smooth transition for hover effects */
+        }
+        
+        .QR_modal_close:hover {
+            color: #000610;    
+            transform: scale(1.2); /* Optional: scale effect on hover */
+        }
+
+        .relative h3 {
+            font-size: 1.25rem;       /* text-xl */
+            text-align: center;       /* text-center */
+            color: #1F2937;           /* text-gray-800 */
+            margin-bottom: 1rem;      /* mb-4 = 16px */
+        }
+        .qrimagebox {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem; /* 16px */
+          }
+          .qr_info {
+            text-align: center;
+            color: #4B5563; /* Tailwind's gray-600 */
+            margin-bottom: 0.5rem; /* 8px */
+          }
+          .orderid {
+            text-align: center;
+            font-size: 0.875rem; /* Tailwind's text-sm */
+            color: #6B7280;      /* Tailwind's gray-500 */
+          }
+          .downloadqrbtn{
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+          }
+          .dawnloadbtn {
+            padding-left: 1rem;      /* px-4 */
+            padding-right: 1rem;
+            padding-top: 0.5rem;      /* py-2 */
+            padding-bottom: 0.5rem;
+            background-color: #4F46E5; /* bg-indigo-600 */
+            color: white;
+            border-radius: 0.5rem;    /* rounded-lg */
+            transition: all 0.2s ease; /* transition */
+          }
+          
+          .dawnloadbtn:hover {
+            background-color: #4338CA; /* hover:bg-indigo-700 */
+          }
+ 
+          .QR_hide{
+            display: none;
+          }
+
+          .QR_modal_expand {
+            display: inline-block;                      /* flex */
+            align-self: center;               /* items-center */
+            padding: .2rem;
+            background-color: #ff990072;         /* bg-purple-600 */
+            color: #4ba593;                      /* text-white */
+            border-radius: 0.3rem;             /* rounded-lg = 8px */
+            transition: all 0.2s ease;         /* transition */
+            border:none;
+            outline: none;
+            font-weight: bold;
+            margin-left: 1rem;
+            cursor: pointer;               /* cursor-pointer */
+        }
+        
+        .QR_modal_expand:hover {
+            background-color: #ff9900;         /* hover:bg-purple-700 */
+        }
+
         .action-buttons {
             display: flex;
             justify-content: flex-end;
