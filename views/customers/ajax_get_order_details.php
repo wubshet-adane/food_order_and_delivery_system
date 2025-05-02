@@ -43,7 +43,7 @@
         FROM order_items oi
         JOIN menu m ON oi.menu_id = m.menu_id
         WHERE oi.order_id = ?";
-    $order_items_stmt = $conn->prepare($order_items_query);    
+    $order_items_stmt = $conn->prepare($order_items_query);
     $order_items_stmt->bind_param("i", $order['order_id']);
     $order_items_stmt->execute();
     $order_items_result = $order_items_stmt->get_result();
@@ -52,7 +52,7 @@
 
     // Get delivery address
     $address_stmt = $conn->prepare("
-    SELECT * FROM customer_delivery_address 
+    SELECT * FROM customer_delivery_address
     WHERE user_id = ?
     ");
     $address_stmt->bind_param("i", $_SESSION['user_id']);
@@ -76,15 +76,17 @@
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                $discount = 0;                
-                $total = 0;                
-                foreach ($items as $item): 
-                $discount += $item['menu_discount'] / 100 * $item['quantity'];
-                $total += ($item['menu_price'] * $item['quantity']) - ($item['menu_discount'] / 100 * $item['quantity']);
-                ?>
+                <?php
+                $discount = 0;
+                $total = 0;
+                foreach ($items as $item):?>
+                    <?php
+                    // Calculate the total price for each item
+                    $discount += $item['menu_discount'] / 100 * $item['quantity'];
+                    $total += ($item['menu_price'] * $item['quantity']) - ($item['menu_discount'] / 100 * $item['quantity']);
+                    ?>
                     <tr>
-                        <td class="item-name"><img style="border-radius: 10px;" src="../../uploads/menu_images/<?php echo $item['menu_image']; ?>" alt="<?php echo $item['menu_image'];?>" width="60px" height="50px"></td>
+                        <td class="item-name"><img style="border-radius: 10px;" src="../../uploads/menu_images/<?php echo $item['menu_image']; ?>" alt="menu_img" width="60px" height="50px"></td>
                         <td class="item-name"><?php echo htmlspecialchars($item['menu_name']); ?></td>
                         <td class="item-price">ETB<?php echo number_format($item['menu_price'], 2); ?></td>
                         <td class="item-quantity"><?php echo $item['quantity']; ?></td>
@@ -165,11 +167,11 @@
             <table class="totals-table">
                 <tr>
                     <td class="total-label">Subtotal:</td>
-                    <td class="total-value">ETB <?php echo number_format($total, 2); ?></td>
+                    <td class="total-value"> <?php echo number_format($total, 2); ?> birr</td>
                 </tr>
                 <tr>
                     <td class="total-label">Delivery Fee:</td>
-                    <td class="total-value">ETB <?php echo number_format($order['amount'] - $total, 2); ?></td>
+                    <td class="total-value"> <?php echo number_format($order['amount'] - $total, 2); ?> birr</td>
                 </tr>
                 <!-- <tr>
                     <td class="total-label">Tax:</td>
@@ -177,18 +179,21 @@
                 </tr> -->
                 <tr>
                     <td class="total-label">Discount:</td>
-                    <td class="total-value">ETB <?php echo number_format($discount, 2); ?></td>
+                    <td class="total-value"> <?php echo number_format($discount, 2); ?> birr</td>
                 </tr>
                 <tr>
                     <td class="total-label">Total:</td>
-                    <td class="total-value grand-total">ETB <?php echo number_format($order['amount'], 2); ?></td>
+                    <td class="total-value grand-total"> <?php echo number_format($order['amount'], 2); ?>birr</td>
                 </tr>
                 <tr>
                     <td>
-                        <i><strong>Secret Code:</strong></i>
+                        <strong>Secret Code:</strong>
                     </td>
-                    <td>
-                        <span style="font-weight: bold; font-family: 'Courier New', Courier, monospace; letter-spacing: 2px;"> <?=$order['secret_code']?></span>
+                    <td style="font-weight: bold; font-family: 'Courier New', Courier, monospace; letter-spacing: 2px; text-align: right;">
+                        <i id="sc_code_value">
+                            <?= $order['secret_code'] ?>
+                            <i class="fa-solid fa-copy" onclick="copyToClipboard('sc_code_value')"></i>
+                        </i>
                     </td>
                 </tr>
             </table>
@@ -211,53 +216,3 @@
             <i class="fas fa-redo"></i> Reorder
         </button> -->
     </div>
-
-    <script>
-        function cancelOrder(orderId) {
-            if (confirm('Are you sure you want to cancel this order?')) {
-                fetch('ajax_cancel_order.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `order_id=${orderId}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Order cancelled successfully');
-                        location.reload();
-                    } else {
-                        alert(data.message || 'Failed to cancel order');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while cancelling the order');
-                });
-            }
-        }
-        
-        // function reorderItems(orderId) {
-
-        //     fetch('ajax_reorder.php', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/x-www-form-urlencoded',
-        //         },
-        //         body: `order_id=${orderId}`
-        //     })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         if (data.success) {
-        //             window.location.href = 'cart.php';
-        //         } else {
-        //             alert(data.message || 'Failed to reorder items');
-        //         }
-        //     })
-        //     .catch(error => {
-        //         console.error('Error:', error);
-        //         alert('An error occurred while processing your reorder');
-        //     });
-        // }
-    </script>

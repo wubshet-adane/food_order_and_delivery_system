@@ -1,4 +1,6 @@
 <?php
+ob_start(); // Must be the first thing
+
 session_start();
 require_once '../../config/database.php';
 
@@ -8,7 +10,7 @@ if (!$owner_id) {
     exit();
 }
 
-$order_id = $_GET['order_id'] ?? 39;
+$order_id = $_GET['order_id'] ?? 72;
 if (!$order_id) die("No order ID found.");
 
 // Fetch order + payment + delivery address info
@@ -64,13 +66,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
         if (!$stmt) die("Prepare failed: " . $conn->error);
         // Bind parameters: restaurant_id, user_id, rating, review_text
         $stmt->bind_param("iiss", $order['restaurant_id'], $_SESSION['userId'], $rating, $review);
-        if (!$stmt) die("Prepare failed: " . $conn->error);
-        $stmt->execute();
+        if (!$stmt) die("Bind failed: " . $conn->error);
+        if (!$stmt->execute()) {
+            echo "<script>document.addEventListener('DOMContentLoaded',()=>{
+                showToast('Error submitting review. Please try again.');
+            });</script>";
+        } else {
+            // Redirect to the same page to avoid resubmission
+            header("Location: " . $_SERVER['PHP_SELF'] . "?order_id=" . $order_id . "&review_submitted=1");
+            exit();
+        }
         $stmt->close();
-        echo "<script>document.addEventListener('DOMContentLoaded',()=>{
-            document.getElementById('reviewModal').classList.add('hidden');
-            showToast('Thank you for your review!');
-        });</script>";
+        // echo "<script>document.addEventListener('DOMContentLoaded',()=>{
+        //     document.getElementById('reviewModal').classList.add('hidden');
+        //     showToast('Thank you for your review!');
+        // });</script>";
     }
 }
 $conn->close();

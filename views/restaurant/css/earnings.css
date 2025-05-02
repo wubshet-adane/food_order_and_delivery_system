@@ -1,45 +1,76 @@
 
-    .filters a {
-        text-decoration: none;
-        margin: 5px;
-        padding: 10px 15px;
-        border-radius: 5px;
-        background: #007bff;
-        color: white;
-    }
-    .filters a.active { 
-        background: #0056b3;
-     }
     .card-boxes { 
         display: flex; 
         flex-wrap: wrap; 
         gap: 20px; 
         margin-top: 20px; 
     }
+
+    .Earnings-Dashboard{
+        display: block;
+        margin: 2rem auto;
+        text-align: center;
+        font-family: 'open sans', sans-serif;
+        font-size: 1.5rem;
+        color: #333;
+    }
+
     .card {
+        position: relative;
         flex: 1;
         min-width: 180px;
-        background: white;
+        background: #f8f8f8;
         padding: 15px;
         border-radius: 10px;
-        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .card h3 { 
         margin: 0; 
         font-size: 1.2em; 
-        color: #555; 
+        font-family: 'Arial', sans-serif;
+        color: #888; 
+        font-weight: 600;
     }
-    .card p { 
-        font-size: 1.5em; 
+
+    .card h5 { 
+        margin-bottom: 1rem; 
+        font-family: 'open sans', sans-serif;
+        font-weight: 200;
         color: #333; 
-        margin-top: 10px; 
+        text-transform: capitalize;
+        font-size: 70%;
+    }
+
+    .card p { 
+        position: absolute;
+        bottom: 0;
+        right: 3px;
+        margin: 5px 0; 
+        font-family: 'open sans', sans-serif; 
+        color: #3a96c4; 
+        font-weight: bold;
+        text-align: right;
+        text-transform: capitalize;
+        font-size: 80%;
+    }
+
+    .chart-title {
+        font-family: 'open sans', sans-serif;
+        font-size: 1.5rem;
+        color: #555;
+        text-align: center;
+        margin-top: 20px;
     }
 
     .chart-container { 
-        margin-top: 40px; 
-        background: white; 
-        padding: 20px; 
-        border-radius: 10px; 
+        width: calc(100% - 40px);
+        max-width: 700px;
+        margin: 0 auto;
+        max-height: 300px;
+        height: 100%;
+        margin-top: 20px;
+        background: #f8f8f8;
+        padding: 20px;
     }
 
     .transaction-table {
@@ -58,13 +89,14 @@
         text-align: left;
     }
     .even_row{
-        background: #f9f9f9;
+        background: #f8f8f8;
     }
     .odd_row{
         background: #ffffff;
     }
+    
     th { 
-        background: #63390c7c;
+        background: #9aaaaa7c;
         color: 111;
         font-weight: bold; 
     }
@@ -72,6 +104,31 @@
         width: 10px; 
     }
 
+    .text-center { 
+        text-align: center; 
+    }
+
+    .view-more-btn {
+        display: inline-block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        color: rgb(0, 117, 143);
+        text-align: center;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    .view-more-btn:hover {
+        color: #00435a;
+    }
+
+    .no-transactions p{
+        font-family: 'open sans', sans-serif;
+        font-size: 1.2rem;
+        text-align: center;
+        margin-top: 3rem;
+        color: #b75555;
+    }
 
     @media(max-width: 600px) {
         .card-boxes { flex-direction: column; }

@@ -1,4 +1,5 @@
 <?php
+ob_start(); // 🛡️ Output buffering starts
 
 session_start();
 
@@ -37,6 +38,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <link rel="stylesheet" href="css/manage_menu.css">
     <link rel="stylesheet" href="css/reviews.css">
     <link rel="stylesheet" href="css/earnings.css">
+    <link rel="stylesheet" href="css/payouts.css">
     <!--sweet alert external library-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -151,6 +153,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <!--edit menu modal script-->
     <script src="javaScript/edit_menu_modal.js"></script>
     <script src="javaScript/side_bar_toggler.js"></script>
+    
 
 </body>
 </html>

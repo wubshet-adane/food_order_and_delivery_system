@@ -102,7 +102,7 @@ body {
     text-align: center;
     margin-bottom: 30px;
 }
-
+ 
 .profile-header h1 {
     color: var(--dark-color);
     margin-bottom: 10px;
@@ -325,6 +325,15 @@ body {
 }
 
 @media (max-width: 768px) {
+    .btn{
+        font-size: 75%;
+        width: fit-content;
+        display: inline;
+        text-transform: capitalize;
+        padding: 6px 3px;
+        margin: auto o;
+    }
+    
     .order-card {
         flex-direction: column;
         text-align: center;

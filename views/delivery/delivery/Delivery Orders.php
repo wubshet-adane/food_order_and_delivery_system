@@ -1,15 +1,5 @@
 <?php
-session_start();
-include '../../config/database.php'; // Database connection
-
-// Check if user is logged in and is a delivery person
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'delivery') {
-    header('Location: login.php');
-    exit;
-}
-
 $deliveryPersonId = $_SESSION['user_id'];
-$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
@@ -42,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function updateOrderStatus($conn, $orderId, $status, $deliveryPersonId) {
-    $stmt = $conn->prepare("UPDATE orders SET status = ? WHERE order_id = ? AND delivery_id = ?");
+    $stmt = $conn->prepare("UPDATE orders SET status = ? WHERE order_id = ? AND delivery_person_id = ?");
     $stmt->bind_param("sii", $status, $orderId, $deliveryPersonId);
     $stmt->execute();
 }
@@ -53,24 +43,34 @@ $delivering = getOrdersByStatus($conn, 'Delivering', $deliveryPersonId);
 $delivered = getOrdersByStatus($conn, 'Delivered', $deliveryPersonId);
 
 function getOrdersByStatus($conn, $status, $deliveryPersonId) {
-    $sql = "SELECT o.*, c.name as customer_name, r.name as restaurant_name 
+    $sql = "SELECT o.*, p.*, u.name as customer_name, r.name as restaurant_name 
             FROM orders o
-            JOIN customers c ON o.customer_id = c.customer_id
+            JOIN users u ON o.customer_id = u.user_id
+            JOIN payments p ON o.order_id = p.order_id
             JOIN restaurants r ON o.restaurant_id = r.restaurant_id
-            WHERE o.status = ? AND o.delivery_id = ?";
-    
+            WHERE o.status = ? AND o.delivery_person_id = ?";
+            if(!$sql){
+                die($conn->error);
+            }
     $stmt = $conn->prepare($sql);
+    if(!$stmt){
+        die($conn->error);
+    }
     $stmt->bind_param("si", $status, $deliveryPersonId);
+    if(!$stmt){
+        die($conn->error);
+    }
     $stmt->execute();
     $result = $stmt->get_result();
     $orders = $result->fetch_all(MYSQLI_ASSOC);
     
-    // Get order items for each order
     foreach ($orders as &$order) {
-        $stmt = $conn->prepare("SELECT m.name, oi.quantity, oi.price 
-                              FROM order_items oi
-                              JOIN menu m ON oi.menu_id = m.menu_id
-                              WHERE oi.order_id = ?");
+        $stmt = $conn->prepare("
+                SELECT m.name, oi.quantity, m.price 
+                FROM order_items oi
+                JOIN menu m ON oi.menu_id = m.menu_id
+                WHERE oi.order_id = ?
+            ");    
         $stmt->bind_param("i", $order['order_id']);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -438,7 +438,7 @@ function getOrdersByStatus($conn, $status, $deliveryPersonId) {
                                 <p><strong><i class="fas fa-user"></i> Customer:</strong> <?php echo htmlspecialchars($order['customer_name']); ?></p>
                                 <p><strong><i class="fas fa-store"></i> Restaurant:</strong> <?php echo htmlspecialchars($order['restaurant_name']); ?></p>
                                 <p><strong><i class="fas fa-calendar-alt"></i> Order Date:</strong> <?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></p>
-                                <p><strong><i class="fas fa-money-bill-wave"></i> Total:</strong> ETB <?php echo number_format($order['total_price'], 2); ?></p>
+                                <p><strong><i class="fas fa-money-bill-wave"></i> Total:</strong> ETB <?php echo number_format($order['amount'], 2); ?></p>
                                 
                                 <div class="order-items">
                                     <p><strong><i class="fas fa-utensils"></i> Items:</strong></p>
@@ -480,7 +480,7 @@ function getOrdersByStatus($conn, $status, $deliveryPersonId) {
                                 <p><strong><i class="fas fa-user"></i> Customer:</strong> <?php echo htmlspecialchars($order['customer_name']); ?></p>
                                 <p><strong><i class="fas fa-store"></i> Restaurant:</strong> <?php echo htmlspecialchars($order['restaurant_name']); ?></p>
                                 <p><strong><i class="fas fa-calendar-alt"></i> Order Date:</strong> <?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></p>
-                                <p><strong><i class="fas fa-money-bill-wave"></i> Total:</strong> ETB <?php echo number_format($order['total_price'], 2); ?></p>
+                                <p><strong><i class="fas fa-money-bill-wave"></i> Total:</strong> ETB <?php echo number_format($order['amount'], 2); ?></p>
                                 
                                 <div class="order-items">
                                     <p><strong><i class="fas fa-utensils"></i> Items:</strong></p>

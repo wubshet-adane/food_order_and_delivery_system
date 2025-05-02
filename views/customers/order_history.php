@@ -10,7 +10,7 @@ require_once '../../config/database.php';
 
 $user_id = $_SESSION['user_id'];
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limit = 4;
+$limit = 6;
 $offset = ($page - 1) * $limit;
 
 // Get total orders for pagination
@@ -25,20 +25,14 @@ $total_stmt->close();
 
 // Get orders with pagination
 $order_query = "
-    SELECT o.*, p.*, r.name AS restaurant_name, r.location AS restaurant_address
+    SELECT o.*, p.amount AS amount, r.name AS restaurant_name, r.location AS restaurant_address
     FROM orders o
     JOIN order_items oi ON o.order_id = oi.order_id
     JOIN menu m ON oi.menu_id = m.menu_id
     JOIN payments p ON o.order_id = p.order_id
     JOIN restaurants r ON m.restaurant_id = r.restaurant_id
     WHERE customer_id = ? ORDER BY order_date DESC LIMIT ? OFFSET ?";
-    if (!$order_query) {
-        die("Query failed: " . $conn->error);
-    }
 $order_stmt = $conn->prepare($order_query);
-if (!$order_stmt) {
-    die("Query failed: " . $conn->error);
-}
 $order_stmt->bind_param("iii", $user_id, $limit, $offset);
 $order_stmt->execute();
 $order_result = $order_stmt->get_result();
@@ -65,7 +59,7 @@ $order_stmt->close();
     <div class="container">
         <div class="page-header">
             <h1 class="page-title">Order History</h1>
-            <a href="profile.php" class="back-btn">
+            <a href="customer_profile_page.php" class="back-btn">
                 <i class="fas fa-arrow-left"></i> Back to Profile
             </a>
         </div>
@@ -127,17 +121,31 @@ $order_stmt->close();
                             <i class="fas fa-chevron-left"></i>
                         </a>
                     </li>
-                <?php endif; ?>
-                
-                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <?php endif; 
+                // Calculate the range of page numbers to display (centered around current page)
+                $start = max(1, $page - 1);
+                $end = min($total_pages, $page + 1);
+
+                if ($start > 1) {
+                    echo '<li class="page-item"><a class="page-link" href="?page=1">1</a></li>';
+                    if ($start > 2) {
+                        echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                    }
+                }
+                for ($i = $start; $i <= $end; $i++): ?>
                     <li class="page-item">
                         <a class="page-link <?php echo $i == $page ? 'active' : ''; ?>" href="?page=<?php echo $i; ?>">
                             <?php echo $i; ?>
                         </a>
                     </li>
-                <?php endfor; ?>
-                
-                <?php if ($page < $total_pages): ?>
+                <?php endfor;
+                if ($end < $total_pages) {
+                    if ($end < $total_pages - 1) {
+                        echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                    }
+                    echo '<li class="page-item"><a class="page-link" href="?page=' . $total_pages . '">' . $total_pages . '</a></li>';
+                }
+                if ($page < $total_pages): ?>
                     <li class="page-item">
                         <a class="page-link" href="?page=<?php echo $page + 1; ?>">
                             <i class="fas fa-chevron-right"></i>
@@ -145,7 +153,8 @@ $order_stmt->close();
                     </li>
                 <?php endif; ?>
             </div>
-        <?php else: ?>
+
+            <?php else: ?>
             <div class="empty-state">
                 <div class="empty-icon">
                     <i class="fas fa-shopping-bag"></i>
@@ -160,72 +169,7 @@ $order_stmt->close();
     </div>
 
     <?php include_once __DIR__ . "/footer.php";?>
-    
-    <script>
-        // Toggle order details
-        function toggleOrderDetails(header) {
-            const orderCard = header.parentElement;
-            const detailsDiv = orderCard.querySelector('.order-details');
-            const orderId = orderCard.getAttribute('data-order-id');
-            
-            if (detailsDiv.classList.contains('active')) {
-                detailsDiv.classList.remove('active');
-            } else {
-                // Load details via AJAX if not already loaded
-                if (detailsDiv.innerHTML.trim() === '') {
-                    loadOrderDetails(orderId, detailsDiv);
-                }
-                detailsDiv.classList.add('active');
-            }
-        }
-        
-        // Load order details via AJAX
-        function loadOrderDetails(orderId, targetElement) {
-            targetElement.innerHTML = `
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading order details...</p>
-                </div>
-            `;
-            
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `ajax_get_order_details.php?order_id=${orderId}`, true);
-            
-            xhr.onload = function() {
-                if (this.status === 200) {
-                    targetElement.innerHTML = this.responseText;
-                } else {
-                    targetElement.innerHTML = `
-                        <div class="empty-state" style="padding: 20px;">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <p>Failed to load order details. Please try again.</p>
-                        </div>
-                    `;
-                }
-            };
-            
-            xhr.onerror = function() {
-                targetElement.innerHTML = `
-                    <div class="empty-state" style="padding: 20px;">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <p>Network error. Please check your connection.</p>
-                    </div>
-                `;
-            };
-            
-            xhr.send();
-        }
-        
-        // Load details for first order automatically
-        document.addEventListener('DOMContentLoaded', function() {
-            const firstOrder = document.querySelector('.order-card');
-            if (firstOrder) {
-                const firstOrderId = firstOrder.getAttribute('data-order-id');
-                const firstDetailsDiv = document.getElementById(`details-${firstOrderId}`);
-                loadOrderDetails(firstOrderId, firstDetailsDiv);
-                firstDetailsDiv.classList.add('active');
-            }
-        });
-    </script>
+    <script src="javaScript/order_detail_toggler.js"></script>
+    <script src="javaScript/cancel_order.js"></script>
 </body>
 </html>
