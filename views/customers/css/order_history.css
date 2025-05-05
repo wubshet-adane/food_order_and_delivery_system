@@ -325,10 +325,14 @@
             color: var(--blue-c0lor);
             cursor: pointer;
             transition: all 0.3s ease;
+            background: var(--secondary-color);
+            border-radius: 5px;
+            padding: 3px;
         }
         #sc_code_value .fa-copy:hover{
-            transform: scale(1.2);
             color: var(--secondary-color);
+            transform: scale(1.1);
+            background: #0000003b;
         }
 
         #qrModal {

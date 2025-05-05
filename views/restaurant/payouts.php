@@ -1,7 +1,10 @@
 <?php
+//controll form submition continously when page reload
+ob_start(); // 🛡️ Output buffering starts
+
 // Get all restaurants owned by this user
 $owner_id = $_SESSION['user_id'];
-$restaurants_stmt = $conn->prepare("SELECT restaurant_id, name FROM restaurants WHERE owner_id = ?");
+$restaurants_stmt = $conn->prepare("SELECT * FROM restaurants WHERE owner_id = ?");
 
 $restaurants_stmt->bind_param("i", $owner_id);
 $restaurants_stmt->execute();
@@ -16,6 +19,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
     $amount = floatval($_POST['amount']);
     $restaurant_id = intval($_POST['restaurant_id']);
 
+    //check restaurant full balance
+    $stmt = $conn->prepare("
+        SELECT sum(p.amount) as full_balance
+        FROM orders o
+        JOIN payments p ON o.order_id = p.order_id
+        JOIN restaurants r ON o.restaurant_id = r.restaurant_id
+        WHERE o.restaurant_id = ? AND o.status = 'delivered' AND r.owner_id = ?
+        GROUP BY o.restaurant_id");
+    $stmt->bind_param("ii", $restaurant_id, $owner_id);    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $restaurant = $result->fetch_assoc();
+    $stmt->close();
+
+    echo "<script>console.log('Restaurant ID: {$restaurant_id}');</script>";
+    echo "<script>console.log('Owner ID: {$owner_id}');</script>";
+    echo "<script>console.log('Restaurant: " . json_encode($restaurant) . "');</script>";
+    echo "<script>console.log('Result: " . json_encode($result->fetch_all(MYSQLI_ASSOC)) . "');</script>";
+    if ($restaurant) {
+        $full_balance = $restaurant['full_balance'];
+    } else {
+        $full_balance = 0;
+    }
+
+    echo "<script>console.log('Full balance: {$full_balance}');</script>";
+
     // Validate restaurant belongs to owner
     $valid_restaurant = false;
     foreach ($restaurants as $r) {
@@ -27,17 +56,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
 
     if ($valid_restaurant) {
         $min_amount = 500; // example rule
+        // Check if amount is valid and within limits
         if ($amount >= $min_amount) {
-            $status = 'pending';
-            $stmt = $conn->prepare("INSERT INTO ask_res_payout (restaurant_id, pay_amount, status) VALUES (?, ?, ?)");
-            $stmt->bind_param("ids", $restaurant_id, $amount, $status);
-            if ($stmt->execute()) {
-                header("Location: ?page=payouts&restaurant_id=" . $restaurant_id . "&success=Payout request submitted!");
-                exit;
-            } else {
-                $error = "Error submitting request. Please try again.";
+            // Check if amount is less than or equal to full balance
+            if ($amount <= $full_balance) {
+                $status = 'pending';
+                $stmt = $conn->prepare("INSERT INTO ask_res_payout (restaurant_id, pay_amount, status) VALUES (?, ?, ?)");
+                $stmt->bind_param("ids", $restaurant_id, $amount, $status);
+                if ($stmt->execute()) {
+                    header("Location: ?page=payouts&restaurant_id=" . $restaurant_id . "&success=Payout request submitted!");
+                    exit;
+                } else {
+                    $error = "Error submitting request. Please try again.";
+                }
+                $stmt->close();
+            }else {
+                $error = "Requested amount exceeds available balance of {$full_balance} birr.";
             }
-            $stmt->close();
         } else {
             $error = "Minimum payout amount is {$min_amount} birr.";
         }
@@ -61,24 +96,26 @@ if ($selected_restaurant_id > 0) {
     <div class="payout-container">
         <h3><i class="fas fa-money-bill-wave"></i> Payout Requests</h3>
 
-<!--         
+        
         <?php if (isset($error)): ?>
-            <div class="alert alert-danger" id="alert-danger">
+            <div class="alert alert-danger" id="alert-danger" style="display: flex; justify-content: space-between;">
                 <p><strong>Error!</strong> <?php echo $error; ?></p>
-                <button class="close" onclick="this.parentElement.style.display='none';"><i class="fa-solid fa-xmark"></i></button>                
+                <button class=".close-error" onclick="this.parentElement.style.display='none';"><i class="fa-solid fa-xmark"></i></button>                
             </div>
         <?php endif; ?>
         <?php if (isset($success)): ?>
-            <div class="alert alert-success" id="alert-success">
+            <div class="alert alert-success" id="alert-success" style="display: flex; justify-content: space-between;">
                 <p><strong>Success!</strong> <?php echo $success; ?></p>
-                <button class="close" onclick="this.parentElement.style.display='none';"><i class="fa-solid fa-xmark"></i></button>
+                <button class=".close-error" onclick="this.parentElement.style.display='none';"><i class="fa-solid fa-xmark"></i></button>
             </div>
-        <?php endif; ?> -->
+        <?php endif; ?>
 
         <!-- Restaurant Selector -->
         <div class="restaurant-selector">
             <label for="restaurant-select">Select Restaurant:</label>
             <select id="restaurant-select" onchange="window.location.href='?page=payouts&restaurant_id='+this.value">
+                <!--add disabled display on option selection area-->
+                <option value=""> select restaurant</option>
                 <?php foreach ($restaurants as $restaurant): ?>
                     <option value="<?= $restaurant['restaurant_id'] ?>" <?= $restaurant['restaurant_id'] == $selected_restaurant_id ? 'selected' : '' ?>>
                         <?= htmlspecialchars($restaurant['name']) ?>
@@ -95,7 +132,7 @@ if ($selected_restaurant_id > 0) {
                 
                 <div class="form-group">
                     <label for="amount">Amount (birr):</label>
-                    <input type="number" id="amount" name="amount" required min="100" step="1">
+                    <input type="number" id="amount" name="amount" required min="100" step="100">
                 </div>
                 <!-- 
                 <div class="form-group">
@@ -154,7 +191,7 @@ if ($selected_restaurant_id > 0) {
             </table>
         <?php endif; ?>
     </div>
-    <!-- <script>
+    <script>
         
         setTimeout(()=>{
                 if(document.getElementById('alert-danger')){
@@ -165,4 +202,4 @@ if ($selected_restaurant_id > 0) {
                 }
             },6000   //close after 6 seconds
         );
-    </script> -->
+    </script>

@@ -10,7 +10,7 @@
 
     // Get order details
     $order_query = "
-        SELECT o.*, p.amount AS amount, p.transaction_id AS transaction_id, p.payment_method, p.payment_file, r.name AS restaurant_name, r.location AS restaurant_address
+        SELECT o.*, p.amount AS total_amount, p.delivery_person_fee, p.transaction_id AS transaction_id, p.payment_method, p.payment_file, r.name AS restaurant_name, r.location AS restaurant_address
         FROM orders o
         JOIN order_items oi ON o.order_id = oi.order_id
         JOIN menu m ON oi.menu_id = m.menu_id
@@ -82,7 +82,7 @@
                 foreach ($items as $item):?>
                     <?php
                     // Calculate the total price for each item
-                    $discount += $item['menu_discount'] / 100 * $item['quantity'];
+                    $discount += $item['menu_discount'] / 100 * $item['quantity'] * $item['menu_price'];
                     $total += ($item['menu_price'] * $item['quantity']) - ($item['menu_discount'] / 100 * $item['quantity']);
                     ?>
                     <tr>
@@ -171,7 +171,7 @@
                 </tr>
                 <tr>
                     <td class="total-label">Delivery Fee:</td>
-                    <td class="total-value"> <?php echo number_format($order['amount'] - $total, 2); ?> birr</td>
+                    <td class="total-value"> <?php echo number_format(($order['delivery_person_fee'] / 0.97), 2); ?> birr</td>
                 </tr>
                 <!-- <tr>
                     <td class="total-label">Tax:</td>
@@ -183,7 +183,7 @@
                 </tr>
                 <tr>
                     <td class="total-label">Total:</td>
-                    <td class="total-value grand-total"> <?php echo number_format($order['amount'], 2); ?>birr</td>
+                    <td class="total-value grand-total"> <?php echo number_format((($order['total_amount'] / 0.95) + ($order['delivery_person_fee'] / 0.97 )), 2); ?>birr</td>
                 </tr>
                 <tr>
                     <td>
@@ -192,7 +192,7 @@
                     <td style="font-weight: bold; font-family: 'Courier New', Courier, monospace; letter-spacing: 2px; text-align: right;">
                         <i id="sc_code_value">
                             <?= $order['secret_code'] ?>
-                            <i class="fa-solid fa-copy" onclick="copyToClipboard('sc_code_value')"></i>
+                            <i class="fa-solid fa-copy" onclick="copyToClipboard('sc_code_value')"><i style="font-weight: 400; font-size: 80%;">Copy</i></i>
                         </i>
                     </td>
                 </tr>

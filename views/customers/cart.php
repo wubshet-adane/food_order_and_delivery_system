@@ -290,8 +290,8 @@ $cart = $cartModel->getCart($user_id);
                     <div class="detail_section">
                         <?php
                             $delivery_fee =" + delivery fee";
-                            $service_fee = $total * 0.05; // 5% service fee
-                            $grand_total = round($total + $service_fee - $total_discount, 2);
+                            $grand_total = round($total - $total_discount, 2);
+                            $service_fee = 0.05 * $grand_total; // Calculate service fee as 5% of the subtotal
                             $grand_total = $grand_total.$delivery_fee; // Calculate the grand total
                         ?>
                         <h2>Order Summary</h2>

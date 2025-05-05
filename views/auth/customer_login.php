@@ -13,12 +13,28 @@
 </head>
 <body>
     <div class="login-container">
+        
         <div style="border-radius: 50%; padding: 20px;">
             <img src="../../public/images/logo-icon.png" alt="" width="100px" height="100px">
             <h2 style="padding: o; margin: 0; text-transform: capitalize; font-weight: 400; font-family: cursive; color:#ff9900;"><strong class="G3">G3</strong> online food</h2>
         </div>
-        <p id="responseMessage" style="font-size: 14px;"></p>
         
+        <p id="responseMessage" style="font-size: 14px;"></p>
+        <?php
+            $error = isset($_GET['error']) ? htmlspecialchars($_GET['error']) : null;
+            $success = isset($_GET['success']) ? htmlspecialchars($_GET['success']) : null;
+            if (isset($error)): ?>
+              <div class="alert alert-danger" id="alert-danger" style="display: flex; justify-content: space-between;">
+                  <p><strong>Error!</strong> <?php echo $error; ?></p>
+                  <button class=".close" onclick="this.parentElement.style.display='none';"><i class="fa-solid fa-xmark"></i></button>                
+              </div>
+            <?php endif; ?>
+            <?php if (isset($success)): ?>
+                <div class="alert alert-success" id="alert-success" style="display: flex; justify-content: space-between;">
+                    <p><strong>Success!</strong> <?php echo $success; ?></p>
+                    <button class=".close" onclick="this.parentElement.style.display='none';"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            <?php endif; ?>
         <form id="loginForm">
             <div class="input-group">
                 <label for="email">Email Address</label>
@@ -40,7 +56,7 @@
             </div>
 
             <div class="options">
-                <a href="forgot_password.php" class="forgot-password">Forgot Password?</a>
+                <a href="../../public/forgot_password.php" class="forgot-password">Forgot Password?</a>
             </div>
             
             <button type="submit" class="login-btn">Login</button>

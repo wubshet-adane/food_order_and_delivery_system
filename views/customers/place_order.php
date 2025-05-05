@@ -85,9 +85,15 @@ session_start();
             //call funtion
             $distance = calculateDistance($res_lat, $res_lng, $del_lat, $del_lon);
             //calculate delivery_fee
-            $delivery_fee = $distance *30;
+            $delivery_fee = $distance * 30;
+            //actual delivery balance for deliivery partners after 3% paid for service fee
+        $delivery_parson_fee =  $delivery_fee - $delivery_fee * 0.03;
+            //total service fee calculated from restauranuts and delivery persons
+        $full_service_fee = floatVal($service_fee) + floatVal($delivery_fee) * 0.03;
             //calculate grand total
-            $grand_total = (floatVal($sub_total) + floatVal($delivery_fee) + floatVal($service_fee)) - floatVal($discount);
+            $grand_total = floatVal($sub_total) + $delivery_fee- floatVal($discount);
+          //  grand total for hotel and restaurant
+            $grand_total_for_restaurant = floatVal($sub_total) - floatVal($discount) - floatVal($service_fee);
             ?>
             <section class="place_order_container">
                 <div class="go_back">
@@ -115,7 +121,7 @@ session_start();
                             <i>original price before any discounts or extra fees.</i>
                         </p>
                         <p><strong>service fee:</strong>
-                            <span id="service_fee"><?php echo round($service_fee, 2);?> </span>birr
+                            <span id="service_fee">0.00 </span>birr
                         </p>
                         <p><strong>discount or Price Reduction:</strong>
                             <span id="discount"><?php echo round($discount, 2);?> </span>birr
@@ -218,10 +224,14 @@ session_start();
                         <div>
                             <input type="hidden" id="cust_id" value="<?php echo $user_Id?>">
                             <input type="hidden" id="res_id" value="<?php echo $res_id?>">
-                            <input type="hidden" id="order_total" value="<?php echo round($grand_total, 2);?>">
+                            <input type="hidden" id="delivery_parson_fee" value="<?php echo round($delivery_parson_fee, 2)?>">
+                            <input type="hidden" id="order_total" value="<?php echo round($grand_total_for_restaurant, 2);?>">
+                            <input type="hidden" id="service_fee" value="<?php echo round($service_fee, 2);?>">
                             <input type="hidden" id="order_note" value="<?php echo htmlspecialchars($note);?>">
                             <input type="hidden" id="order_payment_method" value="<?php echo $paymnet_method?>">
                         </div>
+
+                        <?=var_dump($full_service_fee)?>
 
                         <div class="place_order_section">
                             <button id="place_order_btn">Place Order</button>

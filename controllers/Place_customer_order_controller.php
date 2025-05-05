@@ -19,7 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Sanitize Inputs
         $customer_id = $_SESSION['user_id']; // Normally from session
         $res_id = $_POST['res_id'] ?? null;
+        $delivery_parson_fee = $_POST['delivery_parson_fee'] ?? null;
         $amount = $_POST['grand_total'] ?? null;
+        $service_fee = $_POST['service_fee'] ?? null;
         $order_note = $_POST['order_note'] ?? '';
         $payment_method = $_POST['payment_method'] ?? null;
         $payment_trans = $_POST['transaction_id'] ?? null;
@@ -77,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $this->conn = $conn;
             }
 
-            public function placeOrder($customer_id, $res_id, $order_note, $order_status, $secret_code, $filename, $payment_method, $payment_trans, $amount) {
+            public function placeOrder($customer_id, $res_id, $order_note, $order_status, $secret_code, $filename, $payment_method, $payment_trans, $amount,$delivery_parson_fee, $service_fee) {
                 $cart = new Cart($this->conn);
                 $order = new Place_customer_order_model($this->conn);
                 $payment = new Place_customer_order_model($this->conn);
@@ -98,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $order->addOrderItem($order_id, $item['menu_id'], $item['quantity']);
                     }
                     // 🔹 3. Add payment
-                    $payment->savePayment($order_id, $amount, $payment_method, $filename, $payment_trans);
+                    $payment->savePayment($order_id, $amount, $delivery_parson_fee, $service_fee, $payment_method, $filename, $payment_trans);
                     // 🔹 4. Clear cart
                     $clearCart->clearCart($customer_id);
 
@@ -123,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         //call function
         $controller = new PlaceOrderController($conn);//create object by constractor
-        $result = $controller->placeOrder($customer_id, $res_id, $order_note, $order_status, $secret_code, $filename, $payment_method, $payment_trans, $amount);
+        $result = $controller->placeOrder($customer_id, $res_id, $order_note, $order_status, $secret_code, $filename, $payment_method, $payment_trans, $amount, $delivery_parson_fee, $service_fee);
         
         
         // Send email
@@ -154,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $secret_code = $order_details['secret_code'];
                     $order_id = $order_details['order_id'];
         
-                    $email_sent = sendOrderCompleteEmail($customer_email, $order_id, $customer_name, $restaurant_name, $secret_code, $status, $amount);
+                    $email_sent = sendOrderCompleteEmail($customer_email, $order_id, $customer_name, $restaurant_name, $secret_code, $status, ($amount / 0.95) + ($delivery_parson_fee / 0.97 ));
                  if ($email_sent == 'email sent successfully') {
                         $result['message'] = 'Order placed succefully, check your email.';
                     } else {

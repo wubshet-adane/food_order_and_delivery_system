@@ -20,9 +20,14 @@ class Place_customer_order_model {
         $stmt->execute();
     }
 
-    public function savePayment($order_id, $amount, $payment_method, $screenshot, $payment_trans) {
-        $stmt = $this->conn->prepare("INSERT INTO payments (order_id, amount, payment_method, transaction_id, payment_file) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("idsss", $order_id, $amount, $payment_method, $payment_trans, $screenshot);
+    public function savePayment($order_id, $amount, $delivery_parson_fee, $service_fee, $payment_method, $screenshot, $payment_trans) {
+        $stmt = $this->conn->prepare("
+            INSERT INTO payments (order_id, amount, delivery_person_fee, service_fee, payment_method, transaction_id, payment_file) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)");
+            if ($stmt === false) {
+                die('Prepare failed: ' . htmlspecialchars($this->conn->error));
+            }
+        $stmt->bind_param("idddsss", $order_id, $amount,$delivery_parson_fee, $service_fee, $payment_method, $payment_trans, $screenshot);
         $stmt->execute();
     }
 

@@ -1,5 +1,8 @@
 <?php
+session_start();    
 $deliveryPersonId = $_SESSION['user_id'];
+
+include_once '../../../config/database.php';
 
 // Check connection
 if ($conn->connect_error) {
@@ -43,7 +46,8 @@ $delivering = getOrdersByStatus($conn, 'Delivering', $deliveryPersonId);
 $delivered = getOrdersByStatus($conn, 'Delivered', $deliveryPersonId);
 
 function getOrdersByStatus($conn, $status, $deliveryPersonId) {
-    $sql = "SELECT o.*, p.*, u.name as customer_name, r.name as restaurant_name 
+    $sql = "
+            SELECT o.*, p.amount AS amount, p.payment_method AS payment_method, p.payment_file AS screenshot, u.name as customer_name, r.name as restaurant_name 
             FROM orders o
             JOIN users u ON o.customer_id = u.user_id
             JOIN payments p ON o.order_id = p.order_id

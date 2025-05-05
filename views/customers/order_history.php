@@ -25,7 +25,7 @@ $total_stmt->close();
 
 // Get orders with pagination
 $order_query = "
-    SELECT o.*, p.amount AS amount, r.name AS restaurant_name, r.location AS restaurant_address
+    SELECT o.*, p.amount AS total_amount, p.delivery_person_fee, r.name AS restaurant_name, r.location AS restaurant_address
     FROM orders o
     JOIN payments p ON o.order_id = p.order_id
     JOIN restaurants r ON o.restaurant_id = r.restaurant_id
@@ -133,7 +133,7 @@ $order_stmt->close();
                                     ?>
                                 </div>
                             </div>
-                            <div class="order-amount">$<?php echo number_format($order['amount'], 2); ?></div>        
+                            <div class="order-amount"><?php echo number_format((($order['total_amount'] / 0.95) + ($order['delivery_person_fee'] / 0.97 )), 2); ?> birr</div>        
                         </div>
                         
                         <div class="order-details" id="details-<?php echo $order['order_id']; ?>">

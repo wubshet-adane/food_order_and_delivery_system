@@ -29,6 +29,11 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!--google font-->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.2.0/dist/css/datepicker.min.css">
+    
+
 
     <link rel="stylesheet" href="css/orders.css">
     <link rel="stylesheet" href="css/dashboard.css">
@@ -39,6 +44,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <link rel="stylesheet" href="css/reviews.css">
     <link rel="stylesheet" href="css/earnings.css">
     <link rel="stylesheet" href="css/payouts.css">
+    <link rel="stylesheet" href="css/reports_and_analytics.css">
     <!--sweet alert external library-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -58,6 +64,15 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
             </div>
             <div class="sidbar_content">
                  <ul class="sidebar_ul">
+                    <!-- <?php
+                    //if page isset add class name for all links 'activeLink'
+                    if ($page){
+                        $activeLink = "activeLink";
+                    }else{
+                        $activeLink = '';
+                    }
+                    ?> -->
+
                     <!-- Restaurant Management -->
                     <li><a href="?page=display_restaurants"><i class="fa-solid fa-hotel"></i> &nbsp;&nbsp;Manage Restaurants</a></li>
                     <li><a href="?page=manage_menu" class="active"><i class="fa-solid fa-utensils"></i> &nbsp;&nbsp;Manage Menu</a></li>
@@ -69,7 +84,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                             <i class="fa-solid fa-briefcase"></i> &nbsp;&nbsp; Monetary <i class="fa-solid fa-chevron-down" style="float: right;"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="?page=transactions">💳 &nbsp;&nbsp;Transactions</a></li>
+                            <!-- <li><a href="?page=transactions">💳 &nbsp;&nbsp;Transactions</a></li> -->
                             <li><a href="?page=earnings">📈 &nbsp;&nbsp;Earnings</a></li>
                             <li><a href="?page=payouts">💵 &nbsp;&nbsp;Payouts</a></li>
                             <li><a href="?page=financial_reports">📊 &nbsp;&nbsp;Financial Reports</a></li>
@@ -79,6 +94,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                     <li><a href="?page=reports_and_analytics"><i class="fa-solid fa-chart-line"></i> &nbsp;&nbsp;Reports & Analytics</a></li>
                     <!-- Settings & Logout -->
                     <li><a href="?page=settings"><i class="fas fa-cog mr-3"> </i> &nbsp;&nbsp;Settings</a></li>
+                    <li><a href="?page=settings"><i class="fa-solid fa-circle-question"></i> &nbsp;&nbsp;Help Center</a></li>
                     <li><a href="logout.html"><i class="fas fa-sign-out-alt mr-3"> </i> &nbsp;&nbsp;Logout</a></li>
                 </ul>
 
@@ -107,11 +123,11 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                     include 'display_restaurants.php';
                     break;
                 case 'reports_and_analytics':
-                    include 'reports_and_rnalytics.php';
+                    include 'reports_and_analytics.php';
                     break;
-                case 'transactions':
-                    include 'transactions.php';
-                    break;
+                // case 'transactions':
+                //     include 'transactions.php';
+                //     break;
                 case 'settings':
                     include 'settings.php';
                     break;

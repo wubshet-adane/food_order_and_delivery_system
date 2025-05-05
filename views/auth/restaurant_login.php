@@ -154,6 +154,21 @@ input.invalid {
 </head>
 <body style="background: linear-gradient(rgba(0, 0, 0, 1), rgba(9, 17, 0, 0.1)), url('../../public/images/restaurant_login_bg.jpg');">
     <div class="full-container">
+    <?php
+            $error = isset($_GET['error']) ? htmlspecialchars($_GET['error']) : null;
+            $success = isset($_GET['success']) ? htmlspecialchars($_GET['success']) : null;
+            if (isset($error)): ?>
+              <div class="alert alert-danger" id="alert-danger" style="display: flex; justify-content: space-between;">
+                  <p><strong>Error!</strong> <?php echo $error; ?></p>
+                  <button class=".close" onclick="this.parentElement.style.display='none';"><i class="fa-solid fa-xmark"></i></button>                
+              </div>
+            <?php endif; ?>
+            <?php if (isset($success)): ?>
+                <div class="alert alert-success" id="alert-success" style="display: flex; justify-content: space-between;">
+                    <p><strong>Success!</strong> <?php echo $success; ?></p>
+                    <button class=".close" onclick="this.parentElement.style.display='none';"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            <?php endif; ?>
         <div class="login-container" style="background: linear-gradient(rgba(0, 0, 0, 0), rgba(9, 17, 0, 0.9))">
             <div style="border-radius: 50%; padding: 20px; margin: 0; text-align: center;">
                 <img src="../../public/images/logo-icon.png" alt="" width="100px" height="100px">
@@ -188,7 +203,7 @@ input.invalid {
                         </div>
 
                         <div class="options">
-                            <a href="forgot_password.php" class="forgot-password">Forgot Password?</a>
+                            <a href="../../public/forgot_password.php" class="forgot-password">Forgot Password?</a>
                         </div>
                         
                         <button type="submit" class="login-btn">Login</button>

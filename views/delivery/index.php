@@ -272,12 +272,24 @@ $conn->close();
         const performanceChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                labels: ['Total Deliveries', 'Completed', 'In Progress', 'Pending', 'Cancelled'],
                 datasets: [{
-                    label: 'Deliveries Completed',
-                    data: [12, 19, 15, 17, 22, 25, 18],
-                    backgroundColor: 'rgba(79, 70, 229, 0.7)',
-                    borderColor: 'rgba(79, 70, 229, 1)',
+                    label: 'Delivery Statistics',
+                    data: [<?= $stats['total'] ?>, <?= $stats['completed'] ?>, <?= $stats['in_progress'] ?>, <?= $stats['pending'] ?>, <?= $stats['cancelled'] ?>],
+                    backgroundColor: [
+                        'rgba(79, 70, 229, 0.7)',
+                        'rgba(16, 185, 129, 0.7)',
+                        'rgba(59, 130, 246, 0.7)',
+                        'rgba(245, 158, 11, 0.7)',
+                        'rgba(239, 68, 68, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(79, 70, 229, 1)',
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(59, 130, 246, 1)',
+                        'rgba(245, 158, 11, 1)',
+                        'rgba(239, 68, 68, 1)'
+                    ],
                     borderWidth: 1
                 }]
             },
@@ -296,7 +308,8 @@ $conn->close();
         document.querySelector('.map-container').appendChild(statusCtx);
         
         const statusChart = new Chart(statusCtx, {
-            type: 'doughnut',
+            type: 'pie',
+            flexible: true,
             data: {
                 labels: ['Completed', 'In Progress', 'Pending', 'Cancelled'],
                 datasets: [{

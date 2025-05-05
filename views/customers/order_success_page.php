@@ -18,7 +18,7 @@ $stmt = $conn->prepare("
     SELECT o.*, u.name AS account_name, r.restaurant_id, r.name AS restaurant_name,r.image AS res_image, 
            cda.name AS customer_name, cda.email AS customer_email, 
            cda.delivery_address AS delivery_address, cda.phone AS customer_phone,
-           p.amount AS total_amount, p.payment_method, 
+           p.amount AS total_amount, p.payment_method, p.delivery_person_fee,
            p.payment_file AS payment_screenshot, p.transaction_id AS transaction_id
     FROM orders o
     JOIN restaurants r ON o.restaurant_id = r.restaurant_id
@@ -178,15 +178,15 @@ $formattedDate = $order_date->format('F j, Y, g:i A');
         </div>
         
         <div class="flex flex-wrap justify-center gap-4 mt-6">
-          <button onclick="window.print()" class="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+          <button onclick="window.print()" class="flex items-center px-4 py-2 bg-indigo-300 text-black rounded-lg hover:bg-indigo-700 transition">
             <i class="fas fa-print mr-2"></i> Print Receipt
           </button>
           <button onclick="document.getElementById('qrModal').classList.remove('hidden')" 
-                  class="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+                  class="flex items-center px-4 py-2 bg-purple-300 text-black rounded-lg hover:bg-purple-700 transition">
             <i class="fas fa-qrcode mr-2"></i> View QR Code
           </button>
           <button onclick="document.getElementById('reviewModal').classList.remove('hidden')" 
-                  class="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                  class="flex items-center px-4 py-2 bg-green-300 text-black rounded-lg hover:bg-green-700 transition">
             <i class="fas fa-star mr-2"></i> Leave Review
           </button>
         </div>
@@ -253,13 +253,13 @@ $formattedDate = $order_date->format('F j, Y, g:i A');
           </div>
           
           <div class="border-t border-gray-200 mt-6 pt-4">
-            <div class="flex justify-between py-2">
+            <!-- <div class="flex justify-between py-2">
               <span class="text-gray-600"></span>
               <span class="font-medium">ETB <?= number_format($order['total_amount'], 2) ?></span>
-            </div>
+            </div> -->
             <div class="flex justify-between py-2 border-t border-gray-200 mt-2">
               <span class="text-gray-800 font-semibold">Total Balance which you paid</span>
-              <span class="text-indigo-600 font-bold">ETB <?= number_format($order['total_amount'], 2) ?></span>
+              <span class="text-indigo-600 font-bold">ETB <?= number_format((($order['total_amount'] / 0.95) + ($order['delivery_person_fee'] / 0.97 )), 2) ?></span>
             </div>
           </div>
           
@@ -493,8 +493,8 @@ $formattedDate = $order_date->format('F j, Y, g:i A');
   <div id="imageModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black bg-opacity-75">
     <div class="relative max-w-4xl">
       <button onclick="document.getElementById('imageModal').classList.add('hidden')" 
-              class="absolute -top-10 right-0 text-white hover:text-gray-300">
-        <i class="fas fa-times text-2xl"></i>
+              class="absolute -top-15 right-4 bg-red-500 text-white hover:text-gray-300">
+        <i class="fas fa-times text-2xl ml-4 mr-4"></i>
       </button>
       <img id="modalImage" src="" alt="Enlarged view" class="max-h-screen rounded-lg">
     </div>
