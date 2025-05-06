@@ -45,7 +45,7 @@ $user_id = $_SESSION['user_id'] ?? 0;
             margin: 0 auto;
             padding: 20px;
         }
-        
+
         header {
             display: flex;
             justify-content: center;
