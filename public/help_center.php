@@ -349,7 +349,7 @@ $user_id = $_SESSION['user_id'] ?? 0;
         </div>
         <div class="container">
             <h1><i class="fas fa-question-circle"></i> Help Center</h1>
-            <p>Find answers to your questions and learn how to get the most out of FoodExpress</p>
+            <p>Find answers to your questions and learn how to get the most out of Our Platform</p>
         </div>
     </header>
 
