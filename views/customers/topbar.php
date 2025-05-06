@@ -68,10 +68,11 @@
                         <li><a href="order_history.php"><i class="fa-solid fa-bars"></i>&nbsp;&nbsp; Order History</a></li>
                         <li><a href="profile.php"><i class="fa-solid fa-key"></i>&nbsp;&nbsp; Change password</a></li>
                         <li><a href="account.php"><i class="fa-solid fa-gear"></i>&nbsp;&nbsp; Account settings</a></li>
+                        <li><a href="../../public/support.php"><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp; Support</a></li>
                         <li><a href="logout.html"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp; Logout</a></li>
                     </ul>
                 </div>
             </div>
-        <?php }?>            
+        <?php }?>
     </div>
 </div>

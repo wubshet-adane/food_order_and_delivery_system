@@ -175,7 +175,7 @@ $conn->close();
                 </div>
                 <button class="apply-btn" id="applyDateRange">Apply</button>
             </div>
-            <canvas id="orderTrendsChart" height="300"></canvas>
+            <canvas id="orderTrendsChart" height="700"></canvas>
         </div>
         
         <!-- Order Count Breakdown -->
@@ -214,7 +214,7 @@ $conn->close();
                     <i class="fas fa-download"></i> Export
                 </button>
             </div>
-            <canvas id="topItemsChart" height="300"></canvas>
+            <canvas id="topItemsChart" height="700"></canvas>
             <table>
                 <thead>
                     <tr>
@@ -228,7 +228,7 @@ $conn->close();
                     <tr>
                         <td><?= htmlspecialchars($item['item_name']) ?></td>
                         <td><?= $item['total_sold'] ?></td>
-                        <td>₹<?= number_format($item['total_sold'] * $item['price'], 2) ?></td>
+                        <td><?= number_format($item['total_sold'] * $item['price'], 2) ?> birr</td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -259,7 +259,7 @@ $conn->close();
                         <td>#<?= $order['id'] ?></td>
                         <td><?= date('M j, Y g:i A', strtotime($order['order_date'])) ?></td>
                         <td><?= htmlspecialchars($order['customer_name']) ?></td>
-                        <td>₹<?= number_format($order['total_amount'], 2) ?></td>
+                        <td><?= number_format($order['total_amount'], 2) ?> birr</td>
                         <td><?= $order['cancel_reason'] ? htmlspecialchars($order['cancel_reason']) : 'Not specified' ?></td>
                     </tr>
                     <?php endforeach; ?>
@@ -309,7 +309,7 @@ $conn->close();
                         pointHoverRadius: 6
                     },
                     {
-                        label: 'Revenue (₹)',
+                        label: 'Revenue (birr)',
                         data: trendRevenue,
                         borderColor: '#4361ee',
                         backgroundColor: 'rgba(67, 97, 238, 0.1)',
@@ -385,7 +385,7 @@ $conn->close();
                         position: 'right',
                         title: {
                             display: true,
-                            text: 'Revenue (₹)',
+                            text: 'Revenue (birr)',
                             font: {
                                 weight: 'bold'
                             }
@@ -395,7 +395,7 @@ $conn->close();
                         },
                         ticks: {
                             callback: function(value) {
-                                return '₹' + value.toLocaleString();
+                                return 'birr' + value.toLocaleString();
                             }
                         }
                     },
