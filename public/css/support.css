@@ -58,6 +58,7 @@
             justify-content: space-between;
             align-items: center;   
             padding: .5rem 2rem;  
+            background-color: #966c2b35;
         }
 
         header .topbarInHeader .logopart{
@@ -299,7 +300,7 @@
         }
 
         .btn-submit {
-            background: var(--primary-color);
+            background: var(--delivery-color);
             color: white;
             border: none;
             padding: 12px 25px;
@@ -308,7 +309,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.3s ease;
-            width: 100%;
+            width: ;
         }
 
         .btn-submit:hover {
@@ -326,7 +327,7 @@
             flex: 1;
             min-width: 150px;
             padding: 12px;
-            border: 2px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
             border-radius: 8px;
             background: white;
             cursor: pointer;
@@ -358,15 +359,15 @@
         }
 
         .user-type-btn.customer.active {
-            background: rgba(66, 133, 244, 0.1);
+            background: linear-gradient(to bottom, #11111100, rgba(66, 134, 244, 0.589));
         }
 
         .user-type-btn.restaurant.active {
-            background: rgba(255, 87, 34, 0.1);
+            background: linear-gradient(to bottom, #11111100, rgba(255, 87, 34, 0.589));
         }
 
         .user-type-btn.delivery.active {
-            background: rgba(251, 188, 5, 0.1);
+            background: linear-gradient(to bottom, #11111100, rgba(251, 188, 5, 0.589));
         }
 
         @media (max-width: 768px) {                
