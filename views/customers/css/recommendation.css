@@ -1,135 +1,141 @@
 
+    .recommendation {
+        position: relative;
+        background: #f9f9f9;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
 
-/* Main Section */
-.recommendation {
-    background-color: #c27603;
-    padding: 3px;
-    border-radius: 10px;
-    width: 90%;
-    margin:auto;
-    max-width: 90%;
-}
+    .top-rec {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
 
-/* Container with horizontal layout for h2 and slider */
-.top-rec {
-    margin: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    line-height: 2px;
-}
+    .recomend_title {
+        margin: 0;
+        font-size: 1.2rem;
+        color: #333;
+    }
 
-.top-rec .recomend_title {
-    font-size: 18px;
-    font-family: cursive;
-    color: #fff;
-    text-transform: capitalize;
-}
+    .slider-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-.slider {
-    display: flex;
-    align-items: center;
-}
+    .close-banner {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #999;
+        padding: 0 5px;
+    }
 
-.arrow-button {
-    font-size: 30px;
-    background:none;
-    color: white;
-    padding: 0 6px;
-    border: 1px solid white;
-    border-radius: 50%;
-    margin: 0 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+    .close-banner:hover {
+        color: #333;
+    }
 
-.arrow-button:hover {
-    color: #000000;
-    border-color: #000000;
-}
+    .marquee-container {
+        width: 100%;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 10px;
+    }
 
-/* Recommendation Cards Layout */
-.recommendation-cards {
-    display: flex;
-    overflow-x: auto; /* Allow horizontal scrolling if needed */
-}
+    .marquee-container::-webkit-scrollbar {
+        height: 5px;
+    }
 
-.recommendation-cards a {
-    text-decoration: none;
-    color: #000;
-}
+    .marquee-container::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 5px;
+    }
 
+    .recommendation-cards {
+        display: flex;
+        gap: 15px;
+        padding: 5px 0;
+    }
 
-/* Individual Recommendation Card */
-.recommendation-card {
-    cursor: pointer;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    margin-right: 20px;
-    transition: transform 0.3s ease;
-}
+    .recommendation-card {
+        flex: 0 0 auto;
+        width: 250px;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
 
-.recommendation-card:hover {
-    background-color: #ffffff91;
-}
+    .recommendation-card:hover {
+        transform: translateY(-5px);
+    }
 
-.recommendation-card:hover .image img {
-    transform: scale(1.05);
-}
+    .recommendation-card .image {
+        height: 150px;
+        overflow: hidden;
+    }
 
+    .recommendation-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
 
-/* Image Styling */
-.recommendation-card .image {
-    flex: 1;
-    min-width: 50px;
-    max-width: 70px;
-    margin:auto;
-}
+    .recommendation-card:hover img {
+        transform: scale(1.05);
+    }
 
-.recommendation-card .image img {
-    min-width: 100%;
-    height: 40px;
-    border-radius: 8px;
-    padding: 3px;
-    margin: auto;
-}
+    .recommendation-card .content {
+        padding: 12px;
+    }
 
-/* Content Styling */
-.recommendation-card .content {
-    flex: 2;
-    line-height: 4px;
-    font-size: 12px;
-    margin: 0 5px;
-}
+    .recommendation-card h3 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-.recommendation-card .content p i .fa-star, .fa-solid, .fa-regular{
-    color:#ff9900;
-}
+    .recommendation-card p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #666;
+    }
 
-.recommendation-card .content h3 {
-    margin-bottom: 10px;
-    text-transform: capitalize;
-}
+    .recommendation-card .fa-star {
+        color: #ffc107;
+    }
 
-.recommendation-card .content p {
-    color: #333;
-}
+    .reviewer {
+        margin-left: 5px;
+    }
 
-.recommendation-card .content p strong {
-    font-weight: bold;
-    color: #4CAF50;
-}
+    .slider {
+        display: flex;
+        gap: 5px;
+    }
 
-.reviewer{
-    float: right;
-    background:  #ffffff;
-    padding: 5px 10px;
-    border-radius: 50%;
-    color: #000000;    
-    
-}
+    .arrow-button {
+        background: #eee;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .arrow-button:hover {
+        background: #ddd;
+    }

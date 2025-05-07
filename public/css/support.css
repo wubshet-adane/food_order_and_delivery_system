@@ -61,6 +61,11 @@
             background-color: #966c2b35;
         }
 
+        header .topbarInHeader.scrolled-up {
+            background-color: #ff9900; /* Adjust opacity as needed */
+            transition: background-color 0.3s ease;
+        }
+
         header .topbarInHeader .logopart{
             max-width: 300px;
         }
@@ -309,7 +314,9 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.3s ease;
-            width: ;
+            display: inline-block;
+            text-align: center;
+            margin: auto;
         }
 
         .btn-submit:hover {

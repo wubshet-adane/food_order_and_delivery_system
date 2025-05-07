@@ -19,13 +19,13 @@
         <?php if(!isset($_SESSION['loggedIn'])){
         ?>
             <div class="login_box">
-                <a class="login" href="../auth/customer_login.php" title="continue as customer">Login</a>
+                <a class="login" href="../auth/customer_login.php" title="continue as customer"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
             </div>
             <div class="sign_up_box">
-                <a class="signup" href="register.php" title="continue as customer">SignUp</a>
+                <a class="signup" href="register.php" title="continue as customer"><i class="fa-solid fa-user-plus"></i> SignUp</a>
             </div>
             <div class="login_box">
-                <a class="login" href="../auth/restaurant_login.php" title="continue as restaurant">Login as Restaurant</a>
+                <a class="login" href="../auth/restaurant_login.php" title="continue as restaurant">Continue  as Restaurant</a>
             </div>
         <?php }else{?>
             <div class="notification-dropdown">

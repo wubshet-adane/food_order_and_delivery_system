@@ -1,6 +1,6 @@
 
     <footer class="site-footer">
-        <p id="scrollToTopBtn" title="Go to top"><img src="../../public/images/scrollup icon.jpg" alt="up"></p>
+        <p id="scrollToTopBtn" title="Go to top"><img src="../../public/images/scrollup icon.jpg" alt="Top"></p>
         <div class="footer-container">
             <div class="footer-about">
                 <h3>About Us</h3>

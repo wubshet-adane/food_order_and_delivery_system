@@ -12,330 +12,11 @@ $user_id = $_SESSION['user_id'] ?? 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Help Center - FoodExpress</title>
+    <title>Help Center - G-3 online food ordering system</title>
+    <link rel="icon" href="images/logo-icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #ff6b6b;
-            --secondary-color: #4CAF50;
-            --customer-color: #4285F4;
-            --restaurant-color: #FF5722;
-            --delivery-color: #FBBC05;
-            --dark-color: #2f3542;
-            --light-color: #f8f9fa;
-            --border-color: #e0e0e0;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f5f5f5;
-            color: var(--dark-color);
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-            background: linear-gradient(to bottom, #33333300, #33333300, #33333300, #ffffffcb), url('../images/support_background.png');
-            background-origin: content-box;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: white;
-            text-align: center;
-            border-radius: 0 0 20px 20px;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-            height: 500px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        header .topbarInHeader{
-            width: 100%;
-            position: fixed;
-            top: 0;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;   
-            padding: .5rem 2rem;  
-            background-color: #966c2b35;
-        }
-
-        header .topbarInHeader .logopart{
-            max-width: 300px;
-        }
-
-        header .topbarInHeader .logopart img{
-            object-fit: cover;
-            width: fit-content;
-            max-width: inherit;
-            transition: all 0.3s ease-in-out;
-            border-radius: 5px;
-        }
-
-        header .topbarInHeader .logopart img:hover{
-            transform: scale(1.1);
-            cursor: pointer;
-        }
-
-        header .topbarInHeader .backLink a{
-            font-weight: 600;
-            color: #ff9900;
-            text-decoration: none;
-            background-color: #333;
-            padding: 1rem;
-            border-radius: 30px;
-        } 
-
-        header .topbarInHeader .backLink a:hover{
-            transform: scale(1.1);
-            color: #fff;
-            background-color: #33333368;
-        } 
-
-        .help-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .help-header p {
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .user-type-tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .user-tab {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .user-tab i {
-            font-size: 1.2rem;
-        }
-
-        .user-tab.customer {
-            background: var(--customer-color);
-            color: white;
-        }
-
-        .user-tab.restaurant {
-            background: var(--restaurant-color);
-            color: white;
-        }
-
-        .user-tab.delivery {
-            background: var(--delivery-color);
-            color: white;
-        }
-
-        .user-tab.active {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .help-content {
-            display: none;
-        }
-
-        .help-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .help-section {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-        }
-
-        .help-section h2 {
-            margin-bottom: 20px;
-            color: var(--dark-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .help-section h2 i {
-            color: var(--primary-color);
-        }
-
-        .topic-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .topic-card {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .topic-card:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-
-        .topic-card h3 {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .topic-card i {
-            color: var(--primary-color);
-        }
-
-        .topic-card p {
-            color: #666;
-            font-size: 0.95rem;
-        }
-
-        .detailed-guide {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: var(--shadow);
-            margin-top: 30px;
-        }
-
-        .guide-step {
-            margin-bottom: 25px;
-            padding-bottom: 25px;
-            border-bottom: 1px dashed var(--border-color);
-        }
-
-        .guide-step:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .guide-step h3 {
-            margin-bottom: 15px;
-            color: var(--dark-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .guide-step h3 .step-number {
-            background: var(--primary-color);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-        }
-
-        .guide-step img {
-            max-width: 100%;
-            border-radius: 8px;
-            margin: 15px 0;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-        }
-
-        .guide-step ul, .guide-step ol {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        .guide-step li {
-            margin-bottom: 8px;
-        }
-
-        .contact-support {
-            text-align: center;
-            margin-top: 40px;
-            padding: 30px;
-            background: var(--light-color);
-            border-radius: 10px;
-        }
-
-        .contact-support a {
-            display: inline-block;
-            padding: 12px 25px;
-            background: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-        }
-
-        .contact-support a:hover {
-            background: #ff5252;
-            transform: translateY(-2px);
-        }
-
-        @media (max-width: 768px) {
-            .help-header h1 {
-                font-size: 2rem;
-            }
-
-            .user-type-tabs {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .user-tab {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .topic-list {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/help_center.css">
+    <link rel="stylesheet" href="../views/customers/css/footer.css">
 </head>
 <body>
     <header class="help-header">
@@ -359,7 +40,7 @@ $user_id = $_SESSION['user_id'] ?? 0;
                 <i class="fas fa-user"></i> I'm a Customer
             </button>
             <button class="user-tab restaurant <?= $user_type === 'restaurant' ? 'active' : '' ?>" data-target="restaurant-help">
-                <i class="fas fa-utensils"></i> I'm a Restaurant
+                <i class="fas fa-utensils"></i> I'm a Restaurant Owner
             </button>
             <button class="user-tab delivery <?= $user_type === 'delivery' ? 'active' : '' ?>" data-target="delivery-help">
                 <i class="fas fa-motorcycle"></i> I'm a Delivery Partner
@@ -582,10 +263,13 @@ $user_id = $_SESSION['user_id'] ?? 0;
 
         <div class="contact-support">
             <h3>Still need help?</h3>
-            <p>Our support team is available 24/7 to assist you with any questions or issues.</p>
+            <p>We are available 24/7 to assist you with any questions or issues.</p>
             <a href="support.php"><i class="fas fa-headset"></i> Contact Support</a>
         </div>
     </div>
+    <p style="z-index: 1000;" id="scrollToTopBtn" title="Go to top"><img src="images/scrollup icon.jpg" alt="Go to Top"></p>
+
+    <?php include_once '../views/customers/footer.php'?>
 
     <script>
         // Switch between user type tabs
@@ -655,5 +339,7 @@ $user_id = $_SESSION['user_id'] ?? 0;
             }
         });
     </script>
+    <script src="js/headercolorChangerWhenScrollPage.js"></script>
+    <script src="../views/customers/javaScript/scroll_up.js"></script>
 </body>
 </html>

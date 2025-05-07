@@ -128,7 +128,7 @@ if (isset($_SESSION['userType'])) {
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="faq-answer">
-                            <p><?=$row['answer']?></p>
+                            <p>&spbps;<?=$row['answer']?></p>
                         </div>
                     </div>
                 <?php endforeach; else: ?>
@@ -256,8 +256,11 @@ if (isset($_SESSION['userType'])) {
             </form>
         </div>
     </div>
+    <p style="z-index: 1000;" id="scrollToTopBtn" title="Go to top"><img src="images/scrollup icon.jpg" alt="Go to Top"></p>
     <?php include_once '../views/customers/footer.php'?>
 
     <script src="js/support.js"></script>
+    <script src="js/headercolorChangerWhenScrollPage.js"></script>
+    <script src="../views/customers/javaScript/scroll_up.js"></script>
 </body>
 </html>

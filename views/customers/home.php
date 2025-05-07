@@ -369,4 +369,5 @@
         searchInput.addEventListener('input', fetchRestaurants);
         sortSelect.addEventListener('change', fetchRestaurants);
     </script>
+    <script src="javaScript/recommendation_page.js"></script>
 </html>
