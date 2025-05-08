@@ -47,7 +47,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white rounded-lg shadow p-4">
+                    <!-- <div class="bg-white rounded-lg shadow p-4">
                         <div class="flex items-center">
                             <div class="p-3 rounded-full bg-red-100 text-red-600 mr-4">
                                 <i class="fas fa-times-circle"></i>
@@ -57,7 +57,7 @@
                                 <p class="text-2xl font-bold"><?= $stats['cancelled'] ?></p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Main Content Grid -->

@@ -124,9 +124,6 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                 case 'reports_and_analytics':
                     include 'reports_and_analytics.php';
                     break;
-                // case 'transactions':
-                //     include 'transactions.php';
-                //     break;
                 case 'settings':
                     include 'settings.php';
                     break;

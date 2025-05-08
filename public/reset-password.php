@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $updateStmt->execute();
 
         // Send reset link (or log for demo)
-        $resetLink = "http://localhost:8081/food_ordering_system/public/reset-password-form.php?token=$token&role= $role&email=" . urlencode($email);
+        $resetLink = "http://localhost:8081/food_ordering_system/public/reset-password-form.php?token=$token&role=$role&email=" . urlencode($email);
         $sendtEmail = sendPasswordResetLink($email, $resetLink, $role); // Implement this function to send the email
         if ($sendtEmail !== true) {
             error_log("Email sending failed: " . $sendtEmail);

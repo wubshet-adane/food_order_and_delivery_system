@@ -1,11 +1,12 @@
 
     .recommendation {
         position: relative;
-        background: #f9f9f9;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        background: #ff9900;
+        padding: 15px 30px;
+        margin: 20px auto;
+        max-width: 900px;
+        border-radius: 30px;
+        box-shadow: 0 2px 10px rgba(#ff9900);
     }
 
     .top-rec {
@@ -41,6 +42,7 @@
     }
 
     .marquee-container {
+        margin: auto;
         width: 100%;
         overflow-x: auto;
         scroll-behavior: smooth;
@@ -58,18 +60,23 @@
     }
 
     .recommendation-cards {
+        margin: auto;
         display: flex;
         gap: 15px;
         padding: 5px 0;
     }
 
+    .recommendation-cards a{
+        text-decoration: none;
+    }
+
     .recommendation-card {
         flex: 0 0 auto;
-        width: 250px;
+        width: 300px;
         background: white;
         border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 10px rgba(#111111);
         transition: transform 0.3s;
     }
 
@@ -78,7 +85,7 @@
     }
 
     .recommendation-card .image {
-        height: 150px;
+        height: 80px;
         overflow: hidden;
     }
 
@@ -96,18 +103,21 @@
     .recommendation-card .content {
         padding: 12px;
     }
-
+    
     .recommendation-card h3 {
         margin: 0 0 8px;
-        font-size: 1rem;
+        font-size: 80%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
     .recommendation-card p {
-        margin: 0;
-        font-size: 0.9rem;
+        display: flex;
+        justify-content: space-between;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0 auto;
+        font-size: 0.7rem;
         color: #666;
     }
 

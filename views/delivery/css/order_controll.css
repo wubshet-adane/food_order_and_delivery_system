@@ -1,5 +1,4 @@
-
-:root {
+        :root {
             --primary: #4361ee;
             --primary-light: #4895ef;
             --secondary: #3f37c9;
@@ -15,16 +14,7 @@
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f7fa;
-            color: var(--dark);
-            line-height: 1.6;
-        }
-
-        .delivery_orders_container {
+        .order_control_container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
@@ -296,4 +286,3 @@
                 white-space: nowrap;
             }
         }
-  

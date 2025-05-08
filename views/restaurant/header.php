@@ -6,7 +6,10 @@
         
         <nav class="nav_menu">
             <a href="javascript:void(0)" class="notification_icon"><i class="fas fa-bell"></i></a>
-            <img  class="profile_image" src="../../public/images/<?= htmlspecialchars($_SESSION['profile_image']) ?>" alt="Profile Image" title="<?= htmlspecialchars($_SESSION['name'])?>">
+            <img  class="profile_image" 
+                src="<?= htmlspecialchars($_SESSION['profile_image']) ?  '../../uploads/user_profiles/' . htmlspecialchars($_SESSION['profile_image']): '../../public/images/profile icon.jpg'?>" 
+                alt="Profile" 
+                title="<?= htmlspecialchars($_SESSION['name'])?>" onclick="window.location.href='restaurant_profile_page.php'">
         </nav>
     </div>
      <!--responce_message section-->

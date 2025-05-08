@@ -40,7 +40,6 @@ if (!$tokenValid || !$notExpired) {
 ?>
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,7 +133,8 @@ if (!$tokenValid || !$notExpired) {
     
 
         .input-with-icon .toggle-password{
-            position: absolute;   
+            position: absolute;  
+            left: auto; 
             right: 20px;                     
         }
         .password-rules {

@@ -68,8 +68,7 @@ if ($updateStmt->execute()) {
     }else if ($role == 'restaurant'){
         header("Location: ../views/auth/crestaurant_login.php?success=Password reset successful. use new password and login here");
         exit;
-    }
-    else{
+    }else{
         header("Location: ../public/forgot_password.php?error=invalid role   but your role is $role");
         exit;
     }
