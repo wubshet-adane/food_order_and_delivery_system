@@ -30,6 +30,8 @@ function updateOrderStatus($conn, $orderId, $status, $deliveryPersonId) {
     $stmt->bind_param("sii", $status, $orderId, $deliveryPersonId);
     $stmt->execute();
 }
+
+//create function to to start order to delivery
 function startDelivery($conn, $orderId, $status, $deliveryPersonId) {
     // Check if there is already an ongoing delivery for this person
     $stmtCheck = $conn->prepare("
