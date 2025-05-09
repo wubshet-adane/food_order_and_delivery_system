@@ -46,19 +46,19 @@ if ($restaurants_result->num_rows > 0) {
             $pending_orders[] = $order;
         }
         
-        // Get active orders (Accepted, Preparing, Out for Delivery) for this restaurant
+        // Get active orders (Accepted, Preparing, Ready_for_Delivery) for this restaurant
         $active_stmt = $conn->prepare("
             SELECT o.*, p.*, cda.name AS customer_name, cda.phone AS customer_phone, cda.email AS customer_email, cda.delivery_address
             FROM orders o
             JOIN users u ON o.customer_id = u.user_id
             JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
             JOIN payments p ON o.order_id = p.order_id
-            WHERE o.restaurant_id = ? AND o.status IN ('Accepted', 'Preparing', 'Out for Delivery', 'Delivering')
+            WHERE o.restaurant_id = ? AND o.status IN ('Accepted', 'Preparing', 'Ready_for_Delivery', 'Delivering')
             ORDER BY
                 CASE
                     WHEN o.status = 'Accepted' THEN 1
                     WHEN o.status = 'Preparing' THEN 2
-                    WHEN o.status = 'Out for Delivery' THEN 3
+                    WHEN o.status = 'Ready_for_Delivery' THEN 3
                     WHEN o.status = 'Delivering' THEN 4
                     ELSE 5
                 END,
@@ -292,9 +292,9 @@ if ($restaurants_result->num_rows > 0) {
                                                     <input type="hidden" name="new_status" value="Preparing">
                                                     <button type="submit" name="update_status" class="btn btn-warning">Mark as Preparing</button>
                                                 <?php elseif ($order['status'] == 'Preparing'): ?>
-                                                    <input type="hidden" name="new_status" value="Out for Delivery">
-                                                    <button type="submit" name="update_status" class="btn btn-info">Mark as Out for Delivery</button>
-                                                <?php elseif ($order['status'] == 'Out for Delivery' || $order['status'] == 'Delivering'): ?>
+                                                    <input type="hidden" name="new_status" value="Ready_for_Delivery">
+                                                    <button type="submit" name="update_status" class="btn btn-info">Mark as Ready for Delivery</button>
+                                                <?php elseif ($order['status'] == 'Ready_for_Delivery' || $order['status'] == 'Delivering'): ?>
                                                     <button class="btn btn-secondary" disabled>Awaiting Delivery Completion</button>
                                                 <?php endif; ?>
                                             </div>

@@ -153,7 +153,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link rel="stylesheet" href="css/dashboard.css">
-        <link rel="stylesheet" href="css/order_controll.css">        
+        <link rel="stylesheet" href="css/order_controll.css">
+        <link rel="stylesheet" href="css/delivering_map.css">
         
     </head>
     <body class="bg-gray-100">
@@ -308,41 +309,41 @@
             });
 
             // Delivery Status Chart
-            const statusCtx = document.createElement('canvas');
-            statusCtx.id = 'statusChart';
-            document.querySelector('.map-container').appendChild(statusCtx);
+            // const statusCtx = document.createElement('canvas');
+            // statusCtx.id = 'statusChart';
+            // document.querySelector('.map-container').appendChild(statusCtx);
             
-            const statusChart = new Chart(statusCtx, {
-                type: 'pie',
-                flexible: true,
-                data: {
-                    labels: ['Completed', 'In Progress', 'Pending', 'Cancelled'],
-                    datasets: [{
-                        data: [<?= $stats['completed'] ?>, <?= $stats['in_progress'] ?>, <?= $stats['pending'] ?>, <?= $stats['cancelled'] ?>],
-                        backgroundColor: [
-                            'rgba(16, 185, 129, 0.7)',
-                            'rgba(59, 130, 246, 0.7)',
-                            'rgba(245, 158, 11, 0.7)',
-                            'rgba(239, 68, 68, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(16, 185, 129, 1)',
-                            'rgba(59, 130, 246, 1)',
-                            'rgba(245, 158, 11, 1)',
-                            'rgba(239, 68, 68, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                        }
-                    }
-                }
-            });
+            // const statusChart = new Chart(statusCtx, {
+            //     type: 'pie',
+            //     flexible: true,
+            //     data: {
+            //         labels: ['Completed', 'In Progress', 'Pending', 'Cancelled'],
+            //         datasets: [{
+            //             data: [<?= $stats['completed'] ?>, <?= $stats['in_progress'] ?>, <?= $stats['pending'] ?>, <?= $stats['cancelled'] ?>],
+            //             backgroundColor: [
+            //                 'rgba(16, 185, 129, 0.7)',
+            //                 'rgba(59, 130, 246, 0.7)',
+            //                 'rgba(245, 158, 11, 0.7)',
+            //                 'rgba(239, 68, 68, 0.7)'
+            //             ],
+            //             borderColor: [
+            //                 'rgba(16, 185, 129, 1)',
+            //                 'rgba(59, 130, 246, 1)',
+            //                 'rgba(245, 158, 11, 1)',
+            //                 'rgba(239, 68, 68, 1)'
+            //             ],
+            //             borderWidth: 1
+            //         }]
+            //     },
+            //     options: {
+            //         responsive: true,
+            //         plugins: {
+            //             legend: {
+            //                 position: 'bottom',
+            //             }
+            //         }
+            //     }
+            // });
 
             // Simulate map loading
             function loadMap() {
@@ -378,7 +379,8 @@
                 const sidebar = document.querySelector('.w-64');
                 const closer = document.getElementById('sidebar_closer');
                 const expander = document.getElementById('sidebar_expander');
-
+                sidebar.classList.add('hidden');
+                expander.style.display = 'inline-block';
                 //check if side bar is hidden
                 if (sidebar.classList.contains('hidden')) {
                         expander.style.display = 'inline-block';
@@ -406,5 +408,9 @@
                 });
             });
         </script>
+
+        <footer style="padding: 2rem; color: #333; text-align: center;">
+            &copy; G-3 online food ordering system, 2025. all rights are reserved.
+        </footer>
     </body>
     </html>

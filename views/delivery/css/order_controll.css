@@ -161,6 +161,16 @@
             font-size: 14px;
         }
 
+        .customer_detail{
+            list-style-type: none;
+        }
+
+        .customer_detail{
+            font-family: inherit;
+            font-size: 80%;
+            text-indent: 1rem;
+        }
+
         .order-details strong {
             font-weight: 500;
         }

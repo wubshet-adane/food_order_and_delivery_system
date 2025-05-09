@@ -20,7 +20,7 @@ class OrderUpdate
                 $new_status = $_POST['new_status'];
                 
                 // Validate status transition
-                $valid_statuses = ['Accepted', 'Preparing', 'Out for Delivery'];
+                $valid_statuses = ['Accepted', 'Preparing', 'Ready_for_Delivery'];
                 $stmt = $this->conn->prepare("SELECT status FROM orders WHERE order_id = ? AND restaurant_id IN (SELECT restaurant_id FROM restaurants WHERE owner_id = ?)");
                 $stmt->bind_param("ii", $order_id, $owner_id);
                 $stmt->execute();

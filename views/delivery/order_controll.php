@@ -4,7 +4,7 @@ $deliveryPersonId = $_SESSION['user_id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['start_delivery'])) {
         $orderId = $_POST['order_id'];
-        updateOrderStatus($conn, $orderId, 'Delivering', $deliveryPersonId);
+        startDelivery($conn, $orderId, 'Delivering', $deliveryPersonId);
     } elseif (isset($_POST['confirm_delivery'])) {
         $orderId = $_POST['order_id'];
         $secretCode = $_POST['secret_code'];
@@ -26,22 +26,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function updateOrderStatus($conn, $orderId, $status, $deliveryPersonId) {
-    $stmt = $conn->prepare("UPDATE orders SET status = ? WHERE order_id = ? AND delivery_person_id = ?");
+    $stmt = $conn->prepare("UPDATE orders SET status = ?, delivered_at = now() WHERE order_id = ? AND delivery_person_id = ?");
     $stmt->bind_param("sii", $status, $orderId, $deliveryPersonId);
     $stmt->execute();
 }
+function startDelivery($conn, $orderId, $status, $deliveryPersonId) {
+    // Check if there is already an ongoing delivery for this person
+    $stmtCheck = $conn->prepare("
+        SELECT 1 FROM orders
+        WHERE delivery_person_id = ? AND status = ?
+    ");
+    $stmtCheck->bind_param("is", $deliveryPersonId, $status);
+    $stmtCheck->execute();
+    $stmtCheck->store_result(); // Needed to get num_rows
+    if ($stmtCheck->num_rows > 0) {
+        echo "Update faild another, delivery in progress.";
+       // return $error;
+    } else {
+        // Proceed with updating the order
+        $stmt = $conn->prepare("UPDATE orders SET status = ?, delivery_person_id = ?, assigned_at = now() WHERE order_id = ?");
+        $stmt->bind_param("sii", $status, $deliveryPersonId, $orderId);
+        $stmt->execute();
+        if ($stmt->affected_rows > 0) {
+            echo "Order status updated.";
+        } else {
+            echo "Update failed.";
+            //return $error;
+        }
+        $stmt->close();
+    }
+    $stmtCheck->close();
+}
+
+
 
 // Get orders for this delivery person
-$outForDelivery = getOrdersByStatus($conn, 'Out for Delivery', $deliveryPersonId);
+$outForDelivery = allReadyForDeliveryOrders($conn, 'Ready_for_delivery');
 $delivering = getOrdersByStatus($conn, 'Delivering', $deliveryPersonId);
 $delivered = getOrdersByStatus($conn, 'Delivered', $deliveryPersonId);
 
 function getOrdersByStatus($conn, $status, $deliveryPersonId) {
     $sql = "
-        SELECT o.*, p.amount AS amount, p.payment_method AS payment_method, p.payment_file AS screenshot, 
-               u.name as customer_name, r.name as restaurant_name 
+        SELECT
+            o.*,
+            p.amount AS amount, 
+            p.payment_method AS payment_method, 
+            p.payment_file AS screenshot, 
+            p.delivery_person_fee,
+            cda.name as customer_name,
+            cda.phone as customer_phone,
+            cda.email as customer_email,
+            cda.delivery_address as customer_address,
+            cda.latitude as delivery_latitude,
+            cda.longitude as delivery_longitude,
+            r.name as restaurant_name,
+            r.location as restaurant_address,
+            r.phone as restaurant_phone,
+            r.status as restaurant_status,
+            r.latitude as restaurant_latitude,
+            r.longitude as restaurant_longitude
         FROM orders o
         JOIN users u ON o.customer_id = u.user_id
+        JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
         JOIN payments p ON o.order_id = p.order_id
         JOIN restaurants r ON o.restaurant_id = r.restaurant_id
         WHERE o.status = ? AND o.delivery_person_id = ?";
@@ -51,6 +97,62 @@ function getOrdersByStatus($conn, $status, $deliveryPersonId) {
         die("Prepare failed: " . $conn->error);
     }
     $stmt->bind_param("si", $status, $deliveryPersonId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $orders = $result->fetch_all(MYSQLI_ASSOC);
+
+    foreach ($orders as &$order) {
+        $itemStmt = $conn->prepare("
+            SELECT m.name, oi.quantity, m.price 
+            FROM order_items oi
+            JOIN menu m ON oi.menu_id = m.menu_id
+            WHERE oi.order_id = ?
+        ");
+        if (!$itemStmt) {
+            die("Inner prepare failed: " . $conn->error);
+        }
+        $itemStmt->bind_param("i", $order['order_id']);
+        $itemStmt->execute();
+        $itemResult = $itemStmt->get_result();
+        $order['items'] = $itemResult->fetch_all(MYSQLI_ASSOC);
+        $itemStmt->close(); // Always close prepared statements
+    }
+
+    $stmt->close(); // Close outer statement too
+    return $orders;
+}
+function allReadyForDeliveryOrders($conn, $status) {
+    $sql = "
+        SELECT
+            o.*,
+            p.amount AS amount, 
+            p.payment_method AS payment_method, 
+            p.payment_file AS screenshot, 
+            p.delivery_person_fee,
+            cda.name as customer_name,
+            cda.phone as customer_phone,
+            cda.email as customer_email,
+            cda.delivery_address as customer_address,
+            cda.latitude as delivery_latitude,
+            cda.longitude as delivery_longitude,
+            r.name as restaurant_name,
+            r.location as restaurant_address,
+            r.phone as restaurant_phone,
+            r.status as restaurant_status,
+            r.latitude as restaurant_latitude,
+            r.longitude as restaurant_longitude
+        FROM orders o
+        JOIN users u ON o.customer_id = u.user_id
+        JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
+        JOIN payments p ON o.order_id = p.order_id
+        JOIN restaurants r ON o.restaurant_id = r.restaurant_id
+        WHERE o.status = ?";
+        
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
+    $stmt->bind_param("s", $status);
     $stmt->execute();
     $result = $stmt->get_result();
     $orders = $result->fetch_all(MYSQLI_ASSOC);
@@ -98,7 +200,7 @@ function getOrdersByStatus($conn, $status, $deliveryPersonId) {
         
         <div class="tabs">
             <div class="tab active" onclick="openTab('out-for-delivery')">
-                <i class="fas fa-box-open"></i> Out for Delivery
+                <i class="fas fa-box-open"></i> Ready for Delivery
             </div>
             <div class="tab" onclick="openTab('delivering')">
                 <i class="fas fa-truck"></i> Delivering
@@ -109,7 +211,7 @@ function getOrdersByStatus($conn, $status, $deliveryPersonId) {
         </div>
         
         <div id="out-for-delivery" class="tab-content active">
-            <h2>Orders Out for Delivery</h2>
+            <h2>Orders Ready for Delivery</h2>
             <?php if (empty($outForDelivery)): ?>
                 <div class="empty-state">
                     <i class="fas fa-box-open"></i>
@@ -121,13 +223,36 @@ function getOrdersByStatus($conn, $status, $deliveryPersonId) {
                         <div class="order-card">
                             <div class="order-header">
                                 <h3>Order #<?php echo htmlspecialchars($order['order_id']); ?></h3>
-                                <span class="status-badge status-out">Out for Delivery</span>
+                                <span class="status-badge status-out">Ready for Delivery</span>
                             </div>
                             <div class="order-details">
-                                <p><strong><i class="fas fa-user"></i> Customer:</strong> <?php echo htmlspecialchars($order['customer_name']); ?></p>
-                                <p><strong><i class="fas fa-store"></i> Restaurant:</strong> <?php echo htmlspecialchars($order['restaurant_name']); ?></p>
+                                <p><strong><i class="fas fa-user"></i> Customer Details:</strong> 
+                                    <ul class="customer_detail">
+                                        <li>Name: <?php echo htmlspecialchars($order['customer_name']); ?></li>
+                                        <li>Email: <?php echo htmlspecialchars($order['customer_email']); ?></li>
+                                        <li>Phone: <?php echo htmlspecialchars($order['customer_phone']); ?></li>
+                                        <li>Address: <?php echo htmlspecialchars($order['customer_address']); ?></li>
+                                    </ul>
+                                </p>
+                                <p><strong><i class="fas fa-store"></i> Restaurant Details: <button class="action-btn"
+                                    onclick="navigateTo(
+                                        <?php echo $order['delivery_latitude']; ?>,
+                                        <?php echo $order['delivery_longitude']; ?>,
+                                        <?php echo $order['restaurant_latitude']; ?>,
+                                        <?php echo $order['restaurant_longitude']; ?>
+                                    )">
+                                    <i class="fa-solid fa-location-dot" title="get restaurant location"></i>
+                                </button></strong> 
+                                    <ul class="customer_detail">
+                                        <li><strong>Restaurant name:</strong> <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                        <li>Restaurant address: <?php echo htmlspecialchars($order['restaurant_address']); ?></li>
+                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                    </ul>
+                                </p>
                                 <p><strong><i class="fas fa-calendar-alt"></i> Order Date:</strong> <?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></p>
-                                <p><strong><i class="fas fa-money-bill-wave"></i> Total:</strong> ETB <?php echo number_format($order['amount'], 2); ?></p>
+                                <p><strong><i class="fas fa-money-bill-wave"></i> Total Delivery fee:</strong> ETB <?php echo number_format($order['delivery_person_fee'], 2); ?></p>
                                 
                                 <div class="order-items">
                                     <p><strong><i class="fas fa-utensils"></i> Items:</strong></p>
@@ -140,9 +265,24 @@ function getOrdersByStatus($conn, $status, $deliveryPersonId) {
                             </div>
                             <form method="POST">
                                 <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
+                                <button class="action-btn"
+                                    onclick="navigateTo(
+                                        <?php echo $order['delivery_latitude']; ?>,
+                                        <?php echo $order['delivery_longitude']; ?>,
+                                        <?php echo $order['restaurant_latitude']; ?>,
+                                        <?php echo $order['restaurant_longitude']; ?>
+                                    )">
+                                    <i class="fa-solid fa-location-dot"></i> Get Direction
+                                </button>
                                 <button type="submit" name="start_delivery" class="btn btn-start">
                                     <i class="fas fa-play"></i> Start Delivery
                                 </button>
+                                <script>
+                                    function navigateTo(deliveryLat, deliveryLng, restaurantLat, restaurantLng) {
+                                        const url = `https://www.google.com/maps/dir/?api=1&origin=${restaurantLat},${restaurantLng}&destination=${deliveryLat},${deliveryLng}&travelmode=driving`;
+                                        window.open(url, '_blank');
+                                    }
+                                </script>
                             </form>
                         </div>
                     <?php endforeach; ?>
@@ -166,10 +306,25 @@ function getOrdersByStatus($conn, $status, $deliveryPersonId) {
                                 <span class="status-badge status-delivering">Delivering</span>
                             </div>
                             <div class="order-details">
-                                <p><strong><i class="fas fa-user"></i> Customer:</strong> <?php echo htmlspecialchars($order['customer_name']); ?></p>
-                                <p><strong><i class="fas fa-store"></i> Restaurant:</strong> <?php echo htmlspecialchars($order['restaurant_name']); ?></p>
+                                <p><strong><i class="fas fa-user"></i> Customer Details:</strong> 
+                                    <ul class="customer_detail">
+                                        <li>Name: <?php echo htmlspecialchars($order['customer_name']); ?></li>
+                                        <li>Email: <?php echo htmlspecialchars($order['customer_email']); ?></li>
+                                        <li>Phone: <?php echo htmlspecialchars($order['customer_phone']); ?></li>
+                                        <li>Address: <?php echo htmlspecialchars($order['customer_address']); ?></li>
+                                    </ul>
+                                </p>
+                                <p><strong><i class="fas fa-store"></i> Restaurant Details:</strong> 
+                                    <ul class="customer_detail">
+                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                        <li>Restaurant address: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                    </ul>
+                                </p>
                                 <p><strong><i class="fas fa-calendar-alt"></i> Order Date:</strong> <?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></p>
-                                <p><strong><i class="fas fa-money-bill-wave"></i> Total:</strong> ETB <?php echo number_format($order['amount'], 2); ?></p>
+                                <p><strong><i class="fas fa-money-bill-wave"></i> Total delivery fee:</strong> ETB <?php echo number_format($order['delivery_person_fee'], 2); ?></p>
                                 
                                 <div class="order-items">
                                     <p><strong><i class="fas fa-utensils"></i> Items:</strong></p>
@@ -181,6 +336,21 @@ function getOrdersByStatus($conn, $status, $deliveryPersonId) {
                                 </div>
                             </div>
                             <div class="btn-group">
+                                <button class="action-btn"
+                                    onclick="navigateTo(
+                                        <?php echo $order['delivery_latitude']; ?>,
+                                        <?php echo $order['delivery_longitude']; ?>,
+                                        <?php echo $order['restaurant_latitude']; ?>,
+                                        <?php echo $order['restaurant_longitude']; ?>
+                                    )">
+                                    <i class="fa-solid fa-location-dot"></i> Customer Location
+                                </button>
+                                <script>
+                                    function navigateTo(deliveryLat, deliveryLng, restaurantLat, restaurantLng) {
+                                        const url = `https://www.google.com/maps/dir/?api=1&origin=${restaurantLat},${restaurantLng}&destination=${deliveryLat},${deliveryLng}&travelmode=driving`;
+                                        window.open(url, '_blank');
+                                    }
+                                </script>
                                 <button class="btn btn-confirm" onclick="showConfirmationForm(<?php echo $order['order_id']; ?>)">
                                     <i class="fas fa-check-circle"></i> Confirm Delivery
                                 </button>
@@ -220,7 +390,7 @@ function getOrdersByStatus($conn, $status, $deliveryPersonId) {
                                 <p><strong><i class="fas fa-user"></i> Customer:</strong> <?php echo htmlspecialchars($order['customer_name']); ?></p>
                                 <p><strong><i class="fas fa-store"></i> Restaurant:</strong> <?php echo htmlspecialchars($order['restaurant_name']); ?></p>
                                 <p><strong><i class="fas fa-calendar-alt"></i> Order Date:</strong> <?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></p>
-                                <p><strong><i class="fas fa-money-bill-wave"></i> Total:</strong> ETB <?php echo number_format($order['total_price'], 2); ?></p>
+                                <p><strong><i class="fas fa-money-bill-wave"></i> Total Delivery fee:</strong> ETB <?php echo number_format($order['delivery_person_fee'], 2); ?></p>
                                 
                                 <div class="order-items">
                                     <p><strong><i class="fas fa-utensils"></i> Items:</strong></p>
