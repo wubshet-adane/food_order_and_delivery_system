@@ -65,9 +65,7 @@
             font-size: 0.9rem;
         }
         
-        .chart-container {
-            background: white;
-            border-radius: 12px;
+        .box-container {
             padding: 25px;
             margin-bottom: 30px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);

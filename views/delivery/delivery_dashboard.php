@@ -9,7 +9,7 @@
                                 <i class="fas fa-truck"></i>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-500">Ready for Deliveries</p>
+                                <p class="text-sm text-gray-500">Total orders</p>
                                 <p class="text-2xl font-bold"><?= $stats['total'] ?></p>
                             </div>
                         </div>
@@ -42,22 +42,22 @@
                                 <i class="fas fa-clock"></i>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-500">Pending</p>
+                                <p class="text-sm text-gray-500">Ready for delivery</p>
                                 <p class="text-2xl font-bold"><?= $stats['pending'] ?></p>
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="bg-white rounded-lg shadow p-4">
+                    <div class="bg-white rounded-lg shadow p-4">
                         <div class="flex items-center">
                             <div class="p-3 rounded-full bg-red-100 text-red-600 mr-4">
                                 <i class="fas fa-times-circle"></i>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-500">Cancelled</p>
-                                <p class="text-2xl font-bold"><?= $stats['cancelled'] ?></p>
+                                <p class="text-sm text-gray-500">Total balance</p>
+                                <p class="text-2xl font-bold"><?= round($stats['total_earning'], 2) ?> Birr</p>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
 
                 <!-- Main Content Grid -->
@@ -67,11 +67,12 @@
                         <div class="bg-white rounded-lg shadow overflow-hidden">
                             <div class="p-4 border-b border-gray-200">
                                 <h3 style="display: flex; justify-content: space-between;" class="font-semibold text-lg flex items-center">
-                                    <i class="fas fa-calendar-day mr-2 text-indigo-600"></i>
-                                    Today's Deliveries 
-                                    <span ><?php if (!empty($today_deliveries)): 
-                                         echo count($today_deliveries);
-                                    else: echo 0;
+                                    <span>
+                                        <i class="fas fa-calendar-day mr-2 text-indigo-600"></i>
+                                        Today's Deliveries </span>
+                                    <span ><?php if (!empty($today_del)): 
+                                         echo count($today_del) . 'orders found';
+                                    else: echo 'no orders found!';
                                     endif;
                                     ?></span>
                                 </h3>
@@ -82,7 +83,7 @@
                                         No deliveries scheduled for today
                                     </div>
                                 <?php else: ?>
-                                    <?php foreach ($today_deliveries as $delivery): ?>
+                                    <?php foreach ($today_del as $delivery): ?>
                                         <div class="delivery-card p-4 hover:bg-gray-50">
                                             <div class="flex justify-between items-start">
                                                 <div>
@@ -129,58 +130,17 @@
 
                     <!-- Performance and Map -->
                     <div class="space-y-6">
-                        <!-- Performance Metrics -->
-                        <!-- <div class="bg-white rounded-lg shadow p-4">
-                            <h3 class="font-semibold text-lg mb-4 flex items-center">
-                                <i class="fas fa-chart-line mr-2 text-indigo-600"></i>
-                                Your Performance
-                            </h3>
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <div class="p-2 rounded-full bg-indigo-100 text-indigo-600 mr-3">
-                                            <i class="fas fa-stopwatch"></i>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm text-gray-500">Avg. Delivery Time</p>
-                                            <p class="font-medium"><?= $performance['avg_time'] ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <div class="p-2 rounded-full bg-green-100 text-green-600 mr-3">
-                                            <i class="fas fa-check-circle"></i>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm text-gray-500">On-Time Rate</p>
-                                            <p class="font-medium"><?= $performance['on_time_rate'] ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <div class="p-2 rounded-full bg-yellow-100 text-yellow-600 mr-3">
-                                            <i class="fas fa-star"></i>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm text-gray-500">Customer Rating</p>
-                                            <p class="font-medium"><?= $performance['rating'] ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-
                         <!-- Recent Deliveries -->
                         <div class="mt-6 bg-white rounded-lg shadow overflow-hidden">
                             <div class="p-4 border-b border-gray-200">
                             <h3 style="justify-content: space-between;" class="font-semibold text-lg flex items-center">
-                                    <i class="fas fa-calendar-day mr-2 text-indigo-600"></i>
-                                    Recent Deliveries 
-                                    <span ><?php if (!empty($recent_deliveries)): 
-                                         echo count($recent_deliveries);
-                                    else: echo 0;
+                                    <span>
+                                        <i class="fas fa-calendar-day mr-2 text-indigo-600"></i>
+                                        Recent Deliveries 
+                                    </span>
+                                    <span ><?php if (!empty($recent_del)): 
+                                         echo count($recent_del). ' orders found.';
+                                    else: echo 'no orders found';
                                     endif;
                                     ?></span>
                                 </h3>
@@ -194,16 +154,16 @@
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
-                                        <?php if (empty($recent_deliveries)): ?>
+                                        <?php if (empty($recent_del)): ?>
                                             <tr>
                                                 <td colspan="6" class="px-6 py-4 text-center text-gray-500">No recent deliveries found</td>
                                             </tr>
                                         <?php else: ?>
-                                            <?php foreach ($recent_deliveries as $delivery): ?>
+                                            <?php foreach ($recent_del as $delivery): ?>
                                                 <tr>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#<?= $delivery['order_id'] ?></td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= htmlspecialchars($delivery['restaurant_name']) ?></td>
@@ -214,10 +174,8 @@
                                                             <?= $delivery['status'] ?>
                                                         </span>
                                                     </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">View</a>
-                                                        <a href="#" class="text-gray-600 hover:text-gray-900">Invoice</a>
-                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?=$delivery['delivery_person_fee'] ?> birr</td>
+
                                                 </tr>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
@@ -234,13 +192,6 @@
                                 </h3>
                             </div>
                             <div class="map-container p-4">
-                                <!-- <div class="text-center">
-                                    <i class="fas fa-map text-4xl text-gray-400 mb-2"></i>
-                                    <p class="text-gray-500">Map view would appear here</p>
-                                    <button class="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">
-                                        View Full Map
-                                    </button>
-                                </div> -->
                             </div>
                         </div>
                     </div>

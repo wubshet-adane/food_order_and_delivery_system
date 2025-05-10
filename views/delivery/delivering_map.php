@@ -29,7 +29,7 @@ SELECT  cda.name as customer_name,
     JOIN users u ON u.user_id = o.customer_id
     JOIN restaurants r ON o.restaurant_id = r.restaurant_id
     JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
-    WHERE o.delivery_person_id = ? AND o.status IN ('preparing', 'out_for_delivery')
+    WHERE o.delivery_person_id = ? AND o.status IN ('Delivering')
     ORDER BY o.order_date ASC
 ";
 if(!$sql){
@@ -82,6 +82,7 @@ $conn->close();
                         <div class="customer-info">
                             <p><strong>Customer:</strong> <?php echo htmlspecialchars($delivery['customer_name']); ?></p>
                             <p><strong>Phone:</strong> <?php echo htmlspecialchars($delivery['customer_phone']); ?></p>
+                            <p><strong>Email:</strong> <?php echo htmlspecialchars($delivery['customer_email']); ?></p>
                             <p><strong>Address:</strong> <?php echo htmlspecialchars($delivery['delivery_address']); ?></p>
                         </div>
                         
@@ -94,20 +95,6 @@ $conn->close();
                             )">
                             Get Directions
                         </button>
-                        
-                        <?php if ($delivery['order_status'] == 'preparing'): ?>
-                            <form action="update_status.php" method="post" style="display: inline;">
-                                <input type="hidden" name="order_id" value="<?php echo $delivery['order_id']; ?>">
-                                <input type="hidden" name="status" value="out_for_delivery">
-                                <button type="submit" class="action-btn">Start Delivery</button>
-                            </form>
-                        <?php else: ?>
-                            <form action="update_status.php" method="post" style="display: inline;">
-                                <input type="hidden" name="order_id" value="<?php echo $delivery['order_id']; ?>">
-                                <input type="hidden" name="status" value="delivered">
-                                <button type="submit" class="action-btn">Mark as Delivered</button>
-                            </form>
-                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>

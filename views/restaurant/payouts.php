@@ -5,7 +5,6 @@ ob_start(); // 🛡️ Output buffering starts
 // Get all restaurants owned by this user
 $owner_id = $_SESSION['user_id'];
 $restaurants_stmt = $conn->prepare("SELECT * FROM restaurants WHERE owner_id = ?");
-
 $restaurants_stmt->bind_param("i", $owner_id);
 $restaurants_stmt->execute();
 $restaurants = $restaurants_stmt->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -33,17 +32,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
     $restaurant = $result->fetch_assoc();
     $stmt->close();
 
-    echo "<script>console.log('Restaurant ID: {$restaurant_id}');</script>";
-    echo "<script>console.log('Owner ID: {$owner_id}');</script>";
-    echo "<script>console.log('Restaurant: " . json_encode($restaurant) . "');</script>";
-    echo "<script>console.log('Result: " . json_encode($result->fetch_all(MYSQLI_ASSOC)) . "');</script>";
+    // echo "<script>console.log('Restaurant ID: {$restaurant_id}');</script>";
+    // echo "<script>console.log('Owner ID: {$owner_id}');</script>";
+    // echo "<script>console.log('Restaurant: " . json_encode($restaurant) . "');</script>";
+    // echo "<script>console.log('Result: " . json_encode($result->fetch_all(MYSQLI_ASSOC)) . "');</script>";
     if ($restaurant) {
         $full_balance = $restaurant['full_balance'];
     } else {
         $full_balance = 0;
     }
 
-    echo "<script>console.log('Full balance: {$full_balance}');</script>";
+    // echo "<script>console.log('Full balance: {$full_balance}');</script>";
 
     // Validate restaurant belongs to owner
     $valid_restaurant = false;
@@ -61,15 +60,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
             // Check if amount is less than or equal to full balance
             if ($amount <= $full_balance) {
                 $status = 'pending';
-                $stmt = $conn->prepare("INSERT INTO ask_res_payout (restaurant_id, pay_amount, status) VALUES (?, ?, ?)");
-                $stmt->bind_param("ids", $restaurant_id, $amount, $status);
-                if ($stmt->execute()) {
-                    header("Location: ?page=payouts&restaurant_id=" . $restaurant_id . "&success=Payout request submitted!");
-                    exit;
+                // First, check if there's already a pending request
+                $checkStmt = $conn->prepare("SELECT id FROM ask_res_payout WHERE user_id = ? AND restaurant_id = ? AND status = ?");
+                $checkStmt->bind_param("iis", $owner_id, $restaurant_id, $status);
+                $checkStmt->execute();
+                $checkStmt->store_result();
+                if ($checkStmt->num_rows > 0) {
+                    // A pending request already exists
+                    $error = "You already have a pending payout request.";
                 } else {
-                    $error = "Error submitting request. Please try again.";
+                    // No pending request found, proceed with inserting a new one
+                    $checkStmt->close();
+                    $stmt = $conn->prepare("INSERT INTO ask_res_payout (user_id, restaurant_id, pay_amount, status) VALUES (?, ?, ?, ?)");
+                    $stmt->bind_param("iids",  $owner_id, $restaurant_id, $amount, $status);
+                    if ($stmt->execute()) {
+                        header("Location: ?page=payouts&restaurant_id=" . $restaurant_id . "&success=Payout request submitted!");
+                        exit;
+                    } else {
+                        $error = "Error submitting request. Please try again.";
+                    }
+
+                    $stmt->close();
                 }
-                $stmt->close();
             }else {
                 $error = "Requested amount exceeds available balance of {$full_balance} birr.";
             }

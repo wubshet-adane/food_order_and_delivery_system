@@ -91,17 +91,7 @@
     ?>
     <!--js chart-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <h2 class="Earnings-Dashboard">Earnings Dashboard</h2>
-    <!-- 
-    <div class="filters">
-        <a href="?page=earnings&filter=daily" class="<?= $filter === 'daily' ? 'active' : '' ?>">Daily</a>
-        <a href="?page=earnings&filter=weekly" class="<?= $filter === 'weekly' ? 'active' : '' ?>">Weekly</a>
-        <a href="?page=earnings&filter=monthly" class="<?= $filter === 'monthly' ? 'active' : '' ?>">Monthly</a>
-        <a href="?page=earnings&filter=yearly" class="<?= $filter === 'yearly' ? 'active' : '' ?>">Yearly</a>
-        <a href="?page=earnings&filter=all" class="<?= $filter === 'all' ? 'active' : '' ?>">All Time</a>
-    </div> -->
-
+    <h3 class="Earnings-Dashboard">Earnings Dashboard</h3>
     <div class="card-boxes">
         <div class="card">
             <h3>Today</h3>

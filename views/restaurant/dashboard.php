@@ -86,14 +86,14 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                             <!-- <li><a href="?page=transactions">💳 &nbsp;&nbsp;Transactions</a></li> -->
                             <li><a href="?page=earnings">📈 &nbsp;&nbsp;Earnings</a></li>
                             <li><a href="?page=payouts">💵 &nbsp;&nbsp;Payouts</a></li>
-                            <li><a href="?page=financial_reports">📊 &nbsp;&nbsp;Financial Reports</a></li>
+                            <!-- <li><a href="?page=financial_reports">📊 &nbsp;&nbsp;Financial Reports</a></li> -->
                         </ul>
                     </li>
                     <!-- Analytics & Reports -->
                     <li><a href="?page=reports_and_analytics"><i class="fa-solid fa-chart-line"></i> &nbsp;&nbsp;Reports & Analytics</a></li>
                     <!-- Settings & Logout -->
                     <li><a href="?page=settings"><i class="fas fa-cog mr-3"> </i> &nbsp;&nbsp;Settings</a></li>
-                    <li><a href="?page=settings"><i class="fa-solid fa-circle-question"></i> &nbsp;&nbsp;Help Center</a></li>
+                    <li><a href="../../public/help_center.php"><i class="fa-solid fa-circle-question"></i> &nbsp;&nbsp;Help Center</a></li>
                     <li><a href="logout.html"><i class="fas fa-sign-out-alt mr-3"> </i> &nbsp;&nbsp;Logout</a></li>
                 </ul>
 
@@ -133,9 +133,9 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                 case 'payouts':
                     include 'payouts.php';
                     break;
-                case 'financial_reports':
-                    include 'financial_reports.php';
-                    break;
+                // case 'financial_reports':
+                //     include 'financial_reports.php';
+                //     break;
                 case 'rating_and_review':
                     include 'rating_and_review.php';
                     break;

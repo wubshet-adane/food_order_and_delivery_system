@@ -1,0 +1,52 @@
+
+    let scannerInstance = null;
+
+    document.querySelectorAll('.scanBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const orderId = this.getAttribute('data-id');
+            const reader = document.getElementById('reader');
+
+            reader.style.display = 'block';
+
+            if (scannerInstance) {
+                scannerInstance.stop().then(() => {
+                    scannerInstance.clear();
+                    startScanner(orderId);
+                });
+            } else {
+                startScanner(orderId);
+            }
+        });
+    });
+
+    function startScanner(orderId) {
+        scannerInstance = new Html5Qrcode("reader");
+
+        scannerInstance.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: 250 },
+            function onScanSuccess(decodedText) {
+                document.getElementById('result').innerText = `Scanned: ${decodedText}`;
+
+                scannerInstance.stop().then(() => {
+                    document.getElementById('reader').style.display = 'none';
+                });
+
+                // Send order_id + secret_code to backend
+                fetch('../order_controll.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        order_id: orderId,
+                        secret_code: decodedText
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    alert(data.success ? "✅ Order updated successfully" : "❌ Order update failed");
+                });
+            }
+        ).catch(err => {
+            console.error("Failed to start camera:", err);
+        });
+    }

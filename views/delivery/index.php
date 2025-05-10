@@ -42,8 +42,26 @@
         'completed' => 0,
         'in_progress' => 0,
         'pending' => 0,
-        'cancelled' => 0
+        'cancelled' => 0,
+        'total_earning' => 0,
     ];
+
+    //Get today deliveries
+      $stmt = $conn->prepare("
+        SELECT o.order_id, o.order_date, o.status, u.name AS customer_name, r.name AS restaurant_name, p.delivery_person_fee
+        FROM orders o
+        JOIN users u ON u.user_id = o.customer_id  
+        JOIN restaurants r ON r.restaurant_id = o.restaurant_id  
+        JOIN payments p ON p.order_id = o.order_id  
+        WHERE o.delivery_person_id = ? AND o.order_date = CURDATE() AND o.status = 'Delivered'
+        ORDER BY o.order_date DESC
+        LIMIT 10
+    ");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $today_del = $result->fetch_all(MYSQLI_ASSOC); // fetch multiple rows
+    $stmt->close();
 
     // Total deliveries
     $stmt = $conn->prepare("SELECT COUNT(*) as total FROM orders WHERE delivery_person_id = ?");
@@ -62,7 +80,7 @@
     $stmt->close();
 
     // In progress deliveries
-    $stmt = $conn->prepare("SELECT COUNT(*) as in_progress FROM orders WHERE delivery_person_id = ? AND status IN ('Out for Delivery', 'preparing')");
+    $stmt = $conn->prepare("SELECT COUNT(*) as in_progress FROM orders WHERE delivery_person_id = ? AND status IN ('Delivering')");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -70,79 +88,41 @@
     $stmt->close();
 
     // Pending deliveries
-    $stmt = $conn->prepare("SELECT COUNT(*) as pending FROM orders WHERE delivery_person_id = ? AND status = 'Pending'");
+    $stmt = $conn->prepare("SELECT COUNT(*) as pending FROM orders WHERE delivery_person_id = ? AND status = 'Ready_for_delivery'");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $stats['pending'] = $result->fetch_assoc()['pending'];
     $stmt->close();
 
-    // Cancelled deliveries
-    $stmt = $conn->prepare("SELECT COUNT(*) as cancelled FROM orders WHERE delivery_person_id = ? AND status = 'Cancelled'");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stats['cancelled'] = $result->fetch_assoc()['cancelled'];
-    $stmt->close();
-
-
-    // Get delivery performance metrics
-    $performance = [
-        'avg_time' => 'N/A',
-        'on_time_rate' => 'N/A',
-        'rating' => 'N/A'
-    ];
-
-    // Average delivery time
+    // Recent deliveries
     $stmt = $conn->prepare("
-        SELECT AVG(TIMESTAMPDIFF(MINUTE, o.order_date, o.delivered_at)) as avg_time
+        SELECT o.order_id, o.order_date, o.status, u.name AS customer_name, r.name AS restaurant_name, p.delivery_person_fee
         FROM orders o
+        JOIN users u ON u.user_id = o.customer_id  
+        JOIN restaurants r ON r.restaurant_id = o.restaurant_id  
+        JOIN payments p ON p.order_id = o.order_id  
         WHERE o.delivery_person_id = ? AND o.status = 'Delivered'
+        ORDER BY o.order_date DESC
+        LIMIT 10
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $avg_time = $result->fetch_assoc()['avg_time'];
-    if ($avg_time) {
-        $performance['avg_time'] = round($avg_time) . ' mins';
-    }
+    $recent_del = $result->fetch_all(MYSQLI_ASSOC); // fetch multiple rows
     $stmt->close();
 
-    // On-time delivery rate
+
+     // total earnings deliveries
     $stmt = $conn->prepare("
-        SELECT 
-            COUNT(CASE WHEN TIMESTAMPDIFF(MINUTE, o.order_date, o.delivered_at) <= 45 THEN 1 END) as on_time,
-            COUNT(*) as total
-        FROM orders o
-        WHERE o.delivery_person_id = ? AND o.status = 'Delivered'
-    ");
+                SELECT balance as total_earning 
+                FROM delivery_partners
+                WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    if ($row['total'] > 0) {
-        $on_time_rate = ($row['on_time'] / $row['total']) * 100;
-        $performance['on_time_rate'] = round($on_time_rate) . '%';
-    }
+    $stats['total_earning'] = $result->fetch_assoc()['total_earning'];
     $stmt->close();
-
-    // // Average rating
-    // $stmt = $conn->prepare("
-    //     SELECT AVG(r.rating) as avg_rating
-    //     FROM reviews r
-    //     JOIN orders o ON r.order_id = o.order_id
-    //     WHERE o.delivery_person_id = ?
-    // ");
-    // $stmt->bind_param("i", $user_id);
-    // $stmt->execute();
-    // $result = $stmt->get_result();
-    // $avg_rating = $result->fetch_assoc()['avg_rating'];
-    // if ($avg_rating) {
-    //     $performance['rating'] = round($avg_rating, 1) . ' ★';
-    // }
-    // $stmt->close();
-
-   // $conn->close();
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -155,6 +135,7 @@
         <link rel="stylesheet" href="css/dashboard.css">
         <link rel="stylesheet" href="css/order_controll.css">
         <link rel="stylesheet" href="css/delivering_map.css">
+        <link rel="stylesheet" href="css/payouts.css">
         
     </head>
     <body class="bg-gray-100">
@@ -170,7 +151,7 @@
                 
                 <div class="flex items-center mb-6 p-2 bg-indigo-700 rounded-lg">
                     <div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center mr-3">
-                        <img src="../../public/images/<?= htmlspecialchars($delivery_person['image']) ?>" style="border-radius:50%;" width = "100%" height = "100%">
+                        <img src="../../uploads/user_profiles/<?= htmlspecialchars($delivery_person['image']) ?>" style="border-radius:50%;" width = "100%" height = "100%">
                     </div>
                     <div>
                         <p class="font-medium"><?= htmlspecialchars($delivery_name) ?></p>
@@ -278,23 +259,21 @@
             const performanceChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Total Deliveries', 'Completed', 'In Progress', 'Pending', 'Cancelled'],
+                    labels: ['Total Ordes', 'Completed', 'Delivering', 'Ready for delivery'],
                     datasets: [{
                         label: 'Delivery Statistics',
-                        data: [<?= $stats['total'] ?>, <?= $stats['completed'] ?>, <?= $stats['in_progress'] ?>, <?= $stats['pending'] ?>, <?= $stats['cancelled'] ?>],
+                        data: [<?= $stats['total'] ?>, <?= $stats['completed'] ?>, <?= $stats['in_progress'] ?>, <?= $stats['pending'] ?>],
                         backgroundColor: [
                             'rgba(79, 70, 229, 0.7)',
                             'rgba(16, 185, 129, 0.7)',
                             'rgba(59, 130, 246, 0.7)',
-                            'rgba(245, 158, 11, 0.7)',
-                            'rgba(239, 68, 68, 0.7)'
+                            'rgba(245, 158, 11, 0.7)'
                         ],
                         borderColor: [
                             'rgba(79, 70, 229, 1)',
                             'rgba(16, 185, 129, 1)',
                             'rgba(59, 130, 246, 1)',
-                            'rgba(245, 158, 11, 1)',
-                            'rgba(239, 68, 68, 1)'
+                            'rgba(245, 158, 11, 1)'
                         ],
                         borderWidth: 1
                     }]

@@ -25,6 +25,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// confirm ordered to delivered by scanning secret code QR code from customers phone
+$scanData = json_decode(file_get_contents("php://input"), true);
+if($scanData){
+    $orderId = $scanData['order_id'] ?? null;
+    $secretCode = $scanData['secret_code'] ?? null;
+
+    // Validation and logic
+    if ($orderId && $secretCode) {
+        $stmt = $conn->prepare("SELECT secret_code FROM orders WHERE order_id = ?");
+        $stmt->bind_param("i", $orderId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $order = $result->fetch_assoc();
+
+        if ($order && $order['secret_code'] === $secretCode) {
+            updateOrderStatus($conn, $orderId, 'Delivered', $deliveryPersonId);
+            $success = true;
+        } else {
+            $error = "❌ Invalid secret code or order ID.";
+        }
+    } else {
+        $error = "❌ Missing order_id or secret_code.";
+    }
+
+    // Send JSON response
+    header('Content-Type: application/json');
+    echo json_encode([
+        "success" => $success,
+        "error" => $error
+    ]);
+}
+
+
+
+
+
 function updateOrderStatus($conn, $orderId, $status, $deliveryPersonId) {
     $stmt = $conn->prepare("UPDATE orders SET status = ?, delivered_at = now() WHERE order_id = ? AND delivery_person_id = ?");
     $stmt->bind_param("sii", $status, $orderId, $deliveryPersonId);
@@ -236,21 +272,21 @@ function allReadyForDeliveryOrders($conn, $status) {
                                         <li>Address: <?php echo htmlspecialchars($order['customer_address']); ?></li>
                                     </ul>
                                 </p>
-                                <p><strong><i class="fas fa-store"></i> Restaurant Details: <button class="action-btn"
-                                    onclick="navigateTo(
-                                        <?php echo $order['delivery_latitude']; ?>,
-                                        <?php echo $order['delivery_longitude']; ?>,
-                                        <?php echo $order['restaurant_latitude']; ?>,
-                                        <?php echo $order['restaurant_longitude']; ?>
-                                    )">
+                                <p><strong><i class="fas fa-store"></i> Restaurant Details: 
+                                    <button class="action-btn"
+                                        onclick="navigateTo(
+                                            <?php echo $order['delivery_latitude']; ?>,
+                                            <?php echo $order['delivery_longitude']; ?>,
+                                            <?php echo $order['restaurant_latitude']; ?>,
+                                            <?php echo $order['restaurant_longitude']; ?>
+                                        )">
                                     <i class="fa-solid fa-location-dot" title="get restaurant location"></i>
                                 </button></strong> 
                                     <ul class="customer_detail">
                                         <li><strong>Restaurant name:</strong> <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
                                         <li>Restaurant address: <?php echo htmlspecialchars($order['restaurant_address']); ?></li>
-                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
-                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
-                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                        <li>Restaurant status: <?php echo htmlspecialchars($order['restaurant_status']); ?></li>
+                                        <li>Restaurant contact: <?php echo htmlspecialchars($order['restaurant_phone']); ?></li>
                                     </ul>
                                 </p>
                                 <p><strong><i class="fas fa-calendar-alt"></i> Order Date:</strong> <?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></p>
@@ -320,9 +356,8 @@ function allReadyForDeliveryOrders($conn, $status) {
                                     <ul class="customer_detail">
                                         <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
                                         <li>Restaurant address: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
-                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
-                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
-                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                        <li>Restaurant contact: <?php echo htmlspecialchars($order['restaurant_phone']); ?></li>
+                                        <li>Restaurant status: <?php echo htmlspecialchars($order['restaurant_status']); ?></li>
                                     </ul>
                                 </p>
                                 <p><strong><i class="fas fa-calendar-alt"></i> Order Date:</strong> <?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></p>
@@ -365,6 +400,11 @@ function allReadyForDeliveryOrders($conn, $status) {
                                     <button type="submit" name="confirm_delivery" class="btn btn-confirm">
                                         <i class="fas fa-paper-plane"></i> Submit
                                     </button>
+                                    <!-- Each row gets its own scan button with a unique order_id -->
+                                    <button type="button" class="scanBtn btn-confirm btn" data-id="<?php echo $order['order_id']; ?>">Scan QR code</button>
+                                    <!-- Place this only once in your page -->
+                                    <div id="reader" style="display:none; margin: auto; width: 300px; height: 300px;"></div>
+                                    <div id="result"></div>                                 
                                 </form>
                             </div>
                         </div>
@@ -389,8 +429,22 @@ function allReadyForDeliveryOrders($conn, $status) {
                                 <span class="status-badge status-delivered">Delivered</span>
                             </div>
                             <div class="order-details">
-                                <p><strong><i class="fas fa-user"></i> Customer:</strong> <?php echo htmlspecialchars($order['customer_name']); ?></p>
-                                <p><strong><i class="fas fa-store"></i> Restaurant:</strong> <?php echo htmlspecialchars($order['restaurant_name']); ?></p>
+                                <p><strong><i class="fas fa-user"></i> Customer Details:</strong> 
+                                    <ul class="customer_detail">
+                                        <li>Name: <?php echo htmlspecialchars($order['customer_name']); ?></li>
+                                        <li>Email: <?php echo htmlspecialchars($order['customer_email']); ?></li>
+                                        <li>Phone: <?php echo htmlspecialchars($order['customer_phone']); ?></li>
+                                        <li>Address: <?php echo htmlspecialchars($order['customer_address']); ?></li>
+                                    </ul>
+                                </p>                                
+                                <p><strong><i class="fas fa-store"></i> Restaurant Details:</strong> 
+                                    <ul class="customer_detail">
+                                        <li>Restaurant name: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                        <li>Restaurant address: <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
+                                        <li>Restaurant contact: <?php echo htmlspecialchars($order['restaurant_phone']); ?></li>
+                                        <li>Restaurant status: <?php echo htmlspecialchars($order['restaurant_status']); ?></li>
+                                    </ul>
+                                </p>
                                 <p><strong><i class="fas fa-calendar-alt"></i> Order Date:</strong> <?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></p>
                                 <p><strong><i class="fas fa-money-bill-wave"></i> Total Delivery fee:</strong> ETB <?php echo number_format($order['delivery_person_fee'], 2); ?></p>
                                 
@@ -436,3 +490,5 @@ function allReadyForDeliveryOrders($conn, $status) {
             document.querySelectorAll('.alert').forEach(el => el.style.display = 'none');
         }, 5000);
     </script>
+   <script src="js/html5-qrcode.min.js"></script>
+   <script src="js/QR code scanner.js"></script>
