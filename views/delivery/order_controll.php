@@ -317,10 +317,23 @@ function allReadyForDeliveryOrders($conn, $status) {
                                 </button>
                                 <script>
                                     function navigateTo(deliveryLat, deliveryLng, restaurantLat, restaurantLng) {
-                                        const url = `https://www.google.com/maps/dir/?api=1&origin=${restaurantLat},${restaurantLng}&destination=${deliveryLat},${deliveryLng}&travelmode=driving`;
-                                        window.open(url, '_blank');
+                                        if (navigator.geolocation) {
+                                            navigator.geolocation.getCurrentPosition(function (position) {
+                                                const currentLat = position.coords.latitude;
+                                                const currentLng = position.coords.longitude;
+
+                                                const url = `https://www.google.com/maps/dir/?api=1&origin=${currentLat},${currentLng}&destination=${restaurantLat},${restaurantLng}&travelmode=driving`;
+                                                window.open(url, '_blank');
+                                            }, function (error) {
+                                                alert("Unable to get your current location. Please enable GPS.");
+                                                console.error(error);
+                                            });
+                                        } else {
+                                            alert("Geolocation is not supported by this browser.");
+                                        }
                                     }
                                 </script>
+
                             </form>
                         </div>
                     <?php endforeach; ?>

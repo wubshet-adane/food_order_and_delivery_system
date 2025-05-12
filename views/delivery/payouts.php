@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
                 $stmt = $conn->prepare("INSERT INTO ask_res_payout (user_id, pay_amount, status) VALUES (?, ?, ?)");
                 $stmt->bind_param("ids",  $owner_id,  $amount, $status);
                 if ($stmt->execute()) {
-                    header("Location: ?page=payouts&success=Payout request submitted!");
+                    //header("Location: ?page=payouts&success=Payout request submitted!");
                     $success = 'Payout request submitted!';
                     exit;
                 } else {
