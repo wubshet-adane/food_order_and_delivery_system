@@ -39,7 +39,7 @@ if (!$order) die("No order found.");
 $progress_map = [
     'pending' => ['value' => 25, 'color' => 'bg-yellow-500'],
     'Preparing' => ['value' => 50, 'color' => 'bg-blue-500'],
-    'Out for Delivery' => ['value' => 75, 'color' => 'bg-purple-500'],
+    'Ready_for_delivery' => ['value' => 75, 'color' => 'bg-purple-500'],
     'Delivered' => ['value' => 100, 'color' => 'bg-green-500']
 ];
 $current_progress = $progress_map[$order['status']] ?? ['value' => 0, 'color' => 'bg-gray-300'];
@@ -63,10 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
         $stmt = $conn->prepare("
             INSERT INTO review (restaurant_id, user_id, rating, review_text, created_at)
             VALUES (?, ?, ?, ?, NOW())");
-        if (!$stmt) die("Prepare failed: " . $conn->error);
-        // Bind parameters: restaurant_id, user_id, rating, review_text
         $stmt->bind_param("iiss", $order['restaurant_id'], $_SESSION['userId'], $rating, $review);
-        if (!$stmt) die("Bind failed: " . $conn->error);
         if (!$stmt->execute()) {
             echo "<script>document.addEventListener('DOMContentLoaded',()=>{
                 showToast('Error submitting review. Please try again.');
@@ -77,10 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
             exit();
         }
         $stmt->close();
-        // echo "<script>document.addEventListener('DOMContentLoaded',()=>{
-        //     document.getElementById('reviewModal').classList.add('hidden');
-        //     showToast('Thank you for your review!');
-        // });</script>";
+        echo "<script>document.addEventListener('DOMContentLoaded',()=>{
+            document.getElementById('reviewModal').classList.add('hidden');
+            showToast('Thank you for your review!');
+        });</script>";
     }
 }
 $conn->close();

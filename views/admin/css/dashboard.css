@@ -1,0 +1,340 @@
+/* General Styles */
+body {
+    box-sizing: border-box;
+    margin: auto;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    display: block;
+    max-width: 100%;
+    position: relative;
+}
+
+/*sidebarAndMainContent_sedction*/
+.sidebarAndMainContent_section{
+    box-sizing:border-box;
+    display: flex;
+    max-width: 100%;
+    height: 100mvh;
+    margin: 0;
+    padding: 0;
+}
+.hidden{
+    display: none;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: relative;
+    box-sizing:border-box;
+    width: 16rem;
+    background: #ff9900;
+    color: #1f2937;
+    padding: 20px;
+}
+
+.side_bar_header{
+    position: absolute;
+    top: 0;
+    right: 6px;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+}
+
+.sidbar_content{
+    top: 0;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar_ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar_ul li {
+    padding: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+li ul{
+    list-style-type: none;
+}
+
+.sidebar_ul li a {
+    color: #1f2937;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    margin: 0;
+    padding: 10px;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+.sidebar_ul li a:hover {
+    background: rgba(255, 255, 255, 0.8);
+    color: #c95101;
+    border-radius: 10px;
+}
+
+.monetary-section{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Hide dropdown menu by default */
+.dropdown-menu {
+    display: none;
+    border-left: 1px solid #111;
+    border-radius: 8px;
+    padding: 0;
+    list-style: none;
+    z-index: 1000;
+    transform: translateX(20px);
+    font-size: 14px;
+
+}
+
+/* Show dropdown menu when hovering over parent */
+.dropdown:hover .dropdown-menu {
+    display:block;
+}
+
+/* Main Content */
+.main-content {
+    padding: 10px;
+    max-width: 100%;
+    background: #f9f9f9;
+    height: 100%;
+    flex: 1;
+    box-sizing: border-box;
+}
+
+.welcome_message span{
+    font-style: italic;
+    text-transform: capitalize;
+    color:#0056b3;
+}
+
+/* Modal Background */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    top: 10px;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* Modal Content */
+.modal-content {
+    background: white;
+    width: 50%; /* Adjust modal width */
+    max-width: 600px; /* Prevents it from becoming too wide */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    position: relative;
+    height: 95vh;
+    overflow-y: auto; /* Enables scrolling when content exceeds height */
+}
+
+.greeting_message{
+    font-size: 95%;
+    font-weight: normal;
+    color: #888;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'roboto', sans-serif;
+    font-style: italic;
+    margin-bottom: 2rem;
+    margin-top: 0;
+}
+
+/* Modal Title */
+.modal-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Input Groups */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+}
+
+.edit-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    color: #888; 
+    border-radius: 5px;
+    font-size: 12px;
+    font-family:'roboto', sans-serif;
+    font-style: italic;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.edit-input:focus {
+    border: 2px solid #2af;
+    outline: none;
+
+}
+
+/* Horizontal Layout for fields */
+.input-group-horizontal {
+    display: flex;
+    gap: 20px; /* Space between fields */
+    margin-bottom: 15px;
+}
+
+.input-group-horizontal .input-group {
+    flex: 1; /* Makes each input take equal space */
+}
+
+.input-group-horizontal .input-group input,
+.input-group-horizontal .input-group select {
+    width: 100%; /* Makes sure inputs span the entire space */
+}
+
+/* Save Button */
+.save-btn {
+    width: fit-content;
+    margin: auto;
+    padding: 5px 10px;
+    background: #ff9900;
+    color: white;
+    border: none;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.save-btn:hover {
+    background: #0056b3;
+}
+
+/* Modal Close Button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.close-error {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.close:hover, .close-error:hover {
+    color: #e74c3c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebarAndMainContent_section{
+        position: relative;
+        min-width: 100%;
+    }
+
+    .sidebar{
+        position: absolute;
+        top: 0;
+        min-width: 16rem;
+        height: 100%;
+    }
+
+    .main-content{
+        min-height: 100%;
+    }
+
+    .edit-modal{
+        left: 10px;
+    }
+
+    .modal-content {
+        max-width: 90%;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .edit-modal{
+        left: 0;
+    }
+
+    .modal-content {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .input-group-horizontal {
+        flex-direction: column; /* Stack fields vertically on small screens */
+        gap: 10px;
+    }
+
+    .input-group-horizontal .input-group {
+        flex: none;
+        width: 100%;
+    }
+}
+
+
+/* Modal Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Styling */
+@media (max-width: 500px) {
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
+}
+
+/*footer section*/
+.footer_section{
+    background-color: black;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+

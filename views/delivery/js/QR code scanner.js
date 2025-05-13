@@ -33,8 +33,8 @@
                 });
 
                 // Send order_id + secret_code to backend
-                fetch('../order_controll.php', {
-                    method: 'POST',
+                fetch('updatebyscanning.php?request_name=Ajax', {
+                    method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         order_id: orderId,

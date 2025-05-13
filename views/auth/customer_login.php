@@ -61,7 +61,7 @@
             
             <button type="submit" class="login-btn">Login</button>
             
-            <p class="signup-text">Don't have an account? <a href="signup.php">Sign Up</a></p>
+            <p class="signup-text">Don't have an account? <a href="customer_registeration.php">Sign Up</a></p>
         </form>
         <div class="google-login">
             <button id="googleLogin">

@@ -136,6 +136,7 @@
         <link rel="stylesheet" href="css/order_controll.css">
         <link rel="stylesheet" href="css/delivering_map.css">
         <link rel="stylesheet" href="css/payouts.css">
+        <link rel="stylesheet" href="css/total_earnings.css">
         
     </head>
     <body class="bg-gray-100">
