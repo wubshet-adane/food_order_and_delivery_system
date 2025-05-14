@@ -19,13 +19,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['password'] = $user['password'];
         $_SESSION['profile_image'] = $user['image'];
         $_SESSION['loggedIn'] = true;
-        $_SESSION['userType'] = "customer";
+        $_SESSION['userType'] = "admin";
         $_SESSION['name'] = $user['name'];
         //set response message and redirect url
         $response["success"] = true;
         $response["message"] = "Login successful";
-        $response['redirect_url'] = "../customers/menu.php?message=successfuly logged in";
-        header('Location:  ../views/auth/admin_login.php?error=' . urlencode($success));
+        //$response['redirect_url'] = "../customers/menu.php?message=successfuly logged in";
+        header('Location:  ../views/admin/dashboard.php?message=successfuly logged in');
         exit;
     } else {
         header('Location:  ../views/auth/admin_login.php?error=' . urlencode($success));

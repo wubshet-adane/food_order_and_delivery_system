@@ -25,40 +25,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// confirm ordered to delivered by scanning secret code QR code from customers phone
-if( isset($_GET['request_name']) && $_GET['request_name'] == 'Ajax') {
+// // confirm ordered to delivered by scanning secret code QR code from customers phone
+// if( isset($_GET['request_name']) && $_GET['request_name'] == 'Ajax') {
 
-    $scanData = json_decode(file_get_contents("php://input"), true);
-    if($scanData){
-        $orderId = $scanData['order_id'] ?? null;
-        $secretCode = $scanData['secret_code'] ?? null;
+//     $scanData = json_decode(file_get_contents("php://input"), true);
+//     if($scanData){
+//         $orderId = $scanData['order_id'] ?? null;
+//         $secretCode = $scanData['secret_code'] ?? null;
 
-        // Validation and logic
-        if ($orderId && $secretCode) {
-            $stmt = $conn->prepare("SELECT secret_code FROM orders WHERE order_id = ?");
-            $stmt->bind_param("i", $orderId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $order = $result->fetch_assoc();
+//         // Validation and logic
+//         if ($orderId && $secretCode) {
+//             $stmt = $conn->prepare("SELECT secret_code FROM orders WHERE order_id = ?");
+//             $stmt->bind_param("i", $orderId);
+//             $stmt->execute();
+//             $result = $stmt->get_result();
+//             $order = $result->fetch_assoc();
 
-            if ($order && $order['secret_code'] === $secretCode) {
-                updateOrderStatus($conn, $orderId, 'Delivered', $deliveryPersonId);
-                $success = true;
-            } else {
-                $error = "❌ Invalid secret code or order ID.";
-            }
-        } else {
-            $error = "❌ Missing order_id or secret_code.";
-        }
+//             if ($order && $order['secret_code'] === $secretCode) {
+//                 updateOrderStatus($conn, $orderId, 'Delivered', $deliveryPersonId);
+//                 $success = true;
+//             } else {
+//                 $error = "❌ Invalid secret code or order ID.";
+//             }
+//         } else {
+//             $error = "❌ Missing order_id or secret_code.";
+//         }
 
-        // Send JSON response
-        header('Content-Type: application/json');
-        echo json_encode([
-            "success" => $success,
-            "error" => $error
-        ]);
-    }
-}
+//         // Send JSON response
+//         header('Content-Type: application/json');
+//         echo json_encode([
+//             "success" => $success,
+//             "error" => $error
+//         ]);
+//     }
+// }
 
 function updateOrderStatus($conn, $orderId, $status, $deliveryPersonId) {
     $stmt = $conn->prepare("UPDATE orders SET status = ?, delivered_at = now() WHERE order_id = ? AND delivery_person_id = ?");
@@ -77,7 +77,18 @@ function startDelivery($conn, $orderId, $status, $deliveryPersonId) {
     $stmtCheck->execute();
     $stmtCheck->store_result(); // Needed to get num_rows
     if ($stmtCheck->num_rows > 0) {
-        echo "Update faild another, delivery in progress.";
+        echo "<div id='alertBox' style='display: flex; max-width: 800px; justify-content: space-between; background-color:#FFB7B7FF; padding: 1rem 3rem; margin: auto; border-radius: 5px;'>
+        <span>Update failed, another delivery in progress.</span>
+        <span style='background-color:#ff990006; padding: 3px; border-radius: 3px; cursor: pointer;' onclick=\"this.parentElement.style.display='none'\">
+            <i class='fa-solid fa-xmark'></i>
+        </span>
+      </div>
+      <script>
+        setTimeout(() => {
+            const alert = document.getElementById('alertBox');
+            if (alert) alert.style.display = 'none';
+        }, 5000);
+      </script>";
        // return $error;
     } else {
         // Proceed with updating the order
@@ -85,7 +96,10 @@ function startDelivery($conn, $orderId, $status, $deliveryPersonId) {
         $stmt->bind_param("sii", $status, $deliveryPersonId, $orderId);
         $stmt->execute();
         if ($stmt->affected_rows > 0) {
-            echo "Order status updated.";
+            echo "<div style='display: flex; max-width: 800px; justify-content: space-between; background-color:#66FD75FF; padding: 1rem 3rem; margin: auto; border-radius: 5px;'>
+                <span>You are accept the order seccessfully.</span>
+                <span style='background-color:#ff990006; padding: 3px; border-radius: 3px;cursor: pointer;' onclick=\"this.parentElement.style.display='none'\"><i class='fa-solid fa-xmark'></i></span>
+            </div>";
         } else {
             echo "Update failed.";
             //return $error;
@@ -270,14 +284,30 @@ function allReadyForDeliveryOrders($conn, $status) {
                                 </p>
                                 <p><strong><i class="fas fa-store"></i> Restaurant Details: 
                                     <button class="action-btn"
-                                        onclick="navigateTo(
-                                            <?php echo $order['delivery_latitude']; ?>,
-                                            <?php echo $order['delivery_longitude']; ?>,
+                                        onclick="navigateTores(
                                             <?php echo $order['restaurant_latitude']; ?>,
                                             <?php echo $order['restaurant_longitude']; ?>
                                         )">
-                                    <i class="fa-solid fa-location-dot" title="get restaurant location"></i>
-                                </button></strong> 
+                                        <i class="fa-solid fa-location-dot" title="get restaurant location"></i>
+                                    </button></strong> 
+                                    <script>
+                                        function navigateTores(restaurantLat, restaurantLng) {
+                                            if (navigator.geolocation) {
+                                                navigator.geolocation.getCurrentPosition(function (position) {
+                                                    const currentLat = position.coords.latitude;
+                                                    const currentLng = position.coords.longitude;
+
+                                                    const url = `https://www.google.com/maps/dir/?api=1&origin=${currentLat},${currentLng}&destination=${restaurantLat},${restaurantLng}&travelmode=driving`;
+                                                    window.open(url, '_blank');
+                                                }, function (error) {
+                                                    alert("Unable to get your current location. Please enable GPS.");
+                                                    console.error(error);
+                                                });
+                                            } else {
+                                                alert("Geolocation is not supported by this browser.");
+                                            }
+                                        }
+                                    </script>
                                     <ul class="customer_detail">
                                         <li><strong>Restaurant name:</strong> <?php echo htmlspecialchars($order['restaurant_name']); ?></li>
                                         <li>Restaurant address: <?php echo htmlspecialchars($order['restaurant_address']); ?></li>
@@ -300,33 +330,24 @@ function allReadyForDeliveryOrders($conn, $status) {
                             <form method="POST">
                                 <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
                                 <button class="action-btn"
-                                    onclick="navigateTo(
+                                    onclick="navigatingTo(
+                                        <?php echo $order['delivery_latitude']; ?>,
+                                        <?php echo $order['delivery_longitude']; ?>,
                                         <?php echo $order['restaurant_latitude']; ?>,
                                         <?php echo $order['restaurant_longitude']; ?>
                                     )">
-                                    <i class="fa-solid fa-location-dot"></i> Get Direction
+                                    <i class="fa-solid fa-location-dot"></i> Customer Location
                                 </button>
+                                <script>
+                                    function navigatingTo(deliveryLat, deliveryLng, restaurantLat, restaurantLng) {
+                                        const url = `https://www.google.com/maps/dir/?api=1&origin=${restaurantLat},${restaurantLng}&destination=${deliveryLat},${deliveryLng}&travelmode=driving`;
+                                        window.open(url, '_blank');
+                                    }
+                                </script>
                                 <button type="submit" name="start_delivery" class="btn btn-start">
                                     <i class="fas fa-play"></i> Start Delivery
                                 </button>
-                                <script>
-                                    function navigateTo(restaurantLat, restaurantLng) {
-                                        if (navigator.geolocation) {
-                                            navigator.geolocation.getCurrentPosition(function (position) {
-                                                const currentLat = position.coords.latitude;
-                                                const currentLng = position.coords.longitude;
-
-                                                const url = `https://www.google.com/maps/dir/?api=1&origin=${currentLat},${currentLng}&destination=${restaurantLat},${restaurantLng}&travelmode=driving`;
-                                                window.open(url, '_blank');
-                                            }, function (error) {
-                                                alert("Unable to get your current location. Please enable GPS.");
-                                                console.error(error);
-                                            });
-                                        } else {
-                                            alert("Geolocation is not supported by this browser.");
-                                        }
-                                    }
-                                </script>
+                              
 
                             </form>
                         </div>

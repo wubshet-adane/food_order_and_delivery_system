@@ -1,235 +1,278 @@
 <?php
-require_once '../../models/manage_restaurant.php';
-require_once '../../config/database.php';
 
-session_start(); // Ensure the session is started
-
-// Check if user is logged in and has the correct user type
-if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !isset($_SESSION['loggedIn']) || !isset($_SESSION['user_email']) || !isset($_SESSION['password'])) {
-    header("Location: ../auth/restaurant_login.php?message=Please enter correct credentials!");
-    exit; // Stop execution after redirection
+// Handle approval/rejection actions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['action']) && isset($_POST['restaurant_id'])) {
+        $restaurant_id = intval($_POST['restaurant_id']);
+        $action = $_POST['action'];
+        
+        if ($action === 'approve' || $action === 'reject') {
+            $status = $action === 'approve' ? 'approved' : 'rejected';
+            $stmt = $conn->prepare("UPDATE restaurants SET confirmation_status = ? WHERE restaurant_id = ?");
+            $stmt->bind_param("si", $status, $restaurant_id);
+            $stmt->execute();
+            
+            if ($stmt->affected_rows > 0) {
+                $_SESSION['message'] = "Restaurant $status successfully!";
+                $_SESSION['message_type'] = "success";
+            } else {
+                $_SESSION['message'] = "Failed to update restaurant status.";
+                $_SESSION['message_type'] = "error";
+            }
+            $stmt->close();
+        }
+    }
+    //header("Location: {$_SERVER['PHP_SELF']}");
+    exit;
 }
 
-$ownerId = $_SESSION['user_id'];
-$resId = $_GET['id'];
-$resName = $_GET['name'];
+// Get all restaurant owners with their restaurants count
+$owners = [];
+$query = "SELECT u.user_id, u.name as full_name, u.phone, u.email, COUNT(r.restaurant_id) as restaurant_count 
+          FROM users u 
+          LEFT JOIN restaurants r ON u.user_id = r.owner_id 
+          WHERE u.role = 'restaurant' 
+          GROUP BY u.user_id";
+$result = $conn->query($query);
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $owners[] = $row;
+    }
+}else{
+    die('feild to get data!!');
+}
 
-$restaurantModel = new Restaurant($conn);
-$restaurants = $restaurantModel->getOneRestaurant($ownerId, $resId);
+// Get restaurants for a specific owner when requested
+$restaurants = [];
+$selected_owner = null;
+if (isset($_GET['owner_id'])) {
+    $owner_id = intval($_GET['owner_id']);
+    $query = "SELECT * FROM restaurants WHERE owner_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $owner_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    while ($row = $result->fetch_assoc()) {
+        $restaurants[] = $row;
+    }
+    
+    // Get owner details
+    foreach ($owners as $owner) {
+        if ($owner['user_id'] == $owner_id) {
+            $selected_owner = $owner;
+            break;
+        }
+    }
+}
 ?>
 
 
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant detail</title>
-    <link rel="icon" href="../../public/images/logo-icon.png" type="image/gif" sizes="16x16">
-    <!--font ausome for star rating-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/manage_restaurants.css">
-    <link rel="stylesheet" href="css/header.css">
-    <!--sweet alert external library-->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../customers/javaScript/map.js"></script>
-
-    <style>
-       
-
-    </style>
-</head>
-
-<body>
-<?php include 'header.php';?>
-
-    <section class="restaurant-management">
-        <form action="../../controllers/restaurant_register_form_controller.php?action=update_restaurant&restaurant_id=<?= $resId ?>" method="POST" enctype="multipart/form-data">
-            <div class="restaurant-list">
-                <div class="top_buttons">
-                    <div class="go_back">
-                        <a class="boBack" onclick="history.back()" title="go Back">Back </a>
-                    </div>
-                    <div class="addMenu">
-                        <a class="boAdd" onclick="location.href='add menu.php?resId=<?php echo $resId ?>'" title="Add menu to this Restaurant">Add menu</a>
-                    </div>
-                    <div class="editRestaurant">
-                        <a class="boEdit" id="boEdit" name="boEdit" title="Edit Restaurant">Edit</a>
-                    </div>
-                    <div class="deleteRestaurant">
-                        <a class="boDelete" id="boDelete" name="boDelete" href="javascript:void(0);" onclick="confirmDelete('<?= $resId?>', '<?= $resName?>');" title="Delete this Restaurant">Delete</a>
-                        <script>
-                            function confirmDelete(resId, resName) {
-                                Swal.fire({
-                                    title: 'Are you sure?',
-                                    html: `You want to delete <span style="color: red; font-weight: bold; font-family: Arial, sans-serif;">${resName}</span>?`,
-                                    icon: 'warning',
-                                    showCancelButton: true,
-                                    confirmButtonColor: '#d33',
-                                    cancelButtonColor: '#3085d6',
-                                    confirmButtonText: 'Yes, delete it!',
-                                    cancelButtonText: 'Cancel'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = `../../controllers/restaurant_register_form_controller.php?action=delete_restaurant&restaurant_id=${resId}`;
-                                        Swal.fire({
-                                            title: 'Deleted!',
-                                            text: `${resName} has been deleted.`,
-                                            icon: 'success',
-                                            confirmButtonText: 'OK'
-                                        });
-                                    } else {
-                                        Swal.fire({
-                                            title: 'Cancelled',
-                                            text: 'Your restaurant is safe :)',
-                                            icon: 'error',
-                                            confirmButtonText: 'OK'
-                                        });
-                                    }
-                                });
-                            }
-                            </script>
-
-                    </div>
+    <div class="admin-container">
+        <main class="main-content">
+            <h>Restaurant Management</h>
+            
+            <?php if (isset($_SESSION['message'])): ?>
+                <div id="session-alert" style="display: flex; justify-content: space-between; flex-direction: row; align-items: center; padding: 1rem; border-radius: 5px;" class="alert alert-<?= $_SESSION['message_type'] ?>">
+                    <span><?= $_SESSION['message'] ?></span>
+                    <span onclick="document.getElementById('session-alert').style.display='none';" style="cursor: pointer;">
+                        <i class="fa-solid fa-xmark" style="border-radius: 5px; background-color: #ff990004; padding: 5px;"></i>
+                    </span>
+                    <?php unset($_SESSION['message'], $_SESSION['message_type']); ?>
                 </div>
+            <?php endif; ?>
+            <script>
+                setTimeout(() => {
+                    const alert = document.getElementById('session-alert');
+                    if (alert) alert.style.display = 'none';
+                }, 5000); // Closes after 5 seconds
+            </script>
+            
+            <div class="restaurant-management">
+                <!-- Owners List Section with Accordion -->
+                <section class="owners-section">
+                    <h2>Restaurant Owners</h2>
+                    <div class="owners-grid">
+                        <?php foreach ($owners as $owner): ?>
+                            <button class="owner-card owner-toggle" data-owner-id="<?= $owner['user_id'] ?>">
+                                <div class="owner-info">
+                                    <h3><?= ucfirst(htmlspecialchars($owner['full_name'])) ?></h3>
+                                    <p><?= htmlspecialchars($owner['email']) ?></p>
+                                    <p><?= htmlspecialchars($owner['phone']) ?></p>
+                                </div>
+                                <div class="restaurant-count">
+                                    <span><?= $owner['restaurant_count'] ?></span>
+                                    <small>Restaurants</small>
+                                </div>
+                                <i class="fas fa-chevron-down accordion-icon"></i>
+                            </button>
+                            
+                            <div class="accordion-content" id="owner-<?= $owner['user_id'] ?>">
+                                <div class="loading-spinner-container">
+                                    <div class="loading-spinner"></div>
+                                    <span>Loading restaurants...</span>
+                                </div>
+                                <!-- Restaurant content will be loaded here via AJAX -->
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
 
-                <div>
-                    <h2>Restaurant Detail</h2>
+    <!-- Add this at the bottom of your HTML, before the closing body tag -->
+    <div id="restaurantModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalRestaurantName"></h2>
+                <span id="modalRestaurantStatus" class="status-badge"></span>
+            </div>
+            
+            <div class="modal-body">
+                <div class="restaurant-images">
+                    <div class="main-image-container">
+                        <img id="modalMainImage" src="" alt="Restaurant Main Image" class="main-image">
+                    </div>
+                    <div class="thumbnail-container" id="thumbnailGallery"></div>
                 </div>
-
-                <?php foreach ($restaurants as $restaurant): ?>
-                <div>
-                    <div class="res_name">
-                        <span><h3><?= htmlspecialchars($restaurant['name']) ?></h3></span>
-                        <h1><input class="in" type="text" id="name" name="name" value="<?= htmlspecialchars($restaurant['name']) ?>"></h1>
-                    </div>
-
-                    <div class="image">
-                        <strong> restaurant Card Image:</strong> 
-                        <span><img src = "restaurantAsset/<?= htmlspecialchars($restaurant['image']);?>" alt="imge"></span>
-                        <input class="in" type="file" id="image" name="image" accept="image/*">
-                    </div>
-
-                    <div class="banner">
-                        <strong> restaurant Banner Image:</strong>
-                        <span><img src = "restaurantAsset/<?= htmlspecialchars($restaurant['banner']);?>" alt="banner"></span>
-                        <input class="in" type="file" id="banner" name="banner" accept="image/*">
-                    </div>
-
-                    <div class="license">
-                        <strong> Renewed legal business license image for this hotel:</strong>
-                        <span><img src = "restaurantAsset/<?= htmlspecialchars($restaurant['license']);?>" alt="license"></span>
-                        <input class="in" type="file" id="license" name="license" accept="image/*">
-                    </div>
-
-                    <div class="latitude">
-                        <strong>Latitude</strong>
-                        <span><?= $restaurant['latitude']?></span>
-                        <input class="in" type="text" id="latitude" name="latitude" value="<?= $restaurant['latitude']?>">
-                    </div>
-
-                    <div class="longitude">
-                        <strong>Longitude</strong>
-                        <span><?= $restaurant['longitude']?></span>
-                        <input class="in" type="text" id="longtude" name="longitude" value="<?= $restaurant['longitude']?>">
-                    </div>
-
-                    <div class="map-container">
-                        <div>
-                            <strong> Location:</strong> 
-                            <span><i class="fa fa-map-marker"></i> <?= htmlspecialchars($restaurant['location'])?></span>
-                            <input class="in" type="text" id="location" name="location" value="<?= htmlspecialchars($restaurant['location'])?>">                            
-                            <span><div id="map"></div></span>
+                
+                <div class="restaurant-details">
+                    <div class="detail-section">
+                        <h3>Basic Information</h3>
+                        <div class="detail-row">
+                            <span class="detail-label">Location:</span>
+                            <span id="modalLocation" class="detail-value"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Phone:</span>
+                            <span id="modalPhone" class="detail-value"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Opening Hours:</span>
+                            <span id="modalHours" class="detail-value"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Rating:</span>
+                            <span id="modalRating" class="detail-value"></span>
                         </div>
                     </div>
-                
-                    <div class="description">
-                        <strong> Detail Description:</strong>
-                        <span class="description"><?= htmlspecialchars($restaurant['description']) ?></span>
-                        <textarea class="in" id="description" name="description" rows="4" cols="50"><?= htmlspecialchars($restaurant['description']) ?></textarea>
+                    
+                    <div class="detail-section">
+                        <h3>Description</h3>
+                        <p id="modalDescription" class="restaurant-description"></p>
                     </div>
-
-                    <div class="time">
-                        <strong> Working time:</strong> 
-                        <span><?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?></span>
-                        <textarea name="opening_and_closing_hour" id="opening_and_closing_hour" rows="3" cols="50"><?= htmlspecialchars($restaurant['opening_and_closing_hour']) ?></textarea>
+                    
+                    <div class="detail-section">
+                        <h3>Social Media</h3>
+                        <div class="social-links">
+                            <a id="modalFacebook" href="#" target="_blank" class="social-link facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a id="modalInstagram" href="#" target="_blank" class="social-link instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a id="modalTiktok" href="#" target="_blank" class="social-link tiktok">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                            <a id="modalTelegram" href="#" target="_blank" class="social-link telegram">
+                                <i class="fab fa-telegram"></i>
+                            </a>
+                            <a id="modalWebsite" href="#" target="_blank" class="social-link website">
+                                <i class="fas fa-globe"></i>
+                            </a>
+                        </div>
                     </div>
-                
-                    <div class="tiktokAccount">
-                        <strong> Tiktok link:</strong>
-                        <span><?= htmlspecialchars($restaurant['tiktokAccount']) ?></span>
-                        <input class="in" type="text" id="tiktokAccount" name="tiktokAccount" value="<?= htmlspecialchars($restaurant['tiktokAccount']) ?>">
+                    
+                    <div class="detail-section">
+                        <h3>License Information</h3>
+                        <div class="license-container">
+                            <a id="modalLicense" href="#" target="_blank" class="license-link">
+                                <i class="fas fa-file-pdf"></i> View License Document
+                            </a>
+                        </div>
                     </div>
-
-                    <div class="website">
-                        <strong> Website link:</strong>
-                        <span><?= htmlspecialchars($restaurant['website']) ?></span>
-                        <input class="in" type="text" id="website" name="website" value="<?= htmlspecialchars($restaurant['website']) ?>"> 
-                    </div>
-
-                    <div class="telegramAccount">
-                        <strong> Telegram link:</strong>
-                        <span><?= htmlspecialchars($restaurant['telegramAccount']) ?></span>
-                        <input class="in" type="text" id="telegramAccount" name="telegramAccount" value="<?= htmlspecialchars($restaurant['telegramAccount']) ?>"> 
-                    </div>
-
-                    <div class="instagramAccount">
-                        <strong> Instagram link:</strong>
-                        <span><?= htmlspecialchars($restaurant['instagramAccount']) ?></span>
-                        <input class="in" type="text" id="instagramAccount" name="instagramAccount" value="<?= htmlspecialchars($restaurant['instagramAccount']) ?>">
-                    </div>
-
-                    <div class="facebook">
-                        <strong> facebook account:</strong>
-                        <span><?= htmlspecialchars($restaurant['facebook']) ?></span>
-                        <input class="in" type="text" id="facebook" name="facebook" value="<?= htmlspecialchars($restaurant['facebook']) ?>">
-                    </div>
-
-                    <div class="phone">
-                        <strong> phone number:</strong>
-                        <span><?= htmlspecialchars($restaurant['phone']) ?></span>
-                        <input class="in" type="text" id="phone" name="phone" value="<?= htmlspecialchars($restaurant['phone']) ?>">
-                    </div>
-
-                    <div class="status">
-                        <strong>Status:</strong>
-                        <span class="status <?= strtolower($restaurant['status']) ?>"><?= htmlspecialchars($restaurant['status']) ?></span>
-                        <select class="in" name="status" id="status">
-                            <option value="open" <?= htmlspecialchars($restaurant['status']) == 'open' ? 'selected' : '' ?>>Open</option>
-                            <option value="closed" <?= htmlspecialchars($restaurant['status']) == 'closed' ? 'selected' : '' ?>>Closed</option>
-                        </select>
-                    </div>
-
-                    <div class="rating off">
-                        <strong>Rating:</strong>
-                        <span><?= htmlspecialchars($restaurant['rating']) ?></span>
-                    </div>
-
-                    <div class="created_at off">
-                        <strong>registered time:</strong>
-                        <span><?= htmlspecialchars($restaurant['created_at']) ?></span>
-                    </div>
-
-                    <div class="updated_at off">
-                        <strong>latest update time:</strong>
-                        <span><?= htmlspecialchars($restaurant['updated_at']) ?></span>
-                    </div>
-                    <!--update button-->
-                    <button class="boUpdate" id="boUpdate" name="boUpdate">Update</button>
                 </div>
-                <?php endforeach; ?>
-
             </div>
-        </form>
-    </section>
-    <!--edit restaurant script-->
-    <script src="javaScript/edit_restaurant.js" defer loading="async"></script>
-    <script src="../customers/javaScript/scroll_up.js" defer loading="async"></script>
-    <!--map script-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=places&v=weekly" defer loading="async">
-    </script>
-</body>
+        </div>
+    </div>
 
-</html>
+    <script src="javaScript/restaurant_detail_modal.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Accordion functionality
+            const ownerToggles = document.querySelectorAll('.owner-toggle');
+            
+            ownerToggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const ownerId = this.getAttribute('data-owner-id');
+                    const accordionContent = document.getElementById(`owner-${ownerId}`);
+                    const icon = this.querySelector('.accordion-icon');
+                    
+                    // Toggle active class
+                    this.classList.toggle('active');
+                    
+                    // Toggle icon
+                    if (this.classList.contains('active')) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                        
+                        // Load restaurants if not already loaded
+                        if (!accordionContent.hasAttribute('data-loaded')) {
+                            loadRestaurants(ownerId);
+                        }
+                    } else {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                    
+                    // Toggle accordion content
+                    accordionContent.style.display = accordionContent.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+            
+            // Function to load restaurants via AJAX
+            function loadRestaurants(ownerId) {
+                const accordionContent = document.getElementById(`owner-${ownerId}`);
+                const loadingContainer = accordionContent.querySelector('.loading-spinner-container');
+                
+                fetch(`get_restaurants.php?owner_id=${ownerId}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        accordionContent.innerHTML = data;
+                        accordionContent.setAttribute('data-loaded', 'true');
+                        
+                        // Initialize action buttons for the loaded content
+                        initActionButtons();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        loadingContainer.innerHTML = '<p class="error-message">Failed to load restaurants. Please try again.</p>';
+                    });
+            }
+            
+            // Initialize action buttons (approve/reject)
+            function initActionButtons() {
+                const rejectButtons = document.querySelectorAll('.btn-reject');
+                rejectButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        if (!confirm('Are you sure you want to reject this restaurant?')) {
+                            e.preventDefault();
+                        }
+                    });
+                });
+                
+                const forms = document.querySelectorAll('.action-form');
+                forms.forEach(form => {
+                    form.addEventListener('submit', function() {
+                        const buttons = form.querySelectorAll('button');
+                        buttons.forEach(button => {
+                            button.disabled = true;
+                            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                        });
+                    });
+                });
+            }
+        });
+    </script>

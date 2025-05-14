@@ -3,13 +3,13 @@
 require_once __DIR__ . '/../config/database.php';
 
 class DeliveryUser {
-    public static function register($name, $email, $password, $role) {
-        global $conn;
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $name, $email, $hashedPassword, $role);
-        return $stmt->execute();
-    }
+    // public static function register($name, $email, $password, $role) {
+    //     global $conn;
+    //     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    //     $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
+    //     $stmt->bind_param("ssss", $name, $email, $hashedPassword, $role);
+    //     return $stmt->execute();
+    // }
 
     public static function login($email, $password) {
         global $conn;

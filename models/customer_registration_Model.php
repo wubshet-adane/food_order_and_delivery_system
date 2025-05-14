@@ -20,16 +20,17 @@ class Customer_registration {
             $checkStmt->close();
 
             // Step 2: Insert into `users` table
-            $userStmt = $conn->prepare("INSERT INTO users (name, image, email, password, role) VALUES (?, ?, ?, ?, ?)");
+            $userStmt = $conn->prepare("INSERT INTO users (name, image, email, password, role, phone) VALUES (?, ?, ?, ?, ?, ?)");
 
-            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+            //$hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
 
             $userStmt->bind_param("sssss",
                 $data['fullname'],
                 $data['profile_image'],
                 $data['email'],
-                $hashedPassword,
-                $data['role']
+                $data['password'],
+                $data['role'],
+                $data['phone']
             );
             if($userStmt->execute()){
                 return true;

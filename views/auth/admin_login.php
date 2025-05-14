@@ -57,7 +57,7 @@
   <div class="login-container">
     <h2><img src="../../public/images/logo-icon.png" alt=""></h2>
     <h2>Admin Login</h2>
-    <?php if ($_GET['error']): $error = $_GET['error'] ?><p class="error"><?= $error ?></p><?php endif; ?>
+    <?php if (isset($_GET['error'])): $error = $_GET['error'] ?><p class="error"><?php echo $error ?></p><?php endif; ?>
     <form method="POST" action="../../controllers/admin_login_controller.php">
       <input type="email" name="email" placeholder="email" required />
       <input type="password" name="password" placeholder="Password" required />

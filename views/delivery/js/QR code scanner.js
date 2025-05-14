@@ -33,7 +33,7 @@
                 });
 
                 // Send order_id + secret_code to backend
-                fetch('updatebyscanning.php?request_name=Ajax', {
+                fetch('update_by_scanning.php?request_name=Ajax', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

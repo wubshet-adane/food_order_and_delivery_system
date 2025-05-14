@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize and validate input
     $fullname = htmlspecialchars(trim($_POST['fullname']));
     $role = 'customer';
-    $password = $_POST['password'] ?? null;
+    $password = $_POST['new_password'] ?? null;
     $email = filter_var(trim( $_POST['email']), FILTER_SANITIZE_EMAIL);
     $phone = htmlspecialchars(trim($_POST['phone']));
     // Handle file uploads

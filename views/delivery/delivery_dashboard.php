@@ -28,7 +28,7 @@
                     <div class="bg-white rounded-lg shadow p-4">
                         <div class="flex items-center">
                             <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
-                                <i class="fas fa-shipping-fast"></i>
+                                <i class="fa-solid fa-spinner fa-spin-pulse"></i>
                             </div>
                             <div>
                                 <p class="text-sm text-gray-500">Delivering</p>
@@ -50,7 +50,7 @@
                     <div class="bg-white rounded-lg shadow p-4">
                         <div class="flex items-center">
                             <div class="p-3 rounded-full bg-red-100 text-red-600 mr-4">
-                                <i class="fas fa-times-circle"></i>
+                                <i class="fa-solid fa-money-check-dollar"></i>
                             </div>
                             <div>
                                 <p class="text-sm text-gray-500">Total balance</p>

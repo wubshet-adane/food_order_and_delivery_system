@@ -8,7 +8,7 @@ require_once '../../config/database.php';
 require_once '../../models/restaurant_review.php';
 
 // Check if user is logged in and has the correct user type
-if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "Admin" || !isset($_SESSION['loggedIn']) || !isset($_SESSION['user_email']) || !isset($_SESSION['password'])) {
+if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "admin" || !isset($_SESSION['loggedIn']) || !isset($_SESSION['user_email']) || !isset($_SESSION['password'])) {
     
     header("Location: ../auth/admin_login.php?message=Please authenticate to access.");
     exit; // Stop execution after redirection
@@ -37,7 +37,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <link rel="stylesheet" href="css/orders.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/display_restaurant.css">
+    <link rel="stylesheet" href="css/asdashboard.css">
     <link rel="stylesheet" href="css/manage_restaurants.css">
     <link rel="stylesheet" href="css/manage_menu.css">
     <link rel="stylesheet" href="css/reviews.css">
@@ -63,17 +63,9 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
             </div>
             <div class="sidbar_content">
                  <ul class="sidebar_ul">
-                    <!-- <?php
-                    //if page isset add class name for all links 'activeLink'
-                    if ($page){
-                        $activeLink = "activeLink";
-                    }else{
-                        $activeLink = '';
-                    }
-                    ?> -->
-
                     <!-- Restaurant Management -->
-                    <li><a href="?page=display_restaurants"><i class="fa-solid fa-hotel"></i> &nbsp;&nbsp;Manage Restaurants</a></li>
+                    <li><a href="?page=asdashboard"><i class="fa-solid fa-table-columns"></i></i> &nbsp;&nbsp;Dashboard </a></li>
+                    <li><a href="?page=manage_restaurants"><i class="fa-solid fa-hotel"></i> &nbsp;&nbsp;Manage Restaurant </a></li>
                     <li><a href="?page=manage_menu" class="active"><i class="fa-solid fa-utensils"></i> &nbsp;&nbsp;Manage Menu</a></li>
                     <li><a href="?page=orders"><i class="fas fa-list-ul mr-3"></i> &nbsp;&nbsp;Orders</a></li>
                     <li><a href="?page=rating_and_review"><i class="fa-solid fa-star"></i> &nbsp;&nbsp;Ratings & Reviews</a></li>
@@ -107,19 +99,22 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                     <span ><i class="fa-solid fa-bars"></i></span>
                 </button> &nbsp; 
                 <!-- Greeting message for restaurant owner -->
-                <storng class="welcome_message">Welcome, <span><?=$_SESSION['name']?></span></storng>   
+                <storng class="welcome_message"><span><?=$_SESSION['name']?> Dashboard:</span></storng>   
             </h2>
             
             <?php
-            $page = isset($_GET['page']) ? $_GET['page'] : 'display_restaurants';
+            $page = isset($_GET['page']) ? $_GET['page'] : 'asdashboard';
 
             // Include the content for the respective page
             switch ($page) {
                 case 'manage_menu':
                     include 'manage_menu.php';
                     break;
-                case'display_restaurants':
-                    include 'display_restaurants.php';
+                case'asdashboard':
+                    include 'asdashboard.php';
+                    break;
+                    case'manage_restaurants':
+                    include 'manage_restaurants.php';
                     break;
                 case 'reports_and_analytics':
                     include 'reports_and_analytics.php';
@@ -146,7 +141,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                     include 'add_menu.php.php';
                     break;
                 default:
-                    include 'display_restaurants.php';
+                    include 'asdashboard.php';
             }
             ?>
         </div>
