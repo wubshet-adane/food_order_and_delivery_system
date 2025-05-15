@@ -9,6 +9,7 @@
                 COUNT(DISTINCT rv.user_id) AS no_of_reviewers
                 FROM restaurants r
                 JOIN review rv ON r.restaurant_id = rv.restaurant_id
+                where r.confirmation_status = 'approved'
                 GROUP BY r.restaurant_id , r.name, r.location, r.image
                 ORDER BY avg_rating DESC LIMIT 6;";
             $stmt = $conn->prepare($sql);

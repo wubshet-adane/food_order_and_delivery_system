@@ -9,9 +9,9 @@
     <div class="nav-links">
         <!--<a class="back" href="javascript:history.back()"><i class="fa-solid fa-backward"></i></a>-->
         <a href="home.php">Home</a>
-        <a href="/../food_ordering_system/views/customers/home.php">Resrtaurants</a>
-        <a href="about.php">About</a>
-        <a href="contact.php">Contact</a>
+        <a href="http://localhost:8081/food_ordering_system/views/customers/home.php">Resrtaurants</a>
+        <a href="http://localhost:8081/food_ordering_system/public/about.php">About</a>
+        <a href="http://localhost:8081/food_ordering_system/public/support.php">Contact</a>
     </div>
 
     <!-- Authentication Links -->
@@ -19,13 +19,13 @@
         <?php if(!isset($_SESSION['loggedIn'])){
         ?>
             <div class="login_box">
-                <a class="login" href="../auth/customer_login.php" title="continue as customer"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+                <a class="login" href="http://localhost:8081/food_ordering_system/views/auth/customer_login.php" title="continue as customer"><i class="fa-solid fa-right-to-bracket"></i> <span class="loginandsignupbutton">Login</span></a>
             </div>
             <div class="sign_up_box">
-                <a class="signup" href="register.php" title="continue as customer"><i class="fa-solid fa-user-plus"></i> SignUp</a>
+                <a class="signup" href="http://localhost:8081/food_ordering_system/views/auth/customer_registeration.php" title="continue as customer"><i class="fa-solid fa-user-plus"></i> <span class="loginandsignupbutton">SignUp</span></a>
             </div>
             <div class="login_box">
-                <a class="login" href="../auth/restaurant_login.php" title="continue as restaurant">Continue  as Restaurant</a>
+                <a class="login" href="http://localhost:8081/food_ordering_system/views/auth/restaurant_login.php" title="continue as restaurant">Continue  as Restaurant</a>
             </div>
         <?php }else{?>
             <div class="notification-dropdown">
@@ -68,7 +68,7 @@
                         <li><a href="order_history.php"><i class="fa-solid fa-bars"></i>&nbsp;&nbsp; Order History</a></li>
                         <li><a href="profile.php"><i class="fa-solid fa-key"></i>&nbsp;&nbsp; Change password</a></li>
                         <li><a href="account.php"><i class="fa-solid fa-gear"></i>&nbsp;&nbsp; Account settings</a></li>
-                        <li><a href="../../public/support.php"><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp; Support</a></li>
+                        <li><a href="http://localhost:8081/food_ordering_system/public/support.php"><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp; Support</a></li>
                         <li><a href="logout.html"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp; Logout</a></li>
                     </ul>
                 </div>

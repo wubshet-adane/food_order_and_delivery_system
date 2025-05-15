@@ -65,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $update_stmt = $conn->prepare("UPDATE users SET password=? WHERE user_id=?");
                 $update_stmt->bind_param("si", $hashed_password, $user_id);
                 $update_stmt->execute();
-
                 if ($update_stmt->affected_rows > 0) {
                     $success = "Password changed successfully!";
                 } else {
@@ -140,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php include_once 'topbar.php'; ?>
     <div class="container">
         <div class="profile-header">
-            <h1>My Profile</h1>
+            <h1>Your Profile</h1>
             <p>Manage your account information</p>
         </div>
 
@@ -348,9 +347,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 document.getElementById('new_password').style.border = 'none'; // Reset border style
                 document.getElementById('update_password_error').innerText = ''; // Clear previous error message
 
-                //atleast 1 number and 1 letter and 8 characters
-                const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-                if (currentPassword < 8){
+                    //atleast 1 number and 1 letter and 8 characters
+                    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+                    if (currentPassword < 8){
                     document.getElementById('update_password_error').innerText = 'Current password must be at least 8 characters long.';
                     document.getElementById('update_password_error').style.display = 'block';
                     document.getElementById('current_password').focus();

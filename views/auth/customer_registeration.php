@@ -185,7 +185,7 @@
                 <div class="input-group">
                     <label for="address">Profile image</label>
                     <div class="input-with-icon">
-                        <input type="file" id="image" name="new_password">
+                        <input type="file" id="image" name="profile_image" value="uuu.jpg">
                     </div>
                 </div>
 

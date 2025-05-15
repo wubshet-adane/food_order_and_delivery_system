@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// // confirm ordered to delivered by scanning secret code QR code from customers phone
+// confirm order to delivered by scanning secret code QR code from customers phone
 // if( isset($_GET['request_name']) && $_GET['request_name'] == 'Ajax') {
 
 //     $scanData = json_decode(file_get_contents("php://input"), true);
@@ -61,10 +61,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // }
 
 function updateOrderStatus($conn, $orderId, $status, $deliveryPersonId) {
-    $stmt = $conn->prepare("UPDATE orders SET status = ?, delivered_at = now() WHERE order_id = ? AND delivery_person_id = ?");
-    $stmt->bind_param("sii", $status, $orderId, $deliveryPersonId);
-    $stmt->execute();
+    // Start transaction
+    $conn->begin_transaction();
+
+    try {
+        // Step 1: Update order status
+        $stmt = $conn->prepare("UPDATE orders SET status = ?, delivered_at = NOW() WHERE order_id = ? AND delivery_person_id = ?");
+        $stmt->bind_param("sii", $status, $orderId, $deliveryPersonId);
+        $stmt->execute();
+
+        // Step 2: Only continue if status is 'delivered'
+        if ($status === 'delivered') {
+            // Step 3: Get delivery fee
+            $feeStmt = $conn->prepare("SELECT delivery_person_fee FROM payments WHERE order_id = ?");
+            $feeStmt->bind_param("i", $orderId);
+            $feeStmt->execute();
+            $feeResult = $feeStmt->get_result();
+
+            if ($feeRow = $feeResult->fetch_assoc()) {
+                $deliveryFee = $feeRow['delivery_person_fee'];
+
+                // Step 4: Update delivery partner's balance
+                $updateStmt = $conn->prepare("UPDATE delivery_partners SET balance = balance + ? WHERE user_id = ?");
+                $updateStmt->bind_param("di", $deliveryFee, $deliveryPersonId);
+                $updateStmt->execute();
+            } else {
+                throw new Exception("Delivery fee not found for order_id = $orderId");
+            }
+        }
+
+        // If everything went fine, commit the transaction
+        $conn->commit();
+        return true;
+
+    } catch (Exception $e) {
+        // Something went wrong, rollback
+        $conn->rollback();
+        error_log("Transaction failed: " . $e->getMessage());
+        return false;
+    }
 }
+
 
 //create function to to start order to delivery
 function startDelivery($conn, $orderId, $status, $deliveryPersonId) {
@@ -96,7 +133,7 @@ function startDelivery($conn, $orderId, $status, $deliveryPersonId) {
         $stmt->bind_param("sii", $status, $deliveryPersonId, $orderId);
         $stmt->execute();
         if ($stmt->affected_rows > 0) {
-            echo "<div style='display: flex; max-width: 800px; justify-content: space-between; background-color:#66FD75FF; padding: 1rem 3rem; margin: auto; border-radius: 5px;'>
+            echo "<div style='display: flex; max-width: 800px; justify-content: space-between; background-color:#65BD6DFF; padding: 1rem 3rem; margin: auto; border-radius: 5px;'>
                 <span>You are accept the order seccessfully.</span>
                 <span style='background-color:#ff990006; padding: 3px; border-radius: 3px;cursor: pointer;' onclick=\"this.parentElement.style.display='none'\"><i class='fa-solid fa-xmark'></i></span>
             </div>";

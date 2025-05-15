@@ -46,12 +46,12 @@ class Faqs {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    // Function to fetch a specific support request by ID
-    public function getSupportRequestById($requestId) {
-        $query = "SELECT * FROM support_requests WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$requestId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
+    // // Function to fetch a specific support request by ID
+    // public function getSupportRequestById($requestId) {
+    //     $query = "SELECT * FROM support_requests WHERE id = ?";
+    //     $stmt = $this->conn->prepare($query);
+    //     $stmt->execute([$requestId]);
+    //     return $stmt->fetch(PDO::FETCH_ASSOC);
+    // }
 }
 ?>

@@ -31,9 +31,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.2.0/dist/css/datepicker.min.css">
-    
-
-
+   
     <link rel="stylesheet" href="css/orders.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/header.css">
@@ -44,6 +42,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <link rel="stylesheet" href="css/earnings.css">
     <link rel="stylesheet" href="css/payouts.css">
     <link rel="stylesheet" href="css/reports_and_analytics.css">
+    <link rel="stylesheet" href="css/support_management.css">
     <!--sweet alert external library-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -66,7 +65,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                     <!-- Restaurant Management -->
                     <li><a href="?page=asdashboard"><i class="fa-solid fa-table-columns"></i></i> &nbsp;&nbsp;Dashboard </a></li>
                     <li><a href="?page=manage_restaurants"><i class="fa-solid fa-hotel"></i> &nbsp;&nbsp;Manage Restaurant </a></li>
-                    <li><a href="?page=manage_menu" class="active"><i class="fa-solid fa-utensils"></i> &nbsp;&nbsp;Manage Menu</a></li>
+                    <li><a href="?page=support_management" class="active"><i class="fa-solid fa-utensils"></i> &nbsp;&nbsp;Support Management</a></li>
                     <li><a href="?page=orders"><i class="fas fa-list-ul mr-3"></i> &nbsp;&nbsp;Orders</a></li>
                     <li><a href="?page=rating_and_review"><i class="fa-solid fa-star"></i> &nbsp;&nbsp;Ratings & Reviews</a></li>
                     <!-- Financial Section -->
@@ -107,8 +106,8 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
 
             // Include the content for the respective page
             switch ($page) {
-                case 'manage_menu':
-                    include 'manage_menu.php';
+                case 'support_management':
+                    include 'support_management.php';
                     break;
                 case'asdashboard':
                     include 'asdashboard.php';
@@ -145,13 +144,11 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
             }
             ?>
         </div>
+         <!--footer section-->
+        <footer class="footer_section">
+            copywrite &copy; 2017 G3 Ethiopia;
+        </footer>
     </section>
-
-    <!--footer section-->
-    <footer class="footer_section">
-        copywrite &copy; 2017 G3 Ethiopia;
-    </footer>
-
     
     <script src="javaScript/settimeout.js"></script>
     <script src="javaScript/menu_toggler.js"></script>

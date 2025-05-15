@@ -27,7 +27,7 @@
         SIN(RADIANS(?)) * SIN(RADIANS(r.latitude))
     )) AS distance_km
     FROM restaurants r LEFT JOIN review rv ON r.restaurant_id = rv.restaurant_id
-    WHERE r.name LIKE ? OR r.description LIKE ? OR r.location LIKE ? OR r.phone LIKE ?
+    WHERE (r.name LIKE ? OR r.description LIKE ? OR r.location LIKE ? OR r.phone LIKE ?) AND r.confirmation_status = 'approved'
     GROUP BY r.restaurant_id, r.name, r.location, r.image, r.phone, r.status, r.latitude, r.longitude
     ORDER BY $sort";  
 
@@ -86,9 +86,17 @@
                         </p>
                         
                         <div class="redirect">
-                            <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id'];?>&distance=<?php echo round(htmlspecialchars($restaurant['distance_km']), 2)?>" class="btn" title="Display menu from this restaurant">View Menu</a> 
-                            <a href="restaurant_details_for_customers.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Details about restaurant"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+                            <?php if ($restaurant['status'] === 'open'): ?>
+                                <a href="menu.php?restaurant_id=<?= htmlspecialchars($restaurant['restaurant_id']) ?>&distance=<?= round(htmlspecialchars($restaurant['distance_km']), 2) ?>" class="btn" title="Display menu from this restaurant">View Menu</a>
+                            <?php else: ?>
+                                <button class="btn" title="This restaurant is closed!" disabled style="cursor: not-allowed; opacity: 0.6;">View Menu</button>
+                            <?php endif; ?>
+                            
+                            <a href="restaurant_details_for_customers.php?restaurant_id=<?= htmlspecialchars($restaurant['restaurant_id']) ?>" class="btn" title="Details about restaurant">
+                                <i class="fa fa-external-link" aria-hidden="true"></i>
+                            </a>
                         </div>
+
                     </div>
                     <?php
                     //check if restaurant is open or closed:
@@ -170,7 +178,6 @@
 
     <?php
     include "topbar.php";
-    include "recommendation.php";
     ?>
     <!--search and sort section-->
     <section class="search-sort container">
@@ -185,12 +192,12 @@
                 <option value="avg_rating DESC" <?php if ($sort === 'avg_rating DESC') echo 'selected'; ?>>Top rated first</option>
                 <option value="avg_rating ASC" <?php if ($sort === 'avg_rating ASC') echo 'selected'; ?>>Least rated first</option>
             </select>
-
             <button type="submit">Find</button>
         </form>
     </section>
 
     <section class="restaurants container">
+    <?php include "recommendation.php";?>
         <div class="restaurants_quote">
             <h1>Top Restaurants Near You</h1>  
             <p>the easiest way to found everything <br> what you want to eat quickly!</p> 
@@ -239,8 +246,15 @@
                                 </p>
                                 <br>
                                 <div class="redirect">
-                                    <a href="menu.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Display menu from this restaurant">View Menu</a> 
-                                    <a href="restaurant_details_for_customers.php?restaurant_id=<?php echo $restaurant['restaurant_id']; ?>" class="btn" title="Details about restaurant"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+                                    <?php if ($restaurant['status'] === 'open'): ?>
+                                        <a href="menu.php?restaurant_id=<?= htmlspecialchars($restaurant['restaurant_id']) ?>&distance=<?= round(htmlspecialchars($restaurant['distance_km']), 2) ?>" class="btn" title="Display menu from this restaurant">View Menu</a>
+                                    <?php else: ?>
+                                        <button class="btn" title="This restaurant is closed!" disabled style="cursor: not-allowed; opacity: 0.6;">View Menu</button>
+                                    <?php endif; ?>
+                                    
+                                    <a href="restaurant_details_for_customers.php?restaurant_id=<?= htmlspecialchars($restaurant['restaurant_id']) ?>" class="btn" title="Details about restaurant">
+                                        <i class="fa fa-external-link" aria-hidden="true"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -283,7 +297,7 @@
         <p>The easiest way to find everything <br> you crave in just a few clicks!</p> 
     </div>
 
-    <div class="become_partner">
+    <div class="become_partner" id="become_partners">
         <div class="container">
             <div class="box customer">
                 <h2>Become a <span>Customer</span></h2>

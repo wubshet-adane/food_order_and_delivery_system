@@ -21,13 +21,13 @@
             banner.style.display = 'none';
             
             // Optional: Store preference in localStorage
-            localStorage.setItem('hidePromoBanner', 'true');
+            //localStorage.setItem('hidePromoBanner', 'true');
         });
         
         // Check if banner was previously closed
-        if(localStorage.getItem('hidePromoBanner') === 'true') {
-            document.querySelector('.recommendation').style.display = 'none';
-        }
+        // if(localStorage.getItem('hidePromoBanner') === 'true') {
+        //     document.querySelector('.recommendation').style.display = 'none';
+        // }
         
         // Enable/disable arrows based on scroll position
         container.addEventListener('scroll', updateArrowVisibility);

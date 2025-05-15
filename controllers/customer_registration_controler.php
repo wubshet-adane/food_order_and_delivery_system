@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'password' => $password,
         'email' => $email,
         'phone' => $phone,
-        'profile_image' => $profile_image,
+        'profile_image' => $profile_image
     ]);
     
     if ($result) {
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ../views/auth/customer_login.php");
         exit;
     }else {
-        header("Location: ../views/auth/customer_registeration.php?error=Registration failed. Please try again.");
+        header("Location: ../views/auth/customer_registeration.php?error=Registration failed. Please try again.{$result}");
         exit;
     }
 }

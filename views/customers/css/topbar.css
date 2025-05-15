@@ -204,6 +204,10 @@
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
+        .loginandsignupbutton{
+            display: none;
+        }
+
         .nav-links {
             display: none; /* You can replace with hamburger menu if needed */
         }

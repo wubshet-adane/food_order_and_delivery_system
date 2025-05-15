@@ -70,6 +70,7 @@
                 <tr>
                     <th>Image</th>
                     <th>Item</th>
+                    <th>Discount</th>
                     <th>Price</th>
                     <th>Qty</th>
                     <th>Total</th>
@@ -88,9 +89,10 @@
                     <tr>
                         <td class="item-name"><img style="border-radius: 10px;" src="../../uploads/menu_images/<?php echo $item['menu_image']; ?>" alt="menu_img" width="60px" height="50px"></td>
                         <td class="item-name"><?php echo htmlspecialchars($item['menu_name']); ?></td>
-                        <td class="item-price">ETB<?php echo number_format($item['menu_price'], 2); ?></td>
+                        <td class="item-price" style="color: green;"><?php echo htmlspecialchars($item['menu_discount']);?>%</td>
+                        <td class="item-price"><span style="text-decoration: line-through;"><?php echo number_format($item['menu_price'], 2); ?></span> birr</td>
                         <td class="item-quantity"><?php echo $item['quantity']; ?></td>
-                        <td class="item-total">ETB<?php echo number_format(($item['menu_price'] * $item['quantity']) - ($item['menu_discount'] / 100 * $item['quantity']), 2); ?></td>
+                        <td class="item-total"><?php echo number_format(($item['menu_price'] * $item['quantity']) - ($item['menu_discount'] / 100 * $item['quantity']), 2); ?> birr</td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

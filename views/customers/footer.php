@@ -9,18 +9,18 @@
             <div class="footer-links">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="/food_ordering_system/customers/home.php">  Home</a></li>
-                    <li><a href="/food_ordering_system/public/services.php">  Services</a></li>
-                    <li><a href="/food_ordering_system/public/about.php"> About</a></li>
+                    <li><a href="http://localhost:8081/food_ordering_system/views/customers/home.php">  Home</a></li>
+                    <li><a href="http://localhost:8081/food_ordering_system/public/services.php">  Services</a></li>
+                    <li><a href="http://localhost:8081/food_ordering_system/public/about.php"> About</a></li>
                 </ul>
             </div>
             <div class="footer-links">
                 <h3>Support</h3>
                 <ul>
-                    <li><a href="/food_ordering_system/public/support.php#form-container">contact us</a></li>
-                    <li><a href="/food_ordering_system/public/about_us.php"> about us</a></li>
-                    <li><a href="/food_ordering_system/public/help_center.php"> help center</a></li>
-                    <li><a href="/food_ordering_system/public/careers.php"> careers</a></li>
+                    <li><a href="http://localhost:8081/food_ordering_system/public/support.php#form-container">contact us</a></li>
+                    <li><a href="http://localhost:8081/food_ordering_system/public/about_us.php"> about us</a></li>
+                    <li><a href="http://localhost:8081/food_ordering_system/public/help_center.php"> help center</a></li>
+                    <li><a href="http://localhost:8081/food_ordering_system/public/careers.php"> careers</a></li>
                 </ul>
             </div>
             <div class="footer-contact">

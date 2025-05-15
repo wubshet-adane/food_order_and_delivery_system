@@ -22,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->close();
         }
     }
-    //header("Location: {$_SERVER['PHP_SELF']}");
-    exit;
+    // header("Location: ?page=");
+    // exit;
 }
 
 // Get all restaurant owners with their restaurants count

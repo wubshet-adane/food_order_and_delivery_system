@@ -10,9 +10,10 @@ function showRestaurantModal(restaurantId) {
         .then(response => response.json())
         .then(data => {
             populateModal(data);
+            console.log(data);
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.log('Error:', error);
             modal.querySelector('.modal-body').innerHTML = '<p class="error-message">Failed to load restaurant details. Please try again.</p>';
         });
 }
@@ -22,8 +23,8 @@ function populateModal(data) {
     document.getElementById('modalRestaurantName').textContent = data.name;
     document.getElementById('modalRestaurantStatus').textContent = data.status;
     document.getElementById('modalRestaurantStatus').className = `status-badge status-${data.status}`;
-    document.getElementById('modalLocation').textContent = data.location;
-    document.getElementById('modalPhone').textContent = data.phone;
+    document.getElementById('modalLocation').textContent = data.location|| 'Not specified';
+    document.getElementById('modalPhone').textContent = data.phone|| 'Not specified';
     document.getElementById('modalHours').textContent = data.opening_and_closing_hour || 'Not specified';
     document.getElementById('modalRating').textContent = data.rating || 'Not rated yet';
     document.getElementById('modalDescription').textContent = data.description || 'No description provided.';
