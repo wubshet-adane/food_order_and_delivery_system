@@ -1,0 +1,563 @@
+
+        :root {
+            --restaurant-color: #4e73df;
+            --delivery-color: #1cc88a;
+            --pending-color: #fff3cd;
+            --approved-color: #d1e7dd;
+            --rejected-color: #f8d7da;
+        }
+        
+        .user-management {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+        
+        .user-filters {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group h3 {
+            margin-bottom: 10px;
+            color: #5a5c69;
+            font-size: 1rem;
+        }
+        
+        .role-filter {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .role-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .role-option:hover {
+            background: #f8f9fc;
+        }
+        
+        .role-option.active {
+            background: #f8f9fc;
+            font-weight: 600;
+        }
+        
+        .role-badge {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .delivery-badge { background: var(--delivery-color); }
+        .restaurant-badge { background: var(--restaurant-color); }
+        
+        .status-option {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .status-option:hover {
+            opacity: 0.9;
+        }
+        
+        .status-option.active {
+            font-weight: 600;
+            transform: scale(1.05);
+        }
+        
+        .pending-option { background: var(--pending-color); color: #856404; }
+        .approved-option { background: var(--approved-color); color: #0f5132; }
+        .rejected-option { background: var(--rejected-color); color: #842029; }
+        
+        .user-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .user-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .user-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .user-card.delivery { border-left-color: var(--delivery-color); }
+        .user-card.restaurant { border-left-color: var(--restaurant-color); }
+        
+        .user-card.active {
+            box-shadow: 0 0 0 2px var(--restaurant-color);
+        }
+        
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .delivery-avatar { background: var(--delivery-color); }
+        .restaurant-avatar { background: var(--restaurant-color); }
+        
+        .user-meta {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .user-email {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+        
+        .user-role {
+            font-size: 0.8rem;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            text-transform: capitalize;
+            width: fit-content;
+        }
+        
+        .role-delivery { background: var(--delivery-color); }
+        .role-restaurant { background: var(--restaurant-color); }
+        
+        .user-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-pending { background: var(--pending-color); color: #856404; }
+        .status-approved { background: var(--approved-color); color: #0f5132; }
+        .status-rejected { background: var(--rejected-color); color: #842029; }
+        
+        .user-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--restaurant-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #3a5bd9;
+        }
+        
+        .btn-success {
+            background: var(--delivery-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #17a673;
+        }
+        
+        .btn-danger {
+            background: #e74a3b;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #d52a1a;
+        }
+        
+        .btn-view {
+            background: #5a5c69;
+            color: white;
+        }
+        
+        .btn-view:hover {
+            background: #3d3e48;
+        }
+        
+        .user-documents {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .documents-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .document-card {
+            background: #f8f9fc;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.2s;
+        }
+        
+        .document-card:hover {
+            background: #e9ecef;
+        }
+        
+        .document-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .document-image {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            background: white;
+            border: 1px solid #eaeaea;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .document-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .document-btn {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            background: var(--restaurant-color);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .document-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .user-details-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+        
+        .user-details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .user-details-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-details-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .user-details-meta {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-details-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .user-details-email {
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        
+        .user-details-role {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            color: white;
+        }
+        
+        .role-delivery-bg { background: var(--delivery-color); }
+        .role-restaurant-bg { background: var(--restaurant-color); }
+        
+        .user-details-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .user-details-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .details-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2e3a4d;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .detail-item-large {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            background: #f8f9fc;
+            border-radius: 8px;
+        }
+        
+        .detail-label-large {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value-large {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .bank-details {
+            background: #f8f9fc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .bank-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .bank-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .no-users {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+        
+        .no-users i {
+            font-size: 3rem;
+            color: #d1d3e2;
+            margin-bottom: 20px;
+        }
+        
+        .no-users p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #aaa;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+        
+        .modal-title {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d3e2;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 992px) {
+            .user-management {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-filters {
+                position: static;
+            }
+            
+            .user-details-content {
+                grid-template-columns: 1fr;
+            }
+        }

@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (dobInput.value) {
             const dob = new Date(dobInput.value);
             const today = new Date();
-            const age = today.getFullYear() - dob.getFullYear();
-            const monthDiff = today.getMonth() - dob.getMonth();
+            var age = today.getFullYear() - dob.getFullYear();
+            var monthDiff = today.getMonth() - dob.getMonth();
             
             if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
                 age--;

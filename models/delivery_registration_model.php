@@ -24,7 +24,7 @@ class DeliverRegister {
 
             // Step 2: Insert into `users` table
             $userStmt = $conn->prepare("INSERT INTO users (name, image, email, password, role) VALUES (?, ?, ?, ?, ?)");
-            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+            $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
 
             $userStmt->bind_param("sssss",
                 $data['fullname'],
@@ -41,7 +41,7 @@ class DeliverRegister {
             $partnerStmt = $conn->prepare("INSERT INTO delivery_partners (
                 user_id, dob, phone, address,
                 vehicle_type, license_number, plate_number,
-                id_proof, address_proof, license_copy,
+                id_front, id_back, license_copy,
                 bank_name, account_name, account_number, status
             ) VALUES (
                 ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
@@ -55,8 +55,8 @@ class DeliverRegister {
                 $data['vehicle_type'],
                 $data['license_number'],
                 $data['plate_number'],
-                $data['id_proof'],
-                $data['address_proof'],
+                $data['id_front'],
+                $data['id_back'],
                 $data['license_copy'],
                 $data['bank_name'],
                 $data['account_name'],

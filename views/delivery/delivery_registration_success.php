@@ -1,3 +1,21 @@
+<?php
+    session_start();
+    include '../../config/database.php';
+
+    if(isset($_GET['email'])){
+        $email = $_SESSION['email'];
+        $stmt = $conn->prepare("SELECT u.*, del.status 
+                                        FROM users u
+                                        JOIN delivery_partners del ON u.user_id = del.user_id
+                                        WHERE u.role = 'delivery' AND u.email = ?");
+        $stmt->bind_param("ss", $email, $password);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+    }
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +31,7 @@
                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
             </svg>
         </div>
+        <a href="javascript:history.back()">back</a>
         
         <h1>Your Application is Under Review</h1>
         
@@ -25,22 +44,25 @@
                 <div class="step-number active">1</div>
                 <div class="step-label">Application Submitted</div>
             </div>
+            <?php if(isset($result['status']) && $result['status'] == 'approved'){?>
+            <div class="timeline-step">
+                <div class="step-number active">2</div>
+                <div class="step-label">Approved</div>
+            </div>
+            <?php }else{ ?>
             <div class="timeline-step">
                 <div class="step-number">2</div>
-                <div class="step-label">Under Review</div>
+                <div class="step-label">Approved</div>
             </div>
-            <div class="timeline-step">
-                <div class="step-number">3</div>
-                <div class="step-label">Approval</div>
-            </div>
+            <?php }?>
         </div>
         
         <div class="contact-info">
             <h3>Need Help?</h3>
-            <p>If you have any questions about your application status, please contact our support team at <strong><a href="../../public/contact.php">contact us</a></strong> or call <strong>(+251) 965868933</strong>.</p>
+            <p>If you have any questions about your application status, please contact our support team at <strong><a href="../../public/support.php">contact us</a></strong> or call <strong>(+251) 965868933</strong>.</p>
         </div>
         
-        <a href="dashboard.html" class="btn">Go to Dashboard</a>
+        <a href="index.php" class="btn">Go to Dashboard</a>
     </div>
 </body>
 </html>

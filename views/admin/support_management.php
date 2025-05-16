@@ -18,7 +18,7 @@
                 $_SESSION['message_type'] = "error";
             }
             
-            header("Location: ?page=support_management&faq_id=$faq_id");
+            header("Location: dashboard.php?page=support_management&faq_id=$faq_id");
             exit();
         }
         
@@ -32,7 +32,7 @@
             
             $_SESSION['message'] = "Status updated successfully!";
             $_SESSION['message_type'] = "success";
-            header("Location: support_management.php?faq_id=$faq_id");
+            header("Location: dashboard.php?page=support_management&faq_id=$faq_id");
             exit();
         }
     }
@@ -207,7 +207,7 @@
                             <?php else: ?>
                                 <?php foreach ($faqs as $faq): ?>
                                     <div class="faq-card <?= $faq['asker_role'] ?> <?= isset($_GET['faq_id']) && $_GET['faq_id'] == $faq['faq_id'] ? 'active' : '' ?>"
-                                         onclick="window.location.href='?page=support_management&faq_id=<?= $faq['faq_id'] ?>&asker_role=<?= $asker_role ?>&status=<?= $status ?>'">
+                                         onclick="window.location.href='dashboard.php?page=support_management&faq_id=<?= $faq['faq_id'] ?>&asker_role=<?= $asker_role ?>&status=<?= $status ?>'">
                                         <div class="faq-header">
                                             <div class="faq-user">
                                                 <div class="faq-avatar <?= $faq['asker_role'] ?>-avatar">
@@ -243,7 +243,7 @@
             
             // Reset page to 1 when changing filters
             if (type !== 'page') {
-                url.searchParams.set('page', '1');
+                url.searchParams.set('page', 'support_management');
             }
             
             window.location.href = url.toString();

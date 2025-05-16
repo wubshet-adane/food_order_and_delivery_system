@@ -1,172 +1,337 @@
 
         :root {
-            --primary-color: #ff6b6b;
-            --secondary-color: #4CAF50;
-            --dark-color: #2f3542;
-            --light-color: #f8f9fa;
-            --border-color: #e0e0e0;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --restaurant-color: #4e73df;
+            --delivery-color: #1cc88a;
+            --paid-color: #d1e7dd;
+            --rejected-color: #f8d7da;
+            --pending-color: #fff3cd;
         }
-        .payout-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            padding: 25px;
-        }
-
-        h2 {
-            color: var(--dark-color);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-color);
-        }
-
-        .alert {
-            padding: 12px 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .restaurant-selector {
-            margin-bottom: 25px;
+        
+        .payout-management {
             display: flex;
-            align-items: center;
-            gap: 15px;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .payout-filters {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 20px;
             flex-wrap: wrap;
         }
-
-        .restaurant-selector select {
-            padding: 10px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            min-width: 250px;
-            font-size: 16px;
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-
-        .payout-form {
-            background-color: #f9f9f9;
+        
+        .filter-label {
+            font-weight: 500;
+            color: #5a5c69;
+        }
+        
+        .filter-select {
+            padding: 8px 15px;
+            border-radius: 6px;
+            border: 1px solid #d1d3e2;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .payout-requests {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .payout-card {
+            background: white;
+            border-radius: 10px;
             padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            position: relative;
+            border-left: 4px solid transparent;
         }
-
+        
+        .payout-card.restaurant {
+            border-left-color: var(--restaurant-color);
+        }
+        
+        .payout-card.delivery {
+            border-left-color: var(--delivery-color);
+        }
+        
+        .payout-card.pending {
+            background-color: var(--pending-color);
+        }
+        
+        .payout-card.paid {
+            background-color: var(--paid-color);
+        }
+        
+        .payout-card.rejected {
+            background-color: var(--rejected-color);
+        }
+        
+        .payout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .payout-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e0e0e0;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .restaurant-avatar {
+            background: rgba(78, 115, 223, 0.2);
+            color: var(--restaurant-color);
+        }
+        
+        .delivery-avatar {
+            background: rgba(28, 200, 138, 0.2);
+            color: var(--delivery-color);
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+        }
+        
+        .user-type {
+            font-size: 0.85rem;
+            color: #6c757d;
+            text-transform: capitalize;
+        }
+        
+        .payout-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-paid {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+        
+        .status-rejected {
+            background: #f8d7da;
+            color: #842029;
+        }
+        
+        .payout-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+        }
+        
+        .payout-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2e3a4d;
+        }
+        
+        .payout-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .btn-approve {
+            background: var(--delivery-color);
+            color: white;
+        }
+        
+        .btn-approve:hover {
+            background: #17a673;
+        }
+        
+        .btn-reject {
+            background: #e74a3b;
+            color: white;
+        }
+        
+        .btn-reject:hover {
+            background: #d52a1a;
+        }
+        
+        .btn-view {
+            background: #5a5c69;
+            color: white;
+        }
+        
+        .btn-view:hover {
+            background: #3d3e48;
+        }
+        
+        .admin-note {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .note-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .note-content {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #aaa;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+        
+        .modal-title {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
         .form-group {
             margin-bottom: 15px;
         }
-
-        .form-group label {
+        
+        .form-label {
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
         }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        
+        .form-textarea {
             width: 100%;
-            padding: 10px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        .form-group textarea {
             min-height: 100px;
+            padding: 10px;
+            border: 1px solid #d1d3e2;
+            border-radius: 6px;
             resize: vertical;
         }
-
-        .btn-submit {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: background-color 0.3s;
-        }
-
-        .btn-submit:hover {
-            background-color: #e05555;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
             margin-top: 20px;
         }
-
-        table th,
-        table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        table th {
-            background-color: #f2f2f2;
-            font-weight: 600;
-        }
-
-        table tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        .status-pending {
-            color: #ff9800;
-            font-weight: 600;
-        }
-
-        .status-approved {
-            color: var(--secondary-color);
-            font-weight: 600;
-        }
-
-        .status-rejected {
-            color: #f44336;
-            font-weight: 600;
-        }
-
-        .status-completed {
-            color: #2196F3;
-            font-weight: 600;
-        }
-
-        .no-payouts {
+        
+        .no-requests {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
             text-align: center;
-            padding: 30px;
-            color: #666;
-            font-style: italic;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
         }
-
+        
+        .no-requests i {
+            font-size: 3rem;
+            color: #d1d3e2;
+            margin-bottom: 20px;
+        }
+        
+        .no-requests p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            
-            table {
-                display: block;
-                overflow-x: auto;
-            }
-            
-            .restaurant-selector {
-                flex-direction: column;
-                align-items: flex-start;
+            .payout-details {
+                grid-template-columns: 1fr;
             }
         }
+    

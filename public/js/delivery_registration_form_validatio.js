@@ -79,8 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (dobInput.value) {
             const dob = new Date(dobInput.value);
             const today = new Date();
-            const age = today.getFullYear() - dob.getFullYear();
-            const monthDiff = today.getMonth() - dob.getMonth();
+            var age = today.getFullYear() - dob.getFullYear();
+            var monthDiff = today.getMonth() - dob.getMonth();
             
             if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
                 age--;
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Validate license upload if shown
         if (licenseUploadGroup.style.display === 'block') {
-            const licenseUploadInput = document.getElementById('license_upload');
+            const licenseUploadInput = document.getElementById('license_copy');
             const licenseUploadError = document.getElementById('license-upload-error');
             if (!licenseUploadInput.files.length) {
                 licenseUploadError.textContent = 'License upload is required';

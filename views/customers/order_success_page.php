@@ -37,10 +37,11 @@ $stmt->close();
 if (!$order) die("No order found.");
 
 $progress_map = [
-    'pending' => ['value' => 25, 'color' => 'bg-yellow-500'],
-    'Preparing' => ['value' => 50, 'color' => 'bg-blue-500'],
-    'Ready_for_delivery' => ['value' => 75, 'color' => 'bg-purple-500'],
-    'Delivered' => ['value' => 100, 'color' => 'bg-green-500']
+    'pending' => ['value' => 20, 'color' => 'bg-yellow-500'],
+    'Preparing' => ['value' => 40, 'color' => 'bg-blue-500'],
+    'Ready_for_delivery' => ['value' => 60, 'color' => 'bg-purple-500'],
+    'Delivering' => ['value' => 80, 'color' => 'bg-green-300'],
+    'Delivered' => ['value' => 100, 'color' => 'bg-green-600']
 ];
 $current_progress = $progress_map[$order['status']] ?? ['value' => 0, 'color' => 'bg-gray-300'];
 // Fetch ordered items
@@ -169,6 +170,7 @@ $formattedDate = $order_date->format('F j, Y, g:i A');
           <div class="flex justify-between mt-2 text-xs text-gray-500">
             <span>Placed</span>
             <span>Preparing</span>
+            <span>Ready for delivery</span>
             <span>On the way</span>
             <span>Delivered</span>
           </div>
@@ -380,24 +382,24 @@ $formattedDate = $order_date->format('F j, Y, g:i A');
             
             <div class="flex items-start">
               <div class="flex-shrink-0 mt-1">
-                <div class="w-4 h-4 <?= in_array($order['status'], ['Preparing', 'Out for Delivery', 'Delivered']) ? 'bg-indigo-500' : 'bg-gray-300' ?> rounded-full"></div>
+                <div class="w-4 h-4 <?= in_array($order['status'], ['Preparing', 'Ready_for_delivery', 'Delivering', 'Delivered']) ? 'bg-indigo-500' : 'bg-gray-300' ?> rounded-full"></div>
               </div>
               <div class="ml-3">
                 <p class="text-sm font-medium text-gray-900">Food preparation</p>
                 <p class="text-sm text-gray-500">
-                  <?= in_array($order['status'], ['Preparing', 'Out for Delivery', 'Delivered']) ? 'In progress' : 'Pending' ?>
+                  <?= in_array($order['status'], ['Preparing', 'Ready_for_delivery', 'Delivered']) ? 'In progress' : 'Pending' ?>
                 </p>
               </div>
             </div>
             
             <div class="flex items-start">
               <div class="flex-shrink-0 mt-1">
-                <div class="w-4 h-4 <?= in_array($order['status'], ['Out for Delivery', 'Delivered']) ? 'bg-indigo-500' : 'bg-gray-300' ?> rounded-full"></div>
+                <div class="w-4 h-4 <?= in_array($order['status'], ['Ready_for_delivery', 'Delivering', 'Delivered']) ? 'bg-indigo-500' : 'bg-gray-300' ?> rounded-full"></div>
               </div>
               <div class="ml-3">
                 <p class="text-sm font-medium text-gray-900">Out for delivery</p>
                 <p class="text-sm text-gray-500">
-                  <?= in_array($order['status'], ['Out for Delivery', 'Delivered']) ? 'On the way' : 'Pending' ?>
+                  <?= in_array($order['status'], ['Delivering', 'Delivered']) ? 'On the way' : 'Pending' ?>
                 </p>
               </div>
             </div>

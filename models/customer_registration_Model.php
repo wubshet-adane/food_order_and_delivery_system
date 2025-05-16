@@ -19,13 +19,12 @@
                 $checkStmt->close();
                 $userStmt = $conn->prepare("INSERT INTO users (name, image, email, password, role, phone) VALUES (?, ?, ?, ?, ?, ?)");
 
-                //$hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
-
+                $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
                 $userStmt->bind_param("ssssss",
                     $data['fullname'],
                     $data['profile_image'],
                     $data['email'],
-                    $data['password'],
+                    $hashedPassword,
                     $data['role'],
                     $data['phone']
                 );

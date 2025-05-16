@@ -27,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Handle file uploads
     $profile_image = isset($_FILES['profile_image']) ? handleFileUpload('profile_image', $upload_dir) : "none.jpg";
-    $id_proof = handleFileUpload('id_proof', $upload_dir);
-    $address_proof = handleFileUpload('address_proof', $upload_dir);
+    $id_front = handleFileUpload('id_front', $upload_dir);
+    $id_back = handleFileUpload('id_back', $upload_dir);
     $license_copy = isset($_FILES['license_copy']) ? handleFileUpload('license_copy', $upload_dir) : "none.jpg";
 
     $result = DeliverRegister::deliveryRegistrationfunction([
@@ -43,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'license_number' => $license_number,
         'plate_number' => $plate_number,
         'profile_image' => $profile_image,
-        'id_proof' => $id_proof,
-        'address_proof' => $address_proof,
+        'id_front' => $id_front,
+        'id_back' => $id_back,
         'license_copy' => $license_copy,
         'bank_name' => $bank_name,
         'account_name' => $account_name,
@@ -54,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($result) {
         // redirect or show success message
+        $_SESSION['email'] = $email;
         header("Location: ../views/delivery/delivery_registration_success.php");
         exit;
     }elseif ($error) {

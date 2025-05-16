@@ -8,6 +8,10 @@
         header('Location: ../auth/delivery_login.php');
         exit();
     }
+    //chech staus weather approved or pending or rejected
+    if ($_SESSION['status'] !== 'approved'){
+        header('Location: delivery_registration_success.php');
+    }
 
     // Check if user has delivery permissions
     $user_id = $_SESSION['user_id'];

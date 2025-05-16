@@ -25,7 +25,7 @@
                 <a class="signup" href="http://localhost:8081/food_ordering_system/views/auth/customer_registeration.php" title="continue as customer"><i class="fa-solid fa-user-plus"></i> <span class="loginandsignupbutton">SignUp</span></a>
             </div>
             <div class="login_box">
-                <a class="login" href="http://localhost:8081/food_ordering_system/views/auth/restaurant_login.php" title="continue as restaurant">Continue  as Restaurant</a>
+                <a class="login" href="http://localhost:8081/food_ordering_system/views/auth/restaurant_login.php" title="continue as restaurant"><i class="fa-solid fa-hotel"></i><span class="loginandsignupbutton">Continue  as Restaurant</span></a>
             </div>
         <?php }else{?>
             <div class="notification-dropdown">

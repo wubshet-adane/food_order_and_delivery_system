@@ -3,26 +3,22 @@
 require_once __DIR__ . '/../config/database.php';
 
 class DeliveryUser {
-    // public static function register($name, $email, $password, $role) {
-    //     global $conn;
-    //     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-    //     $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
-    //     $stmt->bind_param("ssss", $name, $email, $hashedPassword, $role);
-    //     return $stmt->execute();
-    // }
-
     public static function login($email, $password) {
         global $conn;
-        $stmt = $conn->prepare("SELECT * FROM users WHERE role = 'delivery' AND email = ? AND password = ?");
-        $stmt->bind_param("ss", $email, $password);
+
+        // Step 1: Fetch user by email and role
+        $stmt = $conn->prepare("SELECT * FROM users WHERE role = 'delivery' AND email = ?");
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
 
-        if ($result && $result['password']) {
+        // Step 2: Verify the password hash
+        if ($result && password_verify($password, $result['password'])) {
             return $result;
         } else {
             return false;
         }
     }
 }
+
 ?>

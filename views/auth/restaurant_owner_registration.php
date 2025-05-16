@@ -186,7 +186,7 @@
       </div>
 
     <?php include "../customers/footer.php";?>
-    <script src="../../public/js/restaurant_owner_registration_form_validatio.js"></script>
+    <script src="../../public/js/restaurant_owner_registration_form_validation.js"></script>
     <script src="../customers/javaScript/scroll_up.js" defer loading="async"></script>
     <script>
         // Auto-hide alert with fade-out animation

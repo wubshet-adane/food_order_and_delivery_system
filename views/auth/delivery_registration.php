@@ -161,6 +161,7 @@
                 <div class="form-group" id="plate-group" style="display:none;">
                     <label for="plate_number">Vehicle Plate Number</label>
                     <input type="text" id="plate_number" name="plate_number" placeholder="002145">
+                    <span class="error-message" id="plate-error"></span>
                 </div>
             </fieldset>
             
@@ -174,17 +175,18 @@
 
                 <div class="form-group">
                     <label for="id_proof">Government ID (Front)*</label>
-                    <input type="file" id="id_proof" name="id_proof" accept="image/*,.pdf" required>
+                    <input type="file" id="id_proof" name="id_front" accept="image/*,.pdf" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="address_proof">Address Proof*</label>
-                    <input type="file" id="address_proof" name="address_proof" accept="image/*,.pdf" required>
+                    <label for="address_proof">Government ID (Back)*</label>
+                    <input type="file" id="address_proof" name="id_back" accept="image/*,.pdf" required>
                 </div>
                 
                 <div class="form-group" id="license-upload-group" style="display:none;">
                     <label for="license_copy">Driver's License Copy</label>
                     <input type="file" id="license_copy" name="license_copy" accept="image/*,.pdf">
+                    <span class="error-message" id="license-upload-error"></span>
                 </div>
             </fieldset>
             
@@ -194,6 +196,7 @@
                 <div class="form-group">
                     <label for="bank_name">Bank Name*</label>
                     <input type="text" id="bank_name" name="bank_name" required placeholder="commercial bank of ethiopia">
+                    <span class="error-message" id="bank-name-error"></span>
                 </div>
 
                 <div class="form-group">

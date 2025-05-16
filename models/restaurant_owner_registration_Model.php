@@ -25,7 +25,7 @@ class MerchantRegister {
             // Step 2: Insert into `users` table
             $userStmt = $conn->prepare("INSERT INTO users (name, image, email, password, role) VALUES (?, ?, ?, ?, ?)");
 
-            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+            $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
 
             $userStmt->bind_param("sssss",
                 $data['fullname'],

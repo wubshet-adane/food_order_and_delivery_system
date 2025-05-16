@@ -34,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['userType'] = "restaurant";
         $_SESSION['profile_image'] = $restaurant['image'];
         $_SESSION['name'] = $restaurant['name'];
+        $_SESSION['status'] = $restaurant['status'];
 
         //set response message and redirect url
         $response["success"] = true;

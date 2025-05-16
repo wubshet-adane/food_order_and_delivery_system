@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['userType'] = "delivery";
         $_SESSION['profile_image'] = $user['image'];
         $_SESSION['name'] = $user['name'];
+        $_SESSION['status'] = $user['status'];
         //set response message and redirect url
         $response["success"] = true;
         $response["message"] = "Login successful";

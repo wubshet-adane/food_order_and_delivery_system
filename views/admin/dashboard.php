@@ -37,12 +37,12 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/asdashboard.css">
     <link rel="stylesheet" href="css/manage_restaurants.css">
-    <link rel="stylesheet" href="css/manage_menu.css">
     <link rel="stylesheet" href="css/reviews.css">
     <link rel="stylesheet" href="css/earnings.css">
     <link rel="stylesheet" href="css/payouts.css">
     <link rel="stylesheet" href="css/reports_and_analytics.css">
     <link rel="stylesheet" href="css/support_management.css">
+    <link rel="stylesheet" href="css/users_management.css">
     <!--sweet alert external library-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -63,11 +63,13 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
             <div class="sidbar_content">
                  <ul class="sidebar_ul">
                     <!-- Restaurant Management -->
-                    <li><a href="?page=asdashboard"><i class="fa-solid fa-table-columns"></i></i> &nbsp;&nbsp;Dashboard </a></li>
+                    <li><a href="?page=asdashboard"><i class="fa-solid fa-table-columns"></i> &nbsp;&nbsp;Dashboard </a></li>
+                    <li><a href="?page=user_management"><i class="fa-solid fa-users"></i> &nbsp;&nbsp;Users Management </a></li>
                     <li><a href="?page=manage_restaurants"><i class="fa-solid fa-hotel"></i> &nbsp;&nbsp;Manage Restaurant </a></li>
-                    <li><a href="?page=support_management" class="active"><i class="fa-solid fa-utensils"></i> &nbsp;&nbsp;Support Management</a></li>
-                    <li><a href="?page=orders"><i class="fas fa-list-ul mr-3"></i> &nbsp;&nbsp;Orders</a></li>
-                    <li><a href="?page=rating_and_review"><i class="fa-solid fa-star"></i> &nbsp;&nbsp;Ratings & Reviews</a></li>
+                    <li><a href="?page=manage_deliveris"><i class="fa-solid fa-truck-fast"></i> &nbsp;&nbsp;Manage Deliveries </a></li>
+                    <li><a href="?page=support_management" class="active"><i class="fa-solid fa-screwdriver-wrench"></i> &nbsp;&nbsp;Support Management</a></li>
+                    <li><a href="?page=orders"><i class="fas fa-list-ul mr-3"></i> &nbsp;&nbsp;Manage Orders</a></li>
+                    <li><a href="?page=Manage_Payouts"><i class="fa-solid fa-money-check"></i> &nbsp;&nbsp;Manage_Payouts</a></li>
                     <!-- Financial Section -->
                     <li class="dropdown">
                         <a href="?page=monetary">
@@ -112,8 +114,14 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                 case'asdashboard':
                     include 'asdashboard.php';
                     break;
-                    case'manage_restaurants':
+                case'user_management':
+                    include 'users_management.php';
+                    break;
+                case'manage_restaurants':
                     include 'manage_restaurants.php';
+                    break;
+                case'manage_deliveris':
+                    include 'manage_deliveris.php';
                     break;
                 case 'reports_and_analytics':
                     include 'reports_and_analytics.php';
@@ -130,8 +138,8 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                 // case 'financial_reports':
                 //     include 'financial_reports.php';
                 //     break;
-                case 'rating_and_review':
-                    include 'rating_and_review.php';
+                case 'Manage_Payouts':
+                    include 'Manage_Payouts.php';
                     break;
                 case 'orders':
                     include 'orders.php';
@@ -144,10 +152,6 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
             }
             ?>
         </div>
-         <!--footer section-->
-        <footer class="footer_section">
-            copywrite &copy; 2017 G3 Ethiopia;
-        </footer>
     </section>
     
     <script src="javaScript/settimeout.js"></script>
@@ -158,6 +162,9 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     <script src="javaScript/edit_menu_modal.js"></script>
     <script src="javaScript/side_bar_toggler.js"></script>
     
-
+            <!--footer section-->
+    <footer class="footer_section">
+         &copy; copyright, 2017 G-3 online food ordering system, Debremarkos, Ethiopia;
+    </footer>
 </body>
 </html>

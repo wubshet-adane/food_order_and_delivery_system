@@ -50,7 +50,7 @@ if (!password_verify($token, $user['reset_token']) || new DateTime() > new DateT
 }
 
 // Hash and update password
-$hashedPassword = $new_password;
+$hashedPassword = password_hash($new_password, PASSWORD_BCRYPT);
 $updateStmt = $conn->prepare("
                     UPDATE users 
                     SET password = ?, reset_token = NULL, reset_token_expires = NULL 
