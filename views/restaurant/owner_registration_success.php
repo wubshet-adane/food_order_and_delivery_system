@@ -4,11 +4,8 @@
 
     if(isset($_GET['email'])){
         $email = $_SESSION['email'];
-        $stmt = $conn->prepare("SELECT u.*, del.status 
-                                        FROM users u
-                                        JOIN delivery_partners del ON u.user_id = del.user_id
-                                        WHERE u.role = 'delivery' AND u.email = ?");
-        $stmt->bind_param("ss", $email, $password);
+        $stmt = $conn->prepare("SELECT *  FROM users WHERE role = 'restaurant' AND email = ?");
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
     }
@@ -21,8 +18,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Approval Pending | Food Delivery Partner</title>
-    <link rel="stylesheet" href="css/delivery_registration_success.css">
+    <title>Approval Pending | Restaurant Owner Partner</title>
+    <link rel="stylesheet" href="css/owner_registration_success.css">
 </head>
 <body>
     <div class="pending-container">
@@ -38,7 +35,7 @@
         
         <h1>Your Application is Under Review</h1>
         
-        <p>Thank you for submitting your application to become a delivery partner. Our team is currently reviewing your information and documents.</p>
+        <p>Thank you for submitting your application to become a Restaurant Merchant. Our team is currently reviewing your information and documents.</p>
         
         <p>This process typically takes <strong>1-3 business days</strong>. We'll notify you via email once your account is approved.</p>
         
@@ -65,7 +62,7 @@
             <p>If you have any questions about your application status, please contact our support team at <strong><a href="../../public/support.php">contact us</a></strong> or call <strong>(+251) 965868933</strong>.</p>
         </div>
         
-        <a href="index.php" class="btn">Go to Dashboard</a>
+        <a href="dashboard.php" class="btn">Go to Dashboard</a>
     </div>
 </body>
 </html>

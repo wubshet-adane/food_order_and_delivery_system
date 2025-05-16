@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
     
     if ($result) {
+        $_SESSION['email'] = $email;
         // redirect or show success message
         header("Location: ../views/restaurant/dashboard.php");
         exit;
@@ -65,6 +66,7 @@ function handleFileUpload($fieldName, $uploadDir) {
         // Generate unique filename
         $new_filename = uniqid() . '.' . $file_ext;
         $destination = $uploadDir . $new_filename;
+        $thefilename = $new_filename;
         
         // Check file type
         $allowed_types = ['jpg', 'jpeg', 'png', 'pdf', 'gif', 'webp', 'bmp', 'svg', 'tiff', 'ico'];
@@ -74,7 +76,7 @@ function handleFileUpload($fieldName, $uploadDir) {
         
         // Move uploaded file
         if (move_uploaded_file($file_tmp, $destination)) {
-            return $file_name;
+            return $thefilename;
         } else {
             die("Error uploading file.");
         }

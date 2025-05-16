@@ -10,7 +10,8 @@
     }
     //chech staus weather approved or pending or rejected
     if ($_SESSION['status'] !== 'approved'){
-        header('Location: delivery_registration_success.php');
+        header('Location: delivery_registration_success.php?message=Please wait until we approve your request');
+        exit();
     }
 
     // Check if user has delivery permissions

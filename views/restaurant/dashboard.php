@@ -13,6 +13,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !i
     header("Location: ../auth/restaurant_login.php?message=Please authenticate to access.");
     exit; // Stop execution after redirection
 }
+//chech staus weather approved or pending or rejected
+if ($_SESSION['status'] !== 'approved'){
+    header('Location: owner_registration_success.php?message=Please wait until we approve your request');
+    exit();
+}
 $ownerId = $_SESSION['user_id'];
 $restaurantModel = new Restaurant($conn);
 $restaurants = $restaurantModel->getAllRestaurants($ownerId);
