@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'|| $_SERVER['REQUEST_METHOD'] == 'GET') 
         // Handle file upload for images and documents
         function uploadFile($fieldName) {
             if (isset($_FILES[$fieldName]) && $_FILES[$fieldName]['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = __DIR__ . '/../views/restaurant/restaurantAsset/';
+                $uploadDir = __DIR__ . '/../uploads/menu_images/';
                 $fileName = basename($_FILES[$fieldName]['name']); // Unique file name
                 $filePath = $uploadDir . $fileName;
 

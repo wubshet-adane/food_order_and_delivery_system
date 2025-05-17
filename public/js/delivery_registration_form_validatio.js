@@ -115,6 +115,20 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             accountError.textContent = '';
         }
+
+        const address_proof = document.getElementById('address_proof');
+        const id_proof = document.getElementById('id_proof');
+        const idfront = document.getElementById('idfront-upload-error');
+        const idback = document.getElementById('idback-upload-error');
+        if(!id_proof.value.trim()){
+            idfront.textContent = 'Please enter front side of your identity card';
+            isValid = false;
+        }
+        if(!address_proof.value.trim()){
+            idback.textContent = 'Please enter back side of your identity card';
+            isValid = false;
+        }
+
         
         // Validate license number if shown
         if (licenseGroup.style.display === 'block') {

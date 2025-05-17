@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result) {
         // redirect or show success message
         $_SESSION['email'] = $email;
-        header("Location: ../views/delivery/delivery_registration_success.php");
+        header("Location: ../views/delivery/index.php");
         exit;
     }elseif ($error) {
         // Email already registered

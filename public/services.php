@@ -310,16 +310,16 @@ $user_type = isset($_SESSION['userType']) ? $_SESSION['userType'] : 'guest';
 
         <div class="cta-section">
             <h2>Ready to Get Started?</h2>
-            <p>Join thousands of happy customers, restaurant partners, and delivery drivers who are already enjoying the FoodExpress platform.</p>
+            <p>Join thousands of happy customers, restaurant partners, and delivery drivers who are already enjoying the G-3 ordering platform.</p>
             
             <?php if ($user_type === 'guest'): ?>
                 <a href="../views/customers/home.php#become_partners" class="cta-btn">Sign Up Now</a>
             <?php elseif ($user_type === 'customer'): ?>
-                <a href="../views/customers/home.php" class="cta-btn">Order Food Now</a>
+                <a href="../views/customers" class="cta-btn">Order Food Now</a>
             <?php elseif ($user_type === 'restaurant'): ?>
-                <a href="../views/restaurants/dashboard.php" class="cta-btn">Go to Restaurant Dashboard</a>
+                <a href="../views/restaurant" class="cta-btn">Go to Restaurant Dashboard</a>
             <?php elseif ($user_type === 'delivery'): ?>
-                <a href="../views/delivery/index.php" class="cta-btn">Go to Delivery Dashboard</a>
+                <a href="../views/delivery" class="cta-btn">Go to Delivery Dashboard</a>
             <?php endif; ?>
         </div>
     </div>

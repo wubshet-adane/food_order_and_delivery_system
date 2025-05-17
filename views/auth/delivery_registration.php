@@ -176,11 +176,13 @@
                 <div class="form-group">
                     <label for="id_proof">Government ID (Front)*</label>
                     <input type="file" id="id_proof" name="id_front" accept="image/*,.pdf" required>
+                    <span class="error-message" id="idfront-upload-error"></span>
                 </div>
                 
                 <div class="form-group">
                     <label for="address_proof">Government ID (Back)*</label>
                     <input type="file" id="address_proof" name="id_back" accept="image/*,.pdf" required>
+                    <span class="error-message" id="idback-upload-error"></span>
                 </div>
                 
                 <div class="form-group" id="license-upload-group" style="display:none;">
