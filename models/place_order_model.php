@@ -29,6 +29,38 @@ class Place_customer_order_model {
             }
         $stmt->bind_param("idddsss", $order_id, $amount,$delivery_parson_fee, $service_fee, $payment_method, $payment_trans, $screenshot);
         $stmt->execute();
+        //add balance to restaurant
+        if($order_id){
+            // Step 3: Get delivery fee
+            $resid = $this->conn->prepare("SELECT restaurant_id FROM orders WHERE order_id = ?");
+            $resid->bind_param("i", $order_id);
+            $resid->execute();
+            $resresult = $resid->get_result();
+            if ($resRow = $resresult->fetch_assoc()) {
+                $lastid = $resRow['restaurant_id'];
+                if($lastid){
+                    $resBalance = $this->conn->prepare("SELECT amount FROM payments WHERE order_id = ?");
+                    $resBalance->bind_param("i", $order_id);
+                    $resBalance->execute();
+                    $resfee = $resBalance->get_result();
+                    if ($feeRow = $resfee->fetch_assoc()) {
+                        $feebalance = $feeRow['amount'];
+                        // Step 4: Update delivery partner's balance
+                        $updateStmt = $this->conn->prepare("UPDATE restaurants SET balance = balance + ? WHERE restaurant_id = ?");
+                        $updateStmt->bind_param("di", $feebalance, $lastid);
+                        $updateStmt->execute();
+                    } else {
+                        throw new Exception("Delivery fee not found for order_id = $order_id");
+                    }
+                }else {
+                    throw new Exception("Delivery fee not found for order_id = $order_id");
+                }
+            } else {
+                throw new Exception("Delivery fee not found for order_id = $order_id");
+            }
+        }else {
+            throw new Exception("Delivery fee not found for order_id = $order_id");
+        }
     }
 
     public function clearCart($user_id) {

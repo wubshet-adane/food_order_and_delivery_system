@@ -21,9 +21,9 @@ session_start();
     //get selected payment method from redirect url
     $paymnet_method = $_GET['paymentMethod'] ?? null;
     $note = $_GET['orderNote'] ?? null;
-    $discount = $_GET['discount'] ?? null;
-    $service_fee = $_GET['service_fee'] ?? null;
-    $sub_total = $_GET['sub_total'] ?? null;
+    $discount = $_GET['discount'] ?? 0;
+    $service_fee = $_GET['service_fee'] ?? 0;
+    $sub_total = $_GET['sub_total'] ?? 0;
 
 ?>
 
@@ -87,25 +87,26 @@ session_start();
             //calculate delivery_fee
             $delivery_fee = $distance * 30;
             //actual delivery balance for deliivery partners after 3% paid for service fee
-        $delivery_parson_fee =  $delivery_fee - $delivery_fee * 0.03;
+            $delivery_parson_fee =  $delivery_fee - $delivery_fee * 0.03;
             //total service fee calculated from restauranuts and delivery persons
-        $full_service_fee = floatVal($service_fee) + floatVal($delivery_fee) * 0.03;
+            $full_service_fee = floatVal($service_fee) + floatVal($delivery_fee) * 0.03;
             //calculate grand total
             $grand_total = floatVal($sub_total) + $delivery_fee- floatVal($discount);
           //  grand total for hotel and restaurant
             $grand_total_for_restaurant = floatVal($sub_total) - floatVal($discount) - floatVal($service_fee);
             ?>
             <section class="place_order_container">
-                <div class="go_back">
-                <a href="menu.php"> menu </a><a href="cart.php"><i class="fas fa-angle-right"></i> cart </a> <a href=""> <i class="fas fa-angle-right"></i> Place order </a>
-                </div>
+               
                 <div class="delivery_address_section">
+                    <div class="go_back">
+                        <a href="menu.php"> menu </a><a href="cart.php"><i class="fas fa-angle-right"></i> cart </a> <a href=""> <i class="fas fa-angle-right"></i> Place order </a>
+                    </div>
                     <!--contact related-->
                     <div class="contact_information">
                         <h2>Your Delivery Contact Information</h2>
                         <p><strong>Full Name:</strong> <span class="delivery_name"><?php echo htmlspecialchars($del['name']);?></span></p>
                         <p><strong>Email:</strong> <span class="checkoutEmail"><?php echo htmlspecialchars($del['email']);?></span></p>
-                        <p><strong>Phone:</strong> <span calss="checkoutPhone"><?php echo htmlspecialchars($del['phone']);?></span></p>
+                        <p><strong>Phone:</strong> <span class="checkoutPhone"><?php echo htmlspecialchars($del['phone']);?></span></p>
                     </div>
                     <!--address related-->
                     <div class="location_section">
@@ -226,12 +227,11 @@ session_start();
                             <input type="hidden" id="res_id" value="<?php echo $res_id?>">
                             <input type="hidden" id="delivery_parson_fee" value="<?php echo round($delivery_parson_fee, 2)?>">
                             <input type="hidden" id="order_total" value="<?php echo round($grand_total_for_restaurant, 2);?>">
-                            <input type="hidden" id="service_fee" value="<?php echo round($service_fee, 2);?>">
+                            <input type="hidden" id="full_service_fee" value="<?php echo round(floatVal($full_service_fee), 2);?>">
                             <input type="hidden" id="order_note" value="<?php echo htmlspecialchars($note);?>">
                             <input type="hidden" id="order_payment_method" value="<?php echo $paymnet_method?>">
                         </div>
 
-                        <?=var_dump($full_service_fee)?>
 
                         <div class="place_order_section">
                             <button id="place_order_btn">Place Order</button>

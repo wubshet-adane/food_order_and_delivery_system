@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const res_id = document.getElementById('res_id').value;
         const delivery_parson_fee = document.getElementById('delivery_parson_fee').value;
         const grand_total = document.getElementById('order_total').value;
-        const service_fee = document.getElementById('service_fee').value;
+        const service_fee = document.getElementById('full_service_fee').value;
         const order_note = document.getElementById('order_note').value;
         const payment_method = document.getElementById('order_payment_method').value;
         const transaction_id = transactionid_container.value;
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             icon: 'success',
                             title: 'Order Placed!',
                             text: result.message || 'Your order has been placed successfully.',
-                            timer: 3000,
+                            timer: 300,
                             showConfirmButton: false
                         }).then(() => {
                             // Redirect to success page or clear form

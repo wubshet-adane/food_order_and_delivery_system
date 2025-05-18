@@ -44,6 +44,7 @@
                 .then(res => res.json())
                 .then(data => {
                     alert(data.success ? "✅ Order updated successfully" : "❌ Order update failed");
+                    //window.location.href = 'index.php?page=order_control';
                 });
             }
         ).catch(err => {

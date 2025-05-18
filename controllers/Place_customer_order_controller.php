@@ -101,6 +101,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     // 🔹 3. Add payment
                     $payment->savePayment($order_id, $amount, $delivery_parson_fee, $service_fee, $payment_method, $filename, $payment_trans);
+                    // // 🔹 4. Clear cart
+                    // $restaurantBalance->saveBalance()
+                    
                     // 🔹 4. Clear cart
                     $clearCart->clearCart($customer_id);
 

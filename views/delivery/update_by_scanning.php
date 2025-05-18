@@ -64,7 +64,7 @@ function updateOrderStatus($conn, $orderId, $status, $deliveryPersonId) {
         $stmt->execute();
 
         // Step 2: Process balance only if status is 'Delivered'
-        if (strtolower($status) === 'delivered') {
+        if ($status == 'Delivered') {
             $feeStmt = $conn->prepare("SELECT delivery_person_fee FROM payments WHERE order_id = ?");
             $feeStmt->bind_param("i", $orderId);
             $feeStmt->execute();

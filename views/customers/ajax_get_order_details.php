@@ -92,7 +92,7 @@
                         <td class="item-price" style="color: green;"><?php echo htmlspecialchars($item['menu_discount']);?>%</td>
                         <td class="item-price"><span style="text-decoration: line-through;"><?php echo number_format($item['menu_price'], 2); ?></span> birr</td>
                         <td class="item-quantity"><?php echo $item['quantity']; ?></td>
-                        <td class="item-total"><?php echo number_format(($item['menu_price'] * $item['quantity']) - ($item['menu_discount'] / 100 * $item['quantity']), 2); ?> birr</td>
+                        <td class="item-total"><?php echo number_format((($item['menu_price'] * $item['quantity']) - ($item['menu_discount'] / 100 * $item['quantity'])), 2); ?> birr</td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -175,10 +175,6 @@
                     <td class="total-label">Delivery Fee:</td>
                     <td class="total-value"> <?php echo number_format(($order['delivery_person_fee'] / 0.97), 2); ?> birr</td>
                 </tr>
-                <!-- <tr>
-                    <td class="total-label">Tax:</td>
-                    <td class="total-value">ETB <?php echo number_format($order['tax_amount'], 2); ?></td>
-                </tr> -->
                 <tr>
                     <td class="total-label">Discount:</td>
                     <td class="total-value"> <?php echo number_format($discount, 2); ?> birr</td>
