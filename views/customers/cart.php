@@ -70,7 +70,7 @@ $cart = $cartModel->getCart($user_id);
 
         if ($cart->num_rows>0){
             ?>
-        <div class="table_box">
+        <div class="table_box"  style="overflow-x: scroll;">
             <table>
                 <thead>
                     <tr>

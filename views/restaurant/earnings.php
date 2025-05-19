@@ -89,8 +89,7 @@
     }
     $transactions = getRecentTransactions($conn, $restaurant_id);
     ?>
-    <!--js chart-->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <h3 class="Earnings-Dashboard">Earnings Dashboard</h3>
     <div class="card-boxes">
         <div class="card">
@@ -156,7 +155,8 @@
             <p>No transactions available.</p>
         </div>
     <?php endif; ?>
-
+    <!--js chart-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('earningsChart').getContext('2d');
         const earningsChart = new Chart(ctx, {

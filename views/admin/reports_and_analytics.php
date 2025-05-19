@@ -20,19 +20,18 @@ $order_counts = [
 
 // Top-selling items
 $top_items_result = $conn->query(
-    "SELECT m.name AS item_name, SUM(oi.quantity) as total_sold, m.price, r.name as restaurant_name 
-        FROM order_items oi
-        JOIN menu m ON oi.menu_id = m.menu_id
-        JOIN orders o ON oi.order_id = o.order_id
+ "SELECT u.name AS item_name, count(r.restaurant_id) as numberoforders, sum(p.amount) as total_sold, r.name as restaurant_name 
+        FROM orders o
+        -- JOIN menu m ON oi.menu_id = m.menu_id
+        -- JOIN orders o ON o.order_id = o.order_id
         JOIN restaurants r ON r.restaurant_id = o.restaurant_id
-        WHERE o.status = 'Delivered' AND r.owner_id = $ownerId
-        GROUP BY oi.menu_id
-        ORDER BY total_sold DESC
+        JOIN payments p ON p.order_id = o.order_id
+        JOIN users u ON r.owner_id = u.user_id
+        WHERE o.status = 'Delivered'
+        GROUP BY r.restaurant_id
+        ORDER BY numberoforders DESC
         LIMIT 10"
     );
-    if(!$top_items_result){
-        die($conn->error);
-    }
 $top_items = [];
 while ($row = $top_items_result->fetch_assoc()) {
     $top_items[] = $row;
@@ -40,7 +39,7 @@ while ($row = $top_items_result->fetch_assoc()) {
 
 // Canceled orders log
 $canceled_orders_result = $conn->query(
-    "SELECT o.order_id, o.order_date, p.amount as total_amount, u.name as customer_name, o.status
+    "SELECT o.order_id, o.order_date, p.service_fee as total_amount, u.name as customer_name, o.status
      FROM orders o
      JOIN users u ON o.customer_id = u.user_id
      JOIN payments p ON o.order_id = p.order_id
@@ -92,13 +91,13 @@ $conn->close();
         <!-- Top Selling Items -->
         <div class="box-container">
             <div class="chart-header">
-                <h3><i class="fas fa-utensils"></i> Top Selling Menu Items</h3>
+                <h3><i class="fas fa-utensils"></i> Leading Restaurants by Earnings:</h3>
             </div>
             <table>
                 <thead>
                     <tr>
-                        <th>Item</th>
-                        <th>Quantity Sold</th>
+                        <th>Restaurant_Owners</th>
+                        <th>Number of orders</th>
                         <th>Total Revenue</th>
                         <th>restaurant</th>
                     </tr>
@@ -107,8 +106,8 @@ $conn->close();
                     <?php foreach ($top_items as $item): ?>
                     <tr>
                         <td><?= htmlspecialchars($item['item_name']) ?></td>
-                        <td><?= $item['total_sold'] ?></td>
-                        <td><?= number_format($item['total_sold'] * $item['price'], 2) ?> birr</td>
+                        <td><?= $item['numberoforders'] ?></td>
+                        <td><?= number_format($item['total_sold'], 2) ?> birr</td>
                         <td><?= $item['restaurant_name']  ?></td>
                     </tr>
                     <?php endforeach; ?>

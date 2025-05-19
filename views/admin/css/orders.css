@@ -167,6 +167,10 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--success);
 }
 
+.bg-danger {
+    background-color: var(--danger);
+}
+
 /* Accordion */
 .accordion {
     width: 100%;

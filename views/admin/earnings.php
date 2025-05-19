@@ -14,21 +14,21 @@
         'weekly'  => "AND YEARWEEK(order_date, 1) = YEARWEEK(CURDATE(), 1)",
         'monthly' => "AND MONTH(order_date) = MONTH(CURDATE()) AND YEAR(order_date) = YEAR(CURDATE())",
         'yearly'  => "AND YEAR(order_date) = YEAR(CURDATE())",
-        'all'     => ""
+        'all'     => "AND DATE(order_date) <= CURDATE()"
     ];
 
     $dateCondition = $conditions[$filter] ?? "";
 
     // Main earnings query
     $sql = "
-        SELECT SUM(p.amount) AS total_earnings 
+        SELECT SUM(p.service_fee) AS total_earnings 
             FROM orders o
             JOIN payments p ON o.order_id = p.order_id
             JOIN users u ON o.customer_id = u.user_id
             JOIN restaurants r ON o.restaurant_id = r.restaurant_id
-            WHERE r.owner_id = ? $dateCondition";
+            WHERE $dateCondition";
     if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("i", $restaurant_id);
+        //$stmt->bind_param("i", $restaurant_id);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
         $totalEarnings = $result['total_earnings'] ?? 0.00;
@@ -40,25 +40,30 @@
 
     // Stats cards (today, week, month, all)
     $stats = [];
-    foreach (['daily', 'weekly', 'monthly', 'all'] as $period) {
-        $cond = $conditions[$period];
-        $query = "
-            SELECT SUM(p.amount) AS total 
-            FROM orders o
-            JOIN payments p ON o.order_id = p.order_id
-            JOIN users u ON o.customer_id = u.user_id
-            JOIN restaurants r ON o.restaurant_id = r.restaurant_id
-            WHERE r.owner_id = ? $cond";
-        $stmt = $conn->prepare($query);
-        if(!$stmt) {
-            die("SQL Error: " . $conn->error);
-            // Optional: throw new Exception("Database query failed.");
-        }
-        $stmt->bind_param("i", $restaurant_id);
-        $stmt->execute();
-        $res = $stmt->get_result()->fetch_assoc();
-        $stats[$period] = $res['total'] ?? 0;
+  $stats = [];
+
+foreach (['daily', 'weekly', 'monthly', 'all'] as $period) {
+    $cond = $conditions[$period]; // e.g., "AND DATE(order_date) = CURDATE()"
+    
+    $query = "
+        SELECT SUM(p.service_fee) AS total
+        FROM orders o
+        JOIN payments p ON o.order_id = p.order_id
+        JOIN users u ON o.customer_id = u.user_id
+        JOIN restaurants r ON o.restaurant_id = r.restaurant_id
+        WHERE 1=1 $cond
+    ";
+
+    $stmt = $conn->prepare($query);
+    if (!$stmt) {
+        die("SQL Error: " . $conn->error);
     }
+
+    $stmt->execute();
+    $res = $stmt->get_result()->fetch_assoc();
+    $stats[$period] = $res['total'] ?? 0;
+}
+
 
     // Get recent paid transactions
     function getRecentTransactions($conn, $restaurant_id, $limit = 100) {
@@ -66,18 +71,18 @@
         $sql = "
             SELECT 
                 u.name AS customer_name, 
-                p.amount AS total_amount, 
+                p.service_fee AS total_amount, 
+                r.name AS restaurant_name,
                 o.order_date 
             FROM orders o
             JOIN payments p ON o.order_id = p.order_id
             JOIN users u ON o.customer_id = u.user_id
             JOIN restaurants r ON o.restaurant_id = r.restaurant_id
-            WHERE r.owner_id = ?
             ORDER BY o.order_date DESC 
             LIMIT ?
         ";
         if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("ii", $restaurant_id, $limit);
+            $stmt->bind_param("i",  $limit);
             $stmt->execute();
             $res = $stmt->get_result();
             while ($row = $res->fetch_assoc()) {
@@ -128,6 +133,7 @@
             <tr>
                 <th>#</th>
                 <th>Customer</th>
+                <th>Restaurant</th>
                 <th>Amount</th>
                 <th>Date</th>
             </tr>
@@ -142,6 +148,7 @@
                 <tr class="<?= $index % 2 == 0 ? 'even_row' : 'odd_row' ?>">
                     <td><strong><?=$index?>.</strong></td>
                     <td><?= ucwords(htmlspecialchars($t['customer_name'])) ?></td>
+                    <td><?= ucwords(htmlspecialchars($t['restaurant_name'])) ?></td>
                     <td> <span style="font-family: 'oswald', sans-serif;"><?= number_format($t['total_amount'], 2) ?></span> birr</td>
                     <td><?= date("M d, Y", strtotime($t['order_date'])) ?></td>
                 </tr>

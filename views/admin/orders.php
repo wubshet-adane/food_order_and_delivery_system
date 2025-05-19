@@ -1,17 +1,10 @@
 <?php
-if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== "restaurant" || !isset($_SESSION['loggedIn']) || !isset($_SESSION['user_email']) || !isset($_SESSION['password'])) {
-    header("Location: ../auth/restaurant_login.php?unauthenticated user!");
-    exit;
-}
 require_once __DIR__ . "/../../models/update_orders_restaurant.php";
 $owner_id = $_SESSION['user_id'];
 
-$update_oder_status = new OrderUpdate($conn);
-$order_update = $update_oder_status->orderUpdateFunction($owner_id);
-
 // Get all restaurants owned by this user
-$restaurants_stmt = $conn->prepare("SELECT * FROM restaurants WHERE owner_id = ?");
-$restaurants_stmt->bind_param("i", $owner_id);
+$restaurants_stmt = $conn->prepare("SELECT * FROM restaurants");
+//$restaurants_stmt->bind_param("i", $owner_id);
 $restaurants_stmt->execute();
 $restaurants_result = $restaurants_stmt->get_result();
 
@@ -22,7 +15,6 @@ $delivered_orders = [];
 
 if ($restaurants_result->num_rows > 0) {
     while ($restaurant = $restaurants_result->fetch_assoc()) {
-        $restaurant_id = $restaurant['restaurant_id'];
         
         // Get pending orders for this restaurant
         $pending_stmt = $conn->prepare("
@@ -31,13 +23,12 @@ if ($restaurants_result->num_rows > 0) {
             JOIN users u ON o.customer_id = u.user_id
             JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
             JOIN payments p ON o.order_id = p.order_id
-            WHERE o.restaurant_id = ? AND o.status = 'Pending'
+            WHERE o.status = 'Pending'
             ORDER BY o.order_date DESC
         ");
         if ($pending_stmt === false) {
             die("Prepare failed: " . $conn->error); // helpful debugging message
         }
-        $pending_stmt->bind_param("i", $restaurant_id);
         $pending_stmt->execute();
         $pending_result = $pending_stmt->get_result();
         
@@ -53,7 +44,7 @@ if ($restaurants_result->num_rows > 0) {
             JOIN users u ON o.customer_id = u.user_id
             JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
             JOIN payments p ON o.order_id = p.order_id
-            WHERE o.restaurant_id = ? AND o.status IN ('Accepted', 'Preparing', 'Ready_for_Delivery', 'Delivering')
+            WHERE o.status IN ('Accepted', 'Preparing', 'Ready_for_Delivery', 'Delivering')
             ORDER BY
                 CASE
                     WHEN o.status = 'Accepted' THEN 1
@@ -64,7 +55,6 @@ if ($restaurants_result->num_rows > 0) {
                 END,
                 o.order_date DESC
         ");
-        $active_stmt->bind_param("i", $restaurant_id);
         $active_stmt->execute();
         $active_result = $active_stmt->get_result();
         
@@ -80,16 +70,33 @@ if ($restaurants_result->num_rows > 0) {
             JOIN users u ON o.customer_id = u.user_id
             JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
             JOIN payments p ON o.order_id = p.order_id
-            WHERE o.restaurant_id = ? AND o.status = 'Delivered'
+            WHERE o.status = 'Delivered'
             ORDER BY o.order_date DESC
         ");
-        $delivered_stmt->bind_param("i", $restaurant_id);
         $delivered_stmt->execute();
         $delivered_result = $delivered_stmt->get_result();
         
         while ($order = $delivered_result->fetch_assoc()) {
             $order['restaurant_name'] = $restaurant['name'];
             $delivered_orders[] = $order;
+        }
+
+        // Get delivered orders for this restaurant
+        $cancelled_stmt = $conn->prepare("
+            SELECT o.*, p.*, cda.name AS customer_name, cda.phone AS customer_phone, cda.email AS customer_email, cda.delivery_address 
+            FROM orders o
+            JOIN users u ON o.customer_id = u.user_id
+            JOIN customer_delivery_address cda ON o.customer_id = cda.user_id
+            JOIN payments p ON o.order_id = p.order_id
+            WHERE o.status = 'Cancelled'
+            ORDER BY o.order_date DESC
+        ");
+        $cancelled_stmt->execute();
+        $cancelled_result = $cancelled_stmt->get_result();
+        
+        while ($order = $cancelled_result->fetch_assoc()) {
+            $order['restaurant_name'] = $restaurant['name'];
+            $cancelled_orders[] = $order;
         }
     }
 }
@@ -118,6 +125,9 @@ if ($restaurants_result->num_rows > 0) {
                 </button>
                 <button class="tab-button" onclick="openTab('delivered')">
                     Delivered Orders <span class="badge bg-success"><?php echo count($delivered_orders); ?></span>
+                </button>
+                <button class="tab-button" onclick="openTab('cancelled')">
+                    Canceled Orders <span class="badge bg-danger"><?php echo count($cancelled_orders); ?></span>
                 </button>
             </div>
         </div>
@@ -281,25 +291,6 @@ if ($restaurants_result->num_rows > 0) {
                                             </div>
                                         </div>
                                     <?php endwhile; ?>
-                                    
-                                    <div class="mt-4">
-                                        <h5>Update Order Status</h5>
-                                        <form method="post">
-                                            <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
-                                            
-                                            <div class="btn-group">
-                                                <?php if ($order['status'] == 'Accepted'): ?>
-                                                    <input type="hidden" name="new_status" value="Preparing">
-                                                    <button type="submit" name="update_status" class="btn btn-warning">Mark as Preparing</button>
-                                                <?php elseif ($order['status'] == 'Preparing'): ?>
-                                                    <input type="hidden" name="new_status" value="Ready_for_Delivery">
-                                                    <button type="submit" name="update_status" class="btn btn-info">Mark as Ready for Delivery</button>
-                                                <?php elseif ($order['status'] == 'Ready_for_Delivery' || $order['status'] == 'Delivering'): ?>
-                                                    <button class="btn btn-secondary" disabled>Awaiting Delivery Completion</button>
-                                                <?php endif; ?>
-                                            </div>
-                                        </form>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -383,6 +374,85 @@ if ($restaurants_result->num_rows > 0) {
                 </div>
             <?php endif; ?>
         </div>
+
+         <!-- Active Orders Tab -->
+        <div id="cancelled" class="tab-content" style="display: none;">
+            <?php if (empty($cancelled_orders)): ?>
+                <div class="alert alert-info"><img src="../../public/images/no order.jpg" alt="No delivered orders yet."></div>
+            <?php else: ?>
+                <div class="accordion" id="activeAccordion">
+                    <?php foreach ($cancelled_orders as $index => $order): ?>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button collapsed" onclick="toggleAccordion('activeCollapse<?php echo $index; ?>')">
+                                    <div class="d-flex justify-content-between w-100 me-3">
+                                        <div>
+                                            <span class="fw-bold">Order #<?php echo $order['order_id']; ?></span>
+                                            <span class="ms-3 badge status-badge status-<?php echo $order['status']; ?>"><?php echo $order['status']; ?></span>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted"><?php echo date('M j, Y g:i A', strtotime($order['order_date'])); ?></span>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                            <div id="activeCollapse<?php echo $index; ?>" class="accordion-collapse">
+                                <div class="accordion-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h5>Customer Information</h5>
+                                            <p><strong>Name:</strong> <span>&nbsp;&nbsp;<?php echo $order['customer_name']; ?></span></p>
+                                            <p><strong>Phone:</strong> <span>&nbsp;&nbsp;<?php echo $order['customer_phone']; ?></span></p>
+                                            <p><strong>Email:</strong> <span>&nbsp;&nbsp;<?php echo $order['customer_email']; ?></span></p>
+                                            <p><strong>Delivery address:</strong> &nbsp;&nbsp;<span><?php echo $order['delivery_address']; ?></span></p>
+                                            <p><strong>Order description:</strong> &nbsp;&nbsp;<span><?php echo $order['o_description']; ?></span></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5>Restaurant</h5>
+                                            <p><?php echo $order['restaurant_name']; ?></p>
+                                            <p><strong>Total:</strong> &nbsp;&nbsp; <span><?php echo number_format($order['amount'], 2); ?></span> ETB</p>
+                                            <p><strong>Payment method</strong>&nbsp;&nbsp; <span><?php echo $order['payment_method']?></span></p>
+                                            <div class="resizable_payment_screenshot" id="resizable"><img src="../../uploads/payments/<?php echo $order['payment_file']?>" alt="<?php echo $order['payment_file'] . 'payment screenshot'?>"></div>
+                                            <p><strong>Transaction id:</strong>&nbsp;&nbsp; <span style="font-family: 'Courier New', Courier, monospace;"> <?php echo $order['transaction_id']; ?></span></p>
+                                        </div>
+                                    </div>
+                                    
+                                    <h5 class="mt-3">Order Items</h5>
+                                    <?php
+                                    $items_stmt = $conn->prepare("
+                                        SELECT m.name, m.price, oi.quantity 
+                                        FROM order_items oi
+                                        JOIN menu m ON oi.menu_id = m.menu_id
+                                        WHERE oi.order_id = ?
+                                    ");
+                                    $items_stmt->bind_param("i", $order['order_id']);
+                                    $items_stmt->execute();
+                                    $items_result = $items_stmt->get_result();
+
+
+                                    $i = 0;
+
+                                    while ($item = $items_result->fetch_assoc()):
+                                        $i++;
+                                    ?>
+                                        <div class="order-item">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <?php echo $i. '. ' . $item['name']; ?>
+                                                    <span class="text-muted">x<?php echo $item['quantity']; ?></span>&nbsp;&nbsp;&nbsp;
+                                                    <span style="font-family:'Courier New', Courier, monospace;"><?php echo number_format($item['price'] * $item['quantity'], 2); ?> ETB</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endwhile; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        
     </div>
 
     <script>

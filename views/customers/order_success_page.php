@@ -59,12 +59,15 @@ $stmt_items->close();
 // Submit review
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
     $review = trim($_POST['review']);
+    echo $review;
+    
     $rating = intval($_POST['rating'] ?? 5);
+    echo $rating;
     if (!empty($review)) {
         $stmt = $conn->prepare("
             INSERT INTO review (restaurant_id, user_id, rating, review_text, created_at)
             VALUES (?, ?, ?, ?, NOW())");
-        $stmt->bind_param("iiss", $order['restaurant_id'], $_SESSION['userId'], $rating, $review);
+        $stmt->bind_param("iiss", $order['restaurant_id'], $owner_id, $rating, $review);
         if (!$stmt->execute()) {
             echo "<script>document.addEventListener('DOMContentLoaded',()=>{
                 showToast('Error submitting review. Please try again.');

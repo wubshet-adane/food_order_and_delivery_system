@@ -66,26 +66,26 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                     <li><a href="?page=asdashboard"><i class="fa-solid fa-table-columns"></i> &nbsp;&nbsp;Dashboard </a></li>
                     <li><a href="?page=user_management"><i class="fa-solid fa-users"></i> &nbsp;&nbsp;Users Management </a></li>
                     <li><a href="?page=manage_restaurants"><i class="fa-solid fa-hotel"></i> &nbsp;&nbsp;Manage Restaurant </a></li>
-                    <li><a href="?page=manage_deliveris"><i class="fa-solid fa-truck-fast"></i> &nbsp;&nbsp;Manage Deliveries </a></li>
+                    <!-- <li><a href="?page=manage_deliveris"><i class="fa-solid fa-truck-fast"></i> &nbsp;&nbsp;Manage Deliveries </a></li> -->
                     <li><a href="?page=support_management" class="active"><i class="fa-solid fa-screwdriver-wrench"></i> &nbsp;&nbsp;Support Management</a></li>
                     <li><a href="?page=orders"><i class="fas fa-list-ul mr-3"></i> &nbsp;&nbsp;Manage Orders</a></li>
                     <li><a href="?page=Manage_Payouts"><i class="fa-solid fa-money-check"></i> &nbsp;&nbsp;Manage_Payouts</a></li>
                     <!-- Financial Section -->
                     <li class="dropdown">
-                        <a href="?page=monetary">
+                        <a href="javascript:href.void()">
                             <i class="fa-solid fa-briefcase"></i> &nbsp;&nbsp; Monetary <i class="fa-solid fa-chevron-down" style="float: right;"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- <li><a href="?page=transactions">💳 &nbsp;&nbsp;Transactions</a></li> -->
                             <li><a href="?page=earnings">📈 &nbsp;&nbsp;Earnings</a></li>
-                            <li><a href="?page=payouts">💵 &nbsp;&nbsp;Payouts</a></li>
+                            <!-- <li><a href="?page=payouts">💵 &nbsp;&nbsp;Payouts</a></li> -->
                             <!-- <li><a href="?page=financial_reports">📊 &nbsp;&nbsp;Financial Reports</a></li> -->
                         </ul>
                     </li>
                     <!-- Analytics & Reports -->
                     <li><a href="?page=reports_and_analytics"><i class="fa-solid fa-chart-line"></i> &nbsp;&nbsp;Reports & Analytics</a></li>
                     <!-- Settings & Logout -->
-                    <li><a href="?page=settings"><i class="fas fa-cog mr-3"> </i> &nbsp;&nbsp;Settings</a></li>
+                    <li><a href="profile_settings.php"><i class="fas fa-cog mr-3"> </i> &nbsp;&nbsp;Profile Settings</a></li>
                     <li><a href="../../public/help_center.php"><i class="fa-solid fa-circle-question"></i> &nbsp;&nbsp;Help Center</a></li>
                     <li><a href="logout.html"><i class="fas fa-sign-out-alt mr-3"> </i> &nbsp;&nbsp;Logout</a></li>
                 </ul>
@@ -126,18 +126,12 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                 case 'reports_and_analytics':
                     include 'reports_and_analytics.php';
                     break;
-                case 'settings':
-                    include 'settings.php';
-                    break;
                 case 'earnings':
                     include 'earnings.php';
                     break;
                 case 'payouts':
                     include 'payouts.php';
                     break;
-                // case 'financial_reports':
-                //     include 'financial_reports.php';
-                //     break;
                 case 'Manage_Payouts':
                     include 'Manage_Payouts.php';
                     break;
@@ -155,11 +149,8 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
     </section>
     
     <script src="javaScript/settimeout.js"></script>
-    <script src="javaScript/menu_toggler.js"></script>
     <!--script for closing responce messages automaticaly-->
     <script> closeResponseById("responce_message");</script>
-    <!--edit menu modal script-->
-    <script src="javaScript/edit_menu_modal.js"></script>
     <script src="javaScript/side_bar_toggler.js"></script>
     
             <!--footer section-->

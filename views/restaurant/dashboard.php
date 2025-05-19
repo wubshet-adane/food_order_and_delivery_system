@@ -97,7 +97,7 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                     <!-- Analytics & Reports -->
                     <li><a href="?page=reports_and_analytics"><i class="fa-solid fa-chart-line"></i> &nbsp;&nbsp;Reports & Analytics</a></li>
                     <!-- Settings & Logout -->
-                    <li><a href="?page=settings"><i class="fas fa-cog mr-3"> </i> &nbsp;&nbsp;Settings</a></li>
+                    <li><a href="restaurant_profile_page.php"><i class="fas fa-cog mr-3"> </i> &nbsp;&nbsp;Profile Settings</a></li>
                     <li><a href="../../public/help_center.php"><i class="fa-solid fa-circle-question"></i> &nbsp;&nbsp;Help Center</a></li>
                     <li><a href="logout.html"><i class="fas fa-sign-out-alt mr-3"> </i> &nbsp;&nbsp;Logout</a></li>
                 </ul>
@@ -128,9 +128,6 @@ $restaurants = $restaurantModel->getAllRestaurants($ownerId);
                     break;
                 case 'reports_and_analytics':
                     include 'reports_and_analytics.php';
-                    break;
-                case 'settings':
-                    include 'settings.php';
                     break;
                 case 'earnings':
                     include 'earnings.php';

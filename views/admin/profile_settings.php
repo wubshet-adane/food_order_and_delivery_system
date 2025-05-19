@@ -3,7 +3,7 @@
 
         // Start session and check authentication
         session_start();
-        if (!isset($_SESSION['user_id']) && $_SESSION['userType'] !== 'restaurant') {
+        if (!isset($_SESSION['user_id']) && $_SESSION['userType'] !== 'admin') {
             header("Location: ../auth/restaurant_login.php?error=Please login to access this page.");
             exit();
         }

@@ -7,16 +7,69 @@ $month_start = date('Y-m-d', strtotime('-30 days'));
 $year_start = date('Y-m-d', strtotime('-1 year'));
 
 
-// Order count breakdowns
-$order_counts = [
-    'today' => $conn->query("SELECT COUNT(*) FROM orders WHERE DATE(order_date) = '$today'")->fetch_row()[0],
-    'week' => $conn->query("SELECT COUNT(*) FROM orders WHERE order_date >= '$week_start'")->fetch_row()[0],
-    'month' => $conn->query("SELECT COUNT(*) FROM orders WHERE order_date >= '$month_start'")->fetch_row()[0],
-    'year' => $conn->query("SELECT COUNT(*) FROM orders WHERE order_date >= '$year_start'")->fetch_row()[0],
-    'Delivered' => $conn->query("SELECT COUNT(*) FROM orders WHERE status = 'Delivered'")->fetch_row()[0],
-    'Cancelled' => $conn->query("SELECT COUNT(*) FROM orders WHERE status = 'Cancelled'")->fetch_row()[0],
-    'pending' => $conn->query("SELECT COUNT(*) FROM orders WHERE status = 'pending'")->fetch_row()[0]
+$order_counts = [];
+
+// Use prepared statements for safe querying
+$queries = [
+    'today' => [
+        "SELECT COUNT(*) FROM orders o 
+         JOIN restaurants r ON o.restaurant_id = r.restaurant_id 
+         WHERE r.owner_id = ? AND DATE(o.order_date) = ?",
+        [$ownerId, $today]
+    ],
+    'week' => [
+        "SELECT COUNT(*) FROM orders o 
+         JOIN restaurants r ON o.restaurant_id = r.restaurant_id 
+         WHERE r.owner_id = ? AND o.order_date >= ?",
+        [$ownerId, $week_start]
+    ],
+    'month' => [
+        "SELECT COUNT(*) FROM orders o 
+         JOIN restaurants r ON o.restaurant_id = r.restaurant_id 
+         WHERE r.owner_id = ? AND o.order_date >= ?",
+        [$ownerId, $month_start]
+    ],
+    'year' => [
+        "SELECT COUNT(*) FROM orders o 
+         JOIN restaurants r ON o.restaurant_id = r.restaurant_id 
+         WHERE r.owner_id = ? AND o.order_date >= ?",
+        [$ownerId, $year_start]
+    ],
+    'Delivered' => [
+        "SELECT COUNT(*) FROM orders o 
+         JOIN restaurants r ON o.restaurant_id = r.restaurant_id 
+         WHERE r.owner_id = ? AND o.status = 'Delivered'",
+        [$ownerId]
+    ],
+    'Cancelled' => [
+        "SELECT COUNT(*) FROM orders o 
+         JOIN restaurants r ON o.restaurant_id = r.restaurant_id 
+         WHERE r.owner_id = ? AND o.status = 'Cancelled'",
+        [$ownerId]
+    ],
+    'pending' => [
+        "SELECT COUNT(*) FROM orders o 
+         JOIN restaurants r ON o.restaurant_id = r.restaurant_id 
+         WHERE r.owner_id = ? AND o.status = 'pending'",
+        [$ownerId]
+    ]
 ];
+
+// Run each query safely
+foreach ($queries as $key => [$sql, $params]) {
+    $stmt = $conn->prepare($sql);
+    if(!$stmt)die($conn->error);
+    if ($params) {
+        $types = str_repeat('s', count($params)); // assuming all params are strings/dates/ints
+        $stmt->bind_param($types, ...$params);
+    }
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $order_counts[$key] = $count ?? 0;
+    $stmt->close();
+}
+
 
 // Top-selling items
 $top_items_result = $conn->query(
@@ -43,8 +96,9 @@ $canceled_orders_result = $conn->query(
     "SELECT o.order_id, o.order_date, p.amount as total_amount, u.name as customer_name, o.status
      FROM orders o
      JOIN users u ON o.customer_id = u.user_id
+     JOIN restaurants r ON o.restaurant_id = r.restaurant_id
      JOIN payments p ON o.order_id = p.order_id
-     WHERE o.status = 'Cancelled'
+     WHERE r.owner_id = $ownerId AND o.status = 'Cancelled'
      ORDER BY o.order_date DESC
      LIMIT 20"
 );
