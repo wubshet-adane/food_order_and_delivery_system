@@ -89,7 +89,7 @@ if (isset($_GET['menu_id'])) {
                         <span class="price"><?php echo number_format($item['price'], 2); ?> Birr.</span>
                     </h4><br>
                     <h4>Discount:
-                        <span class="price"><?php echo $item['discount']; ?>% == <?php echo $item['price'] * $item['discount']/100; ?> Birr</span>
+                        <span  style="color: #00BA5DBA;"  class="price"><?php echo $item['discount']; ?>% == <?php echo $item['price'] * $item['discount']/100; ?> Birr</span>
                     </h4><br>
                     <h4>charge price:
                         <span class="price"><?php echo round($item['price'] - ($item['price'] * $item['discount']/100), 2); ?> Birr.</span>

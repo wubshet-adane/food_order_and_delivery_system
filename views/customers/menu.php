@@ -111,14 +111,16 @@
                                 <img src="../../uploads/menu_images/<?php echo $item['image']; ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
                                 </div>
                                 <div class="food_name">
-                                    <h3><?php echo htmlspecialchars($item['name']); ?></h3>
+                                    <h3><?php echo ucfirst(htmlspecialchars($item['name'])); ?></h3>
                                 </div>
-                                <div class="discount">
-                                    <p id="discount_value">Discount: <?php echo $item['discount'];?>%</p>
-                                </div>
-                                <p><?php echo htmlspecialchars($item['catagory']); ?></p>
-                                <p>Price: <?php echo number_format($item['price'], 2); ?> birr</p>
-                                <input type="number"  name="quantity[<?php echo $item['menu_id']; ?>]" id="quantity_<?php echo $item['menu_id']; ?>" min="1" value="1" style="width: 50px;">
+                               <?php if ($item['discount']) { ?>
+                                    <div class="discount">
+                                        <p id="discount_value">Discount: <?php echo $item['discount']; ?>%</p>
+                                    </div>
+                                <?php } ?>
+                                <p class="category"><?php echo htmlspecialchars($item['catagory']); ?></p>
+                                <p class="price">Price: <?php echo number_format($item['price'], 2); ?> birr</p>
+                                 <input class="quantity" type="number"  name="quantity[<?php echo $item['menu_id']; ?>]" id="quantity_<?php echo $item['menu_id']; ?>" min="1" value="1" style="width: 50px;">
                                 <input type="hidden" id="discount_<?php echo $item['menu_id']; ?>" value="<?php echo $item['discount'];?>">
                                 <button type="button"  data-menu-id="<?php echo $item['menu_id']; ?>" class="add_to_cart" title="Add item to Cart"> Add to cart <i class="fa-solid fa-cart-plus"></i></button>
                             </li>
@@ -164,6 +166,6 @@
 
         <script src="javaScript/light_and_dark_mode.js"></script>
         <script src="javaScript/scroll_up.js"></script>
-
+            
     </body>
     </html>

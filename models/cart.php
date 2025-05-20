@@ -25,7 +25,8 @@
             //get the result set
             $result = $stmt->get_result();
             if (!$result) {
-                die("Error executing query: " . $stmt->error);
+                $result = 0;
+                return $result;
             }
 
             $stmt->close();
