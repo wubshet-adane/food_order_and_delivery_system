@@ -199,7 +199,7 @@ body {
     transition: color 0.3s;
     outline: none;
 }
-/* 
+
 .order-history {
     margin-top: 40px;
 }
@@ -250,11 +250,12 @@ body {
 .status-cancelled {
     background: #f8d7da;
     color: #721c24;
-} */
+}
 
 
-/*password modal*/
-/* Modal Background */
+
+/* password modal
+Modal Background */
 .modal {
     display: none;
     position: fixed;
@@ -325,6 +326,7 @@ body {
 }
 
 
+
 @media (max-width: 768px) {
     .btn{
         font-size: 75%;
@@ -335,12 +337,12 @@ body {
         margin: auto o;
     }
     
-    /* .order-card {
+    .order-card {
         flex-direction: column;
         text-align: center;
     }
     
     .order-status {
         margin-top: 10px;
-    } */
+    }
 }

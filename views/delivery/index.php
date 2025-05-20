@@ -60,7 +60,6 @@
         JOIN payments p ON p.order_id = o.order_id  
         WHERE o.delivery_person_id = ? AND o.order_date = CURDATE() AND o.status = 'Delivered'
         ORDER BY o.order_date DESC
-        LIMIT 10
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();

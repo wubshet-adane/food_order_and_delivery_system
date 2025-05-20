@@ -80,7 +80,7 @@
                             <div class="divide-y divide-gray-200">
                                 <?php if (empty($today_deliveries)): ?>
                                     <div class="p-4 text-center text-gray-500">
-                                        No deliveries scheduled for today
+                                        No deliveries delivered for today
                                     </div>
                                 <?php else: ?>
                                     <?php foreach ($today_del as $delivery): ?>

@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *");
 // Handle user status updates
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['update_status'])) {

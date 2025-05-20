@@ -75,6 +75,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: ../views/auth/delivery_login.php?success=Password reset link sent to your email open the link from your email and create new password then login here');
                 exit;
             }
+            else if($role == 'admin'){
+                header('Location: ../views/auth/admin_login.php?success=Password reset link sent to your email open the link from your email and create new password then login here');
+                exit;
+            }
         }
     }else {
         // Log the email existence check for demo purposes

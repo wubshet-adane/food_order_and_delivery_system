@@ -51,18 +51,50 @@
       text-align: center;
       margin-bottom: 15px;
     }
+
+    .options {
+    margin: 15px 0;
+    text-align: right;
+}
+
+    .forgot-password {
+    display: inline-block;
+    padding: 5px 0;
+    color: #4a6bdf;
+    font-size: 0.9rem;
+    text-decoration: none;
+    position: relative;
+}
+
+.forgot-password:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #4a6bdf;
+    transition: width 0.3s ease;
+}
+
+.forgot-password:hover:after {
+    width: 100%;
+}
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <h2><img src="../../public/images/logo-icon.png" alt=""></h2>
-    <h2>Admin Login</h2>
-    <?php if (isset($_GET['error'])): $error = $_GET['error'] ?><p class="error"><?php echo $error ?></p><?php endif; ?>
-    <form method="POST" action="../../controllers/admin_login_controller.php">
-      <input type="email" name="email" placeholder="email" required />
-      <input type="password" name="password" placeholder="Password" required />
-      <button type="submit">Login</button>
-    </form>
-  </div>
+    <div class="login-container">
+      <h2><img src="../../public/images/logo-icon.png" alt=""></h2>
+      <h2>Admin Login</h2>
+      <?php if (isset($_GET['error'])): $error = $_GET['error'] ?><p class="error"><?php echo $error ?></p><?php endif; ?>
+        <form method="POST" action="../../controllers/admin_login_controller.php">
+            <input type="email" name="email" placeholder="email" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <button type="submit">Login</button>
+            <div class="options">
+                <a href="../../public/forgot_password.php" class="forgot-password">Forgot Password?</a>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

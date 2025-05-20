@@ -20,15 +20,15 @@ if (!$menu_id) {
 // Check if item already exists in the cart
 $checkQuery = "SELECT * FROM cart WHERE user_id = ? AND menu_id = ?";
 $stmt = $conn->prepare($checkQuery);
-// Check if the prepare statement failed
-if ($stmt === false) {
-    die('MySQL prepare error: ' . $conn->error); // Die and display MySQL error
-}
+// // Check if the prepare statement failed
+// if ($stmt === false) {
+//     die('MySQL prepare error: ' . $conn->error); // Die and display MySQL error
+// }
 $stmt->bind_param("ii", $user_id, $menu_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
+if ($result) {
     // Update quantity if item exists
     $updateQuery = "UPDATE cart SET quantity = quantity + ? WHERE user_id = ? AND menu_id = ?";
     $stmt = $conn->prepare($updateQuery);

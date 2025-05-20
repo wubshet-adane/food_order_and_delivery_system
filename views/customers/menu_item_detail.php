@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *");
 // Include your database connection file (update the path as needed)
 include('../../config/database.php');
 

@@ -24,7 +24,7 @@
 
         scannerInstance.start(
             { facingMode: "environment" },
-            { fps: 10, qrbox: 250 },
+            { fps: 10, qrbox: 200 },
             function onScanSuccess(decodedText) {
                 document.getElementById('result').innerText = `Scanned: ${decodedText}`;
 

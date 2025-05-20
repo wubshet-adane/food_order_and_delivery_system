@@ -40,9 +40,7 @@ if ($result->num_rows === 0) {
     header("Location: ../public/forgot_password.php?error=Email not found");
     exit;
 }
-
 $user = $result->fetch_assoc();
-
 // Validate token and expiration
 if (!password_verify($token, $user['reset_token']) || new DateTime() > new DateTime($user['reset_token_expires'])) {
     header("Location: ../public/reset-password-form.php?error=Invalid or expired token");
@@ -67,6 +65,9 @@ if ($updateStmt->execute()) {
         exit;
     }else if ($role == 'restaurant'){
         header("Location: ../views/auth/restaurant_login.php?success=Password reset successful. use new password and login here");
+        exit;
+    }else if ($role == 'admin'){
+        header("Location: ../views/auth/admin_login.php?success=Password reset successful. use new password and login here");
         exit;
     }else{
         header("Location: ../public/forgot_password.php?error=invalid role   but your role is $role");

@@ -6,10 +6,9 @@
         
         <nav class="nav_menu">
             <a href="javascript:void(0)" class="notification_icon"><i class="fas fa-bell"></i></a>
-            <img  class="profile_image" 
-                src="<?= htmlspecialchars($_SESSION['profile_image']) ?  '../../uploads/user_profiles/' . htmlspecialchars($_SESSION['profile_image']): '../../public/images/profile icon.jpg'?>" 
-                alt="Profile" 
-                title="<?= htmlspecialchars($_SESSION['name'])?>" onclick="window.location.href='restaurant_profile_page.php'">
+            <img src="<?php echo !empty($_SESSION['profile_image']) ? '../../uploads/user_profiles/' . $_SESSION['profile_image'] : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['name']) . '&size=200'; ?>" 
+                class="profile_image"
+                title="<?= htmlspecialchars($_SESSION['name'])?>" onclick="window.location.href='profile_settings.php'">
         </nav>
     </div>
      <!--responce_message section-->

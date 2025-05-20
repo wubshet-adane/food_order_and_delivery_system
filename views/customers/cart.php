@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *");
 session_start();
 require '../../config/database.php'; // your DB connection
 require_once __DIR__ . "/../../models/cart.php";
@@ -14,8 +15,8 @@ $user_id = $_SESSION['user_id'];
 
 //create object using class name and send connection as parameter for constructor created at cart.php at model repository...
 $cartModel = new Cart($conn);
-//call function with looggewd in user id  as argument by usinng created object
 $cart = $cartModel->getCart($user_id);
+
 ?>
 
 <!DOCTYPE html>
@@ -67,8 +68,8 @@ $cart = $cartModel->getCart($user_id);
         $_SESSION['qty'] = 0; // Initialize session variable for quantity
         $res_id = 0; // Get restaurant_id from the first row if available
         //$delivery_distance = $_SESSION['distance']; // Initialize delivery distance
-
-        if ($cart->num_rows>0){
+        
+        if ($cart){
             ?>
         <div class="table_box"  style="overflow-x: scroll;">
             <table>
@@ -140,20 +141,11 @@ $cart = $cartModel->getCart($user_id);
                 }
                     ?>
                 </tbody>
-
-                <!--
-                <tfoot>
-                    <tr>
-                        <td colspan="4" style="text-align: right; font-weight: bold;">Total:</td>
-                        <td colspan="2" id="total_price" style="font-weight: bold;"><?php echo number_format($total, 2); ?> ETB</td>
-                    </tr>
-                </tfoot>
-                    -->
             </table>
             <button class="add_more_menu" onclick="window.location.href='menu.php?restaurant_id=<?php echo $res_id;?>'">add more menu</button>
         </div>
 
-        <?php if ($cart->num_rows>0):?>
+        <?php if ($cart):?>
             <!--checkout section -->
             <section class="checkout_section_box" id="checkout_section_box">
                 <div class="left_side_checkout_section">
@@ -414,7 +406,7 @@ $cart = $cartModel->getCart($user_id);
         });
     </script>
 
-    <script src="javaScript/handle_customers_location.js"></script>
+    <script src="javaScript/handle_customers_location.js" async defer></script>
     <script src="javaScript/checkout_form_controlling.js"></script>
     <script src="javaScript/scroll_up.js"></script>
 
