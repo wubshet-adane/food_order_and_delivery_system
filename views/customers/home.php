@@ -155,7 +155,8 @@
         <link rel="stylesheet" href="css/footer.css">
         <link rel="stylesheet" href="css/recommendation.css">
         <!--font ausome for star rating-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
         <!-- SweetAlert CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.25/dist/sweetalert2.min.css">
         <!-- SweetAlert JS -->

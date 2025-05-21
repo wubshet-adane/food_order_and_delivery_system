@@ -22,24 +22,71 @@ $orders = $orderModel->getUserOrders($_SESSION['user_id']);
 $stats = $orderModel->getUserOrderStats($_SESSION['user_id']);
 
 // Handle form submissions
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['update_profile'])) {
-        // Handle profile update
-        $updateData = [
-            'name' => $_POST['name'],
-            'email' => $_POST['email'],
-            'phone' => $_POST['phone'],
-            'address' => $_POST['address']
-        ];
-        $userModel->updateUser($_SESSION['user_id'], $updateData);
-        $user = $userModel->getUserById($_SESSION['user_id']); // Refresh user data
-    } elseif (isset($_POST['change_password'])) {
-        // Handle password change
-        if ($_POST['new_password'] === $_POST['confirm_password']) {
-            $userModel->changePassword($_SESSION['user_id'], $_POST['current_password'], $_POST['new_password']);
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone'];
+        
+        //password hash
+        $update_stmt = $conn->prepare("UPDATE users SET name=?, email=?, phone=? WHERE user_id=?");
+        $update_stmt->bind_param("sssi", $name, $email, $phone, $user_id);
+        $update_stmt->execute();
+        
+        if ($update_stmt->affected_rows > 0) {
+            $success = "Profile updated successfully!";
+            
+            // Refresh user data
+            $user['name'] = $name;
+            $user['email'] = $email;
+            $user['phone'] = $phone;
+            //
+            $_SESSION['user_email'] = $user['email'];
+            $_SESSION['name'] = $user['name'];
+            $_SESSION['phone'] = $user['name'];
+        } else {
+            $error = "Failed to update profile.";
         }
     }
+
+    // Handle password change
+    if (isset($_POST['change_password']) && isset($_POST['current_password']) && isset($_POST['new_password']) && isset($_POST['confirm_password'])) {
+        $user_id = $_SESSION['user_id'];
+        $current_password = $_POST['current_password'];
+        $new_password = $_POST['new_password'];
+        $confirm_password = $_POST['confirm_password'];
+
+        // Fetch current password from database
+        $stmt = $conn->prepare("SELECT password FROM users WHERE user_id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user_data = $result->fetch_assoc();
+
+        if (password_verify($current_password, $user_data['password'])) {
+            if ($new_password === $confirm_password) {
+                // Hash new password and update in database
+                $hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
+                $update_stmt = $conn->prepare("UPDATE users SET password=? WHERE user_id=?");
+                $update_stmt->bind_param("si", $hashed_password, $user_id);
+                $update_stmt->execute();
+                if ($update_stmt->affected_rows > 0) {
+                    $success = "Password changed successfully!";
+                } else {
+                    $error = "Failed to change password.";
+                }
+            } else {
+                $error = "New passwords do not match.";
+            }
+        } else {
+            $error = "Current password is incorrect.";
+        }
+    }
+
+
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -48,201 +95,353 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Settings - Food Ordering System</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <style>
-        .settings-container {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            padding: 30px;
-            margin-top: 30px;
-        }
-        .stats-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .order-item {
-            border-left: 4px solid #28a745;
-            margin-bottom: 15px;
-        }
-        .nav-pills .nav-link.active {
-            background-color: #28a745;
-        }
-        .nav-pills .nav-link {
-            color: #495057;
-        }
-        .tab-content {
-            padding: 20px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <?php include '../partials/header.php'; ?>
-
-    <div class="container mb-5">
-        <div class="settings-container">
-            <h2 class="mb-4">User Settings</h2>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <a class="nav-link active" id="profile-tab" data-toggle="pill" href="#profile" role="tab">Profile</a>
-                        <a class="nav-link" id="orders-tab" data-toggle="pill" href="#orders" role="tab">Order History</a>
-                        <a class="nav-link" id="stats-tab" data-toggle="pill" href="#stats" role="tab">Statistics</a>
-                        <a class="nav-link" id="password-tab" data-toggle="pill" href="#password" role="tab">Change Password</a>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="tab-content" id="v-pills-tabContent">
-                        <!-- Profile Tab -->
-                        <div class="tab-pane fade show active" id="profile" role="tabpanel">
-                            <h4>Personal Information</h4>
-                            <form method="POST">
-                                <div class="form-group">
-                                    <label>Full Name</label>
-                                    <input type="text" class="form-control" name="name" value="<?= htmlspecialchars($user['name']) ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($user['email']) ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label>Phone Number</label>
-                                    <input type="text" class="form-control" name="phone" value="<?= htmlspecialchars($user['phone']) ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label>Delivery Address</label>
-                                    <textarea class="form-control" name="address" rows="3"><?= htmlspecialchars($user['address']) ?></textarea>
-                                </div>
-                                <button type="submit" name="update_profile" class="btn btn-primary">Update Profile</button>
-                            </form>
-                        </div>
-
-                        <!-- Order History Tab -->
-                        <div class="tab-pane fade" id="orders" role="tabpanel">
-                            <h4>Your Order History</h4>
-                            <?php if (empty($orders)): ?>
-                                <p>You haven't placed any orders yet.</p>
-                            <?php else: ?>
-                                <div class="list-group">
-                                    <?php foreach ($orders as $order): ?>
-                                        <div class="list-group-item order-item">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">Order #<?= $order['id'] ?></h5>
-                                                <small><?= date('M d, Y h:i A', strtotime($order['order_date'])) ?></small>
-                                            </div>
-                                            <p class="mb-1">
-                                                <strong>Restaurant:</strong> <?= htmlspecialchars($order['restaurant_name']) ?><br>
-                                                <strong>Items:</strong> <?= $order['item_count'] ?><br>
-                                                <strong>Total:</strong> $<?= number_format($order['total_amount'], 2) ?>
-                                            </p>
-                                            <small>
-                                                <strong>Status:</strong> 
-                                                <span class="badge badge-<?= 
-                                                    $order['status'] === 'Delivered' ? 'success' : 
-                                                    ($order['status'] === 'Cancelled' ? 'danger' : 'warning') 
-                                                ?>">
-                                                    <?= $order['status'] ?>
-                                                </span>
-                                                <?php if (!empty($order['delivery_person'])): ?>
-                                                    | <strong>Delivered by:</strong> <?= htmlspecialchars($order['delivery_person']) ?>
-                                                <?php endif; ?>
-                                            </small>
-                                            <a href="order_details.php?id=<?= $order['id'] ?>" class="btn btn-sm btn-outline-primary mt-2">View Details</a>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-
-                        <!-- Statistics Tab -->
-                        <div class="tab-pane fade" id="stats" role="tabpanel">
-                            <h4>Your Order Statistics</h4>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="stats-card">
-                                        <h5>Total Orders</h5>
-                                        <h2><?= $stats['total_orders'] ?></h2>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="stats-card">
-                                        <h5>Total Spent</h5>
-                                        <h2>$<?= number_format($stats['total_spent'], 2) ?></h2>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="stats-card">
-                                        <h5>Favorite Restaurant</h5>
-                                        <h4><?= $stats['favorite_restaurant'] ?? 'N/A' ?></h4>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="stats-card mt-4">
-                                <h5>Recent Activity</h5>
-                                <canvas id="orderChart" height="100"></canvas>
-                            </div>
-                        </div>
-
-                        <!-- Change Password Tab -->
-                        <div class="tab-pane fade" id="password" role="tabpanel">
-                            <h4>Change Password</h4>
-                            <form method="POST">
-                                <div class="form-group">
-                                    <label>Current Password</label>
-                                    <input type="password" class="form-control" name="current_password" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>New Password</label>
-                                    <input type="password" class="form-control" name="new_password" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Confirm New Password</label>
-                                    <input type="password" class="form-control" name="confirm_password" required>
-                                </div>
-                                <button type="submit" name="change_password" class="btn btn-primary">Change Password</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+    <?php include 'topbar.php'; ?>
+    
+        
+        <?php if (isset($error)): ?>
+            <div class="alert alert-danger" id="alert-danger">
+                <p><strong>Error!</strong> <?php echo $error; ?></p>
+                <button class="close" onclick="this.parentElement.style.display='none';"><i class="fa-solid fa-xmark"></i></button>                
             </div>
+        <?php endif; ?>
+        <?php if (isset($success)): ?>
+            <div class="alert alert-success" id="alert-success">
+                <p><strong>Success!</strong> <?php echo $success; ?></p>
+                <button class="close" onclick="this.parentElement.style.display='none';"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        <?php endif; ?>
+
+    <div class="settings-wrapper">
+        <div class="settings-sidebar">
+            <div class="user-profile-card">
+                <div class="avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h3><?= htmlspecialchars($user['name']) ?></h3>
+                <p><?= htmlspecialchars($user['email']) ?></p>
+            </div>
+            
+            <nav class="settings-nav">
+                <ul>
+                    <li class="active"><a href="#profile"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="#orders"><i class="fas fa-history"></i> Order History</a></li>
+                    <li><a href="#stats"><i class="fas fa-chart-line"></i> Statistics</a></li>
+                    <li><a href="#password"><i class="fas fa-lock"></i> Change Password</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="settings-content">
+            <!-- Profile Section -->
+            <section id="profile" class="settings-section active">
+                <h2><i class="fas fa-user"></i> Profile Settings</h2>
+                <form method="POST" class="profile-form">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="name" value="<?= htmlspecialchars($user['name']) ?>" placeholder="Enter your full name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" name="phone" value="<?= htmlspecialchars($user['phone']) ?>" placeholder="Enter your phone number">
+                        </div>
+                    </div>
+                    <button type="submit" name="update_profile" class="btn-primary">Save Changes</button>
+                </form>
+            </section>
+
+            <!-- Order History Section -->
+            <section id="orders" class="settings-section">
+                <h2><i class="fas fa-history"></i> Order History</h2>
+                <?php if (empty($orders)): ?>
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-bag"></i>
+                        <p>You haven't placed any orders yet.</p>
+                        <a href="../restaurants/" class="btn-primary">Browse Restaurants</a>
+                    </div>
+                <?php else: ?>
+                    <div class="order-list">
+                        <?php foreach ($orders as $order): ?>
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <h3>Order #<?= $order['order_id'] ?></h3>
+                                    <span class="order-date"><?= date('M d, Y h:i A', strtotime($order['order_date'])) ?></span>
+                                </div>
+                                <div class="order-details">
+                                    <div class="restaurant-info">
+                                        <i class="fas fa-utensils"></i>
+                                        <span><?= htmlspecialchars($order['restaurant_name']) ?></span>
+                                    </div>
+                                    <div class="order-meta">
+                                        <!-- <span><i class="fas fa-box"></i> <?= $order['item_count'] ?> items</span> -->
+                                        <span><i class="fas fa-receipt"></i> <?= number_format($order['total_amount'], 2) ?> birr</span>
+                                    </div>
+                                </div>
+                                <div class="order-footer">
+                                    <span class="status-badge status-<?= strtolower($order['status']) ?>">
+                                        <?= $order['status'] ?>
+                                    </span>
+                                    <a href="order_history.php?#order_<?= $order['order_id'] ?>" class="btn-outline">View Details</a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </section>
+
+            <!-- Statistics Section -->
+            <section id="stats" class="settings-section">
+                <h2><i class="fas fa-chart-line"></i> Order Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><?= $stats['total_orders'] ?></h3>
+                            <p>Total Orders</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><?= number_format($stats['total_spent'], 2) ?> birr</h3>
+                            <p>Total Spent</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><?= $stats['favorite_restaurant'] ?? 'N/A' ?></h3>
+                            <p>Favorite Restaurant</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Monthly Order Activity</h3>
+                    <canvas id="orderChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Change Password Section -->
+            <section id="password" class="settings-section">
+                <h2><i class="fas fa-lock"></i> Change Password</h2>
+                <form method="POST" class="password-form">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <div class="password-input">
+                            <input type="password" name="current_password" id="current_password" required>
+                            <i class="fas fa-eye toggle-password" data-target="current_password"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <div class="password-input">
+                            <input type="password" name="new_password" id="new_password" required>
+                            <i class="fas fa-eye toggle-password" data-target="new_password"></i>
+                        </div>
+                        <div class="password-strength">
+                            <span class="strength-bar"></span>
+                            <span class="strength-bar"></span>
+                            <span class="strength-bar"></span>
+                            <span class="strength-text"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <div class="password-input">
+                            <input type="password" name="confirm_password" id="confirm_password" required>
+                            <i class="fas fa-eye toggle-password" data-target="confirm_password"></i>
+                        </div>
+                    </div>
+                    <button type="submit" name="change_password" class="btn-primary">Update Password</button>
+                </form>
+            </section>
         </div>
     </div>
 
-    <?php include '../partials/footer.php'; ?>
+    <?php include 'footer.php'; ?>
 
-    <script src="../js/jquery-3.5.1.min.js"></script>
-    <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../js/chart.min.js"></script>
-    <script>
-        // Chart for order statistics
-        <?php if (!empty($stats['monthly_data'])): ?>
-        const ctx = document.getElementById('orderChart').getContext('2d');
-        const orderChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: <?= json_encode(array_keys($stats['monthly_data'])) ?>,
-                datasets: [{
-                    label: 'Orders per Month',
-                    data: <?= json_encode(array_values($stats['monthly_data'])) ?>,
-                    backgroundColor: 'rgba(40, 167, 69, 0.7)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Smooth navigation between sections
+        document.querySelectorAll('.settings-nav a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+
+                // Update active states
+                document.querySelectorAll('.settings-nav li').forEach(li => li.classList.remove('active'));
+                this.parentElement.classList.add('active');
+
+                document.querySelectorAll('.settings-section').forEach(section => section.classList.remove('active'));
+                target.classList.add('active');
+
+                // Smooth scroll to section inside .settings-content
+                const container = document.querySelector('.settings-content');
+                container.scrollTo({
+                    top: target.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Password visibility toggle
+        document.querySelectorAll('.toggle-password').forEach(toggle => {
+            toggle.addEventListener('click', function () {
+                const targetId = this.dataset.target;
+                const input = document.getElementById(targetId);
+                const icon = this;
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+
+        // Password strength indicator
+        const passwordInput = document.getElementById('new_password');
+        if (passwordInput) {
+            passwordInput.addEventListener('input', function () {
+                const password = this.value;
+                const strengthBars = document.querySelectorAll('.strength-bar');
+                const strengthText = document.querySelector('.strength-text');
+
+                // Reset
+                strengthBars.forEach(bar => bar.classList.remove('weak', 'medium', 'strong'));
+                strengthText.classList.remove('weak', 'medium', 'strong');
+                strengthText.textContent = '';
+
+                if (password.length === 0) return;
+
+                // Calculate strength
+                let strength = 0;
+                if (password.length >= 8) strength++;
+                if (/[a-z]/.test(password)) strength++;
+                if (/[A-Z]/.test(password)) strength++;
+                if (/[0-9]/.test(password)) strength++;
+                if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+                // Update UI
+                if (strength <= 2) {
+                    strengthBars.forEach((bar, index) => {
+                        if (index < 1) bar.classList.add('weak');
+                    });
+                    strengthText.classList.add('weak');
+                    strengthText.textContent = 'Weak';
+                } else if (strength <= 4) {
+                    strengthBars.forEach((bar, index) => {
+                        if (index < 2) bar.classList.add('medium');
+                    });
+                    strengthText.classList.add('medium');
+                    strengthText.textContent = 'Medium';
+                } else {
+                    strengthBars.forEach((bar, index) => {
+                        if (index < 3) bar.classList.add('strong');
+                    });
+                    strengthText.classList.add('strong');
+                    strengthText.textContent = 'Strong';
+                }
+            });
+        }
+
+
+<?php if (!empty($stats['daily_data']) || !empty($stats['weekly_data']) || !empty($stats['monthly_data'])): ?>
+    const labels = Array.from(new Set([
+        ...Object.keys(<?= json_encode($stats['daily_data'] ?? []) ?>),
+        ...Object.keys(<?= json_encode($stats['weekly_data'] ?? []) ?>),
+        ...Object.keys(<?= json_encode($stats['monthly_data'] ?? []) ?>)
+    ])).sort();
+
+    const dailyDataMap = <?= json_encode($stats['daily_data'] ?? []) ?>;
+    const weeklyDataMap = <?= json_encode($stats['weekly_data'] ?? []) ?>;
+    const monthlyDataMap = <?= json_encode($stats['monthly_data'] ?? []) ?>;
+
+    const dailyData = labels.map(label => dailyDataMap[label] || 0);
+    const weeklyData = labels.map(label => weeklyDataMap[label] || 0);
+    const monthlyData = labels.map(label => monthlyDataMap[label] || 0);
+
+    const ctx = document.getElementById('orderChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            responsive: true,
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Daily Orders',
+                    data: dailyData,
+                    backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+                },
+                {
+                    label: 'Weekly Orders',
+                    data: weeklyData,
+                    backgroundColor: 'rgba(54, 162, 2, 0.7)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Monthly Orders',
+                    data: monthlyData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: { mode: 'index' },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Number of Orders'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date / Week / Month'
                     }
                 }
+            },
+            plugins: {
+                legend: { display: true, position: 'top' },
+                tooltip: { mode: 'index', intersect: false }
             }
-        });
-        <?php endif; ?>
-    </script>
+        }
+    });
+<?php endif; ?>
+
+    });
+</script>
+   
 </body>
 </html>

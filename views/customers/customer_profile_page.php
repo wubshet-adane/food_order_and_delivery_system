@@ -19,64 +19,66 @@ $user = $result->fetch_assoc();
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['update_profile'])) {
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $phone = $_POST['phone'];
+
+    // if (isset($_POST['update_profile'])) {
+    //     $name = $_POST['name'];
+    //     $email = $_POST['email'];
+    //     $phone = $_POST['phone'];
         
-        //password hash
-        $update_stmt = $conn->prepare("UPDATE users SET name=?, email=?, phone=? WHERE user_id=?");
-        $update_stmt->bind_param("sssi", $name, $email, $phone, $user_id);
-        $update_stmt->execute();
+    //     //password hash
+    //     $update_stmt = $conn->prepare("UPDATE users SET name=?, email=?, phone=? WHERE user_id=?");
+    //     $update_stmt->bind_param("sssi", $name, $email, $phone, $user_id);
+    //     $update_stmt->execute();
         
-        if ($update_stmt->affected_rows > 0) {
-            $success = "Profile updated successfully!";
+    //     if ($update_stmt->affected_rows > 0) {
+    //         $success = "Profile updated successfully!";
             
-            // Refresh user data
-            $user['name'] = $name;
-            $user['email'] = $email;
-            $user['phone'] = $phone;
-            //
-            $_SESSION['user_email'] = $user['email'];
-            $_SESSION['name'] = $user['name'];
-        } else {
-            $error = "Failed to update profile.";
-        }
-    }
+    //         // Refresh user data
+    //         $user['name'] = $name;
+    //         $user['email'] = $email;
+    //         $user['phone'] = $phone;
+    //         //
+    //         $_SESSION['user_email'] = $user['email'];
+    //         $_SESSION['name'] = $user['name'];
+    //     } else {
+    //         $error = "Failed to update profile.";
+    //     }
+    // }
 
     // Handle password change
-    if (isset($_POST['change-password']) && isset($_POST['current_password']) && isset($_POST['new_password']) && isset($_POST['confirm_password'])) {
-        $user_id = $_SESSION['user_id'];
-        $current_password = $_POST['current_password'];
-        $new_password = $_POST['new_password'];
-        $confirm_password = $_POST['confirm_password'];
+    
+    // if (isset($_POST['change-password']) && isset($_POST['current_password']) && isset($_POST['new_password']) && isset($_POST['confirm_password'])) {
+    //     $user_id = $_SESSION['user_id'];
+    //     $current_password = $_POST['current_password'];
+    //     $new_password = $_POST['new_password'];
+    //     $confirm_password = $_POST['confirm_password'];
 
-        // Fetch current password from database
-        $stmt = $conn->prepare("SELECT password FROM users WHERE user_id = ?");
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user_data = $result->fetch_assoc();
+    //     // Fetch current password from database
+    //     $stmt = $conn->prepare("SELECT password FROM users WHERE user_id = ?");
+    //     $stmt->bind_param("i", $user_id);
+    //     $stmt->execute();
+    //     $result = $stmt->get_result();
+    //     $user_data = $result->fetch_assoc();
 
-        if (password_verify($current_password, $user_data['password'])) {
-            if ($new_password === $confirm_password) {
-                // Hash new password and update in database
-                $hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
-                $update_stmt = $conn->prepare("UPDATE users SET password=? WHERE user_id=?");
-                $update_stmt->bind_param("si", $hashed_password, $user_id);
-                $update_stmt->execute();
-                if ($update_stmt->affected_rows > 0) {
-                    $success = "Password changed successfully!";
-                } else {
-                    $error = "Failed to change password.";
-                }
-            } else {
-                $error = "New passwords do not match.";
-            }
-        } else {
-            $error = "Current password is incorrect.";
-        }
-    }
+    //     if (password_verify($current_password, $user_data['password'])) {
+    //         if ($new_password === $confirm_password) {
+    //             // Hash new password and update in database
+    //             $hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
+    //             $update_stmt = $conn->prepare("UPDATE users SET password=? WHERE user_id=?");
+    //             $update_stmt->bind_param("si", $hashed_password, $user_id);
+    //             $update_stmt->execute();
+    //             if ($update_stmt->affected_rows > 0) {
+    //                 $success = "Password changed successfully!";
+    //             } else {
+    //                 $error = "Failed to change password.";
+    //             }
+    //         } else {
+    //             $error = "New passwords do not match.";
+    //         }
+    //     } else {
+    //         $error = "Current password is incorrect.";
+    //     }
+    // }
 
 
 
@@ -144,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
 
 
-<!-- Change Password Modal -->
+<!-- Change Password Modal
 <div id="changePasswordModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" id="closeModal">&times;</span>
@@ -166,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <button type="submit" class="btn-submit" name="change-password" id="change-password">Change Password</button>
         </form>
     </div>
-</div>
+</div> -->
 
 
         
@@ -212,8 +214,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="tel" id="phone" name="phone" class="form-control" value="<?php echo htmlspecialchars($user['phone']); ?>">
                 </div>
                 
-                <button type="submit" class="btn" name="update_profile">Update Profile</button>
-                <a href="javascript:void(0);" class="btn btn-secondary" id="change_password_toggle_btn" style="margin-left: 10px;">Change Password</a>
+                <!-- <button type="submit" class="btn" name="update_profile">Update Profile</button>
+                <a href="javascript:void(0);" class="btn btn-secondary" id="change_password_toggle_btn" style="margin-left: 10px;">Change Password</a> -->
             </form>
         </div>
         
@@ -307,7 +309,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
     </script>
 
-    <script>
+    <!-- <script>
         // Open Modal when "Change Password" is clicked
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('changePasswordModal');
@@ -379,7 +381,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             });
         });
-    </script>
+    </script> -->
 
     <script src="javaScript/scroll_up.js"></script>
 

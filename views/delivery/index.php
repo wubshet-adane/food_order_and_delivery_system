@@ -2,15 +2,17 @@
     session_start();
     require_once '../../config/database.php';
 
+    
+    //chech staus weather approved or pending or rejected
+    if ($_SESSION['status'] !== 'approved'){
+        header('Location: delivery_registration_success.php?message=Please wait until we approve your request');
+        exit();
+    }
+    
     // Check if user is logged in and has delivery role
     if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == null || !isset($_SESSION['userType']) || $_SESSION['userType'] !== 'delivery') {
         // Redirect to login page if not logged in or not a delivery person
         header('Location: ../auth/delivery_login.php');
-        exit();
-    }
-    //chech staus weather approved or pending or rejected
-    if ($_SESSION['status'] !== 'approved'){
-        header('Location: delivery_registration_success.php?message=Please wait until we approve your request');
         exit();
     }
 

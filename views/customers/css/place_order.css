@@ -22,7 +22,7 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: #f5f7ff;
   color: var(--dark);
   line-height: 1.6;

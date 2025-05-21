@@ -68,7 +68,7 @@ $order_stmt->close();
         <?php if (count($orders) > 0): ?>
             <div id="orders-container">
                 <?php foreach ($orders as $order): ?>
-                    <div class="order-card" data-order-id="<?php echo $order['order_id']; ?>">
+                    <div class="order-card" data-order-id="<?php echo $order['order_id']; ?>" id="order_<?php echo $order['order_id']; ?>">
                         <div class="order-header" onclick="toggleOrderDetails(this)">
                             <div class="order-header-info">
                                 <span class="order-id">Order #<?php echo $order['order_id']; ?></span>

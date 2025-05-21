@@ -25,7 +25,7 @@ body.dark-mode {
 }
 
 body {
-    font-family: 'roboto', sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     background-color: var(--bg-color);
     color: var(--text-color);

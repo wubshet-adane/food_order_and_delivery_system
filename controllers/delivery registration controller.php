@@ -55,7 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result) {
         // redirect or show success message
         $_SESSION['email'] = $email;
-        header("Location: ../views/delivery/index.php");
+        //chech staus weather approved or pending or rejected
+        header('Location: ../views/delivery/delivery_registration_success.php?message=Please wait until we approve your request');   
         exit;
     }elseif ($error) {
         // Email already registered

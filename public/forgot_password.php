@@ -153,7 +153,7 @@
                 </ol>
             
                 <div class="note">
-                <strong>📌 Note:</strong> Be sure to check your <em>spam or junk folder</em> if the email doesn’t appear within a few minutes. Need help? <a href="contact.php">Contact Support</a>.
+                <strong>📌 Note:</strong> Be sure to check your <em>spam or junk folder</em> if the email doesn’t appear within a few minutes. Need help? <a href="support.php">Contact Support</a>.
                 </div>
             </div>
         </div>
