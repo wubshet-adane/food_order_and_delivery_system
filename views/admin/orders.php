@@ -12,6 +12,7 @@ $restaurants_result = $restaurants_stmt->get_result();
 $pending_orders = [];
 $active_orders = [];
 $delivered_orders = [];
+$cancelled_orders = [];
 
 if ($restaurants_result->num_rows > 0) {
     while ($restaurant = $restaurants_result->fetch_assoc()) {
@@ -81,7 +82,7 @@ if ($restaurants_result->num_rows > 0) {
             $delivered_orders[] = $order;
         }
 
-        // Get delivered orders for this restaurant
+        // Get rejected orders
         $cancelled_stmt = $conn->prepare("
             SELECT o.*, p.*, cda.name AS customer_name, cda.phone AS customer_phone, cda.email AS customer_email, cda.delivery_address 
             FROM orders o
@@ -98,7 +99,8 @@ if ($restaurants_result->num_rows > 0) {
             $order['restaurant_name'] = $restaurant['name'];
             $cancelled_orders[] = $order;
         }
-    }
+    
+}
 }
 ?>
 

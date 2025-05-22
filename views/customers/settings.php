@@ -31,8 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         //password hash
         $update_stmt = $conn->prepare("UPDATE users SET name=?, email=?, phone=? WHERE user_id=?");
-        $update_stmt->bind_param("sssi", $name, $email, $phone, $user_id);
+        if(!$update_stmt)die($conn->error);
+        $update_stmt->bind_param("sssi", $name, $email, $phone, $_SESSION['user_id']);
+        if(!$update_stmt)die($conn->error);
         $update_stmt->execute();
+        if(!$update_stmt)die($conn->error);
         
         if ($update_stmt->affected_rows > 0) {
             $success = "Profile updated successfully!";
@@ -46,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['name'] = $user['name'];
             $_SESSION['phone'] = $user['name'];
         } else {
+            if(!$update_stmt)die($conn->error);
             $error = "Failed to update profile.";
         }
     }
@@ -123,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="settings-sidebar">
             <div class="user-profile-card">
                 <div class="avatar">
-                    <i class="fas fa-user-circle"></i>
+                    <?php if($_SESSION['profile_image']):?><img style="width: 80px; height: 80px; border-radius: 50%;" src="../../uploads/user_profiles/<?=$_SESSION['profile_image']?>" alt=""> <?php else:?> <i class="fas fa-user-circle"></i><?php endif;?>
                 </div>
                 <h3><?= htmlspecialchars($user['name']) ?></h3>
                 <p><?= htmlspecialchars($user['email']) ?></p>

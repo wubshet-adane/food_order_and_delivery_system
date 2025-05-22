@@ -93,28 +93,32 @@ if (isset($_GET['owner_id'])) {
                 <section class="owners-section">
                     <h2>Restaurant Owners</h2>
                     <div class="owners-grid">
-                        <?php foreach ($owners as $owner): ?>
-                            <button class="owner-card owner-toggle" data-owner-id="<?= $owner['user_id'] ?>">
-                                <div class="owner-info">
-                                    <h3><?= ucfirst(htmlspecialchars($owner['full_name'])) ?></h3>
-                                    <p><?= htmlspecialchars($owner['email']) ?></p>
-                                    <p><?= htmlspecialchars($owner['phone']) ?></p>
+                        <?php if($owners):?>
+                            <?php foreach ($owners as $owner): ?>
+                                <button class="owner-card owner-toggle" data-owner-id="<?= $owner['user_id'] ?>">
+                                    <div class="owner-info">
+                                        <h3><?= ucfirst(htmlspecialchars($owner['full_name'])) ?></h3>
+                                        <p><?= htmlspecialchars($owner['email']) ?></p>
+                                        <p><?= htmlspecialchars($owner['phone']) ?></p>
+                                    </div>
+                                    <div class="restaurant-count">
+                                        <span><?= $owner['restaurant_count'] ?></span>
+                                        <small>Restaurants</small>
+                                    </div>
+                                    <i class="fas fa-chevron-down accordion-icon"></i>
+                                </button>
+                                
+                                <div class="accordion-content" id="owner-<?= $owner['user_id'] ?>">
+                                    <div class="loading-spinner-container">
+                                        <div class="loading-spinner"></div>
+                                        <span>Loading restaurants...</span>
+                                    </div>
+                                    <!-- Restaurant content will be loaded here via AJAX -->
                                 </div>
-                                <div class="restaurant-count">
-                                    <span><?= $owner['restaurant_count'] ?></span>
-                                    <small>Restaurants</small>
-                                </div>
-                                <i class="fas fa-chevron-down accordion-icon"></i>
-                            </button>
-                            
-                            <div class="accordion-content" id="owner-<?= $owner['user_id'] ?>">
-                                <div class="loading-spinner-container">
-                                    <div class="loading-spinner"></div>
-                                    <span>Loading restaurants...</span>
-                                </div>
-                                <!-- Restaurant content will be loaded here via AJAX -->
-                            </div>
-                        <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        <?php else:?>
+                            No registered restaurant merchants found
+                        <?php endif;?>
                     </div>
                 </section>
             </div>
